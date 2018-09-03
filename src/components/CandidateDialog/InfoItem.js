@@ -7,7 +7,11 @@ import Divider from '@material-ui/core/Divider';
 
 const styles = theme => ({
     root: {
-        margin: "15px 0",
+        padding: "15px 0",
+        borderBottom: "1px solid rgba(43,48,52,.1)",
+        '&:last-of-type': {
+            borderBottom: "none",
+        },
     },
 });
 
@@ -28,7 +32,6 @@ function InfoItem(props) {
                     {content}
                 </Grid>
             </Grid>
-            <Divider />
         </React.Fragment>
     );
 }

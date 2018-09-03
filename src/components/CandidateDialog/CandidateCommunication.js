@@ -51,6 +51,7 @@ class CandidateCommunication extends Component {
                 date={item.date}
                 title={item.title}
                 description={item.description}
+                body={item.body}
                 linkName={item.linkName}
                 link={item.link}
             />
@@ -64,7 +65,6 @@ class CandidateCommunication extends Component {
                         onChange={this.handleChange}
                         scrollable
                         scrollButtons="auto"
-                        fullWidth
                     >
                         <Tab className={classes.tab} value="all" label="All" />
                         <Tab className={classes.tab} value="mail" label="Emails" />

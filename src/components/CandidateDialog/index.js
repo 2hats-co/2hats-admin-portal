@@ -15,8 +15,8 @@ import NestedSelect from './NestedSelect';
 
 const styles = theme => ({
     root: {
-        width: 'calc(100% - 40px)',
-        height: 500,
+        width: "calc(100vw - 40px)",
+        height: "calc(100vh - 120px)",
         position: "relative",
 
         background: "#FFFFFF",
@@ -84,7 +84,8 @@ const testCommItems = [
         outgoing: false,
         date: "11:22 AM – 7th August 2018",
         title: "2hats Assessment Centre",
-        description: "This is the body text This is the body text This is the body text This is the body text This is the body text This is the body text This is the body text This is the body text This is the body text This is the body text This is the body text",
+        description: "Description",
+        body: "<b>This is the body</b> text This is the body text This is the body text This is the body text This is the body text This is the body text This is the body text This is the body text This is the body text This is the body text This is the body text",
     },
     {
         type: "note",

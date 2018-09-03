@@ -1,6 +1,8 @@
 import React,{Component} from 'react';
 import { withStyles } from '@material-ui/core';
 
+import renderHTML from 'react-render-html';
+
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 
@@ -23,25 +25,30 @@ import ListIcon from '@material-ui/icons/List';
 
 const styles = theme => ({
     root: {
-        marginBottom: 20,
+        marginBottom: 16,
     },
     iconWrapper: {
-        width: 48,
-        height: 48,
+        width: 36,
+        height: 36,
         borderRadius: "50%",
         backgroundColor: "red",
         color: "#fff",
-        padding: 12,
+        padding: 8,
         boxSizing: "border-box",
-        marginRight: 20,
+        marginRight: 10,
+        "&& svg": {
+            width: 20,
+            height: 20,
+        }
     },
     cardContent: {
         padding: "0 !important",
     },
     cardHeader: {
         backgroundColor: "#F1F1F1",
-        padding: "0 8px 0 24px",
-    }
+        padding: "0 8px 0 20px",
+        height: 36,
+    },
 });
 
 function getIcon(type) {
@@ -66,10 +73,11 @@ function getColor(type, outgoing) {
     }
 }
 
-function renderContent(type, title, description) {
+function renderContent(type, title, description, body) {
     if (type === "mail") {
         return (
             <ExpansionPanel style={{ margin: 0 }}>
+
                 <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
                     <Typography variant="body2" style={{flexBasis: "32%"}}>{title}</Typography>
                     <Typography variant="body1" style={{
@@ -79,16 +87,20 @@ function renderContent(type, title, description) {
                         textOverflow: "ellipsis",
                     }}>{description.substr(0,40)}</Typography>
                 </ExpansionPanelSummary>
+
                 <ExpansionPanelDetails>
-                    <Typography variant="body1">{description}</Typography>
+                    <Typography variant="body1">
+                        { body ? renderHTML(body) : "There is no body text" }
+                    </Typography>
                 </ExpansionPanelDetails>
+
             </ExpansionPanel>
         );
     } else if (type === "file" || type === "history") {
         return null;
     } else {
         return (
-            <div style={{padding: "14px 24px"}}>
+            <div style={{padding: "8px 20px"}}>
                 <Typography variant="body1">{ description }</Typography>
             </div>
         );
@@ -96,7 +108,7 @@ function renderContent(type, title, description) {
 }
 
 function CommunicationItem(props) {
-    const { icon, outgoing, author, date, title, description, linkName, link, classes } = props;
+    const { icon, outgoing, author, date, title, description, body, linkName, link, classes } = props;
 
     return(
         <Grid container className={classes.root}>
@@ -131,7 +143,7 @@ function CommunicationItem(props) {
                             </Grid>
                         </Grid>
 
-                        {renderContent(icon, title, description)}
+                        {renderContent(icon, title, description, body)}
 
                     </CardContent>
                 </Card>
