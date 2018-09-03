@@ -1,6 +1,7 @@
 import React,{Component} from 'react'
 import {withNavigation} from '../components/withNavigation'
-import SearchBar from '../components/Candidates/SearchBar'
+import { InstantSearch } from 'react-instantsearch-dom';
+import Search from '../components/Candidates/Search'
 import Table from '../components/Candidates/Table'
 class CandidatesContainer extends Component{
     constructor(props){
@@ -9,8 +10,13 @@ class CandidatesContainer extends Component{
     render(){
         return(
             <div>
-                <SearchBar/>
-                <Table/>
+                  <InstantSearch
+      appId="755HO7BO2Y"
+      apiKey="e23c823ac1ef5956b7b41bf49cb8e003"
+      indexName="candidate_search"
+    >
+     <Search/>
+    </InstantSearch>
             </div>
         )
     }

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import StatisticsContainer from './containers/StatisticsContainer'
 import CandidatesContainer from './containers/CandidatesContainer'
+
 //routing
 import {
   BrowserRouter as Router,
@@ -10,8 +11,8 @@ import {ROUTES} from './constants/routes'
 
 class App extends Component {
   render() {
-  console.log(ROUTES)
 
+ 
     return (
       <Router>
       <div className="app"> 

@@ -40,11 +40,16 @@ function getSorting(order, orderBy) {
 }
 
 const rows = [
-  { id: 'name', numeric: false, disablePadding: true, label: 'Dessert (101g serving)' },
-  { id: 'calories', numeric: true, disablePadding: false, label: 'Calories' },
-  { id: 'fat', numeric: true, disablePadding: false, label: 'Fat (g)' },
-  { id: 'carbs', numeric: true, disablePadding: false, label: 'Carbs (g)' },
-  { id: 'protein', numeric: true, disablePadding: false, label: 'Protein (g)' },
+  { id: 'updatedAt', numeric: true, disablePadding: true, label: 'UP' },
+  { id: 'name', numeric: false, disablePadding: true, label: 'NAME' },
+  { id: 'conact', numeric: false, disablePadding: true, label: 'CONTACT' },
+  { id: 'stage', numeric: false, disablePadding: true, label: 'STAGE' },
+  { id: 'status', numeric: false, disablePadding: true, label: 'STATUS' },
+  { id: 'staff', numeric: false, disablePadding: true, label: 'STAFF' },
+  { id: 'careerInterests', numeric: false, disablePadding: true, label: 'INTERESTS' },
+  { id: 'note', numeric: false, disablePadding: true, label: 'NOTE' },
+  { id: 'industry', numeric: false, disablePadding: true, label: 'INDUSTRY' },
+  { id: 'score', numeric: false, disablePadding: true, label: 'SCORE' },
 ];
 
 class EnhancedTableHead extends React.Component {
@@ -288,8 +293,7 @@ class EnhancedTable extends React.Component {
                     <TableRow
                       hover
                       onClick={event => this.handleClick(event, n.id)}
-                      role="checkbox"
-                      aria-checked={isSelected}
+  
                       tabIndex={-1}
                       key={n.id}
                       selected={isSelected}
