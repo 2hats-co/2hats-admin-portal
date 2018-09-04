@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import StatisticsContainer from './containers/StatisticsContainer'
 import CandidatesContainer from './containers/CandidatesContainer'
+
 import CandidateDialogContainer from './containers/CandidateDialogContainer'
 //routing
 import {

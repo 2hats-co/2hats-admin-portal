@@ -12,27 +12,27 @@ const styles = theme => ({
   
   const navigationRoutes = [{
       label:'Candidates',
-      routes:ROUTES.candidates
+      route:ROUTES.candidates
   },{
     label:'Tasks',
-    routes:ROUTES.tasks
+    route:ROUTES.tasks
 },{
     label:'Calendar',
-    routes:ROUTES.calendar
+    route:ROUTES.calendar
 },{
     label:'Statistics',
-    routes:ROUTES.stats
+    route:ROUTES.stats
 },{
     label:'Templates',
-    routes:ROUTES.Templates
+    route:ROUTES.Templates
 }]
 function NavigationItems(props){
     const {classes,goTo} = props
 
     return(
        <Grid container className={classes.root}  direction='row' justify='space-between'>
-           {navigationRoutes.map((x)=><Grid item onClick={()=>{
-                goTo(x.routes)
+           {navigationRoutes.map((x)=><Grid key={x.route} item onClick={()=>{
+                goTo(x.route)
                }}>{x.label}</Grid>
            )}
        </Grid>

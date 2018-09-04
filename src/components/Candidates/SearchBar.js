@@ -13,16 +13,21 @@ const styles = theme => ({
 class SearchBar extends Component {
     constructor(props){
         super(props)
+        this.handleChange = this.handleChange.bind(this)
+    }
+    handleChange(event){
+        console.log(event.target.value)
+       this.props.changeHandler('searchString',event.target.value)
     }
     render(){
-        const {classes} = this.props
+        const {classes,value} = this.props
         return(
             <Grid container direction='row' alignItems='center' justify='flex-start'>
                 <Grid item >
                      <SearchIcon/>
                 </Grid>
                 <Grid item>
-                    <TextField/>
+                    <TextField value={value} onChange={this.handleChange}/>
                 </Grid>
 
             </Grid>

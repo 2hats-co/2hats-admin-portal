@@ -6,14 +6,7 @@ import IconButton from '@material-ui/core/IconButton'
 import Tooltip from '@material-ui/core/Tooltip'
 import EmailIcon from '@material-ui/icons/MailOutline'
 import PhoneIcon from '@material-ui/icons/Phone'
-function copyToClipboard(text){
-  var dummy = document.createElement("input");
-  document.body.appendChild(dummy);
-  dummy.setAttribute('value', text);
-  dummy.select();
-  document.execCommand("copy");
-  document.body.removeChild(dummy);
-}
+
 function CandidateRow({ hit }) {
     //return <div>{hit.firstName} {hit.lastName}</div>;
 
@@ -23,19 +16,7 @@ function CandidateRow({ hit }) {
       {hit.firstName} {hit.lastName}
       </Grid>
       <Grid item xs={2} style={{display:'flex'}}>
-      {hit.email &&
-        <Tooltip title={hit.email}>
-        <IconButton onClick={()=>{copyToClipboard(hit.email)}}>
-          <EmailIcon/>
-        </IconButton>
-    </Tooltip>
-      }
       
-     {hit.phoneNumber && <Tooltip title={hit.phoneNumber}> 
-          <IconButton onClick={()=>{copyToClipboard(hit.phoneNumber)}}>
-            <PhoneIcon/>
-          </IconButton>
-      </Tooltip>} 
       </Grid>
       <Grid item xs={2}>
         {hit.stage}
