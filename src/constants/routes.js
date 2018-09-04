@@ -4,5 +4,6 @@ export const ROUTES = {
     stats:'/statistics',
     tasks:'/tasks',
     calendar:'/calender',
-    Templates:'/templates'
+    Templates:'/templates',
+    testCandidate:'/testCandidate',
 }
