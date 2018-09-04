@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import StatisticsContainer from './containers/StatisticsContainer'
 import CandidatesContainer from './containers/CandidatesContainer'
+
 //routing
 import {
   BrowserRouter as Router,
