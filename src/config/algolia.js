@@ -11,7 +11,7 @@ export const createAlgoliaIndex = ((indexName) => {
     );
  
     return (indexName) => {
-        const index = algolia.initIndex(process.env.REACT_APP_ALGOLIA_INDEX_NAME);
+        const index = algolia.initIndex(indexName);
         return index;
     };
 })();
