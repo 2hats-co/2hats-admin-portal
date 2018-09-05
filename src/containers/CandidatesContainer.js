@@ -3,11 +3,16 @@ import {withNavigation} from '../components/withNavigation'
 import Table from '../components/Candidates/Table'
 import { ALGOLIA_INDEX, createAlgoliaIndex } from '../config/algolia'
 import SearchBar from '../components/Candidates/SearchBar';
+import CandidateDialog from '../components/CandidateDialog';
 
+function getCandidateInfo(uid,hits){
+
+}
 class CandidatesContainer extends Component{
     constructor(props){
         super(props)
         this.state = {
+            selectedCandidate:'',
             hits:[],
             searchString:'',
             hitsPerPage:20,
@@ -17,19 +22,22 @@ class CandidatesContainer extends Component{
         }
         this.handleChange = this.handleChange.bind(this)
         this.searchQuery = this.searchQuery.bind(this)
+        this.handleDismiss = this.handleDismiss.bind(this)
     }
     handleChange(name,value){
+        console.log(name,value)
         this.setState({[name]:value})
     }
     handleResults(res){
-        console.log(res)
         this.setState({hits:res.hits,nPages:res.nbPages,nHits:res.nbHits})
     }
     componentWillMount(){
         this.searchQuery()
     }
+    handleDismiss(){
+        this.setState({selectedCandidate:''})
+    }
     componentDidUpdate(prevProps,prevState){
-        let updateProps = ['currentPage','searchString']
         if(prevState.searchString !== this.state.searchString || prevState.currentPage !== this.state.currentPage ||prevState.hitsPerPage !== this.state.hitsPerPage){
         this.searchQuery()
         }
@@ -54,24 +62,18 @@ class CandidatesContainer extends Component{
         const {searchString,
             hitsPerPage,
             currentPage,
-            nHits,hits} = this.state
-            console.log('hits',hits)
+            nHits,hits,selectedCandidate} = this.state
+            
             const resultData = {currentPage,nHits,hitsPerPage}
         return(
             <div>
                 <SearchBar value={searchString} changeHandler={this.handleChange}/>
                 <Table candidateData={hits} resultData={resultData} changeHandler={this.handleChange}/>
+                {selectedCandidate !=='' &&<CandidateDialog dismiss={this.handleDismiss}
+                    infoData={selectedCandidate}
+                />}
             </div>
         )
     }
 }
 export default withNavigation(CandidatesContainer)
-
-
-{/* <InstantSearch
-appId="755HO7BO2Y"
-apiKey="e23c823ac1ef5956b7b41bf49cb8e003"
-indexName="candidate_search"
->
-<Search/>
-</InstantSearch> */}

@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import StatisticsContainer from './containers/StatisticsContainer'
 import CandidatesContainer from './containers/CandidatesContainer'
-
-import CandidateDialogContainer from './containers/CandidateDialogContainer'
 //routing
 import {
     BrowserRouter as Router,
@@ -19,7 +17,6 @@ class App extends Component {
             <div className="app"> 
                 <Route exact path={ROUTES.stats} component={() => <StatisticsContainer/>} />
                 <Route exact path={ROUTES.candidates} component={() => <CandidatesContainer/>} />
-                <Route exact path={ROUTES.testCandidate} component={() => <CandidateDialogContainer/>} />
             </div>
         </Router>
         );

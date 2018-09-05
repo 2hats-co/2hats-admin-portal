@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import { withStyles } from '@material-ui/core';
+import { withStyles, Dialog } from '@material-ui/core';
 
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
@@ -16,6 +16,7 @@ import NestedSelect from './NestedSelect';
 const styles = theme => ({
     root: {
         width: "calc(100vw - 40px)",
+        maxWidth:1200,
         height: "calc(100vh - 120px)",
         position: "relative",
 
@@ -39,18 +40,6 @@ const styles = theme => ({
 });
 
 const testInfo = [
-    {
-        title: "Contact",
-        content: ["p.jones@columbia.edu", "0400 000 000"],
-    },
-    {
-        title: "Industry",
-        content: ["Design"],
-    },
-    {
-        title: "Interests",
-        content: ["User Interface, User Experience, Graphics/Illustrations"],
-    },
     {
         title: "Contact",
         content: ["p.jones@columbia.edu", "0400 000 000"],
@@ -130,6 +119,39 @@ const testCommItems = [
     },
 ];
 
+const stringReducer = (accumulator, currentValue) => accumulator + ', '+ currentValue;
+function _generateInfoItems(infoData){
+    let interests = ''
+    let skills = ''
+    if(infoData.careerInterests && infoData.careerInterests.length !==0){
+        interests = infoData.careerInterests.reduce(stringReducer)
+    }
+    if(infoData.skills && infoData.skills.length !==0){
+        skills = infoData.skills.reduce(stringReducer)
+    }
+    return [
+        {
+            title: "Contact",
+            content: [infoData.email, infoData.phoneNumber],
+        },
+        {
+            title: "Industry",
+            content: [infoData.industry],
+        },
+        {
+            title: "Interests",
+            content: [interests],
+        },{
+            title: "Skills",
+            content: [skills],
+        },
+        {
+            title: "Availability",
+            content: [`${infoData.availabilityInt} days`],
+        }
+    ]
+    
+}
 class CandidateDialog extends Component {
     constructor(props){
         super(props);
@@ -144,19 +166,19 @@ class CandidateDialog extends Component {
     changeApplicationStatus(val) {
         this.setState({ applicationStatus: val });
     }
-    
     render(){
-        const { classes, name } = this.props;
+        const { classes,infoData} = this.props;
+       
         return(
+            <Dialog open={true}  maxWidth={'lg'}>
             <Grid
                 container
                 direction="column"
-                className={classes.root}
-            >
+                className={classes.root}>
                 <Grid item className={classes.header}>
                     <Grid container alignItems="center">
                         <Grid item xs>
-                            <Typography variant="headline">{name}</Typography>
+                            <Typography variant="headline">{infoData.firstName} {infoData.lastName}</Typography>
                         </Grid>
 
                         <Grid item xs>
@@ -165,19 +187,18 @@ class CandidateDialog extends Component {
                                 changeValue={this.changeApplicationStatus}
                             />
                         </Grid>
-
                         <Grid item xs>
                             <Button color="primary">Generate Feedback</Button>
                             <Button color="primary">Generate Report</Button>
                         </Grid>
-                        <IconButton aria-label="Close"><CloseIcon /></IconButton>
+                        <IconButton aria-label="Close" onClick={this.props.dismiss}><CloseIcon /></IconButton>
                     </Grid>
                 </Grid>
 
                 <Grid item xs style={{ height: "calc(100% - 50px)" }}>
                     <Grid container style={{ height: "100%" }}>
                         <Grid item xs={5} style={{ height: "100%" }}>
-                            <CandidateInfo items={testInfo} />
+                            <CandidateInfo items={_generateInfoItems(infoData)} />
                         </Grid>
                         <Grid item xs={7} style={{ height: "100%" }}>
                             <CandidateCommunication items={testCommItems} />
@@ -189,6 +210,7 @@ class CandidateDialog extends Component {
                     <AddIcon />
                 </Button>
             </Grid>
+            </Dialog>
         )
     }
 }

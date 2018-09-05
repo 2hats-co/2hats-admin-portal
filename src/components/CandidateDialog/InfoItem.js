@@ -1,9 +1,12 @@
+import TableHead from '@material-ui/core/TableHead';
+
 import React,{Component} from 'react';
 import { withStyles } from '@material-ui/core';
 
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
-import Divider from '@material-ui/core/Divider';
+import Divider from '@material-ui/core/Divider'
+;
 
 const styles = theme => ({
     root: {
