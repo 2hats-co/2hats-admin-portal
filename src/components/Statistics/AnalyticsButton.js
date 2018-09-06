@@ -2,7 +2,26 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import moment from 'moment-timezone'
 
+import classNames from 'classnames';
+import { withStyles } from '@material-ui/core/styles';
+
 import { calStageStatus } from '../../utilities/algolia'
+
+
+const styles = theme =>({
+    root:{
+        width:230,
+        height:70,
+        color:'#fff',
+        borderRadius:5,
+        padding:5
+    },
+    pinkGradient:{
+    
+        backgroundImage: 'linear-gradient(to right, #FC875C,#FF5F71)'
+    }
+  });
+  
 
 class AnalyticsButton extends Component {
     constructor(props) {
@@ -120,11 +139,10 @@ class AnalyticsButton extends Component {
     }
 
     render() {
-        const { heading } = this.props;
+        const { heading,classes } = this.props;
         const { total, percentage } = this.state;
-
         return (
-            <div>
+            <div className={classNames(classes.root,classes.pinkGradient)}>
                 <h3>
                     {heading}
                 </h3>
@@ -135,8 +153,7 @@ class AnalyticsButton extends Component {
                     {percentage + '%'}
                 </p>
             </div>
-        )
-    }
+        )}
 }
 
-export default AnalyticsButton
+export default withStyles(styles)(AnalyticsButton)

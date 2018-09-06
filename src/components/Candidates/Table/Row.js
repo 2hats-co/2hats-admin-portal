@@ -50,66 +50,29 @@ function CandidateRow(props){
     const phoneNumber = (candidateData.phoneNumber&&{value:candidateData.phoneNumber,isHighlighted:(_highlightResult.phoneNumber.matchedWords&&_highlightResult.phoneNumber.matchedWords.length !==0)})
     
     return(<TableRow hover onClick={() =>{changeHandler('selectedCandidate',candidateData)}}>
-       <TableCell>
-                  {_getTimePassed(candidateData.createdAt)}
+       <TableCell padding={'none'}>
+            {_getTimePassed(candidateData.createdAt)}
         </TableCell>
-        <TableCell>
-        {name}
+        <TableCell padding={'none'} style={{maxWidth:170,overflow:'hidden',textOverflow:'ellipsis'}}> 
+            {name}
         </TableCell>
-        <TableCell>        
-                       {email &&<ClipBoardIcon value={email.value} isHighlighted={email.isHighlighted}>
-                            <EmailIcon/>
-                          </ClipBoardIcon>
-                        }
-                        {phoneNumber &&<ClipBoardIcon value={phoneNumber.value} isHighlighted={phoneNumber.isHighlighted}>
-                            <PhoneIcon/>
-                          </ClipBoardIcon>
-                        }
-                       </TableCell>
-
-        <TableCell>{_bolding(stage.value)}</TableCell>
-        <TableCell>{_bolding(status.value)}</TableCell>
-        <TableCell>{staff&&_bolding(staff.value)}</TableCell>
-        <TableCell>{_getInterests(careerInterests)}</TableCell>
-        <TableCell>{note&&_bolding(note.value)}</TableCell>
-        <TableCell>{industry&&_bolding(industry.value)}</TableCell>
-        <TableCell>{score&&_bolding(score.value)}</TableCell>
+        <TableCell padding={'none'} style={{maxWidth:100}}>        
+            {email &&<ClipBoardIcon value={email.value} isHighlighted={email.isHighlighted}>
+                        <EmailIcon/>
+                    </ClipBoardIcon>}
+            {phoneNumber &&<ClipBoardIcon value={phoneNumber.value} isHighlighted={phoneNumber.isHighlighted}>
+                    <PhoneIcon/>
+                 </ClipBoardIcon>
+            }
+        </TableCell>
+        <TableCell padding={'none'}>{_bolding(stage.value)}</TableCell>
+        <TableCell padding={'none'}>{_bolding(status.value)}</TableCell>
+        <TableCell padding={'none'}>{staff&&_bolding(staff.value)}</TableCell>
+        <TableCell padding={'none'}>{_getInterests(careerInterests)}</TableCell>
+        <TableCell padding={'none'}>{note&&_bolding(note.value)}</TableCell>
+        <TableCell padding={'none'}>{industry&&_bolding(industry.value)}</TableCell>
+        <TableCell padding={'none'}>{score&&_bolding(score.value)}</TableCell>
     </TableRow>
-        // <TableRow
-        //               hover
-        //              // onClick={event => this.handleClick(event, n)}
-        //               tabIndex={-1}
-        //               key={n.id}
-        //             > 
-        //             <TableCell>
-        //               {_getTimePassed(n.updatedAt)}
-        //             </TableCell>
-        //               <TableCell component="th" scope="row">
-        //               <div dangerouslySetInnerHTML={{ __html:n.name }} />
-        //               </TableCell>
-        //               <TableCell>        
-        //               {n.email &&
-        //                   <Tooltip title={n.email}>
-        //                   <IconButton onClick={()=>{copyToClipboard(n.email)}}>
-        //                     <EmailIcon/>
-        //                   </IconButton>
-        //               </Tooltip>
-        //                 }
-        //               {n.phoneNumber && <Tooltip title={n.phoneNumber}> 
-        //                     <IconButton onClick={()=>{copyToClipboard(n.phoneNumber)}}>
-        //                       <PhoneIcon/>
-        //                     </IconButton>
-        //                 </Tooltip>} 
-        //               </TableCell>
-        //               <TableCell >{n.stage}</TableCell>
-        //               <TableCell >{n.status}</TableCell>
-        //               <TableCell >{n.staff}</TableCell>
-        //               <TableCell >{n.interests}</TableCell>
-        //               <TableCell >{n.flags}</TableCell>
-        //               <TableCell >{n.note}</TableCell>
-        //               <TableCell >{n.industry}</TableCell>
-        //               <TableCell >{n.score}</TableCell>
-        //             </TableRow>
     )
 }
 export default CandidateRow

@@ -6,16 +6,16 @@ import TableCell from '@material-ui/core/TableCell';
 import Tooltip from '@material-ui/core/Tooltip';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 const rows = [
-    { id: 'updatedAt', numeric: true, disablePadding: false, label: 'UP' },
+    { id: 'updatedAt', numeric: false, disablePadding: false, label: 'UP' },
     { id: 'name', numeric: false, disablePadding: false, label: 'NAME' },
-    { id: 'conact', numeric: false, disablePadding: true, label: 'CONTACT' },
-    { id: 'stage', numeric: false, disablePadding: true, label: 'STAGE' },
-    { id: 'status', numeric: false, disablePadding: true, label: 'STATUS' },
-    { id: 'staff', numeric: false, disablePadding: true, label: 'STAFF' },
-    { id: 'careerInterests', numeric: false, disablePadding: true, label: 'INTERESTS' },
-    { id: 'note', numeric: false, disablePadding: true, label: 'NOTE' },
-    { id: 'industry', numeric: false, disablePadding: true, label: 'INDUSTRY' },
-    { id: 'score', numeric: false, disablePadding: true, label: 'SCORE' },
+    { id: 'conact', numeric: false, disablePadding: false, label: 'CONTACT' },
+    { id: 'stage', numeric: false, disablePadding: false, label: 'STAGE' },
+    { id: 'status', numeric: false, disablePadding: false, label: 'STATUS' },
+    { id: 'staff', numeric: false, disablePadding: false, label: 'STAFF' },
+    { id: 'careerInterests', numeric: false, disablePadding: false, label: 'INTERESTS' },
+    { id: 'note', numeric: false, disablePadding: false, label: 'NOTE' },
+    { id: 'industry', numeric: false, disablePadding: false, label: 'INDUSTRY' },
+    { id: 'score', numeric: false, disablePadding: false, label: 'SCORE' },
   ];
   class CandidateTableHeader extends React.Component {
     createSortHandler = property => event => {
@@ -30,7 +30,8 @@ const rows = [
                 <TableCell 
                   key={row.id}
                   numeric={row.numeric}
-                  padding={row.disablePadding ? 'none' : 'default'}
+                  padding={'none'}
+                 // padding={row.disablePadding ? 'none' : 'default'}
               
                 >
                   <Tooltip

@@ -5,9 +5,6 @@ import { ALGOLIA_INDEX, createAlgoliaIndex } from '../config/algolia'
 import SearchBar from '../components/Candidates/SearchBar';
 import CandidateDialog from '../components/CandidateDialog';
 
-function getCandidateInfo(uid,hits){
-
-}
 class CandidatesContainer extends Component{
     constructor(props){
         super(props)
