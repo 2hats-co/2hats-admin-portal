@@ -15,15 +15,43 @@ class CandidatesContainer extends Component{
             hitsPerPage:20,
             currentPage:0,
             nHits:0,
-            fieldRestriction:[]
+            fieldRestriction:[],
+            catFilters:{
+                updatedAt: [],
+                contact: [],
+                stage: [],
+                status: [],
+                careerInterests: [],
+                industry: [],
+                score: [],
+            },
         }
         this.handleChange = this.handleChange.bind(this)
+        this.handleAddFilter = this.handleAddFilter.bind(this)
+        this.handleDeleteFilter = this.handleDeleteFilter.bind(this)
         this.searchQuery = this.searchQuery.bind(this)
         this.handleDismiss = this.handleDismiss.bind(this)
     }
     handleChange(name,value){
         console.log(name,value)
         this.setState({[name]:value})
+    }
+    handleAddFilter(category, value) {
+        console.log('addFilter: ', category, value);
+        const filtersToAppend = {};
+        filtersToAppend[category] = value;
+        this.setState((state, props) => ({
+            catFilters: { ...state.catFilters, ...filtersToAppend }
+        }));
+    }
+    handleDeleteFilter(category, value) {
+        console.log('deleteFilter:', category, value);
+        const newFilters = {};
+        newFilters[category] = this.state.catFilters[category];
+        newFilters[category].splice(newFilters[category].indexOf(value), 1);
+        this.setState((state, props) => ({
+            catFilters: { ...state.catFilters, ...newFilters }
+        }));
     }
     handleResults(res){
         this.setState({hits:res.hits,nPages:res.nbPages,nHits:res.nbHits})
@@ -64,8 +92,19 @@ class CandidatesContainer extends Component{
             const resultData = {currentPage,nHits,hitsPerPage}
         return(
             <div>
-                <SearchBar value={searchString} changeHandler={this.handleChange}/>
-                <Table candidateData={hits} resultData={resultData} changeHandler={this.handleChange}/>
+                <SearchBar
+                    value={searchString}
+                    changeHandler={this.handleChange}
+                    catFilters={this.state.catFilters}
+                    deleteFilterHandler={this.handleDeleteFilter}
+                />
+                <Table
+                    candidateData={hits}
+                    resultData={resultData}
+                    changeHandler={this.handleChange}
+                    addFilterHandler={this.handleAddFilter}
+                    catFilters={this.state.catFilters}
+                />
                 {selectedCandidate !=='' &&<CandidateDialog dismiss={this.handleDismiss}
                     infoData={selectedCandidate}
                 />}

@@ -32,8 +32,8 @@ class EnhancedTable extends React.Component {
     this.props.changeHandler('hitsPerPage',event.target.value)
   };
   render() {
-    const { classes,changeHandler} = this.props;
-   const {currentPage,hitsPerPage,nHits} = this.props.resultData
+    const { classes,changeHandler, catFilters } = this.props;
+    const {currentPage,hitsPerPage,nHits} = this.props.resultData
     return (
       <Paper className={classes.root}>
         <div className={classes.tableWrapper}>
@@ -42,6 +42,8 @@ class EnhancedTable extends React.Component {
               onSelectAllClick={this.handleSelectAllClick}
               onRequestSort={this.handleRequestSort}
               rowCount={nHits}
+              catFilters={catFilters}
+              addFilterHandler={this.props.addFilterHandler}
             />
             <TableBody>
               {this.props.candidateData
