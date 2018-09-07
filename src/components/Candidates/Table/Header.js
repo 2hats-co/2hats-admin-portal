@@ -40,6 +40,7 @@ const styles = theme => ({
   },
 });
   class CandidateTableHeader extends React.Component {
+    state={openFilter:''}
     createSortHandler = property => event => {
       this.props.onRequestSort(event, property);
     };
@@ -56,27 +57,24 @@ const styles = theme => ({
                   key={row.id}
                   numeric={row.numeric}
                   padding={'none'}
-                 // padding={row.disablePadding ? 'none' : 'default'}
-              
+                  onClick={()=>{if(this.state.openFilter!==row.id){this.setState({openFilter:row.id})}}}
                 >
-                  <Tooltip
-                    title="Sort"
-                    placement={row.numeric ? 'bottom-end' : 'bottom-start'}
-                    enterDelay={300}
-                  >
+             
                     <TableSortLabel
                    //   onClick={this.createSortHandler(row.id)}
                     >
                       {row.label}
-
                       { !row.filterable ? null :
                         <Select
                           multiple
                           value={this.props.catFilters[row.id]}
-                          onChange={e => { this.props.addFilterHandler(row.id, e.target.value) }}
+                          onOpen= {()=>{this.setState({openFilter:row.id})}}
+                          open = {this.state.openFilter===row.id}
+                          onChange={e => { this.props.addFilterHandler(row.id, e.target.value), this.setState({openFilter:''}) }}
                           renderValue={() => null}
                           classes={{select: classes.select}}
                           className={classes.selectRoot}
+                          onClose={()=>{this.setState({openFilter:''})}}
                         >
                           {row.filters.map(name => (
                             <MenuItem key={name} value={name}>
@@ -86,9 +84,7 @@ const styles = theme => ({
                           ))}
                         </Select>
                       }
-
                     </TableSortLabel>
-                  </Tooltip>
                 </TableCell>
               );
             }, this)}

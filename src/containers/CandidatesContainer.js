@@ -69,12 +69,11 @@ class CandidatesContainer extends Component{
     searchQuery(){
         const index = createAlgoliaIndex(ALGOLIA_INDEX.candidates);
         const filters = ['stage','status']
-        let filtersQuery = ''
-        
+        let queryFilters = ''
         filters.forEach(category => {
             if (this.state.catFilters[category].length !== 0){
-              if(filtersQuery!==''){
-                filtersQuery += ' AND '
+              if(queryFilters!==''){
+                queryFilters += ' AND '
               }
                 let categoryQuery =''
                 this.state.catFilters[category].forEach(option=>
@@ -84,15 +83,14 @@ class CandidatesContainer extends Component{
                           }
                           categoryQuery += `${category}:${option}` 
                     })
-                    filtersQuery += categoryQuery
+                    queryFilters += categoryQuery
             }else{
 
             }
         })
-        
-        console.log(filtersQuery)
+        console.log(queryFilters)
         index.search(this.state.searchString,{
-            "filters":filtersQuery,
+            "filters":queryFilters,
             "hitsPerPage": this.state.hitsPerPage,
             "page": this.state.currentPage,
             "restrictSearchableAttributes": this.state.fieldRestriction,
