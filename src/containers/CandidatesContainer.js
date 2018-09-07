@@ -18,7 +18,6 @@ class CandidatesContainer extends Component{
             fieldRestriction:[],
             catFilters:{
                 updatedAt: [],
-                contact: [],
                 stage: [],
                 status: [],
                 careerInterests: [],
@@ -63,13 +62,37 @@ class CandidatesContainer extends Component{
         this.setState({selectedCandidate:''})
     }
     componentDidUpdate(prevProps,prevState){
-        if(prevState.searchString !== this.state.searchString || prevState.currentPage !== this.state.currentPage ||prevState.hitsPerPage !== this.state.hitsPerPage){
+        if(prevState.searchString !== this.state.searchString || prevState.currentPage !== this.state.currentPage ||prevState.hitsPerPage !== this.state.hitsPerPage ||prevState.catFilters !== this.state.catFilters ){
         this.searchQuery()
         }
     }
     searchQuery(){
         const index = createAlgoliaIndex(ALGOLIA_INDEX.candidates);
+        const filters = ['stage','status']
+        let filtersQuery = ''
+        
+        filters.forEach(category => {
+            if (this.state.catFilters[category].length !== 0){
+              if(filtersQuery!==''){
+                filtersQuery += ' AND '
+              }
+                let categoryQuery =''
+                this.state.catFilters[category].forEach(option=>
+                    {
+                        if(categoryQuery!==''){
+                            categoryQuery += ' OR '
+                          }
+                          categoryQuery += `${category}:${option}` 
+                    })
+                    filtersQuery += categoryQuery
+            }else{
+
+            }
+        })
+        
+        console.log(filtersQuery)
         index.search(this.state.searchString,{
+            "filters":filtersQuery,
             "hitsPerPage": this.state.hitsPerPage,
             "page": this.state.currentPage,
             "restrictSearchableAttributes": this.state.fieldRestriction,
