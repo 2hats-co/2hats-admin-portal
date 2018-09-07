@@ -1,4 +1,4 @@
-import React,{Component} from 'react';
+import React from 'react';
 import { withStyles } from '@material-ui/core';
 
 import renderHTML from 'react-render-html';
@@ -41,6 +41,9 @@ const styles = theme => ({
             height: 20,
         }
     },
+    expansionPanelRoot: {
+        background: 'red',
+    },
     cardContent: {
         padding: "0 !important",
     },
@@ -76,7 +79,7 @@ function getColor(type, outgoing) {
 function renderContent(type, title, description, body) {
     if (type === "mail") {
         return (
-            <ExpansionPanel style={{ margin: 0 }}>
+            <ExpansionPanel style={{ margin: 0 }} classes={{root: styles.expansionPanelRoot}}>
 
                 <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
                     <Typography variant="body2" style={{flexBasis: "32%"}}>{title}</Typography>
@@ -124,7 +127,7 @@ function CommunicationItem(props) {
                             className={classes.cardHeader}
                         >
                             <Grid item xs>
-                                <Typography variant="body2">{author}{outgoing}</Typography>
+                                <Typography variant="body2">{author}</Typography>
                             </Grid>
                             { (icon === "file" || icon === "history") ?
                                 <Grid item xs>

@@ -1,4 +1,4 @@
-import React,{Component} from 'react';
+import React from 'react';
 import { withStyles } from '@material-ui/core';
 
 import InfoItem from './InfoItem';
@@ -6,7 +6,6 @@ import InfoItem from './InfoItem';
 const styles = theme => ({
     root: {
         padding: "10px 20px",
-        borderRight: "1px solid rgba(43,48,52,.1)",
         height: "100%",
         overflowY: "scroll",
         boxSizing: "border-box",

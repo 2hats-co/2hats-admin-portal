@@ -1,6 +1,5 @@
 import React,{Component} from 'react';
 import { withStyles } from '@material-ui/core';
-import Typography from '@material-ui/core/Typography';
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
@@ -43,8 +42,9 @@ class CandidateCommunication extends Component {
             items.filter(item => item.type === this.state.selectedTab) :
             items;
 
-        const cards = filteredItems.map(item => (
+        const cards = filteredItems.map((item, index) => (
             <CommunicationItem
+                key={index}
                 icon={item.type}
                 outgoing={item.outgoing}
                 author={item.author}
@@ -63,8 +63,7 @@ class CandidateCommunication extends Component {
                     <Tabs
                         value={this.state.selectedTab}
                         onChange={this.handleChange}
-                        scrollable
-                        scrollButtons="auto"
+                        fullWidth
                     >
                         <Tab className={classes.tab} value="all" label="All" />
                         <Tab className={classes.tab} value="mail" label="Emails" />

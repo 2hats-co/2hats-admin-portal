@@ -1,4 +1,4 @@
-import React,{Component} from 'react';
+import React, {Component} from 'react';
 import { withStyles, Dialog } from '@material-ui/core';
 
 import Typography from '@material-ui/core/Typography';
@@ -12,6 +12,7 @@ import AddIcon from '@material-ui/icons/Add';
 import CandidateInfo from './CandidateInfo';
 import CandidateCommunication from './CandidateCommunication';
 import NestedSelect from './NestedSelect';
+import EmailComposer from './EmailComposer';
 
 const styles = theme => ({
     root: {
@@ -157,15 +158,22 @@ class CandidateDialog extends Component {
         super(props);
 
         this.state = {
+            composerMode: true,
             applicationStatus: 'Interview Completed / Accepted',
         };
 
         this.changeApplicationStatus = this.changeApplicationStatus.bind(this);
+        this.closeComposer = this.closeComposer.bind(this);
     }
     
     changeApplicationStatus(val) {
         this.setState({ applicationStatus: val });
     }
+
+    closeComposer() {
+        this.setState({ composerMode: false });
+    }
+
     render(){
         const { classes,infoData} = this.props;
        
@@ -197,8 +205,15 @@ class CandidateDialog extends Component {
 
                 <Grid item xs style={{ height: "calc(100% - 50px)" }}>
                     <Grid container style={{ height: "100%" }}>
-                        <Grid item xs={5} style={{ height: "100%" }}>
-                            <CandidateInfo items={_generateInfoItems(infoData)} />
+                        <Grid item xs={5} style={{ height: "100%",borderRight: "1px solid rgba(43,48,52,.1)", }}>
+                            {
+                                this.state.composerMode ?
+                                    <EmailComposer
+                                        reply={false}
+                                        closeComposer={this.closeComposer}
+                                    /> :
+                                    <CandidateInfo items={_generateInfoItems(infoData)} />
+                            }
                         </Grid>
                         <Grid item xs={7} style={{ height: "100%" }}>
                             <CandidateCommunication items={testCommItems} />
