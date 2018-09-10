@@ -25,7 +25,13 @@ class StatisticsContainer extends Component{
         return(
             <div>
             <button onClick={this.buttonClick}/>
-            <AnalyticsButtonContainer heading="New Submissions" from={this.state.from} to={this.state.to} />
+            <AnalyticsButtonContainer type="student" heading="Total Students" from={this.state.from} to={this.state.to} timeframe="week" />
+            <AnalyticsButtonContainer type="account" heading="New Accounts" from={this.state.from} to={this.state.to} timeframe="week" />
+            <AnalyticsButtonContainer type="submission" heading="New Submissions" from={this.state.from} to={this.state.to} timeframe="week" />
+            <AnalyticsButtonContainer type="resume" heading="Resume" from={this.state.from} to={this.state.to} timeframe="week" />
+            <AnalyticsButtonContainer type="interview" heading="Interview" from={this.state.from} to={this.state.to} timeframe="week" />
+            <AnalyticsButtonContainer type="assessment" heading="Assessment" from={this.state.from} to={this.state.to} timeframe="week" />
+            <AnalyticsButtonContainer type="placement" heading="Placement" from={this.state.from} to={this.state.to} timeframe="week" />
             </div>
         )
     }
