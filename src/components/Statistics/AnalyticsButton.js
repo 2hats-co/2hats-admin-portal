@@ -22,10 +22,11 @@ import { calStageStatus } from '../../utilities/algolia'
 
 const styles = theme =>({
     root: {
+        boxSizing: 'border-box',
         width: 130,
         height: 70,
         borderRadius: 5,
-        padding: '8px 16px',
+        padding: '7px 16px',
         margin: 16,
         boxShadow: '0 5px 25px 0 rgba(108,108,108,0.35)',
         position: 'relative',
@@ -36,11 +37,11 @@ const styles = theme =>({
     },
     iconWrapper: {
         position: 'absolute',
-        bottom: -18,
-        right: -12,
+        bottom: -16,
+        right: -8,
         '& svg': {
-            width: 80,
-            height: 80,
+            width: 64,
+            height: 64,
             opacity: .2,
             position: 'relative',
         },
@@ -64,8 +65,8 @@ class AnalyticsButton extends Component {
         super(props);
         this.state = {
             total: 2341,
-            change: 345,
-            percentage: 14.,
+            change: 2,
+            percentage: 1,
         };
     }
 
@@ -191,10 +192,10 @@ class AnalyticsButton extends Component {
     getIcon(type) {
         switch (type) {
             case 'student':    return <PersonIcon style={{transform:'scale(1.3)',top:-4}} />;
-            case 'account':    return <PersonAddIcon style={{transform:'scale(1.1)',left:-6}} />;
+            case 'account':    return <PersonAddIcon style={{transform:'scale(1.1)',top:-4,left:-6}} />;
             case 'submission': return <SendIcon style={{transform:'scale(0.9)'}} />;
             case 'resume':     return <DescriptionIcon style={{left:-4}} />;
-            case 'interview':  return <VideocamIcon style={{left:-1}} />;
+            case 'interview':  return <VideocamIcon style={{transform:'scale(1.1)',left:-1}} />;
             case 'assessment': return <ListIcon />;
             case 'placement':  return <WorkIcon style={{top:6,left:2}} />;
             default: return null;
@@ -206,22 +207,34 @@ class AnalyticsButton extends Component {
         const { total, change, percentage } = this.state;
         return (
             <div className={classNames(classes.root, classes[this.getGradient(type)])}>
-                <Typography variant="body1" style={{textTransform:'capitalize'}}>{heading}</Typography>
-                <Grid container alignItems="center">
-                    <Grid item xs>
-                        <Typography variant="headline">{total}</Typography>
+                <Typography variant="caption" style={{textTransform:'capitalize'}}>{heading}</Typography>
+                <Grid container alignItems="flex-end">
+                    <Grid item xs={7}>
+                        <Typography
+                            variant={change == 0 ? 'headline' : 'title'}
+                            style={change == 0 ? {marginTop:4,fontWeight:500} : {marginTop:1,fontWeight:500}}
+                        >
+                            {total}
+                        </Typography>
                     </Grid>
-                    <Grid item xs>
-                        <Typography variant="caption">{change >= 0 ? '+' : null} {change}</Typography>
+                    { change == 0 ? null :
+                        <Grid item xs={5}>
+                            <Typography variant="caption" style={{fontWeight:500}}>
+                                {change > 0 ? '+' : null} {change}
+                            </Typography>
+                        </Grid>
+                    }
+                </Grid>
+                { change == 0 ? null :
+                    <Grid container alignItems="center" style={{marginTop:-4}}>
+                        <div style={{marginLeft:-7,fontSize:0}}>{change < 0 ? <ArrowDropDownIcon /> : <ArrowDropUpIcon />}</div>
+                        <Typography variant="caption" style={{textTransform:'lowercase',marginLeft:-3,fontSize:11}}>{`${percentage}% last ${timeframe}`}</Typography>
                     </Grid>
-                </Grid>
-                <Grid container alignItems="center" style={{marginTop:-2}}>
-                    <div style={{marginLeft:-6,fontSize:0}}>{change < 0 ? <ArrowDropDownIcon /> : <ArrowDropUpIcon />}</div>
-                    <Typography variant="caption" style={{textTransform:'lowercase'}}>{`${percentage}% last ${timeframe}`}</Typography>
-                </Grid>
+                }
                 <div className={classes.iconWrapper}>{this.getIcon(type)}</div>
             </div>
-        )};
+        )
+    }
 }
 
 export default withStyles(styles)(AnalyticsButton);
