@@ -27,7 +27,7 @@ const styles = theme =>({
         height: 70,
         borderRadius: 5,
         padding: '7px 16px',
-        margin: 16,
+        margin: '16px 0',
         boxShadow: '0 5px 25px 0 rgba(108,108,108,0.35)',
         position: 'relative',
         overflow: 'hidden',
