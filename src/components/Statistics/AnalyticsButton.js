@@ -1,34 +1,72 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import moment from 'moment-timezone'
-
 import classNames from 'classnames';
+
 import { withStyles } from '@material-ui/core/styles';
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
+
+import PersonIcon from '@material-ui/icons/Person';
+import PersonAddIcon from '@material-ui/icons/PersonAdd';
+import SendIcon from '@material-ui/icons/Send';
+import DescriptionIcon from '@material-ui/icons/Description';
+import VideocamIcon from '@material-ui/icons/Videocam';
+import ListIcon from '@material-ui/icons/List';
+import WorkIcon from '@material-ui/icons/Work';
+import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
+import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
 
 import { calStageStatus } from '../../utilities/algolia'
 
 
 const styles = theme =>({
-    root:{
-        width:230,
-        height:70,
-        color:'#fff',
-        borderRadius:5,
-        padding:5
+    root: {
+        boxSizing: 'border-box',
+        width: 130,
+        height: 70,
+        borderRadius: 5,
+        padding: '7px 16px',
+        margin: '16px 0',
+        boxShadow: '0 5px 25px 0 rgba(108,108,108,0.35)',
+        position: 'relative',
+        overflow: 'hidden',
+        '& *': {
+            color: '#fff',
+        },
     },
-    pinkGradient:{
-    
-        backgroundImage: 'linear-gradient(to right, #FC875C,#FF5F71)'
+    iconWrapper: {
+        position: 'absolute',
+        bottom: -16,
+        right: -8,
+        '& svg': {
+            width: 64,
+            height: 64,
+            opacity: .2,
+            position: 'relative',
+        },
+    },
+    orangeGradient: {
+        backgroundImage: 'linear-gradient(105deg, #EF8B55 0%, #EC7A86 100%)',
+    },
+    purpleGradient: {
+        backgroundImage: 'linear-gradient(105deg, #3023AE 0%, #C86DD7 100%)',
+    },
+    blueGradient: {
+        backgroundImage: 'linear-gradient(105deg, #373bce 0%, #53A0FD 61%, #7dc1b1 100%)',
+    },
+    redGradient: {
+        backgroundImage: 'linear-gradient(105deg, #B43636 0%, #FF8D00 100%)',
     }
-  });
-  
+});
 
 class AnalyticsButton extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            total: 0,
-            percentage: 0
+            total: 2341,
+            change: 2,
+            percentage: 1,
         };
     }
 
@@ -138,22 +176,65 @@ class AnalyticsButton extends Component {
         return Math.round(percentage);
     }
 
+    getGradient(type) {
+        switch(type) {
+            case 'student':    return 'orangeGradient';
+            case 'account':    return 'purpleGradient';
+            case 'submission': return 'blueGradient';
+            case 'resume':     return 'orangeGradient';
+            case 'interview':  return 'purpleGradient';
+            case 'assessment': return 'blueGradient';
+            case 'placement':  return 'redGradient';
+            default: return 'orangeGradient';
+        }
+    }
+
+    getIcon(type) {
+        switch (type) {
+            case 'student':    return <PersonIcon style={{transform:'scale(1.3)',top:-4}} />;
+            case 'account':    return <PersonAddIcon style={{transform:'scale(1.1)',top:-4,left:-6}} />;
+            case 'submission': return <SendIcon style={{transform:'scale(0.9)'}} />;
+            case 'resume':     return <DescriptionIcon style={{left:-4}} />;
+            case 'interview':  return <VideocamIcon style={{transform:'scale(1.1)',left:-1}} />;
+            case 'assessment': return <ListIcon />;
+            case 'placement':  return <WorkIcon style={{top:6,left:2}} />;
+            default: return null;
+        }
+    }
+
     render() {
-        const { heading,classes } = this.props;
-        const { total, percentage } = this.state;
+        const { type, heading, classes, timeframe } = this.props;
+        const { total, change, percentage } = this.state;
         return (
-            <div className={classNames(classes.root,classes.pinkGradient)}>
-                <h3>
-                    {heading}
-                </h3>
-                <p>
-                    {total}
-                </p>
-                <p>
-                    {percentage + '%'}
-                </p>
+            <div className={classNames(classes.root, classes[this.getGradient(type)])}>
+                <Typography variant="caption" style={{textTransform:'capitalize'}}>{heading}</Typography>
+                <Grid container alignItems="flex-end">
+                    <Grid item xs={7}>
+                        <Typography
+                            variant={change == 0 ? 'headline' : 'title'}
+                            style={change == 0 ? {marginTop:4,fontWeight:500} : {marginTop:1,fontWeight:500}}
+                        >
+                            {total}
+                        </Typography>
+                    </Grid>
+                    { change == 0 ? null :
+                        <Grid item xs={5}>
+                            <Typography variant="caption" style={{fontWeight:500}}>
+                                {change > 0 ? '+' : null} {change}
+                            </Typography>
+                        </Grid>
+                    }
+                </Grid>
+                { change == 0 ? null :
+                    <Grid container alignItems="center" style={{marginTop:-4}}>
+                        <div style={{marginLeft:-7,fontSize:0}}>{change < 0 ? <ArrowDropDownIcon /> : <ArrowDropUpIcon />}</div>
+                        <Typography variant="caption" style={{textTransform:'lowercase',marginLeft:-3,fontSize:11}}>{`${percentage}% last ${timeframe}`}</Typography>
+                    </Grid>
+                }
+                <div className={classes.iconWrapper}>{this.getIcon(type)}</div>
             </div>
-        )}
+        )
+    }
 }
 
-export default withStyles(styles)(AnalyticsButton)
+export default withStyles(styles)(AnalyticsButton);

@@ -85,7 +85,7 @@ class EmailComposer extends Component {
 
         return(
             <Grid container direction="column" className={classes.root}>
-                <AppBar position="absolute" color="#fff">
+                <AppBar position="absolute" color="#fff" style={{padding:'0 4px'}}>
                     <Grid container justify="space-between" alignItems="center">
                         <Tooltip title="Close">
                             <IconButton onClick={this.props.closeComposer}><CloseIcon /></IconButton>
@@ -129,7 +129,7 @@ class EmailComposer extends Component {
                         modules={this.editorModules}
                         formats={this.editorFormats}
                         theme="snow"
-                        style={{height:200}}
+                        style={{height:300}}
                     />
                 </Grid>
             </Grid>
