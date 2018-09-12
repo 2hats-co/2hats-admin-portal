@@ -19,7 +19,7 @@ import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
 
 import { calStageStatus } from '../../utilities/algolia'
 
-
+const DATE_FORMAT = 'DD-MM-YYYY'
 const styles = theme =>({
     root: {
         boxSizing: 'border-box',
@@ -70,31 +70,22 @@ class AnalyticsButton extends Component {
         };
     }
 
-    async componentWillMount() {
-        try {
-            const { from, to, type} = this.props;
-            const fromTimestamp = moment.tz(from, 'YYYY-MM-DD', 'Australia/Sydney').startOf('day').unix();
-            const toTimestamp = moment.tz(to, 'YYYY-MM-DD', 'Australia/Sydney').endOf('day').unix();
-            let total, percentage;
-
-            total = await this.calTotal(type, fromTimestamp, toTimestamp);
-            percentage = await this.calPercentage(type, from, to);
-            this.setState({
-                total: total,
-                percentage: percentage
-            })
-        } catch(error) {
-            console.error("Componemt will mount error: ", error.message);
+    componentWillMount() {
+       
+        this.getData()
+    }
+    componentDidUpdate(prevProps){
+        if (prevProps !== this.props){
+            this.getData()
         }
     }
-
    
-    async setData(){
+    async getData(){
+        const {from, to,type} = this.props
         try {
-            const { from, to,type } = this.props;
-            if (false) {
-                const fromTimestamp = moment.tz(from, 'DD-MM-YYYY', 'Australia/Sydney').startOf('day').unix();
-                const toTimestamp = moment.tz(to, 'DD-MM-YYYY', 'Australia/Sydney').endOf('day').unix();
+        
+                const fromTimestamp = moment.tz(from, DATE_FORMAT, 'Australia/Sydney').startOf('day').unix();
+                const toTimestamp = moment.tz(to, DATE_FORMAT, 'Australia/Sydney').endOf('day').unix();
                 let total, percentage;
     
                 total = await this.calTotal(type, fromTimestamp, toTimestamp);
@@ -104,7 +95,7 @@ class AnalyticsButton extends Component {
                     total: total,
                     percentage: percentage
                 })
-            }
+            
         } catch(error) {
             console.error("Componemt did update error: ", error.message);
         }
@@ -115,10 +106,28 @@ class AnalyticsButton extends Component {
         let query;
 
         switch(type) {
-            case 'resume': {
+            case 'account':{
+                query = {
+                    stage: 'pre-review',
+                    statusList: ['incomplete'],
+                    from: from,
+                    to: to
+                };
+                break;
+            }
+            case 'submission':{
                 query = {
                     stage: 'pre-review',
                     statusList: ['in-review'],
+                    from: from,
+                    to: to
+                };
+                break;
+            }
+            case 'resume': {
+                query = {
+                    stage: 'pre-review',
+                    statusList: ['in-review','accepted','rejected'],
                     from: from,
                     to: to
                 };
@@ -159,10 +168,25 @@ class AnalyticsButton extends Component {
         return calStageStatus(query);
     }
 
-    calPercentage = async (type, from, to) => {
-        const curFrom = moment.tz(from, 'YYYY-MM-DD', 'Australia/Sydney').startOf('day');
-        const curTo = moment.tz(to, 'YYYY-MM-DD', 'Australia/Sydney').endOf('day');
-        const diffDays = Math.ceil(moment.duration(curTo.diff(curFrom)).asDays());
+    calPercentage = async () => {
+        const {type, from, to,timeframe} = this.props
+        let diffDays;
+        switch (timeframe) {
+            case 'day': diffDays = 1
+                break;
+            case 'week': diffDays = 7
+                break;
+            case 'month': diffDays = 30
+                break;
+            case 'year': diffDays = 365.25
+                break;
+            default:
+                diffDays = 7
+                break;
+        }
+        const curFrom = moment.tz(from, DATE_FORMAT, 'Australia/Sydney').startOf('day');
+        const curTo = moment.tz(to, DATE_FORMAT, 'Australia/Sydney').endOf('day');
+        
         const pastFrom = curFrom.clone().subtract(diffDays, 'day').startOf('day');
         const pastTo = curTo.clone().subtract(diffDays, 'day').endOf('day');
         let curTotal;
@@ -172,6 +196,7 @@ class AnalyticsButton extends Component {
 
         curTotal = await this.calTotal(type, curFrom.unix(), curTo.unix());
         pastTotal = await this.calTotal(type, pastFrom.unix(), pastTo.unix());
+        console.log(curTotal,pastTotal)
         diffTotal = curTotal - pastTotal;
         percentage = (diffTotal / curTotal) * 100;
         return Math.round(percentage);
