@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import StatisticsContainer from './containers/StatisticsContainer'
 import CandidatesContainer from './containers/CandidatesContainer'
+import {initFirebaseApp} from './firebase/app'
 //routing
 import {
     BrowserRouter as Router,
@@ -9,6 +10,9 @@ import {
 import {ROUTES} from './constants/routes'
 
 class App extends Component {
+    componentWillMount(){
+        initFirebaseApp()
+    }
     render() {
     console.log(ROUTES)
 

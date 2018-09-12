@@ -1,23 +1,51 @@
 import React,{ Component } from 'react';
-import { InstantSearch } from 'react-instantsearch-dom';
-
 import Grid from '@material-ui/core/Grid';
-
+import moment from 'moment'
 import { withNavigation } from '../components/withNavigation';
 import AnalyticsButton from '../components/Statistics/AnalyticsButton';
 import StatsCard from '../components/Statistics/StatsCard';
+import {calStageStatus} from '../utilities/algolia'
+import { CLOUD_FUNCTIONS, cloudFunction } from '../firebase/functions';
+const months =['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
+const FROM = '01-09-2018'
+const TO = '12-09-2018'
+const TIMESTEP = 'daily'
 
 class StatisticsContainer extends Component{
     constructor(props){
         super(props)
-        
         this.state = {
-            from: "2018-06-01",
-            to: "2018-07-31"
+            from:FROM,
+            to: TO,
+            statsData:null
         };
-    }
+        this.handleChange = this.handleChange.bind(this)
 
+    }
+    handleChange(name, value){
+        this.setState({
+            [name]:value
+        })
+    }
+    
+    componentWillMount(){
+       
+       this.getChartData(FROM,TO,TIMESTEP)
+    }
+    getChartData(from,to,timeStep){
+        const _changeHandler = this.handleChange
+        cloudFunction(CLOUD_FUNCTIONS.STATS,{dates:[{
+            from: moment(from, "DD-MM-YYYY").unix()*1000,
+            to: moment(to, "DD-MM-YYYY").unix()*1000
+        }],timeStep:timeStep}, (o)=>{_changeHandler('statsData',o.data.statsData)}, (o)=>{console.log(o)})
+    }
     render(){
+        const {statsData} = this.state
+        //const lineType = 'cumulative'
+        const lineType = 'total'
+        if (statsData){
+
+        
         return(
             <Grid container>
                 <Grid item xs={6}>
@@ -33,21 +61,22 @@ class StatisticsContainer extends Component{
                                 trigger: 'axis',
                             },
                             xAxis: {
-                                data: ["Argon","Boron","Cobalt","D","E","Figment"]
+                                data: statsData.xAxis.map(x=>{return `${moment(x).date()}-${months[moment(x).month()]}`})
+                              
                             },
                             yAxis: {},
                             series: [{
-                                name: 'Atoms',
+                                name: 'Accounts',
                                 type: 'line',
-                                data: [5, 20, 36, 10, 10, 20],
+                                data: statsData.series.account[lineType],
                                 smooth: true,
                                 animation: true,
                                 animationDuration: 2000,
                                 andimationDelay: 1000,
                             },{
-                                name: 'Frequency',
+                                name: 'Submissions',
                                 type: 'line',
-                                data: [15, 2, 69, 30, 1, 20],
+                                data: statsData.series.submission[lineType],
                                 smooth: true,
                             }]
                         }}
@@ -67,31 +96,31 @@ class StatisticsContainer extends Component{
                                 trigger: 'axis',
                             },
                             xAxis: {
-                                data: ["Argon","Boron","Cobalt","D","E","Figment"]
+                                data: statsData.xAxis.map(x=>{return `${moment(x).date()}-${months[moment(x).month()]}`})
                             },
                             yAxis: {},
                             series: [{
-                                name: 'Atoms',
+                                name: 'Interview',
                                 type: 'line',
-                                data: [5, 20, 36, 10, 10, 20],
+                                data: statsData.series.interview[lineType],
                                 smooth: true,
                                 animation: true,
                                 animationDuration: 2000,
                                 andimationDelay: 1000,
                             },{
-                                name: 'Frequency',
+                                name: 'Assessment',
                                 type: 'line',
-                                data: [15, 2, 69, 30, 1, 20],
+                                data: statsData.series.assessment[lineType],
                                 smooth: true,
                             },{
-                                name: 'Velocity',
+                                name: 'Resume',
                                 type: 'line',
-                                data: [34, 12, 23, 3, 9, 20],
+                                data: statsData.series.resume[lineType],
                                 smooth: true,
                             },{
-                                name: 'Price',
+                                name: 'Placement',
                                 type: 'line',
-                                data: [0, 2, 59, 20, 12, 25],
+                                data: statsData.series.placed[lineType],
                                 smooth: true,
                             }]
                         }}
@@ -104,7 +133,10 @@ class StatisticsContainer extends Component{
                     />
                 </Grid>
             </Grid>
-        )
+        )}else{
+            return(<div></div>)
+        }
+        
     }
 }
 export default withNavigation(StatisticsContainer)

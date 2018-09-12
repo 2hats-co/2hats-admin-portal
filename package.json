@@ -10,6 +10,7 @@
     "downshift": "^2.2.2",
     "echarts": "^4.1.0",
     "echarts-for-react": "^2.0.14",
+    "firebase": "^5.4.2",
     "keycode": "^2.2.0",
     "moment": "^2.22.2",
     "moment-timezone": "^0.5.21",

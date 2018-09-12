@@ -72,13 +72,13 @@ class AnalyticsButton extends Component {
 
     async componentWillMount() {
         try {
-            const { heading, from, to } = this.props;
+            const { from, to, type} = this.props;
             const fromTimestamp = moment.tz(from, 'YYYY-MM-DD', 'Australia/Sydney').startOf('day').unix();
             const toTimestamp = moment.tz(to, 'YYYY-MM-DD', 'Australia/Sydney').endOf('day').unix();
             let total, percentage;
 
-            total = await this.calTotal(heading, fromTimestamp, toTimestamp);
-            percentage = await this.calPercentage(heading, from, to);
+            total = await this.calTotal(type, fromTimestamp, toTimestamp);
+            percentage = await this.calPercentage(type, from, to);
             this.setState({
                 total: total,
                 percentage: percentage
@@ -88,16 +88,18 @@ class AnalyticsButton extends Component {
         }
     }
 
-    async componentDidUpdate(prevProps) {
+   
+    async setData(){
         try {
-            const { heading, from, to } = this.props;
-            if (from !== prevProps.from || to !== prevProps.to) {
-                const fromTimestamp = moment.tz(from, 'YYYY-MM-DD', 'Australia/Sydney').startOf('day').unix();
-                const toTimestamp = moment.tz(to, 'YYYY-MM-DD', 'Australia/Sydney').endOf('day').unix();
+            const { from, to,type } = this.props;
+            if (false) {
+                const fromTimestamp = moment.tz(from, 'DD-MM-YYYY', 'Australia/Sydney').startOf('day').unix();
+                const toTimestamp = moment.tz(to, 'DD-MM-YYYY', 'Australia/Sydney').endOf('day').unix();
                 let total, percentage;
     
-                total = await this.calTotal(heading, fromTimestamp, toTimestamp);
-                percentage = await this.calPercentage(heading, from, to);
+                total = await this.calTotal(type, fromTimestamp, toTimestamp);
+                percentage = await this.calPercentage(type, from, to);
+                console.log('an button',total, percentage)
                 this.setState({
                     total: total,
                     percentage: percentage
@@ -106,15 +108,14 @@ class AnalyticsButton extends Component {
         } catch(error) {
             console.error("Componemt did update error: ", error.message);
         }
+
     }
 
-    calTotal = (heading, from, to) => {
+    calTotal = (type, from, to) => {
         let query;
 
-        // Generate query based on heading.
-        switch(heading) {
-            case 'New Submissions':
-            case 'Submission': {
+        switch(type) {
+            case 'resume': {
                 query = {
                     stage: 'pre-review',
                     statusList: ['in-review'],
@@ -123,7 +124,7 @@ class AnalyticsButton extends Component {
                 };
                 break;
             }
-            case 'Interview': {
+            case 'interview': {
                 query = {
                     stage: 'interview',
                     statusList: ['accepted', 'rejected', 'lost'],
@@ -132,7 +133,7 @@ class AnalyticsButton extends Component {
                 };
                 break;
             }
-            case 'Assessment Centre': {
+            case 'assessment': {
                 query = {
                     stage: 'assessment',
                     statusList: ['accepted', 'rejected', 'no show', 'lost', 'conditional'],
@@ -141,24 +142,24 @@ class AnalyticsButton extends Component {
                 };
                 break;
             }
-            case 'Job Placement': {
+            case 'placement': {
                 query = {
                     stage: 'placed',
-                    statusList: ['active', 'contract', 'hired', 'offer', 'interview'],
+                    statusList: ['active', 'contract', 'hired'],
                     from: from,
                     to: to
                 };
                 break;
             }
             default:
-                throw new Error(`Heading: ${heading} is not defined`);
+                throw new Error(`Heading: ${type} is not defined`);
         } 
 
         // Calculate total based on query.
         return calStageStatus(query);
     }
 
-    calPercentage = async (heading, from, to) => {
+    calPercentage = async (type, from, to) => {
         const curFrom = moment.tz(from, 'YYYY-MM-DD', 'Australia/Sydney').startOf('day');
         const curTo = moment.tz(to, 'YYYY-MM-DD', 'Australia/Sydney').endOf('day');
         const diffDays = Math.ceil(moment.duration(curTo.diff(curFrom)).asDays());
@@ -169,8 +170,8 @@ class AnalyticsButton extends Component {
         let diffTotal;
         let percentage;
 
-        curTotal = await this.calTotal(heading, curFrom.unix(), curTo.unix());
-        pastTotal = await this.calTotal(heading, pastFrom.unix(), pastTo.unix());
+        curTotal = await this.calTotal(type, curFrom.unix(), curTo.unix());
+        pastTotal = await this.calTotal(type, pastFrom.unix(), pastTo.unix());
         diffTotal = curTotal - pastTotal;
         percentage = (diffTotal / curTotal) * 100;
         return Math.round(percentage);
@@ -203,11 +204,11 @@ class AnalyticsButton extends Component {
     }
 
     render() {
-        const { type, heading, classes, timeframe } = this.props;
+        const { type, classes, timeframe } = this.props;
         const { total, change, percentage } = this.state;
         return (
             <div className={classNames(classes.root, classes[this.getGradient(type)])}>
-                <Typography variant="caption" style={{textTransform:'capitalize'}}>{heading}</Typography>
+                <Typography variant="caption" style={{textTransform:'capitalize'}}>{type}</Typography>
                 <Grid container alignItems="flex-end">
                     <Grid item xs={7}>
                         <Typography
