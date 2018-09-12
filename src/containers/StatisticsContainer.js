@@ -4,12 +4,23 @@ import moment from 'moment'
 import { withNavigation } from '../components/withNavigation';
 import AnalyticsButton from '../components/Statistics/AnalyticsButton';
 import StatsCard from '../components/Statistics/StatsCard';
-import {calStageStatus} from '../utilities/algolia'
+import TimeBar from '../components/Statistics/TimeBar'
 import { CLOUD_FUNCTIONS, cloudFunction } from '../firebase/functions';
 const months =['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
-const FROM = '01-09-2018'
-const TO = '12-09-2018'
+const FROM = '2018-09-01'
+const TO = '2018-09-11'
 const TIMESTEP = 'daily'
+const DATE_FORMAT = 'YYYY-MM-DD'
+
+const timestampLabel = (x,timeStep)=>{
+    switch (timeStep) {
+        case 'daily':return `${moment.tz(x, 'Australia/Sydney').format('Do MMM')}`
+        case 'hourly':return `${moment.tz(x, 'Australia/Sydney').format('h a D-M')}`
+
+        default:
+            break;
+    }
+}
 
 class StatisticsContainer extends Component{
     constructor(props){
@@ -17,12 +28,14 @@ class StatisticsContainer extends Component{
         this.state = {
             from:FROM,
             to: TO,
-            statsData:null
+            statsData:null,
+            timeStep:TIMESTEP
         };
         this.handleChange = this.handleChange.bind(this)
 
     }
     handleChange(name, value){
+        console.log(name, value)
         this.setState({
             [name]:value
         })
@@ -30,23 +43,34 @@ class StatisticsContainer extends Component{
     
     componentWillMount(){
        
-       this.getChartData(FROM,TO,TIMESTEP)
+       this.getChartData(FROM,TO,this.state.timeStep)
+    }
+    componentDidUpdate(prevProps,prevState){
+        const {from,to,timeStep} = this.state
+        let stateListeners = ['from','to','timeStep']
+        stateListeners.forEach(prop => {
+            if(prevState[prop] !== this.state[prop]){
+                this.getChartData(from,to,timeStep)
+            }
+        });
     }
     getChartData(from,to,timeStep){
         const _changeHandler = this.handleChange
         cloudFunction(CLOUD_FUNCTIONS.STATS,{dates:[{
-            from: moment(from, "DD-MM-YYYY").unix()*1000,
-            to: moment(to, "DD-MM-YYYY").unix()*1000
+            from: moment(from, DATE_FORMAT).unix()*1000,
+            to: moment(to, DATE_FORMAT).unix()*1000
         }],timeStep:timeStep}, (o)=>{_changeHandler('statsData',o.data.statsData)}, (o)=>{console.log(o)})
     }
     render(){
-        const {statsData} = this.state
+        const {statsData,timeStep} = this.state
         //const lineType = 'cumulative'
         const lineType = 'total'
         if (statsData){
 
         
         return(
+            <div>
+                <TimeBar timeStep={timeStep} changeHandler={this.handleChange}/>
             <Grid container>
                 <Grid item xs={6}>
                     <StatsCard bar
@@ -61,8 +85,7 @@ class StatisticsContainer extends Component{
                                 trigger: 'axis',
                             },
                             xAxis: {
-                                data: statsData.xAxis.map(x=>{return `${moment(x).date()}-${months[moment(x).month()]}`})
-                              
+                                data: statsData.xAxis.map(x=>timestampLabel(x,timeStep))
                             },
                             yAxis: {},
                             series: [{
@@ -96,8 +119,8 @@ class StatisticsContainer extends Component{
                                 trigger: 'axis',
                             },
                             xAxis: {
-                                data: statsData.xAxis.map(x=>{return `${moment(x).date()}-${months[moment(x).month()]}`})
-                            },
+                                data: statsData.xAxis.map(x=>timestampLabel(x,timeStep))
+                                 },
                             yAxis: {},
                             series: [{
                                 name: 'Interview',
@@ -133,8 +156,13 @@ class StatisticsContainer extends Component{
                     />
                 </Grid>
             </Grid>
+            </div>
         )}else{
-            return(<div></div>)
+            return(<div>
+
+                <TimeBar timeStep={timeStep} changeHandler={this.handleChange}/>
+
+            </div>)
         }
         
     }

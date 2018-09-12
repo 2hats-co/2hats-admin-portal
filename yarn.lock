@@ -50,6 +50,12 @@
   version "7.0.0-beta.51"
   resolved "https://registry.yarnpkg.com/@babel/parser/-/parser-7.0.0-beta.51.tgz#27cec2df409df60af58270ed8f6aa55409ea86f6"
 
+"@babel/runtime@7.0.0":
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.0.0.tgz#adeb78fedfc855aa05bc041640f3f6f98e85424c"
+  dependencies:
+    regenerator-runtime "^0.12.0"
+
 "@babel/runtime@7.0.0-beta.56":
   version "7.0.0-beta.56"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.0.0-beta.56.tgz#cda612dffd5b1719a7b8e91e3040bd6ae64de8b0"
@@ -242,6 +248,14 @@
   dependencies:
     "@babel/runtime" "7.0.0-rc.1"
     recompose "^0.28.2"
+
+"@material-ui/lab@^3.0.0-alpha.15":
+  version "3.0.0-alpha.15"
+  resolved "https://registry.yarnpkg.com/@material-ui/lab/-/lab-3.0.0-alpha.15.tgz#a7c8526e7d5cf39543d84f04f62f974a12be26b5"
+  dependencies:
+    "@babel/runtime" "7.0.0"
+    classnames "^2.2.5"
+    keycode "^2.1.9"
 
 "@types/jss@^9.5.3":
   version "9.5.4"

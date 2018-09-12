@@ -19,7 +19,7 @@ import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
 
 import { calStageStatus } from '../../utilities/algolia'
 
-const DATE_FORMAT = 'DD-MM-YYYY'
+const DATE_FORMAT = 'YYYY-MM-DD'
 const styles = theme =>({
     root: {
         boxSizing: 'border-box',
