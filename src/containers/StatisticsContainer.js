@@ -34,7 +34,8 @@ class StatisticsContainer extends Component{
             statsData:null,
             timeStep:TIMESTEP,
             totalCandidates:5000,
-            cache:[]
+            cache:[],
+            isLoading:false
         };
         this.handleChange = this.handleChange.bind(this)
         this.handleChartData = this.handleChartData.bind(this)
@@ -64,6 +65,7 @@ class StatisticsContainer extends Component{
                 if(this.checkCache()){
                     let statsData = this.checkCache()
                     this.setState({statsData})
+                    this.handleChange('isLoading',false)
                 }else{
                     this.getChartData(from,to,timeStep)
                 }

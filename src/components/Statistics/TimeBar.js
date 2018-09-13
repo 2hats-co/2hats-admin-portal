@@ -1,8 +1,6 @@
 import React,{Component} from 'react'
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
-
-import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
 import ToggleButton from "@material-ui/lab/ToggleButton";
 import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
@@ -55,6 +53,7 @@ class TimeBar extends Component {
             default:
             changeHandler('from',moment().subtract(3, 'months').format(DATE_FORMAT))
             changeHandler('to',moment().format(DATE_FORMAT))
+            changeHandler('isLoading',true)
                 break;
         }
 

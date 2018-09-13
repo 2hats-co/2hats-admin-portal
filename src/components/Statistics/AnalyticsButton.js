@@ -83,7 +83,6 @@ class AnalyticsButton extends Component {
     async getData(){
         const {from, to,type} = this.props
         try {
-        
                 const fromTimestamp = moment.tz(from, DATE_FORMAT, 'Australia/Sydney').startOf('day').unix();
                 const toTimestamp = moment.tz(to, DATE_FORMAT, 'Australia/Sydney').endOf('day').unix();
                 let total, percentage;
@@ -126,8 +125,8 @@ class AnalyticsButton extends Component {
             }
             case 'resume': {
                 query = {
-                    stage: 'pre-review',
-                    statusList: ['in-review','accepted','rejected'],
+                    stage: 'resume',
+                    statusList: ['accepted','rejected'],
                     from: from,
                     to: to
                 };
