@@ -31,13 +31,16 @@ class TimeBar extends Component {
         this.handleRangeChange = this.handleRangeChange.bind(this)
     }
     state = {
-        dateRange:''
+        dateRange:'week'
         
       };
+      componentWillMount(){
+       this.handleRangeChange({target:{textContent:'past week'}})
+      }
     
       handleRangeChange(e){
-          const {changeHandler} = this.props
-          let text = e.target.textContent.split(' ')
+        const {changeHandler} = this.props
+        let text = e.target.textContent.split(' ')
         const rangeType = text[text.length-1]
         this.setState({dateRange:rangeType})
         switch (rangeType) {

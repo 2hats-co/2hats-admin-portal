@@ -1,7 +1,7 @@
 import { ALGOLIA_INDEX, createAlgoliaIndex } from '../config/algolia'
+const index = createAlgoliaIndex(ALGOLIA_INDEX.candidates);
 
 export const calStageStatus = async (filterParams) => {
-    const index = createAlgoliaIndex(ALGOLIA_INDEX.candidates);
     const { stage, statusList, from, to } = filterParams;
     let query = {
         "numericFilters": [],
@@ -25,3 +25,15 @@ export const calStageStatus = async (filterParams) => {
 }
 
 
+export const totalCandidates  = async () =>{
+    let query = {
+        "numericFilters": [],
+        "hitsPerPage": 0,
+        "page": 0,
+        "restrictSearchableAttributes": "",
+        "analytics": false,
+        "attributesToRetrieve": "*",  
+    };
+    const response = await index.search(query);
+    return response.nbHits;
+}

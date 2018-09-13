@@ -6,22 +6,25 @@ import AnalyticsButton from '../components/Statistics/AnalyticsButton';
 import StatsCard from '../components/Statistics/StatsCard';
 import TimeBar from '../components/Statistics/TimeBar'
 import { CLOUD_FUNCTIONS, cloudFunction } from '../firebase/functions';
-const months =['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec']
+import { totalCandidates } from '../utilities/algolia'
+
 const FROM = '2018-09-01'
 const TO = '2018-09-11'
 const TIMESTEP = 'daily'
 const DATE_FORMAT = 'YYYY-MM-DD'
 
+
 const timestampLabel = (x,timeStep)=>{
     switch (timeStep) {
         case 'daily':return `${moment.tz(x, 'Australia/Sydney').format('Do MMM')}`
         case 'hourly':return `${moment.tz(x, 'Australia/Sydney').format('h a D-M')}`
-
         default:
             break;
     }
 }
-
+const getGoal = (current) =>{
+    return 10000 * Math.round(current*2 / 10000);
+}
 class StatisticsContainer extends Component{
     constructor(props){
         super(props)
@@ -29,9 +32,12 @@ class StatisticsContainer extends Component{
             from:FROM,
             to: TO,
             statsData:null,
-            timeStep:TIMESTEP
+            timeStep:TIMESTEP,
+            totalCandidates:5000,
+            cache:[]
         };
         this.handleChange = this.handleChange.bind(this)
+        this.handleChartData = this.handleChartData.bind(this)
 
     }
     handleChange(name, value){
@@ -42,28 +48,53 @@ class StatisticsContainer extends Component{
     }
     
     componentWillMount(){
-       
+     
        this.getChartData(FROM,TO,this.state.timeStep)
+       this.getTotalCandidates()
+    }
+    async getTotalCandidates(){
+       let t = await totalCandidates()
+        this.handleChange('totalCandidates',t)
     }
     componentDidUpdate(prevProps,prevState){
         const {from,to,timeStep} = this.state
         let stateListeners = ['from','to','timeStep']
         stateListeners.forEach(prop => {
             if(prevState[prop] !== this.state[prop]){
-                this.getChartData(from,to,timeStep)
+                if(this.checkCache()){
+                    let statsData = this.checkCache()
+                    this.setState({statsData})
+                }else{
+                    this.getChartData(from,to,timeStep)
+                }
             }
         });
     }
+    handleChartData(from,to,timeStep,statsData){
+        let cache = this.state.cache.slice(0)
+        const newItem = {from,to,timeStep,statsData}
+        cache.push(newItem)
+        this.setState({statsData,cache})
+    }
+    checkCache(){
+        const {from,to,timeStep,cache} = this.state
+        let cachedData = false
+        cache.forEach(x=>{
+            if(x.from === from && x.to === to && x.timeStep === timeStep){
+                cachedData= x.statsData
+            }
+        })
+        return cachedData
+    }
     getChartData(from,to,timeStep){
-        const _changeHandler = this.handleChange
+        const _chartDataLoader = this.handleChartData
         cloudFunction(CLOUD_FUNCTIONS.STATS,{dates:[{
             from: moment(from, DATE_FORMAT).unix()*1000,
             to: moment(to, DATE_FORMAT).unix()*1000
-        }],timeStep:timeStep}, (o)=>{_changeHandler('statsData',o.data.statsData)}, (o)=>{console.log(o)})
+        }],timeStep:timeStep}, (o)=>{_chartDataLoader(from,to,timeStep,o.data.statsData)}, (o)=>{console.log(o)})
     }
     render(){
-        const {statsData,timeStep} = this.state
-        //const lineType = 'cumulative'
+        const {statsData,timeStep,totalCandidates} = this.state
         const lineType = 'total'
         if (statsData){
 
@@ -75,15 +106,17 @@ class StatisticsContainer extends Component{
                 <Grid item xs={6}>
                     <StatsCard bar
                         heading="Total Students"
-                        value={5065}
-                        goal={10000}
+                        value={totalCandidates}
+                        goal={getGoal(totalCandidates)}
                     />
                     <StatsCard chart
+                        chartHeight={400}
                         heading="Conversion Trend"
                         chartOptions={{
                             tooltip: {
                                 trigger: 'axis',
                             },
+                            
                             xAxis: {
                                 data: statsData.xAxis.map(x=>timestampLabel(x,timeStep))
                             },
@@ -112,7 +145,7 @@ class StatisticsContainer extends Component{
                 </Grid>
                 <Grid item xs={6}>
                     <StatsCard chart 
-                        
+                         chartHeight={500}
                         heading="Stage Passed Trend"
                         chartOptions={{
                             tooltip: {

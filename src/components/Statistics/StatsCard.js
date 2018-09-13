@@ -44,16 +44,17 @@ class StatsCard extends Component {
     }
 
     render(){
-        const { classes, heading, analyticsButtons, chart, bar, chartOptions, value, goal } = this.props;
+        const { classes, heading, analyticsButtons, chart, bar, chartOptions, value, goal ,chartHeight} = this.props;
         return(
             <div className={classes.root}>
                 <Typography variant="headline" style={{textTransform:'uppercase'}}>{heading}</Typography>
                 <Grid container>
                     <Grid item xs>
                         { chart ?
-                            <ReactEcharts theme="light" option={{
+                            <ReactEcharts theme="light" style={{height:chartHeight||300}} option={{
                                 title: { show: false },
                                 color: ['#f66384','#37a2eb','#facd57','#f89f41'],
+                              
                                 ...chartOptions
                             }} />
                             : null
