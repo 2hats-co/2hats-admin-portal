@@ -67,7 +67,11 @@ class AnalyticsButton extends Component {
             total: 2341,
             change: 2,
             percentage: 1,
+            hover: false,
         };
+
+        this.handleMouseEnter = this.handleMouseEnter.bind(this);
+        this.handleMouseLeave = this.handleMouseLeave.bind(this);
     }
 
     componentWillMount() {
@@ -227,11 +231,24 @@ class AnalyticsButton extends Component {
         }
     }
 
+    handleMouseEnter() {
+        this.setState({hover: true});
+        console.log('menter');
+    }
+    handleMouseLeave() {
+        this.setState({hover: false});
+        console.log('mleave');
+    }
+
     render() {
         const { type, classes, timeframe } = this.props;
-        const { total, change, percentage } = this.state;
+        const { total, change, percentage, hover } = this.state;
         return (
-            <div className={classNames(classes.root, classes[this.getGradient(type)])}>
+            <div
+                className={classNames(classes.root, classes[this.getGradient(type)])}
+                onMouseEnter={this.handleMouseEnter}
+                onMouseLeave={this.handleMouseLeave}
+            >
                 <Typography variant="caption" style={{textTransform:'capitalize'}}>{type}</Typography>
                 <Grid container alignItems="flex-end">
                     <Grid item xs={7}>
@@ -242,7 +259,7 @@ class AnalyticsButton extends Component {
                             {total}
                         </Typography>
                     </Grid>
-                    { change == 0 ? null :
+                    { !hover || change == 0 ? null :
                         <Grid item xs={5}>
                             <Typography variant="caption" style={{fontWeight:500}}>
                                 {change > 0 ? '+' : null} {change}
