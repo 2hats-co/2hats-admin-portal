@@ -4,7 +4,6 @@ const PRODUCTION_PROJECT_NAME = 'production2hats'
 const staging2hatsKey = "AIzaSyC5X6WfsorYvEG_wZacfhg7Y6QP4IgJ9DI"
 const production2hatsKey = "AIzaSyD9EnwYfFxTvnaDMA7r6MbKoXmZbQmukrg"
 
-
 const stagingConfig = {
   apiKey: staging2hatsKey,
   authDomain: `${STAGING_PROJECT_NAME}.firebaseapp.com`,

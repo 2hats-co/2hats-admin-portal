@@ -7,11 +7,10 @@ import GoogleButton from '../components/Auth/GoogleButton';
 
 const styles = theme => ({
     root: {
-        //
+        height:110
     },
 });
-
-class AuthContainer extends React.Component{
+class AuthenticationContainer extends React.Component{
     componentWillMount(){
 
     }
@@ -20,7 +19,7 @@ class AuthContainer extends React.Component{
         const {classes} = this.props;
 
         return(
-            <LogoInCard width={350} height={220}>
+            <LogoInCard width={350} height={260}>
                 <Grid
                     container
                     className={classes.root}
@@ -28,15 +27,16 @@ class AuthContainer extends React.Component{
                     direction="column"
                     justify="space-between"
                 >
+                <Typography variant='title'>Admin Portal</Typography>
                     <GoogleButton
                         id="google-button"
                         action="Sign in"
-                        // changeHandler={this.handleChange}
                     />
+                    <Typography variant='caption'>Use your 2hats email</Typography>
                 </Grid>
             </LogoInCard>
         )
     }
 
 }
-export default withStyles(styles)(AuthContainer);``
+export default withStyles(styles)(AuthenticationContainer);
