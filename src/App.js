@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import StatisticsContainer from './containers/StatisticsContainer'
 import CandidatesContainer from './containers/CandidatesContainer'
+import AuthContainer from './containers/AuthContainer'
 import {initFirebaseApp} from './firebase/app'
 //routing
 import {
@@ -21,6 +22,7 @@ class App extends Component {
             <div className="app"> 
                 <Route exact path={ROUTES.stats} component={() => <StatisticsContainer/>} />
                 <Route exact path={ROUTES.candidates} component={() => <CandidatesContainer/>} />
+                <Route exact path={ROUTES.auth} component={() => <AuthContainer/>} />
             </div>
         </Router>
         );

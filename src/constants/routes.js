@@ -5,5 +5,5 @@ export const ROUTES = {
     tasks:'/tasks',
     calendar:'/calender',
     Templates:'/templates',
-    testCandidate:'/testCandidate',
+    auth:'/auth',
 }

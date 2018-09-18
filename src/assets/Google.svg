@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="22px" height="22px" viewBox="0 0 22 22" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 50.2 (55047) - http://www.bohemiancoding.com/sketch -->
+    <title>google</title>
+    <desc>Created with Sketch.</desc>
+    <defs>
+        <path d="M47,19.9054688 C47,25.9855469 42.6315574,30.3125 36.1803279,30.3125 C29.995082,30.3125 25,25.5515625 25,19.65625 C25,13.7609375 29.995082,9 36.1803279,9 C39.1918033,9 41.7254098,10.0527344 43.677459,11.7886719 L40.6344262,14.5773438 C36.6536885,10.9164062 29.2512295,13.6664062 29.2512295,19.65625 C29.2512295,23.3730469 32.3663934,26.3851563 36.1803279,26.3851563 C40.607377,26.3851563 42.2663934,23.3601563 42.5278689,21.7917969 L36.1803279,21.7917969 L36.1803279,18.1265625 L46.8241803,18.1265625 C46.9278689,18.6722656 47,19.1964844 47,19.9054688 Z" id="path-1"></path>
+    </defs>
+    <g id="Symbols" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="SignUp-Google" transform="translate(-25.000000, -9.000000)">
+            <mask id="mask-2" fill="white">
+                <use xlink:href="#path-1"></use>
+            </mask>
+            <use id="google" fill="#FFFFFF" fill-rule="nonzero" xlink:href="#path-1"></use>
+        </g>
+    </g>
+</svg>
