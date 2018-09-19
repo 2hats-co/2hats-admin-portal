@@ -1,5 +1,5 @@
-import React,{ Component } from 'react';
-import { Paper, Button, Grid, Typography } from '@material-ui/core';
+import React from 'react';
+import {Grid, Typography } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 
 import LogoInCard from '../components/LogoInCard';
@@ -14,7 +14,6 @@ class AuthenticationContainer extends React.Component{
     componentWillMount(){
 
     }
-
     render(){
         const {classes} = this.props;
 

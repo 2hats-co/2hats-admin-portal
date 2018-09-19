@@ -3,6 +3,7 @@ import {withRouter} from 'react-router-dom'
 import Grid from '@material-ui/core/Grid'
 import logo from '../../assets/logo/DarkText.png'
 import NavigationItems from './NavigationItems'
+import withAuthentication from '../../utilities/auth/withAuthentication'
 export const withNavigation = (WrappedComponent) => {
     class WithNavigation extends Component {
         constructor(props) {
@@ -28,5 +29,5 @@ export const withNavigation = (WrappedComponent) => {
                 </div>
         )
     }}
-    return withRouter(WithNavigation)
+    return withAuthentication(withRouter(WithNavigation))
 }

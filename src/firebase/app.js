@@ -1,5 +1,6 @@
 import firebase from 'firebase/app'
 import 'firebase/functions'
+import 'firebase/auth'
 const STAGING_PROJECT_NAME = 'staging2hats'
 const PRODUCTION_PROJECT_NAME = 'production2hats'
 const staging2hatsKey = "AIzaSyC5X6WfsorYvEG_wZacfhg7Y6QP4IgJ9DI"
@@ -35,3 +36,4 @@ export const initFirebaseApp =()=>{
 }					
 
 export const functions = firebase.functions();
+export const auth = firebase.auth();

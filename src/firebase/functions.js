@@ -1,6 +1,7 @@
 import {functions } from './app'
 export const CLOUD_FUNCTIONS = {
-    STATS:'restApiQueryStageAndStatus'
+    stats:'restApiQueryStageAndStatus',
+    auth:'restApiAuthenticateAdmin'
 };
 
 export const cloudFunction = (name, input ,success, fail) =>{

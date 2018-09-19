@@ -20,12 +20,13 @@ const productionConfig = {
   storageBucket: `${PRODUCTION_PROJECT_NAME}.appspot.com`,
   messagingSenderId: "188089188588"
 };
+if (process.env.REACT_APP_ENV === 'PRODUCTION') {
+    console.log('production')
+    firebase.initializeApp(productionConfig)
+} else {
+    console.log('staging')
+    firebase.initializeApp(stagingConfig)
+}
 export const initFirebaseApp =()=>{
-    if (process.env.REACT_APP_ENV === 'PRODUCTION') {
-        console.log('production')
-        firebase.initializeApp(productionConfig)
-    } else {
-        console.log('staging')
-        firebase.initializeApp(stagingConfig)
-    }
+   
 }					

@@ -6,7 +6,7 @@ import GoogleIcon from '../../assets/Google.svg';
 import GoogleLogin from '../../utilities/auth/GoogleLogin.js';
 
 import { withRouter } from "react-router-dom";
-
+import {authAdmin} from '../../firebase/auth'
 const styles = theme => ({
     root: {
       paddingLeft: 50,
@@ -42,7 +42,7 @@ class GoogleButton extends Component{
       }
     }
     handleRouting(route){
-      this.props.changeHandler('isLoading',false)
+      //this.props.changeHandler('isLoading',false)
       this.props.history.replace(route)
     }
     handleGoogleAuthFail = (error) => {
@@ -51,17 +51,16 @@ class GoogleButton extends Component{
     }
  
     getToken(r){
-    //  this.props.changeHandler('isLoading',true)
-      let user={};
-      user.email = r.profileObj.email
-      user.firstName = r.profileObj.givenName
-      user.lastName = r.profileObj.familyName
-      user.provider = {service:'google',id:r.profileObj.googleId}
-        console.log(r)
-     // getTokenWithAdminToken(user,this.handleRouting)
+      console.log(r)
+      if(r.profileObj.email.split('@')[1]==='2hats.com.au'){
+        console.log('yay')
+        authAdmin(r,this.handleRouting)
+      }else{
+        console.log('nay')
+      }
     }
     render() {
-        const {classes,action} = this.props
+        const {classes} = this.props
         const {cid} = this.state
         return(
             <GoogleLogin

@@ -28,9 +28,11 @@ const getGoal = (current) =>{
 class StatisticsContainer extends Component{
     constructor(props){
         super(props)
+        const _8daysAgo = moment().subtract(1, 'weeks').format(DATE_FORMAT)
+        const _1dayAgo = moment().subtract(1, 'days').format(DATE_FORMAT)
         this.state = {
-            from:FROM,
-            to: TO,
+            from:_8daysAgo,
+            to: _1dayAgo,
             statsData:null,
             timeStep:TIMESTEP,
             totalCandidates:5000,
@@ -90,7 +92,7 @@ class StatisticsContainer extends Component{
     }
     getChartData(from,to,timeStep){
         const _chartDataLoader = this.handleChartData
-        cloudFunction(CLOUD_FUNCTIONS.STATS,{dates:[{
+        cloudFunction(CLOUD_FUNCTIONS.stats,{dates:[{
             from: moment(from, DATE_FORMAT).unix()*1000,
             to: moment(to, DATE_FORMAT).unix()*1000
         }],timeStep:timeStep}, (o)=>{_chartDataLoader(from,to,timeStep,o.data.statsData)}, (o)=>{console.log(o)})
