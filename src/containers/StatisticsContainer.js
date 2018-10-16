@@ -8,8 +8,8 @@ import TimeBar from '../components/Statistics/TimeBar'
 import { CLOUD_FUNCTIONS, cloudFunction } from '../firebase/functions';
 import { totalCandidates } from '../utilities/algolia'
 
-const FROM = '2018-09-01'
-const TO = '2018-09-11'
+const FROM = moment().subtract(1, 'weeks').format(DATE_FORMAT)
+const TO = moment().subtract(1, 'days').format(DATE_FORMAT)
 const TIMESTEP = 'daily'
 const DATE_FORMAT = 'YYYY-MM-DD'
 
