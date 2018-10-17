@@ -16,8 +16,10 @@ const DATE_FORMAT = 'YYYY-MM-DD'
 
 const timestampLabel = (x,timeStep)=>{
     switch (timeStep) {
-        case 'daily':return `${moment.tz(x, 'Australia/Sydney').format('Do MMM')}`
-        case 'hourly':return `${moment.tz(x, 'Australia/Sydney').format('h a D-M')}`
+        case 'weekly':
+        case 'monthly':
+        case 'daily':return `${moment(x).tz('Australia/Sydney').format('Do MMM')}`
+        case 'hourly':return `${moment(x).tz('Australia/Sydney').format('h a D-M')}`
         default:
             break;
     }
@@ -25,7 +27,44 @@ const timestampLabel = (x,timeStep)=>{
 const getGoal = (current) =>{
     return 10000 * Math.round(current*2 / 10000);
 }
+
+function combineData(data,combiner){
+        var patches = [];
+        while (data.length) {
+            patches.push(data.splice(0, combiner));
+        }
+       const reducer = (accumulator, currentValue) => accumulator + currentValue;
+       const results = patches.map(patch=> patch.reduce(reducer))	 
+           return results
+}
+
+const formatData = (data,timeStep)=>{
+    switch (timeStep) {
+        case 'hourly':return data;
+          
+        case 'daily':return data;
+        case 'weekly':return combineData(data,7)
+        case 'monthly':return combineData(data,30)
+        default:
+            break;
+    }
+
+}
+
+const formatTimeStep = (timestamps,timeSteps)=>{
+    switch (timeSteps) {
+        case 'hourly':
+        case 'daily':
+            return timestamps
+        case 'weekly':return timestamps.filter((timestamp,index) => index%7===0);
+        case 'monthly':return timestamps.filter((timestamp,index) => index%30===0);
+        default:
+            break;
+    }
+    
+}
 class StatisticsContainer extends Component{
+    state = {isLoading:true}
     constructor(props){
         super(props)
         const _8daysAgo = moment().subtract(1, 'weeks').format(DATE_FORMAT)
@@ -64,12 +103,27 @@ class StatisticsContainer extends Component{
         let stateListeners = ['from','to','timeStep']
         stateListeners.forEach(prop => {
             if(prevState[prop] !== this.state[prop]){
-                if(this.checkCache()){
-                    let statsData = this.checkCache()
+
+                
+                if(this.checkCache(timeStep)){
+                    let statsData = this.checkCache(timeStep)
                     this.setState({statsData})
                     this.handleChange('isLoading',false)
                 }else{
-                    this.getChartData(from,to,timeStep)
+                    switch (timeStep) {
+                        case 'hourly':
+                        this.getChartData(from,to,timeStep)
+                        console.log('getting hourly data')
+
+                            break;
+                        case 'weekly':
+                        case 'monthly':
+                        case 'daily':
+                            this.getChartData(from,to,'daily')
+                            break;
+                        default:
+                            break;
+                    }
                 }
             }
         });
@@ -80,11 +134,15 @@ class StatisticsContainer extends Component{
         cache.push(newItem)
         this.setState({statsData,cache})
     }
-    checkCache(){
-        const {from,to,timeStep,cache} = this.state
+    checkCache(timeStep){
+        const {from,to,cache} = this.state
+        let dataTimeStep = 'daily'
+        if(timeStep==='hourly'){
+            dataTimeStep = 'hourly'
+        }
         let cachedData = false
         cache.forEach(x=>{
-            if(x.from === from && x.to === to && x.timeStep === timeStep){
+            if(x.from === from && x.to === to && x.timeStep === dataTimeStep){
                 cachedData= x.statsData
             }
         })
@@ -98,11 +156,9 @@ class StatisticsContainer extends Component{
         }],timeStep:timeStep}, (o)=>{_chartDataLoader(from,to,timeStep,o.data.statsData)}, (o)=>{console.log(o)})
     }
     render(){
-        const {statsData,timeStep,totalCandidates} = this.state
+        const {statsData,timeStep,totalCandidates,isLoading} = this.state
         const lineType = 'total'
-        if (statsData){
-
-        
+        if (statsData||isLoading){
         return(
             <div>
                 <TimeBar timeStep={timeStep} changeHandler={this.handleChange}/>
@@ -122,13 +178,13 @@ class StatisticsContainer extends Component{
                             },
                             
                             xAxis: {
-                                data: statsData.xAxis.map(x=>timestampLabel(x,timeStep))
+                                data: formatTimeStep(statsData.xAxis,timeStep).map(x=>timestampLabel(x,timeStep))
                             },
                             yAxis: {},
                             series: [{
                                 name: 'Accounts',
                                 type: 'line',
-                                data: statsData.series.account[lineType],
+                                data: formatData(statsData.series.account[lineType].slice(0),timeStep),
                                 smooth: true,
                                 animation: true,
                                 animationDuration: 2000,
@@ -136,7 +192,7 @@ class StatisticsContainer extends Component{
                             },{
                                 name: 'Submissions',
                                 type: 'line',
-                                data: statsData.series.submission[lineType],
+                                data: formatData(statsData.series.submission[lineType].slice(0),timeStep),
                                 smooth: true,
                             }]
                         }}
@@ -156,13 +212,13 @@ class StatisticsContainer extends Component{
                                 trigger: 'axis',
                             },
                             xAxis: {
-                                data: statsData.xAxis.map(x=>timestampLabel(x,timeStep))
+                                data: formatTimeStep(statsData.xAxis,timeStep).map(x=>timestampLabel(x,timeStep))
                                  },
                             yAxis: {},
                             series: [{
                                 name: 'Interview',
                                 type: 'line',
-                                data: statsData.series.interview[lineType],
+                                data: formatData(statsData.series.interview[lineType].slice(0),timeStep),
                                 smooth: true,
                                 animation: true,
                                 animationDuration: 2000,
@@ -170,17 +226,17 @@ class StatisticsContainer extends Component{
                             },{
                                 name: 'Assessment',
                                 type: 'line',
-                                data: statsData.series.assessment[lineType],
+                                data: formatData(statsData.series.assessment[lineType].slice(0),timeStep),
                                 smooth: true,
                             },{
                                 name: 'Resume',
                                 type: 'line',
-                                data: statsData.series.resume[lineType],
+                                data: formatData(statsData.series.resume[lineType].slice(0),timeStep),
                                 smooth: true,
                             },{
                                 name: 'Placement',
                                 type: 'line',
-                                data: statsData.series.placed[lineType],
+                                data: formatData(statsData.series.placed[lineType].slice(0),timeStep),
                                 smooth: true,
                             }]
                         }}

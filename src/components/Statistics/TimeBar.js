@@ -51,7 +51,7 @@ class TimeBar extends Component {
             changeHandler('to',moment().format(DATE_FORMAT))
                 break;
             default:
-            changeHandler('from',moment().subtract(3, 'months').format(DATE_FORMAT))
+            changeHandler('from',moment().subtract(2, 'weeks').format(DATE_FORMAT))
             changeHandler('to',moment().format(DATE_FORMAT))
             changeHandler('isLoading',true)
                 break;
@@ -82,7 +82,7 @@ class TimeBar extends Component {
         id="date"
         label="from"
         type="date"
-        defaultValue={moment().subtract(3, 'months').format(DATE_FORMAT)}
+        defaultValue={moment().subtract(2, 'weeks').format(DATE_FORMAT)}
         onChange={(e)=>{changeHandler('from',e.target.value)}}
         className={classes.textField}
         InputLabelProps={{
@@ -108,7 +108,8 @@ class TimeBar extends Component {
                 >
                   <ToggleButton value="hourly">hourly</ToggleButton>
                   <ToggleButton value="daily">daily</ToggleButton>
-                  <ToggleButton value="weekly" disabled>weekly</ToggleButton>
+                  <ToggleButton value="weekly">weekly</ToggleButton>
+                  <ToggleButton value="monthly">monthly</ToggleButton>
                 </ToggleButtonGroup>
               </div>
             </Grid>
