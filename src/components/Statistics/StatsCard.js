@@ -53,7 +53,7 @@ class StatsCard extends Component {
                         { chart ?
                             <ReactEcharts theme="light" style={{height:chartHeight||300}} option={{
                                 title: { show: false },
-                                color: ['#f66384','#37a2eb','#facd57','#f89f41'],
+                                color: ['#BB61CD','#36A4F4','#FC875E','#C33238'],
                               
                                 ...chartOptions
                             }} />
