@@ -89,7 +89,7 @@ class StatisticsContainer extends Component{
         })
     }
     
-    componentWillMount(){
+    componentDidMount(){
      
        this.getChartData(FROM,TO,this.state.timeStep)
        this.getTotalCandidates()

@@ -34,11 +34,15 @@ class GoogleButton extends Component{
         this.state = {cid:GOOGLE_CID_STAGING}
     }
     
-    componentWillMount(){
+    componentDidMount(){
       if (process.env.REACT_APP_ENV === 'PRODUCTION') {
         this.setState({cid:GOOGLE_CID_PRODUCTION})
+        console.log('google auth production',GOOGLE_CID_PRODUCTION)
+
       } else {
         this.setState({cid:GOOGLE_CID_STAGING})
+        console.log('google auth staging',GOOGLE_CID_STAGING)
+
       }
     }
     handleRouting(route){

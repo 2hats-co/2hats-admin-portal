@@ -1,6 +1,7 @@
 import firebase from 'firebase/app'
 import 'firebase/functions'
 import 'firebase/auth'
+import 'firebase/firestore'
 const STAGING_PROJECT_NAME = 'staging2hats'
 const PRODUCTION_PROJECT_NAME = 'production2hats'
 const staging2hatsKey = "AIzaSyC5X6WfsorYvEG_wZacfhg7Y6QP4IgJ9DI"
@@ -25,10 +26,10 @@ const productionConfig = {
 
 if (process.env.REACT_APP_ENV === 'PRODUCTION') {
     console.log('production')
-    firebase.initializeApp(productionConfig)
+    firebase.initializeApp(productionConfig).firestore().settings({ timestampsInSnapshots: true })
 } else {
     console.log('staging')
-    firebase.initializeApp(stagingConfig)
+    firebase.initializeApp(stagingConfig).firestore().settings({ timestampsInSnapshots: true })
 }
 
 export const initFirebaseApp =()=>{
@@ -37,3 +38,4 @@ export const initFirebaseApp =()=>{
 
 export const functions = firebase.functions();
 export const auth = firebase.auth();
+export const firestore = firebase.firestore();

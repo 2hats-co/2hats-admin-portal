@@ -11,7 +11,7 @@ const styles = theme => ({
     },
 });
 class AuthenticationContainer extends React.Component{
-    componentWillMount(){
+    componentDidMount(){
 
     }
     render(){

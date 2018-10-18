@@ -32,7 +32,7 @@ class TimeBar extends Component {
         dateRange:'week'
         
       };
-      componentWillMount(){
+      componentDidMount(){
        this.handleRangeChange({target:{textContent:'past week'}})
       }
     

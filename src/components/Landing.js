@@ -7,7 +7,7 @@ class Landing extends React.Component {
     constructor(props) {
         super(props)
     }
-    componentWillMount() {
+    componentDidMount() {
     
     }
     componentDidMount() {

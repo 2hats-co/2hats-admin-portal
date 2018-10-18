@@ -55,7 +55,7 @@ class CandidatesContainer extends Component{
     handleResults(res){
         this.setState({hits:res.hits,nPages:res.nbPages,nHits:res.nbHits})
     }
-    componentWillMount(){
+    componentDidMount(){
         this.searchQuery()
     }
     handleDismiss(){
@@ -88,7 +88,7 @@ class CandidatesContainer extends Component{
 
             }
         })
-        console.log(queryFilters)
+        console.log('queryFilters',queryFilters)
         index.search(this.state.searchString,{
             "filters":queryFilters,
             "hitsPerPage": this.state.hitsPerPage,

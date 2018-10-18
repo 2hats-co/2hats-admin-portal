@@ -74,7 +74,7 @@ class AnalyticsButton extends Component {
         this.handleMouseLeave = this.handleMouseLeave.bind(this);
     }
 
-    componentWillMount() {
+    componentDidMount() {
        
         this.getData()
     }
