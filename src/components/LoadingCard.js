@@ -1,12 +1,16 @@
-import React from 'react'
-import LoadingMessage from './LoadingMessage'
-import { Paper } from '@material-ui/core';
+import React from 'react';
+import LoadingMessage from './LoadingMessage';
+import Paper from '@material-ui/core/Paper';
+import Grid from '@material-ui/core/Grid';
+
 function LoadingCard(props){
     console.log('loading...')
     return (
-        <Paper style={{width:300,height:300, margin:'auto'}}>
-        <LoadingMessage message={props.message}/>
-        </Paper>
+        <Grid container alignContent="center" justify="center" style={{height:'100vh'}}>
+            <Paper style={{width:300,height:300, margin:'auto'}}>
+                <LoadingMessage message={props.message}/>
+            </Paper>
+        </Grid>
     )
 }
 export default LoadingCard
