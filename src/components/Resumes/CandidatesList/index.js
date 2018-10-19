@@ -15,6 +15,10 @@ import { ALGOLIA_INDEX, createAlgoliaIndex } from '../../../config/algolia'
 import CandidateItem from './CandidateItem'
 
 const styles = theme => ({
+    toggleButton: {
+        flex: 1,
+        borderRadius: '4px !important',
+    },
     paginationBar: {
         padding: '6px 24px',
         borderBottom: '1px solid rgba(0,0,0,.1)',
@@ -112,12 +116,12 @@ class CandidatesList extends Component{
                 value={candidateFilter}
                 exclusive
                 onChange={this.handleCandidateFilter}
-                style={{display: 'flex', justifyContent: 'center'}}
+                style={{display: 'flex', justifyContent: 'center', boxShadow: 'none'}}
                 >
-                    <ToggleButton style={{flex:1}} value="all">All</ToggleButton>
-                    <ToggleButton style={{flex:2}} value="in-review">In review</ToggleButton>
-                    <ToggleButton style={{flex:2}} value="accepted">Accepted</ToggleButton>
-                    <ToggleButton style={{flex:2}} value="rejected">Rejected</ToggleButton>
+                    <ToggleButton className={classes.toggleButton} value="all">All</ToggleButton>
+                    <ToggleButton className={classes.toggleButton} style={{flex:2}} value="in-review">In review</ToggleButton>
+                    <ToggleButton className={classes.toggleButton} style={{flex:2}} value="accepted">Accepted</ToggleButton>
+                    <ToggleButton className={classes.toggleButton} style={{flex:2}} value="rejected">Rejected</ToggleButton>
                 </ToggleButtonGroup>
             </Grid>
 
@@ -125,8 +129,11 @@ class CandidatesList extends Component{
                 <Grid container justify="space-between" className={classes.paginationBar}>
                     <Grid item>
                         <Typography variant="body2" className={classes.subheading}>
-                            {this.state.candidateFilter.toUpperCase()}&nbsp;
-                            ({ candidates.length } / { this.state.totalHits })
+                            { this.state.page === 0 ? 1 : 50 * this.state.page }
+                            –
+                            { 50 * this.state.page + candidates.length }
+                            &nbsp;/&nbsp;
+                            { this.state.totalHits }
                         </Typography>
                     </Grid>
                     <Grid item style={{marginRight: -6}}>
