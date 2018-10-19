@@ -24,6 +24,7 @@ const styles = theme => ({
   list: {
     height: '100%',
     overflowY: 'scroll',
+    padding: 0,
   },
   listPadder: {
     width: '100%',
