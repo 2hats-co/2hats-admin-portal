@@ -10,7 +10,7 @@ export async function getLastSubmission(UID,callback){
         let docRef = submissionsCollection.doc(submissionID);
         docRef.get().then(function(doc) {
             if (doc.exists) {
-               callback(doc.data());
+               callback(doc);
             } else {
                 // doc.data() will be undefined in this case
                 console.log("No such document!");

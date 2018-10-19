@@ -14,6 +14,7 @@ import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
 import { ALGOLIA_INDEX, createAlgoliaIndex } from '../../../config/algolia'
 import CandidateItem from './CandidateItem'
 
+const nbCandidates = 20
 const styles = theme => ({
     toggleButton: {
         flex: 1,
@@ -45,6 +46,7 @@ class CandidatesList extends Component{
             totalHits: 0,
         }
         this.handleCandidateFilter = this.handleCandidateFilter.bind(this)
+        this.setNextCandidate = this.setNextCandidate.bind(this)
         this.updateCandidates = this.updateCandidates.bind(this)
     }
 
@@ -84,7 +86,7 @@ class CandidatesList extends Component{
         const index = createAlgoliaIndex(ALGOLIA_INDEX.candidates);
         index.search('', {
             "filters":filters,
-            "hitsPerPage": 50,
+            "hitsPerPage": nbCandidates,
             "page": this.state.page,
             "restrictSearchableAttributes": '',
             "analytics": false,
@@ -94,6 +96,12 @@ class CandidatesList extends Component{
         }).catch(err => {
             console.error("Search stage and status total error: ", err.message);
         });
+    }
+    setNextCandidate(currentUID){
+        const {candidates} = this.state
+       console.log(currentUID,candidates)
+      //this.props.setCandidate(nextUID)
+
     }
 
     pagination(val) {
@@ -129,9 +137,9 @@ class CandidatesList extends Component{
                 <Grid container justify="space-between" className={classes.paginationBar}>
                     <Grid item>
                         <Typography variant="body2" className={classes.subheading}>
-                            { this.state.page === 0 ? 1 : 50 * this.state.page }
+                            { this.state.page === 0 ? 1 : nbCandidates * this.state.page }
                             –
-                            { 50 * this.state.page + candidates.length }
+                            { nbCandidates * this.state.page + candidates.length }
                             &nbsp;/&nbsp;
                             { this.state.totalHits }
                         </Typography>

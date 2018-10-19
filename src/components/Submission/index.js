@@ -66,9 +66,12 @@ class Submission extends Component {
     constructor(props){
         super(props);
         this.setSubmission = this.setSubmission.bind(this);
+        this.handleRejection = this.handleRejection.bind(this);
+        this.handleAcception = this.handleAcception.bind(this);
         this.state = {
             isLoading: false,
             submission: false,
+            submissionID:''
         };
     }
     componentDidUpdate(prevProps){
@@ -79,9 +82,14 @@ class Submission extends Component {
     }
     setSubmission(doc){
         console.log(doc)
-        this.setState({isLoading:false,submission:doc})
+        this.setState({isLoading:false,submission:doc.data(),submissionID:doc.id})
     }
-
+    handleRejection(){
+        console.log('reject',this.state.submissionID)
+    }
+    handleAcception(){
+        console.log('accept',this.state.submissionID)
+    }
     onDocumentLoadSuccess = ({ numPages }) => {
         this.setState({ numPages });
     }    
@@ -128,10 +136,10 @@ class Submission extends Component {
                                 <Button variant="fab" className={classes.greyButton} aria-label="reject">
                                     <FlagIcon />
                                 </Button>
-                                <Button variant="fab" className={classes.greenButton} aria-label="accept">
+                                <Button variant="fab" className={classes.greenButton} onClick={this.handleAcception} aria-label="accept">
                                     <AcceptIcon />
                                 </Button>
-                                <Button variant="fab" className={classes.redButton} aria-label="reject">
+                                <Button variant="fab" className={classes.redButton} onClick={this.handleRejection} aria-label="reject">
                                     <RejectIcon />
                                 </Button>
                             </Grid>

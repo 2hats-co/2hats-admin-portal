@@ -37,24 +37,32 @@ const sections = [{name:'Resume',
 class ResumeContainer extends Component{
     constructor(props){
         super(props)
+     //   this.candidates = React.createRef()
         this.setCandidate = this.setCandidate.bind(this)
+        this.getNextCandidate = this.getNextCandidate.bind(this)
         this.state = {
             candidateUID:''
         }
     }
+    getNextCandidate = () =>{
+        if(this.candidates){
+            console.log(this.candidates)
+            //this.candidates.setNextCandidate(this.state.candidateUID)
+        }
+      
+    }
     componentDidMount(){
-
+ 
     }
     setCandidate(uid){
         this.setState({candidateUID:uid})
     }
     render(){
+        this.getNextCandidate()
         return(
-               
-      
         <Grid container direction='row' style={{height: 'calc(100vh - 70px)'}}>
             <Grid item style={{width: 360}}>
-                <CandidatesList setCandidate={this.setCandidate}/>
+                <CandidatesList setCandidate={this.setCandidate} ref={instance => { this.candidates = instance; }}/>
             </Grid>
             <Grid item xs>
                 <Submission UID={this.state.candidateUID}/>
@@ -62,8 +70,9 @@ class ResumeContainer extends Component{
             <Grid item style={{width: 360}}>
                 <FeedbackForm sections={sections}/>
             </Grid>
-            
+            <button onClick={this.getNextCandidate}>Click</button>
         </Grid>
+
         );
     }
 }
