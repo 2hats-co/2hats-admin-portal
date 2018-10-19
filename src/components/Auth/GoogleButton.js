@@ -66,7 +66,7 @@ class GoogleButton extends Component{
     render() {
         const {classes} = this.props
         const {cid} = this.state
-        return(
+        return(<div onClick={this.props.onClick}>
             <GoogleLogin
             key={`google-button`}
             clientId={cid}
@@ -77,14 +77,14 @@ class GoogleButton extends Component{
             <Button variant='flat'
                 key={`google-button`}
                 style={{ backgroundColor: '#E05449' }}
-                 onClick={renderProps.onClick}
+                onClick={renderProps.onClick}
                 className={classes.socialButton}
             >
                 <div className={classes.socialIcon} >
                 <img alt={'google-logo'} src={GoogleIcon} />
                 </div> Sign in with Google
             </Button> )}
-        />
+        /></div>
         );
     }
 }

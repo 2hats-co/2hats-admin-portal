@@ -1,6 +1,8 @@
 import React,{ Component } from 'react';
 import Grid from '@material-ui/core/Grid';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import moment from 'moment'
+
 import { withNavigation } from '../components/withNavigation';
 import AnalyticsButton from '../components/Statistics/AnalyticsButton';
 import StatsCard from '../components/Statistics/StatsCard';
@@ -254,6 +256,7 @@ class StatisticsContainer extends Component{
             return(<div>
 
                 <TimeBar timeStep={timeStep} changeHandler={this.handleChange}/>
+                <CircularProgress size={50} />
 
             </div>)
         }
