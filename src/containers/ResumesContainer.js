@@ -49,17 +49,22 @@ class ResumeContainer extends Component{
         this.setState({candidateUID:uid})
     }
     render(){
-        return(<Grid container direction='row'>
-            <Grid item xs={3}>
-                 <CandidatesList setCandidate={this.setCandidate}/>
+        return(
+               
+      
+        <Grid container direction='row' style={{height: 'calc(100vh - 70px)'}}>
+            <Grid item style={{width: 360}}>
+                <CandidatesList setCandidate={this.setCandidate}/>
             </Grid>
-            <Grid item xs={6}>
-                 <Submission UID={this.state.candidateUID}/>
+            <Grid item xs>
+                <Submission UID={this.state.candidateUID}/>
             </Grid>
-            <Grid item xs={3}>
-                 <FeedbackForm sections={sections}/>
+            <Grid item style={{width: 360}}>
+                  <FeedbackForm sections={sections}/>
             </Grid>
-        </Grid>)
+            
+        </Grid>
+        );
     }
 }
 export default withNavigation(ResumeContainer)
