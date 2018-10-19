@@ -107,7 +107,7 @@ class CandidatesList extends Component{
 
     render(){
         const {candidateFilter, candidates} = this.state;
-        const {classes} = this.props;
+        const {classes, selectedCandidate} = this.props;
 
         return(
         <Grid container direction="column" style={{height:'100%'}}>
@@ -165,6 +165,7 @@ class CandidatesList extends Component{
                             onClick={()=>{this.props.setCandidate(x.objectID)}}
                             data={x}
                             key={`${this.state.page}-${i}`}
+                            selected={x.objectID === selectedCandidate}
                         />)
                     }
                 </List>

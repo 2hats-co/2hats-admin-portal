@@ -39,29 +39,43 @@ class ResumeContainer extends Component{
         super(props)
         this.setCandidate = this.setCandidate.bind(this)
         this.state = {
-            candidateUID:''
+            candidateUID: '',
+            showFeedbackForm: false,
         }
+        this.handleShowFeedbackForm = this.handleShowFeedbackForm.bind(this);
     }
     componentDidMount(){
 
     }
     setCandidate(uid){
-        this.setState({candidateUID:uid})
+        this.setState({ candidateUID: uid, showFeedbackForm: false });
     }
+
+    handleShowFeedbackForm() {
+        this.setState({ showFeedbackForm: true });
+    }
+
     render(){
         return(
                
       
         <Grid container direction='row' style={{height: 'calc(100vh - 70px)'}}>
             <Grid item style={{width: 360}}>
-                <CandidatesList setCandidate={this.setCandidate}/>
+                <CandidatesList setCandidate={this.setCandidate}
+                    selectedCandidate={this.state.candidateUID}
+                />
             </Grid>
             <Grid item xs>
-                <Submission UID={this.state.candidateUID}/>
+                <Submission UID={this.state.candidateUID}
+                showFeedbackFormHandler={this.handleShowFeedbackForm} />
             </Grid>
-            <Grid item style={{width: 360}}>
-                <FeedbackForm sections={sections}/>
-            </Grid>
+            { this.state.showFeedbackForm ?
+                <Grid item style={{width: 360}}>
+                    <FeedbackForm sections={sections}/>
+                </Grid>
+                : null
+            }
+
             
         </Grid>
         );

@@ -94,7 +94,7 @@ class Submission extends Component {
     }    
     render(){
         const {submission, isLoading} = this.state;
-        const {classes} = this.props;
+        const {classes, showFeedbackFormHandler} = this.props;
 
         const pages = [];
         for (let i = 0; i < this.state.numPages; i++) {
@@ -139,7 +139,8 @@ class Submission extends Component {
                                 <Button variant="fab" className={classes.greenButton} aria-label="accept">
                                     <AcceptIcon />
                                 </Button>
-                                <Button variant="fab" className={classes.redButton} aria-label="reject">
+                                <Button variant="fab" className={classes.redButton} aria-label="reject"
+                                onClick={showFeedbackFormHandler}>
                                     <RejectIcon />
                                 </Button>
                             </Grid>
