@@ -15,18 +15,23 @@ export const withNavigation = (WrappedComponent) => {
           }
     render(){
         return(
-            <div>
-                <Grid container direction='row' justify='space-between' alignItems='center'>
-                <Grid item><img alt='2hats logo' src={logo} style={{width:100,padding:15}}/>
-                </Grid>
+            <Grid container direction="column" style={{height:'100vh'}}>
                 <Grid item>
-                 <NavigationItems goTo={this.goTo}/>
+                    <Grid container direction='row' justify='space-between'
+                        alignItems='center' style={{height:70}}
+                    >
+                        <Grid item>
+                            <img alt='2hats logo' src={logo} style={{width:100,padding:15}}/>
+                        </Grid>
+                        <Grid item>
+                            <NavigationItems goTo={this.goTo}/>
+                        </Grid>
+                    </Grid>
                 </Grid>
+                <Grid item xs>
+                    <WrappedComponent {...this.props} />
                 </Grid>
-                 <WrappedComponent
-                {...this.props}
-                 />
-                </div>
+            </Grid>
         )
     }}
     return withAuthentication(withRouter(WithNavigation))
