@@ -23,7 +23,7 @@ const styles = theme => ({
         padding: 40,
         background: '#fff',
         boxShadow: '0 5px 40px 0 rgba(0,0,0,0.1)',
-        borderRadius: '10px 0 0 0',
+        borderRadius: '10px 10px 0 0',
     },
     avatar: {
         width: 56,

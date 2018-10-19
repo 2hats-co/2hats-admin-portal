@@ -60,7 +60,7 @@ class ResumeContainer extends Component{
                 <Submission UID={this.state.candidateUID}/>
             </Grid>
             <Grid item style={{width: 360}}>
-                  <FeedbackForm sections={sections}/>
+                <FeedbackForm sections={sections}/>
             </Grid>
             
         </Grid>
