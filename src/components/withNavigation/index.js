@@ -15,7 +15,9 @@ export const withNavigation = (WrappedComponent) => {
           }
     render(){
         return(
-            <Grid container direction="column" style={{height:'100vh'}}>
+            <Grid container direction="column" style={{height:'100vh'}}
+                wrap="nowrap"
+            >
                 <Grid item>
                     <Grid container direction='row' justify='space-between'
                         alignItems='center' style={{height:70}}
@@ -23,7 +25,7 @@ export const withNavigation = (WrappedComponent) => {
                         <Grid item>
                             <img alt='2hats logo' src={logo} style={{width:100,padding:15}}/>
                         </Grid>
-                        <Grid item>
+                        <Grid item style={{paddingRight: 40}}>
                             <NavigationItems goTo={this.goTo}/>
                         </Grid>
                     </Grid>
