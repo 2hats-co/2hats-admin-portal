@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
 import StatisticsContainer from './containers/StatisticsContainer'
 import CandidatesContainer from './containers/CandidatesContainer'
 import ResumesContainer from './containers/ResumesContainer'
@@ -9,6 +10,7 @@ import {
     BrowserRouter as Router,
     Route,
 } from 'react-router-dom';
+import Theme from './Theme';
 import {ROUTES} from './constants/routes'
 import Landing from './components/Landing';
 
@@ -20,15 +22,17 @@ class App extends Component {
     console.log(ROUTES)
 
         return (
-            <Router>
-            <div className="app"> 
-                <Route exact path={ROUTES.stats} component={() => <StatisticsContainer/>} />
-                <Route exact path={ROUTES.candidates} component={() => <CandidatesContainer/>} />
-                <Route exact path={ROUTES.auth} component={() => <AuthenticationContainer/>} />
-                <Route exact path={ROUTES.resumes} component={() => <ResumesContainer/>} />
-                <Route exact path={'/'} component={() => <Landing/>} /> 
-            </div>
-        </Router>
+            <MuiThemeProvider theme={Theme}>
+                <Router>
+                    <div className="app"> 
+                        <Route exact path={ROUTES.stats} component={() => <StatisticsContainer/>} />
+                        <Route exact path={ROUTES.candidates} component={() => <CandidatesContainer/>} />
+                        <Route exact path={ROUTES.auth} component={() => <AuthenticationContainer/>} />
+                        <Route exact path={ROUTES.resumes} component={() => <ResumesContainer/>} />
+                        <Route exact path={'/'} component={() => <Landing/>} /> 
+                    </div>
+                </Router>
+            </MuiThemeProvider>
         );
     }
 }

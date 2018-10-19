@@ -120,7 +120,7 @@ class Submission extends Component {
                                     <Grid item>
                                         <Typography variant="headline">{submission.displayName}</Typography>
                                         <Typography variant="body2">{interests}</Typography>
-                                        <Typography variant="body2">Submitted on {timestamp}</Typography>
+                                        <Typography variant="body1">Submitted on {timestamp}</Typography>
                                     </Grid>
                                 </Grid>
                             </Grid>
