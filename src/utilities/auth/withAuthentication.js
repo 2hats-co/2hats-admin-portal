@@ -24,7 +24,7 @@ const withAuthentication = (Component) => {
       console.log('auth state',this.state)
       if(isLoading){
         return (
-          <LoadingCard message='please wait' />
+          <LoadingCard message='Please wait…' />
         );}
       else{
         if(user){

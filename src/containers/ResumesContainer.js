@@ -41,8 +41,10 @@ class ResumeContainer extends Component{
         this.setCandidate = this.setCandidate.bind(this)
         this.getNextCandidate = this.getNextCandidate.bind(this)
         this.state = {
-            candidateUID:''
+            candidateUID: '',
+            showFeedbackForm: false,
         }
+        this.handleShowFeedbackForm = this.handleShowFeedbackForm.bind(this);
     }
     getNextCandidate = () =>{
         if(this.candidates){
@@ -55,22 +57,34 @@ class ResumeContainer extends Component{
  
     }
     setCandidate(uid){
-        this.setState({candidateUID:uid})
+        this.setState({ candidateUID: uid, showFeedbackForm: false });
     }
+
+    handleShowFeedbackForm() {
+        this.setState({ showFeedbackForm: true });
+    }
+
     render(){
         this.getNextCandidate()
         return(
         <Grid container direction='row' style={{height: 'calc(100vh - 70px)'}}>
             <Grid item style={{width: 360}}>
-                <CandidatesList setCandidate={this.setCandidate} ref={instance => { this.candidates = instance; }}/>
+                <CandidatesList setCandidate={this.setCandidate}
+                    selectedCandidate={this.state.candidateUID}
+                />
             </Grid>
             <Grid item xs>
-                <Submission UID={this.state.candidateUID}/>
+                <Submission UID={this.state.candidateUID}
+                showFeedbackFormHandler={this.handleShowFeedbackForm} />
             </Grid>
-            <Grid item style={{width: 360}}>
-                <FeedbackForm sections={sections}/>
-            </Grid>
-            <button onClick={this.getNextCandidate}>Click</button>
+            { this.state.showFeedbackForm ?
+                <Grid item style={{width: 360}}>
+                    <FeedbackForm sections={sections}/>
+                </Grid>
+                : null
+            }
+
+            
         </Grid>
 
         );

@@ -59,6 +59,13 @@ const styles = theme => ({
     chip: {
         marginRight: 4,
     },
+    pdfDocument: {
+        width: 'calc(100vw - 800px)',
+    },
+    pdfPage: {
+        boxShadow: '0 0 0 1px rgba(0,0,0,.1)',
+        marginBottom: 8,
+    },
 });
 
 class Submission extends Component {
@@ -95,11 +102,12 @@ class Submission extends Component {
     }    
     render(){
         const {submission, isLoading} = this.state;
-        const {classes} = this.props;
+        const {classes, showFeedbackFormHandler} = this.props;
 
         const pages = [];
         for (let i = 0; i < this.state.numPages; i++) {
-            pages.push(<Page pageNumber={i + 1} key={i} />);
+            pages.push(<Page pageNumber={i + 1} key={i} width={window.innerWidth - 800}
+            className={classes.pdfPage} />);
         }
 
         if(submission){
@@ -139,7 +147,8 @@ class Submission extends Component {
                                 <Button variant="fab" className={classes.greenButton} onClick={this.handleAcception} aria-label="accept">
                                     <AcceptIcon />
                                 </Button>
-                                <Button variant="fab" className={classes.redButton} onClick={this.handleRejection} aria-label="reject">
+                                <Button variant="fab" className={classes.redButton} aria-label="reject"
+                                onClick={()=>{showFeedbackFormHandler();this.handleRejection()}}>
                                     <RejectIcon />
                                 </Button>
                             </Grid>
@@ -163,6 +172,7 @@ class Submission extends Component {
                         <Document 
                             onLoadSuccess={this.onDocumentLoadSuccess}
                             file={submission.submissionContent.resumeFile.downloadURL}
+                            className={classes.pdfDocument}
                         >
                             { pages }
                         </Document>

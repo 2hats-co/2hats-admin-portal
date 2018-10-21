@@ -5,26 +5,40 @@ import { withStyles } from '@material-ui/core/styles';
 import ListSubheader from '@material-ui/core/ListSubheader';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import Switch from '@material-ui/core/Switch';
 import Checkbox from '@material-ui/core/Checkbox';
+import Button from '@material-ui/core/Button';
 
 import Collapse from '@material-ui/core/Collapse';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import ExpandLess from '@material-ui/icons/ExpandLess';
-import ExpandMore from '@material-ui/icons/ExpandMore';
-import StarBorder from '@material-ui/icons/StarBorder';
+import SendIcon from '@material-ui/icons/Send';
 
 const styles = theme => ({
   root: {
     width: '100%',
+    height: '100%',
     maxWidth: 360,
     backgroundColor: theme.palette.background.paper,
   },
+  list: {
+    height: '100%',
+    overflowY: 'scroll',
+    padding: 0,
+  },
+  listPadder: {
+    width: '100%',
+    height: 88,
+  },
   nested: {
     paddingLeft: theme.spacing.unit * 6,
+  },
+  submitButton: {
+    position: 'fixed',
+    bottom: 20,
+    right: 20,
+    width: 320,
+    fontWeight: 700,
   },
 });
 
@@ -75,7 +89,7 @@ class FeedbackForm extends Component {
     return (
       <div className={classes.root}>
         <List component="nav"
-          subheader={<ListSubheader component="div">Feedback</ListSubheader>}
+          className={classes.list}
         >
           {
             sections.map(section => (<React.Fragment key={section.name}>
@@ -111,7 +125,15 @@ class FeedbackForm extends Component {
               </Collapse>
             </React.Fragment>))
           }
+          <div className={classes.listPadder} />
         </List>
+
+        <Button variant="extendedFab" color="primary" aria-label="Submit Feedback"
+          className={classes.submitButton}
+        >
+          <SendIcon style={{marginRight: 8}} />
+          Submit Feedback
+        </Button>
       </div>
     );
   }

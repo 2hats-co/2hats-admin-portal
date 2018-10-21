@@ -43,7 +43,7 @@ function CandidateItem(props){
 
     //console.log(data.submittedAt._seconds)
     return(
-        <ListItem onClick={props.onClick} key={data.objectID} button>
+        <ListItem onClick={props.onClick} key={data.objectID} button selected={props.selected}>
             <Avatar><PersonIcon /></Avatar>
             <ListItemText
                 primary={`${data.firstName} ${data.lastName}`}
