@@ -98,7 +98,7 @@ class Submission extends Component {
 
         const pages = [];
         for (let i = 0; i < this.state.numPages; i++) {
-            pages.push(<Page pageNumber={i + 1} key={i} width={window.innerWidth - 800}
+            pages.push(<Page pageNumber={i + 1} key={i} width={window.innerWidth - 800 - 64}
             className={classes.pdfPage} />);
         }
 
@@ -120,12 +120,12 @@ class Submission extends Component {
 
                     <Grid item>
                         <Grid container justify="space-between">
-                            <Grid item>
+                            <Grid item xs>
                                 <Grid container>
                                     <Grid item>
                                         <Avatar className={classes.avatar}><PersonIcon /></Avatar>
                                     </Grid>
-                                    <Grid item>
+                                    <Grid item xs>
                                         <Typography variant="headline">{submission.displayName}</Typography>
                                         <Typography variant="body2">{interests}</Typography>
                                         <Typography variant="body1">Submitted on {timestamp}</Typography>

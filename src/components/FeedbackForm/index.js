@@ -37,7 +37,7 @@ const styles = theme => ({
     position: 'fixed',
     bottom: 20,
     right: 20,
-    width: 320,
+    width: 256,
     fontWeight: 700,
   },
 });

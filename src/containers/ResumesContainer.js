@@ -59,8 +59,8 @@ class ResumeContainer extends Component{
         return(
                
       
-        <Grid container direction='row' style={{height: 'calc(100vh - 70px)'}}>
-            <Grid item style={{width: 360}}>
+        <Grid container direction="row" wrap="nowrap" style={{height: 'calc(100vh - 64px)'}}>
+            <Grid item style={{maxWidth: 360}}>
                 <CandidatesList setCandidate={this.setCandidate}
                     selectedCandidate={this.state.candidateUID}
                 />
@@ -70,7 +70,7 @@ class ResumeContainer extends Component{
                 showFeedbackFormHandler={this.handleShowFeedbackForm} />
             </Grid>
             { this.state.showFeedbackForm ?
-                <Grid item style={{width: 360}}>
+                <Grid item style={{width: 296}}>
                     <FeedbackForm sections={sections}/>
                 </Grid>
                 : null

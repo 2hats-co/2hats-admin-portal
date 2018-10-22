@@ -47,7 +47,7 @@ const styles = theme => ({
         overflow: 'hidden',
         textOverflow: 'ellipsis',
         color: 'rgba(0,0,0,.53)',
-        maxWidth: 'calc(100vw - 360px - 80px - 56px - 156px)',
+        maxWidth: 'calc(100vw - 360px - 80px - 56px - 156px - 64px)',
     },
     timestamp: {
         textAlign: 'right',

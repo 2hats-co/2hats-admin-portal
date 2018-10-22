@@ -118,7 +118,7 @@ class MailContainer extends Component {
         const { classes } = this.props;
 
         return(
-        <Grid container direction='row' style={{height: 'calc(100vh - 70px)'}}>
+        <Grid container direction='row' style={{height: 'calc(100vh - 64px)'}}>
             <Grid item style={{width: 360}}>
                 <MailCandidatesList setCandidate={this.setCandidate}
                     selectedCandidate={this.state.candidateUID}
