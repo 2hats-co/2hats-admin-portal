@@ -131,8 +131,7 @@ class FeedbackForm extends Component {
         <Button variant="extendedFab" color="primary" aria-label="Submit Feedback"
           className={classes.submitButton}
         >
-          <SendIcon style={{marginRight: 8}} />
-          Submit Feedback
+          <SendIcon /> Submit Feedback
         </Button>
       </div>
     );
