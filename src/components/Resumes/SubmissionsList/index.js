@@ -16,20 +16,13 @@ import CandidateItem from './CandidateItem'
 
 const nbCandidates = 20
 const styles = theme => ({
+    toggleButton: {
+        flex: 1,
+        borderRadius: '4px !important',
+    },
     paginationBar: {
         padding: '6px 24px',
         borderBottom: '1px solid rgba(0,0,0,.1)',
-        position: 'relative',
-        '&::after': {
-            content: '""',
-            display: 'block',
-            position: 'absolute',
-            background: 'linear-gradient(to bottom, rgba(0,0,0,.05), rgba(0,0,0,0))',
-            bottom: -21,
-            left: 0,
-            width: '100%',
-            height: 20,
-        },
     },
     paginationButtons: {
         width: 24,
@@ -38,8 +31,6 @@ const styles = theme => ({
     subheading: {
         display: 'inline',
         verticalAlign: 'middle',
-        color: 'rgba(0,0,0,.53)',
-        fontWeight: 400,
     },
 });
 
@@ -135,10 +126,10 @@ class CandidatesList extends Component{
                 onChange={this.handleCandidateFilter}
                 style={{display: 'flex', justifyContent: 'center', boxShadow: 'none'}}
                 >
-                    <ToggleButton value="all">All</ToggleButton>
-                    <ToggleButton style={{flex:2}} value="in-review">In review</ToggleButton>
-                    <ToggleButton style={{flex:2}} value="accepted">Accepted</ToggleButton>
-                    <ToggleButton style={{flex:2}} value="rejected">Rejected</ToggleButton>
+                    <ToggleButton className={classes.toggleButton} value="all">All</ToggleButton>
+                    <ToggleButton className={classes.toggleButton} style={{flex:2}} value="in-review">In review</ToggleButton>
+                    <ToggleButton className={classes.toggleButton} style={{flex:2}} value="accepted">Accepted</ToggleButton>
+                    <ToggleButton className={classes.toggleButton} style={{flex:2}} value="rejected">Rejected</ToggleButton>
                 </ToggleButtonGroup>
             </Grid>
 

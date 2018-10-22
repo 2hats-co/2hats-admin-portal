@@ -37,15 +37,24 @@ const sections = [{name:'Resume',
 class ResumeContainer extends Component{
     constructor(props){
         super(props)
+     //   this.candidates = React.createRef()
         this.setCandidate = this.setCandidate.bind(this)
+        this.getNextCandidate = this.getNextCandidate.bind(this)
         this.state = {
             candidateUID: '',
             showFeedbackForm: false,
         }
         this.handleShowFeedbackForm = this.handleShowFeedbackForm.bind(this);
     }
+    getNextCandidate = () =>{
+        if(this.candidates){
+            console.log(this.candidates)
+            //this.candidates.setNextCandidate(this.state.candidateUID)
+        }
+      
+    }
     componentDidMount(){
-
+ 
     }
     setCandidate(uid){
         this.setState({ candidateUID: uid, showFeedbackForm: false });
@@ -56,6 +65,7 @@ class ResumeContainer extends Component{
     }
 
     render(){
+        this.getNextCandidate()
         return(
                
       
@@ -78,6 +88,7 @@ class ResumeContainer extends Component{
 
             
         </Grid>
+
         );
     }
 }

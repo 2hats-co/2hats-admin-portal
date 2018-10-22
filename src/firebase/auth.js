@@ -1,5 +1,6 @@
 import {cloudFunction,CLOUD_FUNCTIONS} from './functions'
-import {auth} from './app'
+
+import {auth} from '../store';
 
 
 export const authAdmin = (r,callback) => cloudFunction(CLOUD_FUNCTIONS.auth,{r},
@@ -9,3 +10,6 @@ export const authAdmin = (r,callback) => cloudFunction(CLOUD_FUNCTIONS.auth,{r},
         })
         console.log("Call authenticate3rdParty success: ", result);
     },(o)=>{console.log('fail',o)})
+
+
+

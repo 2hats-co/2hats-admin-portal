@@ -1,4 +1,4 @@
-import {functions } from './app'
+import {functions } from '../store'
 export const CLOUD_FUNCTIONS = {
     stats:'restApiQueryStageAndStatus',
     auth:'restApiAuthenticateAdmin'

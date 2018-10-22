@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import moment from 'moment';
 import {withStyles} from '@material-ui/core/styles';
-import {getLastSubmission} from '../../firebase/firestore';
+import {getLastSubmission,acceptSubmission} from '../../firebase/firestore';
 import { Document,Page } from 'react-pdf';
 
 import Grid from '@material-ui/core/Grid';
@@ -73,9 +73,12 @@ class Submission extends Component {
     constructor(props){
         super(props);
         this.setSubmission = this.setSubmission.bind(this);
+        this.handleRejection = this.handleRejection.bind(this);
+        this.handleAcception = this.handleAcception.bind(this);
         this.state = {
             isLoading: false,
             submission: false,
+            submissionID:''
         };
     }
     componentDidUpdate(prevProps){
@@ -86,9 +89,15 @@ class Submission extends Component {
     }
     setSubmission(doc){
         console.log(doc)
-        this.setState({isLoading:false,submission:doc})
+        this.setState({isLoading:false,submission:doc.data(),submissionID:doc.id})
     }
-
+    handleRejection(){
+        console.log('reject',this.state.submissionID)
+    }
+    handleAcception(){
+        console.log('accept',this.state.submissionID)
+    acceptSubmission(this.state.submissionID,this.props.UID,(e)=>{console.log(e)})
+    }
     onDocumentLoadSuccess = ({ numPages }) => {
         this.setState({ numPages });
     }    
@@ -136,11 +145,11 @@ class Submission extends Component {
                                 <Button variant="fab" className={classes.greyButton} aria-label="reject">
                                     <FlagIcon />
                                 </Button>
-                                <Button variant="fab" className={classes.greenButton} aria-label="accept">
+                                <Button variant="fab" className={classes.greenButton} onClick={this.handleAcception} aria-label="accept">
                                     <AcceptIcon />
                                 </Button>
                                 <Button variant="fab" className={classes.redButton} aria-label="reject"
-                                onClick={showFeedbackFormHandler}>
+                                onClick={()=>{showFeedbackFormHandler();this.handleRejection()}}>
                                     <RejectIcon />
                                 </Button>
                             </Grid>
