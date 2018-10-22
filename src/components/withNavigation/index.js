@@ -38,19 +38,14 @@ export const withNavigation = (WrappedComponent) => {
             super(props);
             this.goTo = this.goTo.bind(this);
         }
-        componentDidUpdate(prevProps){
-            if(prevProps.history !== this.props.history){
-                const path = this.props.history.location.pathname
-                console.log(path)
-            }
-          
-        }
+     
         goTo(route){
             this.props.history.push(route);
         }
         render(){
             const { classes } = this.props;
-
+            const path = this.props.history.location.pathname
+            let currentContainer =  path.split('/')[1]
             return(
                 <Grid container wrap="nowrap">
                     <Grid item className={classes.leftNav}>
@@ -62,7 +57,7 @@ export const withNavigation = (WrappedComponent) => {
                             <Grid item style={{height: 64}}>
                                 <Grid container wrap="nowrap">
                                     <Grid item className={classes.routeHeader}>
-                                    <Typography variant="title" className={classes.routeHeaderText}>Mail</Typography>
+                                    <Typography variant="title" className={classes.routeHeaderText}>{currentContainer}</Typography>
                                     </Grid>
                                 </Grid>
                             </Grid>

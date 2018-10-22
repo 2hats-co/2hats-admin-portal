@@ -17,6 +17,9 @@ const Theme = createMuiTheme({
         subheading: {
             fontWeight: 500,
         },
+        title:{
+            textTransform: 'capitalize'
+        }
     },
     overrides: {
         MuiToggleButton: {
