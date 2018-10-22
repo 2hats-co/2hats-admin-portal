@@ -5,6 +5,10 @@ import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 
 import IconButton from '@material-ui/core/IconButton';
+import MailIcon from '@material-ui/icons/Mail';
+import ReadIcon from '@material-ui/icons/Drafts';
+import StarIcon from '@material-ui/icons/Star';
+
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import List from '@material-ui/core/List';
@@ -14,21 +18,20 @@ import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
 import { ALGOLIA_INDEX, createAlgoliaIndex } from '../../../config/algolia'
 import CandidateItem from './CandidateItem'
 
-const nbCandidates = 20
 const styles = theme => ({
     paginationBar: {
         padding: '6px 24px',
-        borderBottom: '1px solid rgba(0,0,0,.1)',
+        borderBottom: '1px solid rgba(0,0,0,.15)',
         position: 'relative',
         '&::after': {
             content: '""',
             display: 'block',
             position: 'absolute',
-            background: 'linear-gradient(to bottom, rgba(0,0,0,.05), rgba(0,0,0,0))',
-            bottom: -21,
+            background: 'linear-gradient(to bottom, rgba(0,0,0,.1), rgba(0,0,0,0))',
+            bottom: -16,
             left: 0,
             width: '100%',
-            height: 20,
+            height: 15,
         },
     },
     paginationButtons: {
@@ -43,7 +46,7 @@ const styles = theme => ({
     },
 });
 
-class CandidatesList extends Component{
+class MailCandidatesList extends Component{
 
     constructor(props){
         super(props)
@@ -54,9 +57,8 @@ class CandidatesList extends Component{
             totalPages: 0,
             totalHits: 0,
         }
-        this.handleCandidateFilter = this.handleCandidateFilter.bind(this)
-        this.setNextCandidate = this.setNextCandidate.bind(this)
-        this.updateCandidates = this.updateCandidates.bind(this)
+        this.handleCandidateFilter = this.handleCandidateFilter.bind(this);
+        this.updateCandidates = this.updateCandidates.bind(this);
     }
 
     componentDidMount(){
@@ -95,7 +97,7 @@ class CandidatesList extends Component{
         const index = createAlgoliaIndex(ALGOLIA_INDEX.candidates);
         index.search('', {
             "filters":filters,
-            "hitsPerPage": nbCandidates,
+            "hitsPerPage": 50,
             "page": this.state.page,
             "restrictSearchableAttributes": '',
             "analytics": false,
@@ -105,12 +107,6 @@ class CandidatesList extends Component{
         }).catch(err => {
             console.error("Search stage and status total error: ", err.message);
         });
-    }
-    setNextCandidate(currentUID){
-        const {candidates} = this.state
-       console.log(currentUID,candidates)
-      //this.props.setCandidate(nextUID)
-
     }
 
     pagination(val) {
@@ -136,9 +132,9 @@ class CandidatesList extends Component{
                 style={{display: 'flex', justifyContent: 'center', boxShadow: 'none'}}
                 >
                     <ToggleButton value="all">All</ToggleButton>
-                    <ToggleButton style={{flex:2}} value="in-review">In review</ToggleButton>
-                    <ToggleButton style={{flex:2}} value="accepted">Accepted</ToggleButton>
-                    <ToggleButton style={{flex:2}} value="rejected">Rejected</ToggleButton>
+                    <ToggleButton value="unread"><MailIcon /></ToggleButton>
+                    <ToggleButton value="read"><ReadIcon /></ToggleButton>
+                    <ToggleButton value="starred"><StarIcon /></ToggleButton>
                 </ToggleButtonGroup>
             </Grid>
 
@@ -146,9 +142,9 @@ class CandidatesList extends Component{
                 <Grid container justify="space-between" className={classes.paginationBar}>
                     <Grid item>
                         <Typography variant="body2" className={classes.subheading}>
-                            { this.state.page === 0 ? 1 : nbCandidates * this.state.page }
+                            { this.state.page === 0 ? 1 : 50 * this.state.page }
                             –
-                            { nbCandidates * this.state.page + candidates.length }
+                            { 50 * this.state.page + candidates.length }
                             &nbsp;/&nbsp;
                             { this.state.totalHits }
                         </Typography>
@@ -191,4 +187,4 @@ class CandidatesList extends Component{
         </Grid>)
     }
 }
-export default withStyles(styles)(CandidatesList);
+export default withStyles(styles)(MailCandidatesList);

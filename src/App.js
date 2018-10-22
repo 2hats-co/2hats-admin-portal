@@ -4,6 +4,7 @@ import StatisticsContainer from './containers/StatisticsContainer'
 import CandidatesContainer from './containers/CandidatesContainer'
 import ResumesContainer from './containers/ResumesContainer'
 import AuthenticationContainer from './containers/AuthenticationContainer'
+import MailContainer from './containers/MailContainer'
 //routing
 import {
     BrowserRouter as Router,
@@ -28,6 +29,7 @@ class App extends Component {
                         <Route exact path={ROUTES.candidates} component={() => <CandidatesContainer/>} />
                         <Route exact path={ROUTES.auth} component={() => <AuthenticationContainer/>} />
                         <Route exact path={ROUTES.resumes} component={() => <ResumesContainer/>} />
+                        <Route exact path={ROUTES.mail} component={() => <MailContainer/>} />
                         <Route exact path={'/'} component={() => <Landing/>} /> 
                     </div>
                 </Router>

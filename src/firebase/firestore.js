@@ -5,8 +5,8 @@ const submissionsCollection =  firestore.collection('submissions')
 export async function getLastSubmission(UID,callback){
     let query = submissionsCollection.where('UID','==',UID).orderBy('createdAt','desc').limit(1)
     let results = await query.get()
-    let submissionID = results.docs[0].id
-    if(submissionID){
+    if(results.docs[0]){
+        let submissionID = results.docs[0].id
         let docRef = submissionsCollection.doc(submissionID);
         docRef.get().then(function(doc) {
             if (doc.exists) {
