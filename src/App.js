@@ -20,7 +20,6 @@ class App extends Component {
     componentDidMount(){
     }
     render() {
-    console.log(ROUTES)
         return (
             <MuiThemeProvider theme={Theme}>
                 <Router>

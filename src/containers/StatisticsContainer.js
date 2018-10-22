@@ -199,9 +199,8 @@ class StatisticsContainer extends Component{
                             }]
                         }}
                         analyticsButtons={[
-                            <AnalyticsButton type="student" heading="Total students" from={this.state.from} to={this.state.to} timeframe="week" />,
-                            <AnalyticsButton type="account" heading="New accounts" from={this.state.from} to={this.state.to} timeframe="day" />,
-                            <AnalyticsButton type="submission" heading="New Submissions" from={this.state.from} to={this.state.to} timeframe="year" />,
+                            <AnalyticsButton type="account" heading="New accounts" from={this.state.from} to={this.state.to} timeframe="week" />,
+                            <AnalyticsButton type="submission" heading="New Submissions" from={this.state.from} to={this.state.to} timeframe="week" />,
                         ]}
                     />
                 </Grid>
@@ -243,10 +242,10 @@ class StatisticsContainer extends Component{
                             }]
                         }}
                         analyticsButtons={[
-                            <AnalyticsButton type="resume" heading="Resume" from={this.state.from} to={this.state.to} timeframe="month" />,
-                            <AnalyticsButton type="interview" heading="Interview" from={this.state.from} to={this.state.to} timeframe="Olympics" />,
-                            <AnalyticsButton type="assessment" heading="Assessment" from={this.state.from} to={this.state.to} timeframe="election" />,
-                            <AnalyticsButton type="placement" heading="Placement" from={this.state.from} to={this.state.to} timeframe="day" />,
+                            <AnalyticsButton type="resume" heading="Resume" from={this.state.from} to={this.state.to} timeframe="week" />,
+                            <AnalyticsButton type="interview" heading="Interview" from={this.state.from} to={this.state.to} timeframe="week" />,
+                            <AnalyticsButton type="assessment" heading="Assessment" from={this.state.from} to={this.state.to} timeframe="week" />,
+                            <AnalyticsButton type="placement" heading="Placement" from={this.state.from} to={this.state.to} timeframe="week" />,
                         ]}
                     />
                 </Grid>

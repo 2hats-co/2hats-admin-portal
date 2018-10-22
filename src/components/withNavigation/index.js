@@ -21,13 +21,14 @@ const styles = theme => ({
         display: 'block',
     },
     routeHeader: {
-        backgroundColor: theme.palette.primary.main,
+        //backgroundColor: theme.palette.primary.main,
         width: 360,
         height: 64,
     },
     routeHeaderText: {
+        marginLeft:40,
         lineHeight: '64px',
-        color: '#fff',
+        color: '#111',
     },
 })
 
@@ -36,6 +37,13 @@ export const withNavigation = (WrappedComponent) => {
         constructor(props) {
             super(props);
             this.goTo = this.goTo.bind(this);
+        }
+        componentDidUpdate(prevProps){
+            if(prevProps.history !== this.props.history){
+                const path = this.props.history.location.pathname
+                console.log(path)
+            }
+          
         }
         goTo(route){
             this.props.history.push(route);
@@ -54,7 +62,7 @@ export const withNavigation = (WrappedComponent) => {
                             <Grid item style={{height: 64}}>
                                 <Grid container wrap="nowrap">
                                     <Grid item className={classes.routeHeader}>
-                                        <Typography variant="title" className={classes.routeHeaderText}>Mail</Typography>
+                                    <Typography variant="title" className={classes.routeHeaderText}>Mail</Typography>
                                     </Grid>
                                 </Grid>
                             </Grid>
