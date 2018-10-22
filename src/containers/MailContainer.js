@@ -1,9 +1,13 @@
 import React,{ Component } from 'react'
+import ReactQuill from 'react-quill';
+
 import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 
 import Button from '@material-ui/core/Button';
+import Avatar from '@material-ui/core/Avatar';
 import ReplyIcon from '@material-ui/icons/Reply';
+import SendIcon from '@material-ui/icons/Send';
 
 import { withNavigation } from '../components/withNavigation';
 import MailCandidatesList from '../components/Mail/MailCandidatesList';
@@ -15,14 +19,24 @@ const styles = theme => ({
         overflowY: 'scroll',
         padding: 40,
         paddingTop: 40 - 12,
+        paddingBottom: 128,
         background: '#fff',
         boxShadow: '0 5px 40px 0 rgba(0,0,0,.15)',
         borderRadius: '10px 0 0 0',
     },
     replyButton: {
         position: 'fixed',
-        bottom: theme.spacing.unit * 3,
-        right: theme.spacing.unit * 3,
+        bottom: 40,
+        right: 40,
+    },
+    replyWrapper: {
+        marginTop: 20,
+    },
+    replyAvatar: {
+        marginRight: theme.spacing.unit * 2,
+        width: 40,
+        height: 40,
+        backgroundColor: theme.palette.primary.main,
     },
 });
 
@@ -64,7 +78,36 @@ class MailContainer extends Component {
 
         this.state = {
             candidateUID: '',
+            showReplyComposer: false,
+            editorHtml: '<b>Lorem Ipsum</b> is simply dummy text',
         };
+
+        this.editorModules = {
+            toolbar: [
+                [{ 'header': '1'}, {'header': '2'}, { 'font': [] }],
+                [{size: []}],
+                ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+                [{'list': 'ordered'}, {'list': 'bullet'}, 
+                {'indent': '-1'}, {'indent': '+1'}]
+            ],
+            clipboard: {
+                // toggle to add extra line breaks when pasting HTML:
+                matchVisual: false,
+            }
+        };
+
+        this.editorFormats = [
+            'header', 'font', 'size',
+            'bold', 'italic', 'underline', 'strike', 'blockquote',
+            'list', 'bullet', 'indent',
+            'link', 'image', 'video'
+        ];
+
+        this.handleEditorChange = this.handleEditorChange.bind(this);
+    }
+    
+    handleEditorChange(html) {
+        this.setState({ editorHtml: html });
     }
 
     setCandidate() {
@@ -85,12 +128,31 @@ class MailContainer extends Component {
                 { sampleData.map((item, index) => (
                     <MailItem from={item.from} timestamp={item.timestamp} body={item.body} key={index} />
                 )) }
-                <Button variant="extendedFab" color="primary" aria-label="Reply"
-                    className={classes.replyButton}
-                >
-                    <ReplyIcon style={{marginRight: 8}} />
-                    Reply
-                </Button>
+                { this.state.showReplyComposer ?
+                    <React.Fragment>
+                        <Grid container className={classes.replyWrapper}>
+                            <Avatar className={classes.replyAvatar}><ReplyIcon /></Avatar>
+                            <Grid item xs>
+                                <ReactQuill
+                                    value={this.state.editorHtml}
+                                    onChange={this.handleEditorChange}
+                                    classes={classes.editor}
+                                    modules={this.editorModules}
+                                    formats={this.editorFormats}
+                                    style={{height:300, marginBottom:42}}
+                                />
+                            </Grid>
+                        </Grid>
+                        <Button variant="extendedFab" color="primary" aria-label="Reply"
+                            className={classes.replyButton}
+                        > <SendIcon /> Send </Button>
+                    </React.Fragment>
+                :
+                    <Button variant="extendedFab" color="primary" aria-label="Reply"
+                        className={classes.replyButton}
+                        onClick={() => { this.setState({ showReplyComposer: true }) }}
+                    > <ReplyIcon /> Reply </Button>
+                }
             </Grid>
         </Grid>
         );

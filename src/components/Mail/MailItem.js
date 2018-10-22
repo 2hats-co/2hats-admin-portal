@@ -87,11 +87,12 @@ function MailItem(props) {
         }
     });
 
-    return(<ExpansionPanel classes={{root: classes.root, expanded: classes.rootExpanded}} elevation="0" square>
+    return(<ExpansionPanel classes={{root: classes.root, expanded: classes.rootExpanded}} elevation={0} square>
 
         <ExpansionPanelSummary
             classes={{root: classes.personBar, expandIcon: classes.expandIcon}}
             expandIcon={<ExpandMoreIcon />}
+            disableRipple={false}
         >
             <Avatar className={classes.avatar}><PersonIcon /></Avatar>
             <Grid container direction="column" justify="center">

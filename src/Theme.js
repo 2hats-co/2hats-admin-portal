@@ -39,6 +39,11 @@ const Theme = createMuiTheme({
                 textTransform: 'none',
                 fontWeight: 700,
             },
+            extendedFab: {
+                '& svg': {
+                    marginRight: 8,
+                }
+            }
         },
     },
 });
