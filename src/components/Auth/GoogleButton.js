@@ -1,7 +1,7 @@
 import React,{Component} from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
-import {GOOGLE_CID_STAGING,GOOGLE_CID_PRODUCTION} from '../../config/auth';
+import {GOOGLE_CID_PRODUCTION,GOOGLE_CID_STAGING} from '../../config/auth';
 import GoogleIcon from '../../assets/Google.svg';
 import GoogleLogin from '../../utilities/auth/GoogleLogin.js';
 
@@ -31,19 +31,19 @@ class GoogleButton extends Component{
         this.handleGoogleAuthFail = this.handleGoogleAuthFail.bind(this);
         this.handleRouting = this.handleRouting.bind(this)
         this.getToken = this.getToken.bind(this) 
-        this.state = {cid:GOOGLE_CID_STAGING}
+        if (process.env.REACT_APP_ENV === 'PRODUCTION') {
+          this.state = {cid:GOOGLE_CID_PRODUCTION}
+          console.log('google auth production',GOOGLE_CID_PRODUCTION)
+  
+        } else {
+          this.state = {cid:GOOGLE_CID_STAGING}
+          console.log('google auth staging',GOOGLE_CID_STAGING)
+  
+        }
     }
     
     componentDidMount(){
-      if (process.env.REACT_APP_ENV === 'PRODUCTION') {
-        this.setState({cid:GOOGLE_CID_PRODUCTION})
-        console.log('google auth production',GOOGLE_CID_PRODUCTION)
-
-      } else {
-        this.setState({cid:GOOGLE_CID_PRODUCTION})
-        console.log('google auth staging',GOOGLE_CID_PRODUCTION)
-
-      }
+     
     }
     handleRouting(route){
       //this.props.changeHandler('isLoading',false)

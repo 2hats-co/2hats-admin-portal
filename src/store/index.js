@@ -16,7 +16,7 @@ if (process.env.REACT_APP_ENV === 'PRODUCTION') {
 	firebase.initializeApp(productionConfig)
 } else {
 	console.log('staging')
-	//firebase.initializeApp(stagingConfig)
+	firebase.initializeApp(stagingConfig)
 }
 
 export function configureStore(initialState, history) {
