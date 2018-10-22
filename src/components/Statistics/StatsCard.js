@@ -70,7 +70,10 @@ class StatsCard extends Component {
                             : null
                         }
                     </Grid>
-                    { analyticsButtons ? <Grid item>{analyticsButtons}</Grid> : null}
+                  
+                </Grid>
+                <Grid container spacing={8}>
+                {analyticsButtons}
                 </Grid>
             </div>
         );
