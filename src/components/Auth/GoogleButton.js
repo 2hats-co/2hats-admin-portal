@@ -40,8 +40,8 @@ class GoogleButton extends Component{
         console.log('google auth production',GOOGLE_CID_PRODUCTION)
 
       } else {
-        this.setState({cid:GOOGLE_CID_STAGING})
-        console.log('google auth staging',GOOGLE_CID_STAGING)
+        this.setState({cid:GOOGLE_CID_PRODUCTION})
+        console.log('google auth staging',GOOGLE_CID_PRODUCTION)
 
       }
     }
