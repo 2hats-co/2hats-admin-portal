@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import moment from 'moment';
 import {withStyles} from '@material-ui/core/styles';
-import {getLastSubmission} from '../../firebase/firestore';
+import {getLastSubmission,acceptSubmission} from '../../firebase/firestore';
 import { Document,Page } from 'react-pdf';
 
 import Grid from '@material-ui/core/Grid';
@@ -96,6 +96,7 @@ class Submission extends Component {
     }
     handleAcception(){
         console.log('accept',this.state.submissionID)
+    acceptSubmission(this.state.submissionID,this.props.UID,(e)=>{console.log(e)})
     }
     onDocumentLoadSuccess = ({ numPages }) => {
         this.setState({ numPages });

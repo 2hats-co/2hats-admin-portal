@@ -4,7 +4,6 @@ import StatisticsContainer from './containers/StatisticsContainer'
 import CandidatesContainer from './containers/CandidatesContainer'
 import ResumesContainer from './containers/ResumesContainer'
 import AuthenticationContainer from './containers/AuthenticationContainer'
-import {initFirebaseApp} from './firebase/app'
 //routing
 import {
     BrowserRouter as Router,
@@ -13,14 +12,14 @@ import {
 import Theme from './Theme';
 import {ROUTES} from './constants/routes'
 import Landing from './components/Landing';
+// containers
+import withAuthentication from './utilities/Session/withAuthentication';
 
 class App extends Component {
     componentDidMount(){
-        initFirebaseApp()
     }
     render() {
     console.log(ROUTES)
-
         return (
             <MuiThemeProvider theme={Theme}>
                 <Router>
@@ -37,4 +36,4 @@ class App extends Component {
     }
 }
 
-export default App;
+export default withAuthentication(App);

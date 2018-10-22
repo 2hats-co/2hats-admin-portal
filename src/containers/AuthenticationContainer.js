@@ -25,7 +25,6 @@ class AuthenticationContainer extends React.Component{
     handleGoogleButton() {
         this.setState({ loading: true });
     }
-
     render(){
         const {classes} = this.props;
 

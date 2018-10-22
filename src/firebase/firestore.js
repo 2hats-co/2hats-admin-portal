@@ -1,5 +1,5 @@
-import {firestore} from './app'
-
+import {firestore} from '../store'
+firestore.settings({ timestampsInSnapshots: true })
 const submissionsCollection =  firestore.collection('submissions')
 
 export async function getLastSubmission(UID,callback){
@@ -20,4 +20,12 @@ export async function getLastSubmission(UID,callback){
         });
     }
 
+}
+
+export async function acceptSubmission(submissionID,callback){
+    let submissionRef = submissionsCollection.doc(submissionID)
+   /*
+   WARNING: IT SEND OUT EMAILs
+    submissionRef.update({isAccepted:true}).then((e)=>{callback(e)})
+    */
 }
