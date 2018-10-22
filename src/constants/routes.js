@@ -6,5 +6,6 @@ export const ROUTES = {
     calendar:'/calender',
     Templates:'/templates',
     auth:'/auth',
-    resumes:'/resumes'
+    resumes:'/resumes',
+    mail:'/mail',
 }

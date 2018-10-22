@@ -1,23 +1,46 @@
-import React,{Component} from 'react';
+import React from 'react';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 
+import IconButton from '@material-ui/core/IconButton';
 import Avatar from '@material-ui/core/Avatar';
+
+import StarIcon from '@material-ui/icons/Star';
+import StarBorderIcon from '@material-ui/icons/StarBorder';
 import PersonIcon from '@material-ui/icons/Person';
 
 import moment from 'moment';
+import { withStyles } from '@material-ui/core';
+
+const styles = theme => ({
+    clipBodyText: {
+        whiteSpace: 'nowrap',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+    },
+    rightText: {
+        textAlign: 'right',
+        padding: 0,
+        minWidth: 70,
+    },
+    iconWrapper: {
+        height: 24,
+    },
+    iconButton: {
+        width: 24,
+        height: 24,
+        position: 'relative',
+        right: -4,
+    },
+    starIcon: {
+        fontSize: 18,
+    },
+});
 
 function CandidateItem(props){
-    const {data} = props;
+    const { data, classes } = props;
 
-    let interests = '';
-
-    if (data.careerInterests) {
-        for (let i = 0; i < data.careerInterests.length; i++) {
-            interests += data.careerInterests[i];
-            if (i < data.careerInterests.length - 1) interests += ', ';
-        }
-    }
+    let mailBody = 'This is the mail body This is the mail body This is the mail body This is the mail body This is the mail body This is the mail body ';
 
     moment.updateLocale('en', {
         relativeTime : {
@@ -47,14 +70,16 @@ function CandidateItem(props){
             <Avatar><PersonIcon /></Avatar>
             <ListItemText
                 primary={`${data.firstName} ${data.lastName}`}
-                secondary={interests}
+                secondary={mailBody}
+                classes={{secondary: classes.clipBodyText}}
             />
             <ListItemText
-                primary={data.status.replace('-', ' ')}
+                primary={<IconButton className={classes.iconButton}><StarBorderIcon className={classes.starIcon} /></IconButton>}
                 secondary={timestamp}
-                style={{textAlign: 'right', paddingRight: 0, minWidth: 70}}
+                className={classes.rightText}
+                classes={{primary: classes.iconWrapper}}
             />
         </ListItem>
     );
 }
-export default CandidateItem
+export default withStyles(styles)(CandidateItem);
