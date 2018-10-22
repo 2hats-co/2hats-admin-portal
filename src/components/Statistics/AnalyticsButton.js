@@ -243,6 +243,7 @@ class AnalyticsButton extends Component {
     render() {
         const { type, classes, timeframe } = this.props;
         const { total, change, percentage, hover } = this.state;
+        console.log('change',percentage)
         return (
             <div
                 className={classNames(classes.root, classes[this.getGradient(type)])}
@@ -269,7 +270,8 @@ class AnalyticsButton extends Component {
                 </Grid>
                 { change == 0 ? null :
                     <Grid container alignItems="center" style={{marginTop:-4}}>
-                        <div style={{marginLeft:-7,fontSize:0}}>{change < 0 ? <ArrowDropDownIcon /> : <ArrowDropUpIcon />}</div>
+                        <div style={{marginLeft:-7,fontSize:0}}>
+                        {percentage < 0 ? <ArrowDropDownIcon/> : <ArrowDropUpIcon />}</div>
                         <Typography variant="caption" style={{textTransform:'lowercase',marginLeft:-3,fontSize:11}}>{`${percentage}% last ${timeframe}`}</Typography>
                     </Grid>
                 }
