@@ -7,7 +7,7 @@ import Typography from '@material-ui/core/Typography';
 
 import logo from '../../assets/logo/WhiteIcon.svg';
 import NavigationItems from './NavigationItems';
-import withAuthentication from '../../utilities/auth/withAuthentication';
+import withAuthentication from '../../utilities/Session/withAuthentication';
 
 const styles = theme => ({
     leftNav: {
