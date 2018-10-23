@@ -11,9 +11,12 @@ import List from '@material-ui/core/List';
 import ToggleButton from "@material-ui/lab/ToggleButton";
 import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
 
-import { ALGOLIA_INDEX, createAlgoliaIndex } from '../../../config/algolia'
-import CandidateItem from './CandidateItem'
+import SubmissionItem from './SubmissionItem'
 
+
+//redux 
+import { compose } from "redux";
+import { connect } from "react-redux";
 const nbCandidates = 20
 const styles = theme => ({
     toggleButton: {
@@ -39,70 +42,34 @@ class CandidatesList extends Component{
     constructor(props){
         super(props)
         this.state = {
-            candidateFilter: 'all',
+            submissionsFilter: 'all',
             candidates: [],
             page: 0,
             totalPages: 0,
             totalHits: 0,
         }
-        this.handleCandidateFilter = this.handleCandidateFilter.bind(this)
-        this.setNextCandidate = this.setNextCandidate.bind(this)
-        this.updateCandidates = this.updateCandidates.bind(this)
+      this.handleSubmissionFilter = this.handleSubmissionFilter.bind(this)
     }
 
     componentDidMount(){
-        this.getCandidates(this.state.candidateFilter)
+      
     }
 
-    updateCandidates(response){
-        this.setState({
-            candidates: response.hits,
-            totalPages: response.nbPages,
-            totalHits: response.nbHits,
-        });
+    updateCandidates(){
+    
+    }
+    componentDidUpdate(PrevProps){
+        console.log('sublist',this.props)
     }
 
-    handleCandidateFilter(event,value){
+    handleSubmissionFilter(event,value){
         if(value){
-            this.setState({candidateFilter:value})
+            this.setState({submissionsFilter:value})
         }
-        this.getCandidates(value)
-    }
-
-    getCandidates(filter){
-        let filters = ''
-        switch (filter) {
-            case 'all': filters = 'stage:resume OR stage:pre-review AND status:accepted OR status:rejected OR status:in-review'
-                break;
-            case 'accepted': filters = 'stage:resume AND status:accepted'
-                break;
-            case 'rejected': filters = 'stage:resume AND status:rejected'
-                break;
-            case 'in-review': filters = 'status:in-review'
-                break;
-            default:
-                break;
-        }
-        const index = createAlgoliaIndex(ALGOLIA_INDEX.candidates);
-        index.search('', {
-            "filters":filters,
-            "hitsPerPage": nbCandidates,
-            "page": this.state.page,
-            "restrictSearchableAttributes": '',
-            "analytics": false,
-            "attributesToRetrieve": "*",
-        }).then(res => {
-            this.updateCandidates(res);
-        }).catch(err => {
-            console.error("Search stage and status total error: ", err.message);
-        });
-    }
-    setNextCandidate(currentUID){
-        const {candidates} = this.state
-       console.log(currentUID,candidates)
-      //this.props.setCandidate(nextUID)
 
     }
+
+    
 
     pagination(val) {
         const newPage = this.state.page + val;
@@ -114,20 +81,20 @@ class CandidatesList extends Component{
     }
 
     render(){
-        const {candidateFilter, candidates} = this.state;
+        const {submissionsFilter, candidates} = this.state;
         const {classes, selectedCandidate} = this.props;
 
         return(
         <Grid container direction="column" style={{height:'100%'}}>
             <Grid item>
                 <ToggleButtonGroup
-                value={candidateFilter}
+                value={submissionsFilter}
                 exclusive
-                onChange={this.handleCandidateFilter}
+                onChange={this.handleSubmissionFilter}
                 style={{display: 'flex', justifyContent: 'center', boxShadow: 'none'}}
                 >
                     <ToggleButton className={classes.toggleButton} value="all">All</ToggleButton>
-                    <ToggleButton className={classes.toggleButton} style={{flex:2}} value="in-review">In review</ToggleButton>
+                    <ToggleButton className={classes.toggleButton} style={{flex:2}} value="pending">pending</ToggleButton>
                     <ToggleButton className={classes.toggleButton} style={{flex:2}} value="accepted">Accepted</ToggleButton>
                     <ToggleButton className={classes.toggleButton} style={{flex:2}} value="rejected">Rejected</ToggleButton>
                 </ToggleButtonGroup>
@@ -167,19 +134,40 @@ class CandidatesList extends Component{
             </Grid>
 
             <Grid item xs style={{overflowY: 'scroll'}}>
-                <List disablePadding>
-                    {candidates.map((x, i) =>
-                        <CandidateItem
-                            onClick={()=>{this.props.setCandidate(x.objectID)}}
-                            data={x}
+                { <List disablePadding>
+                    {this.props.all && this.props[this.state.submissionsFilter].map((x, i) => {
+                    
+                        return(
+                            <SubmissionItem
+                            onClick={()=>{this.props.setSubmission(x.id)}}
+                            data={{name:x.displayName,status:x.submissionStatus,createdAt:Math.round(x.createdAt.getTime()/1000)}}
                             key={`${this.state.page}-${i}`}
-                            selected={x.objectID === selectedCandidate}
-                        />)
+                            selected={x.UID === selectedCandidate}
+                        />
+                        )
                     }
-                </List>
+                       )
+                    }
+                </List> } 
             </Grid>
 
         </Grid>)
     }
 }
-export default withStyles(styles)(CandidatesList);
+
+const enhance = compose(
+    connect(({ firestore }) => ({
+      all: firestore.ordered.submissions,
+      accepted: firestore.ordered.acceptedSubmissions,
+      pending: firestore.ordered.pendingSubmissions,
+      rejected: firestore.ordered.rejectedSubmissions,
+    }))
+  );
+
+  export default enhance(
+      compose(  
+        withStyles(styles)(CandidatesList)
+      )
+  );
+  
+

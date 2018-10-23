@@ -10,14 +10,8 @@ import moment from 'moment';
 function CandidateItem(props){
     const {data} = props;
 
-    let interests = '';
 
-    if (data.careerInterests) {
-        for (let i = 0; i < data.careerInterests.length; i++) {
-            interests += data.careerInterests[i];
-            if (i < data.careerInterests.length - 1) interests += ', ';
-        }
-    }
+  
     moment.updateLocale('en', {
         relativeTime : {
             future: "in %s",
@@ -34,21 +28,20 @@ function CandidateItem(props){
             MM: "%d M",
             y:  "1 y",
             yy: "%d y"
-        }
+        } 
     });
 
-    const timestamp = data.updatedAt ? moment.unix(data.updatedAt).fromNow()
-        : moment.unix(data.createdAt).fromNow();
-
+    //const timestamp = data.updatedAt ? moment.unix(data.updatedAt).fromNow()
+    const timestamp = moment.unix(data.createdAt).fromNow();
     return(
         <ListItem onClick={props.onClick} key={data.objectID} button selected={props.selected}>
             <Avatar><PersonIcon /></Avatar>
             <ListItemText
-                primary={`${data.firstName} ${data.lastName}`}
-                secondary={interests}
+                primary={`${data.name}`}
+              //  secondary={interests}
             />
             <ListItemText
-                primary={data.status.replace('-', ' ')}
+                primary={data.status}
                 secondary={timestamp}
                 style={{textAlign: 'right', paddingRight: 0, minWidth: 70}}
             />

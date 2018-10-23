@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import moment from 'moment';
 import {withStyles} from '@material-ui/core/styles';
-import {getLastSubmission,acceptSubmission} from '../../firebase/firestore';
 import { Document,Page } from 'react-pdf';
 
 import Grid from '@material-ui/core/Grid';
@@ -15,6 +14,11 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import Avatar from '@material-ui/core/Avatar';
 import PersonIcon from '@material-ui/icons/Person';
 import Chip from '@material-ui/core/Chip';
+
+
+//redux 
+import { compose } from "redux";
+import { connect } from "react-redux";
 
 const styles = theme => ({
     root: {
@@ -82,21 +86,22 @@ class Submission extends Component {
         };
     }
     componentDidUpdate(prevProps){
-        if(prevProps.UID !== this.props.UID){
-            this.setState({isLoading:true,submission:false})
-            getLastSubmission(this.props.UID,this.setSubmission)
+        if(prevProps.id !== this.props.id){
+            let submissions = Object.assign(this.props.all,this.props.accepted)
+            console.log('submissions:',submissions)
+            this.setState({isLoading:true,submission:submissions[this.props.id]})
+           console.log(this.props.id)
         }
     }
     setSubmission(doc){
         console.log(doc)
-        this.setState({isLoading:false,submission:doc.data(),submissionID:doc.id})
+        this.setState({submission:doc.data(),submissionID:doc.id})
     }
     handleRejection(){
         console.log('reject',this.state.submissionID)
     }
     handleAcception(){
         console.log('accept',this.state.submissionID)
-    acceptSubmission(this.state.submissionID,this.props.UID,(e)=>{console.log(e)})
     }
     onDocumentLoadSuccess = ({ numPages }) => {
         this.setState({ numPages });
@@ -201,4 +206,20 @@ class Submission extends Component {
        
     }
 }
-export default withStyles(styles)(Submission);
+
+const enhance = compose(
+    connect(({ firestore }) => ({
+      all: firestore.data.submissions,
+      accepted: firestore.data.acceptedSubmissions,
+      pending: firestore.data.pendingSubmissions,
+      rejected: firestore.data.rejectedSubmissions,
+    }))
+  );
+
+  export default enhance(
+      compose(  
+        withStyles(styles)(Submission)
+      )
+  );
+  
+
