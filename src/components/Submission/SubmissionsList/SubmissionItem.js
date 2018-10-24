@@ -33,12 +33,17 @@ function CandidateItem(props){
 
     //const timestamp = data.updatedAt ? moment.unix(data.updatedAt).fromNow()
     const timestamp = moment.unix(data.createdAt).fromNow();
+    let viewer = ''
+    if(data.operator){
+        viewer = `last seen by ${data.operator.displayName.split(' ')[0]}`
+    }
+
     return(
-        <ListItem onClick={props.onClick} key={data.objectID} button selected={props.selected}>
+        <ListItem onClick={props.onClick} key={data.key} button selected={props.selected}>
             <Avatar><PersonIcon /></Avatar>
             <ListItemText
                 primary={`${data.name}`}
-              //  secondary={interests}
+                secondary={viewer}
             />
             <ListItemText
                 primary={data.status}

@@ -10,15 +10,20 @@ import Button from '@material-ui/core/Button';
 import FlagIcon from '@material-ui/icons/Flag';
 import AcceptIcon from '@material-ui/icons/Done';
 import RejectIcon from '@material-ui/icons/Close';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import Avatar from '@material-ui/core/Avatar';
 import PersonIcon from '@material-ui/icons/Person';
 import Chip from '@material-ui/core/Chip';
 
+import confirmationDialog from '../ConfirmationDialog'
 
 //redux 
+import { COLLECTIONS} from "../../constants/firestore";
 import { compose } from "redux";
+import { withHandlers } from "recompose";
 import { connect } from "react-redux";
+import { withFirestore } from "../../utilities/withFirestore";
+import ConfirmationDailog from '../ConfirmationDialog';
+
 
 const styles = theme => ({
     root: {
@@ -79,36 +84,67 @@ class Submission extends Component {
         this.setSubmission = this.setSubmission.bind(this);
         this.handleRejection = this.handleRejection.bind(this);
         this.handleAcception = this.handleAcception.bind(this);
+        this.proccessSubmission = this.props.proccessSubmission.bind(this)
+        this.closeDialog = this.closeDialog.bind(this)
         this.state = {
-            isLoading: false,
             submission: false,
-            submissionID:''
+            submissionID:'',
+            submissionStatus:'',
+            confirmationDialog:null
         };
     }
+    
     componentDidUpdate(prevProps){
+        const {submissionID} = this.state
         if(prevProps.id !== this.props.id){
             let submissions = Object.assign(this.props.all,this.props.accepted)
             console.log('submissions:',submissions)
-            this.setState({isLoading:true,submission:submissions[this.props.id]})
-           console.log(this.props.id)
+            if(submissionID!==''){
+               this.props.returnSubmission(submissionID)
+            }
+            this.setState({submissionID:this.props.id,submission:submissions[this.props.id],submissionStatus:submissions[this.props.id].submissionStatus})
+            this.props.holdSubmission(this.props.id)
         }
     }
+    componentDidMount() {
+        window.addEventListener("beforeunload", (ev) => 
+        {  
+            const {submissionStatus,submissionID} = this.state
+            if(submissionStatus ==='pending' || 'proccessing'){
+            this.props.returnSubmission(submissionID)
+            }
+            ev.preventDefault();
+           return ev.returnValue = 'Are you sure you want to close?';
+        });
+    }
+    
+    componentWillUnmount() {
+        window.removeEventListener('onbeforeunload', this.handleWindowClose);
+    }
+  
     setSubmission(doc){
         console.log(doc)
-        this.setState({submission:doc.data(),submissionID:doc.id})
     }
     handleRejection(){
-        console.log('reject',this.state.submissionID)
+        this.props.proccessSubmission(this.state.submissionID,'rejected',this.state.submission.UID)       
     }
     handleAcception(){
-        console.log('accept',this.state.submissionID)
+        this.props.proccessSubmission(this.state.submissionID,'accepted',this.state.submission.UID)
     }
     onDocumentLoadSuccess = ({ numPages }) => {
         this.setState({ numPages });
-    }    
+    }  
+    closeDialog(){
+        this.setState({confirmationDialog:null})
+    }  
     render(){
-        const {submission, isLoading} = this.state;
+
+        const {submission,confirmationDialog} = this.state;
         const {classes, showFeedbackFormHandler} = this.props;
+        const firstName = (submission.displayName?submission.displayName.split(' ')[0]:'')
+        const acceptedDailog = {title:`are you sure you want to accept ${firstName}?`,body:'this will send the candidate with calender invite for the online interview',request:{action:()=>{this.handleAcception(),this.closeDialog()},label:'yes'},cancel:{action:this.closeDialog,label:'cancel'}}
+        const rejedctedDailog = {title:`are you sure you want to reject ${firstName}?`,
+        body:`this will update ${submission.displayName} account to pre-review re`,request:{action:()=>{this.handleRejection(),this.closeDialog()},label:'yes'},cancel:{action:this.closeDialog,label:'cancel'}}
 
         const pages = [];
         for (let i = 0; i < this.state.numPages; i++) {
@@ -129,7 +165,7 @@ class Submission extends Component {
                 }
             }
 
-            return(
+            return(<div>
                 <Grid container direction="column" wrap="nowrap" className={classes.root}>
 
                     <Grid item>
@@ -150,11 +186,13 @@ class Submission extends Component {
                                 <Button variant="fab" className={classes.greyButton} aria-label="reject">
                                     <FlagIcon />
                                 </Button>
-                                <Button variant="fab" className={classes.greenButton} onClick={this.handleAcception} aria-label="accept">
+                                <Button variant="fab" className={classes.greenButton} 
+                                onClick={()=>{this.setState({confirmationDialog:acceptedDailog})}}
+                                aria-label="accept">
                                     <AcceptIcon />
                                 </Button>
                                 <Button variant="fab" className={classes.redButton} aria-label="reject"
-                                onClick={()=>{showFeedbackFormHandler();this.handleRejection()}}>
+                                onClick={()=>{this.setState({confirmationDialog:rejedctedDailog})}}>
                                     <RejectIcon />
                                 </Button>
                             </Grid>
@@ -184,14 +222,8 @@ class Submission extends Component {
                         </Document>
                     </Grid>
                 </Grid>
-            );
-        }else if(isLoading){
-            return(
-                <Grid container alignItems="center" justify="center"
-                    style={{height: '100%'}}
-                >
-                    <CircularProgress size={75} />
-                </Grid>
+                {confirmationDialog&& <ConfirmationDailog data={confirmationDialog}/>}
+                </div>
             );
         }else{
             return(
@@ -208,6 +240,61 @@ class Submission extends Component {
 }
 
 const enhance = compose(
+
+    withFirestore,
+    // Handler functions as props
+  withHandlers({
+      holdSubmission: props => (submissionID) =>
+      props.firestore.update(
+        { collection: COLLECTIONS.submissions, doc: submissionID },
+        {   operator:{
+            displayName:props.displayName,
+            UID: props.uid,
+            },
+            viewedAt: props.firestore.FieldValue.serverTimestamp(),
+            submissionStatus:'processing'
+        //  updatedAt: props.firestore.FieldValue.serverTimestamp()
+        }
+      ),
+    returnSubmission: props => (submissionID) =>
+      props.firestore.update(
+        { collection: COLLECTIONS.submissions, doc: submissionID },
+        {   
+            submissionStatus:'pending'
+        //  updatedAt: props.firestore.FieldValue.serverTimestamp()
+        }
+      ),proccessSubmission: props => (submissionID,submissionStatus,candidateUID) =>{
+        props.firestore.update(
+            { collection: COLLECTIONS.submissions, doc: submissionID },
+            {submissionStatus,
+            reviewedBy: props.uid,
+             reviewedAt: props.firestore.FieldValue.serverTimestamp()
+            }
+          )
+          let updateObject = {}
+          switch (submissionStatus) {
+              case 'accepted':
+                  updateObject = {stage:'resume',status:'accepted',operator:props.uid,updatedAt:props.firestore.FieldValue.serverTimestamp()}
+                  break;
+                case 'rejected':
+                  updateObject = {stage:'pre-review',status:'rejected',operator:props.uid,updatedAt:props.firestore.FieldValue.serverTimestamp()}
+                  break;
+              default:
+                  break;
+          }
+          props.firestore.update(
+            { collection: COLLECTIONS.users, doc: candidateUID },
+            updateObject
+          )
+          props.firestore.update(
+            { collection: COLLECTIONS.candidates, doc: candidateUID },
+            updateObject
+          )
+
+      }
+      
+  }),
+
     connect(({ firestore }) => ({
       all: firestore.data.submissions,
       accepted: firestore.data.acceptedSubmissions,

@@ -94,7 +94,7 @@ const enhance = compose(
             const submissionsListenerSettings = {collection:COLLECTIONS.submissions,
                                                     storeAs:x.storeName, 
                                                     where:x.query,orderBy:[['createdAt', 'desc']],
-                                                    limit: 50}
+                                                    limit: 10}
             this.props.loadData(submissionsListenerSettings);
         })
       },

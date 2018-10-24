@@ -1,5 +1,6 @@
 export const COLLECTIONS = {
     users:'users',
+    candidates:'candidates',
     submissions:'submissions',
     upcomingEvents:'upcomingEvents',
     profiles:'profiles',

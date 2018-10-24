@@ -16,9 +16,12 @@ export const withFirestore = (WrappedComponent) => {
       let auth = this.props.authUser 
       if(auth){
         uid = auth.uid
+        const displayName = auth.displayName 
+        console.log('operator uid:',auth)
         component = (<WrappedComponent
         {...this.props}
         uid = {uid}
+        displayName = {displayName}
         auth = {this.props.authUser} 
         dispatch={this.context.store.dispatch}
         firestore={this.context.store.firestore}
