@@ -48,9 +48,9 @@ const navigationRoutes = [
         icon: <MailIcon />,
         route: ROUTES.mail,
     }, {
-        label: 'Resumes',
+        label: 'Submissions',
         icon: <DescriptionIcon />,
-        route: ROUTES.resumes,
+        route: ROUTES.submissions,
     }
 ];
 function NavigationItems(props){

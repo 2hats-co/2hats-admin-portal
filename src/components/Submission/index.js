@@ -153,7 +153,7 @@ class Submission extends Component {
     render(){
     
     
-        const {submission,confirmationDialog} = this.state;
+        const {submission,confirmationDialog,submissionStatus} = this.state;
         const {classes, showFeedbackFormHandler} = this.props;
         const firstName = (submission.displayName?submission.displayName.split(' ')[0]:'')
         const acceptedDailog = {title:`are you sure you want to accept ${firstName}?`,body:'this will send the candidate with calender invite for the online interview',request:{action:()=>{this.handleAcception(),this.closeDialog()},label:'yes'},cancel:{action:this.closeDialog,label:'cancel'}}
@@ -196,7 +196,7 @@ class Submission extends Component {
                                     </Grid>
                                 </Grid>
                             </Grid>
-                            <Grid item>
+                            {(submissionStatus==='pending'|| submissionStatus ==='processing')&&<Grid item>
                                 <Button variant="fab" className={classes.greyButton} aria-label="reject">
                                     <FlagIcon />
                                 </Button>
@@ -209,7 +209,7 @@ class Submission extends Component {
                                 onClick={()=>{this.setState({confirmationDialog:rejedctedDailog})}}>
                                     <RejectIcon />
                                 </Button>
-                            </Grid>
+                            </Grid>}
                         </Grid>
                     </Grid>
 
