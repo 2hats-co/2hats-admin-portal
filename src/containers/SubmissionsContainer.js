@@ -69,7 +69,8 @@ class SubmissionsContainer extends Component{
 const filters = [{storeName:'acceptedSubmissions',query:['submissionStatus','==','accepted'],sort:[['createdAt', 'desc']]},
 {storeName:'rejectedSubmissions',query:['submissionStatus','==','rejected'],sort:[['createdAt', 'desc']]},
 {storeName:'pendingSubmissions',query:['submissionStatus','==','pending'],sort:[['createdAt', 'asc']]},
-{storeName:'submissions',query:[],sort:[['createdAt', 'desc']]}
+{storeName:'submissions',query:[],sort:[['createdAt', 'desc']]
+}
 ]
 const enhance = compose(
     // add redux store (from react context) as a prop

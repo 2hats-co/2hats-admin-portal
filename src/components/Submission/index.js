@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import moment from 'moment';
-import {withStyles} from '@material-ui/core/styles';
-import { Document,Page } from 'react-pdf';
 
+// mui
+import {withStyles} from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-
 import Button from '@material-ui/core/Button';
 import FlagIcon from '@material-ui/icons/Flag';
 import AcceptIcon from '@material-ui/icons/Done';
@@ -13,17 +12,17 @@ import RejectIcon from '@material-ui/icons/Close';
 import Avatar from '@material-ui/core/Avatar';
 import PersonIcon from '@material-ui/icons/Person';
 import Chip from '@material-ui/core/Chip';
-
-import confirmationDialog from '../ConfirmationDialog'
-
 //redux 
 import { COLLECTIONS} from "../../constants/firestore";
 import { compose } from "redux";
 import { withHandlers } from "recompose";
 import { connect } from "react-redux";
 import { withFirestore } from "../../utilities/withFirestore";
-import ConfirmationDailog from '../ConfirmationDialog';
 
+
+import ConfirmationDailog from '../ConfirmationDialog';
+import { Document,Page } from 'react-pdf';
+import EduExpCard from './EduExpCard';
 
 const styles = theme =>{ console.log(theme) 
     return({
@@ -109,15 +108,7 @@ class Submission extends Component {
         }
     }
     componentDidMount() {
-        // window.addEventListener("beforeunload", (ev) => 
-        // {  
-        //     const {submissionStatus,submissionID} = this.state
-        //     if(submissionStatus ==='pending' || 'proccessing'){
-        //     this.props.returnSubmission(submissionID)
-        //     }
-        //     ev.preventDefault();
-        //    return ev.returnValue = 'Are you sure you want to close?';
-        // });
+       
     }
     
     componentWillUnmount() {
@@ -127,6 +118,9 @@ class Submission extends Component {
     setSubmission(id){
         const {submissionID,submissionStatus} = this.state
         let submissions = Object.assign(this.props.all,this.props.accepted)
+        submissions = Object.assign(submissions,this.props.rejected)
+        submissions = Object.assign(submissions,this.props.pending)
+
         console.log('submissions:',submissions)
        
         this.setState({submissionID:id,submission:submissions[id],submissionStatus:submissions[id].submissionStatus})
@@ -168,7 +162,7 @@ class Submission extends Component {
                 case 'accepted':
                 case 'rejected':
                 case 'processing':
-                submissionStatusLabel = `(${submissionStatus}) - `
+                submissionStatusLabel = ` - ${submissionStatus} by ${submission.operator&& submission.operator.displayName.split(' ')[0]} `
                 console.log('submission',submission)
                     break;
             
@@ -205,7 +199,7 @@ class Submission extends Component {
                                         <Avatar className={classes.avatar}><PersonIcon /></Avatar>
                                     </Grid>
                                     <Grid item xs>
-                                        <Typography variant="headline">{submission.displayName} </Typography>
+                                        <Typography variant="headline">{submission.displayName} {submissionStatusLabel} </Typography>
                                         <Typography variant="body2">{interests}</Typography>
                                         <Typography variant="body1">Submitted on {timestamp}</Typography>
                                     </Grid>
@@ -242,16 +236,23 @@ class Submission extends Component {
                             <Chip color="primary" label={x} key={x} className={classes.chip} />
                         )}
                     </Grid>
-
                     <Grid item >
-                        <Typography className={classes.subheading} variant="subheading">Resume:</Typography>
-                        <Document 
+                        <Typography className={classes.subheading} variant="subheading">{submission.submissionContent.process === 'upload' ?'Resume':'profile'}:</Typography>
+                        {submission.submissionContent.process === 'upload' &&<Document 
                             onLoadSuccess={this.onDocumentLoadSuccess}
                             file={submission.submissionContent.resumeFile.downloadURL}
                             className={classes.pdfDocument}
                         >
                             { pages }
-                        </Document>
+                        </Document>}
+                        {submission.submissionContent.process === 'build' && 
+                        <div>
+                        <Typography className={classes.subheading} variant="subheading">education</Typography>
+                        {submission.submissionContent.education.map(x=> <EduExpCard title={x.degree} label={x.major} description={x.description} startDate={x.startDate} endDate={x.endDate}/>)}
+                        <Typography className={classes.subheading} variant="subheading">experince</Typography>
+                        {submission.submissionContent.experience.map(x=> <EduExpCard title={`${x.title} - ${x.type}`} label={x.organisation} description={x.description} startDate={x.startDate} endDate={x.endDate}/>)}
+                        </div>
+                        }
                     </Grid>
                 </Grid>
                 {confirmationDialog&& <ConfirmationDailog data={confirmationDialog}/>}
@@ -306,10 +307,15 @@ const enhance = compose(
           let updateObject = {}
           switch (submissionStatus) {
               case 'accepted':
-                  updateObject = {stage:'resume',status:'accepted',operator:props.uid,updatedAt:props.firestore.FieldValue.serverTimestamp()}
+                  updateObject = {stage:'resume',status:'accepted',
+                  operator:props.uid,
+                  updatedAt:props.firestore.FieldValue.serverTimestamp()}
                   break;
                 case 'rejected':
-                  updateObject = {stage:'pre-review',status:'rejected',operator:props.uid,updatedAt:props.firestore.FieldValue.serverTimestamp()}
+                  updateObject = {stage:'pre-review',
+                  status:'rejected',
+                  operator:props.uid,
+                  updatedAt:props.firestore.FieldValue.serverTimestamp()}
                   break;
               default:
                   break;

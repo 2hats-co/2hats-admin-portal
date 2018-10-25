@@ -4,7 +4,6 @@ import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 
 function LoadingCard(props){
-    console.log('loading...')
     return (
         <Grid container alignContent="center" justify="center" style={{height:'100vh'}}>
             <Paper style={{width:300,height:300, margin:'auto'}}>

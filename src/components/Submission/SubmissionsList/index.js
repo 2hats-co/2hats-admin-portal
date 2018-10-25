@@ -94,7 +94,7 @@ class CandidatesList extends Component{
                 style={{display: 'flex', justifyContent: 'center', boxShadow: 'none'}}
                 >
                     <ToggleButton className={classes.toggleButton} value="all">All</ToggleButton>
-                    <ToggleButton className={classes.toggleButton} style={{flex:2}} value="pending">pending</ToggleButton>
+                    <ToggleButton className={classes.toggleButton} style={{flex:2}} value="pending">Pending</ToggleButton>
                     <ToggleButton className={classes.toggleButton} style={{flex:2}} value="accepted">Accepted</ToggleButton>
                     <ToggleButton className={classes.toggleButton} style={{flex:2}} value="rejected">Rejected</ToggleButton>
                 </ToggleButtonGroup>
