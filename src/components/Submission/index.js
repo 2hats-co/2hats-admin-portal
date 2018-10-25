@@ -25,9 +25,11 @@ import { withFirestore } from "../../utilities/withFirestore";
 import ConfirmationDailog from '../ConfirmationDialog';
 
 
-const styles = theme => ({
+const styles = theme =>{ console.log(theme) 
+    return({
+   
     root: {
-        height: '100%',
+        height: '900px',
         overflowY: 'scroll',
         padding: 40,
         background: '#fff',
@@ -75,7 +77,7 @@ const styles = theme => ({
         boxShadow: '0 0 0 1px rgba(0,0,0,.1)',
         marginBottom: 8,
     },
-});
+})};
 
 class Submission extends Component {
     
@@ -160,6 +162,19 @@ class Submission extends Component {
         const rejedctedDailog = {title:`are you sure you want to reject ${firstName}?`,
         body:`this will update ${firstName} account to pre-review rejected`,request:{action:()=>{this.handleRejection(),this.closeDialog()},label:'yes'},cancel:{action:this.closeDialog,label:'cancel'}}
 
+
+        let submissionStatusLabel = ''
+            switch (submissionStatus) {
+                case 'accepted':
+                case 'rejected':
+                case 'processing':
+                submissionStatusLabel = `(${submissionStatus}) - `
+                console.log('submission',submission)
+                    break;
+            
+                default:
+                    break;
+            }
         const pages = [];
         for (let i = 0; i < this.state.numPages; i++) {
             pages.push(<Page pageNumber={i + 1} key={i} width={window.innerWidth - 800 - 64}
@@ -178,7 +193,7 @@ class Submission extends Component {
                     if (i < submission.submissionContent.careerInterests.value.length - 1) interests += ', ';
                 }
             }
-
+            //TODO: accept  
             return(<div>
                 <Grid container direction="column" wrap="nowrap" className={classes.root}>
 
@@ -190,7 +205,7 @@ class Submission extends Component {
                                         <Avatar className={classes.avatar}><PersonIcon /></Avatar>
                                     </Grid>
                                     <Grid item xs>
-                                        <Typography variant="headline">{submission.displayName}</Typography>
+                                        <Typography variant="headline">{submission.displayName} </Typography>
                                         <Typography variant="body2">{interests}</Typography>
                                         <Typography variant="body1">Submitted on {timestamp}</Typography>
                                     </Grid>
@@ -228,7 +243,7 @@ class Submission extends Component {
                         )}
                     </Grid>
 
-                    <Grid item>
+                    <Grid item >
                         <Typography className={classes.subheading} variant="subheading">Resume:</Typography>
                         <Document 
                             onLoadSuccess={this.onDocumentLoadSuccess}

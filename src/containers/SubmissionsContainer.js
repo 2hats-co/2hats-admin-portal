@@ -66,10 +66,10 @@ class SubmissionsContainer extends Component{
     }
 }
 
-const filters = [{storeName:'acceptedSubmissions',query:['submissionStatus','==','accepted']},
-{storeName:'rejectedSubmissions',query:['submissionStatus','==','rejected']},
-{storeName:'pendingSubmissions',query:['submissionStatus','==','pending']},
-{storeName:'submissions',query:[]}
+const filters = [{storeName:'acceptedSubmissions',query:['submissionStatus','==','accepted'],sort:[['createdAt', 'desc']]},
+{storeName:'rejectedSubmissions',query:['submissionStatus','==','rejected'],sort:[['createdAt', 'desc']]},
+{storeName:'pendingSubmissions',query:['submissionStatus','==','pending'],sort:[['createdAt', 'asc']]},
+{storeName:'submissions',query:[],sort:[['createdAt', 'desc']]}
 ]
 const enhance = compose(
     // add redux store (from react context) as a prop
@@ -86,8 +86,8 @@ const enhance = compose(
         filters.map((x)=>{
             const submissionsListenerSettings = {collection:COLLECTIONS.submissions,
                                                     storeAs:x.storeName, 
-                                                    where:x.query,orderBy:[['createdAt', 'desc']],
-                                                    limit: 10}
+                                                    where:x.query,orderBy:x.sort,
+                                                    limit: 20}
             this.props.loadData(submissionsListenerSettings);
         })
       },

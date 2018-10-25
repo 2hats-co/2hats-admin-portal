@@ -140,7 +140,7 @@ class CandidatesList extends Component{
                         return(
                             <SubmissionItem
                             onClick={()=>{this.props.setSubmission(x.id)}}
-                            data={{key:x.id,name:x.displayName,status:x.submissionStatus,createdAt:Math.round(x.createdAt.getTime()/1000),operator:x.operator}}
+                            data={{key:x.id,name:x.displayName,status:x.submissionStatus,createdAt:x.createdAt.seconds,operator:x.operator}}
                             key={`${this.state.page}-${i}`}
                             selected={x.UID === selectedCandidate}
                         />

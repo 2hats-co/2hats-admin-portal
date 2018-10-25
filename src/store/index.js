@@ -46,5 +46,5 @@ export function configureStore(initialState, history) {
 	return store;
 }
 export const auth = firebase.auth();
-export const firestore = firebase.firestore();
+export const firestore = firebase.firestore().settings({timestampsInSnapshots: true});
 export const functions = firebase.functions();
