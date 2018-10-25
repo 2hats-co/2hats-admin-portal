@@ -86,6 +86,7 @@ class Submission extends Component {
         this.handleAcception = this.handleAcception.bind(this);
         this.proccessSubmission = this.props.proccessSubmission.bind(this)
         this.closeDialog = this.closeDialog.bind(this)
+        this.getNextSubmission = this.getNextSubmission.bind(this)
         this.state = {
             submission: false,
             submissionID:'',
@@ -95,41 +96,53 @@ class Submission extends Component {
     }
     
     componentDidUpdate(prevProps){
-        const {submissionID} = this.state
+       const {submissionStatus,submissionID} = this.state
         if(prevProps.id !== this.props.id){
-            let submissions = Object.assign(this.props.all,this.props.accepted)
-            console.log('submissions:',submissions)
             if(submissionID!==''){
-               this.props.returnSubmission(submissionID)
+                if(submissionStatus ==='pending' ||submissionStatus ==='processing'){
+                    this.props.returnSubmission(submissionID)
+                }
             }
-            this.setState({submissionID:this.props.id,submission:submissions[this.props.id],submissionStatus:submissions[this.props.id].submissionStatus})
-            this.props.holdSubmission(this.props.id)
+            this.setSubmission(this.props.id)
         }
     }
     componentDidMount() {
-        window.addEventListener("beforeunload", (ev) => 
-        {  
-            const {submissionStatus,submissionID} = this.state
-            if(submissionStatus ==='pending' || 'proccessing'){
-            this.props.returnSubmission(submissionID)
-            }
-            ev.preventDefault();
-           return ev.returnValue = 'Are you sure you want to close?';
-        });
+        // window.addEventListener("beforeunload", (ev) => 
+        // {  
+        //     const {submissionStatus,submissionID} = this.state
+        //     if(submissionStatus ==='pending' || 'proccessing'){
+        //     this.props.returnSubmission(submissionID)
+        //     }
+        //     ev.preventDefault();
+        //    return ev.returnValue = 'Are you sure you want to close?';
+        // });
     }
     
     componentWillUnmount() {
         window.removeEventListener('onbeforeunload', this.handleWindowClose);
     }
   
-    setSubmission(doc){
-        console.log(doc)
+    setSubmission(id){
+        const {submissionID,submissionStatus} = this.state
+        let submissions = Object.assign(this.props.all,this.props.accepted)
+        console.log('submissions:',submissions)
+       
+        this.setState({submissionID:id,submission:submissions[id],submissionStatus:submissions[id].submissionStatus})
+        if(submissions[id].submissionStatus ==='pending'){
+            this.props.holdSubmission(id)
+        }
+       
     }
     handleRejection(){
-        this.props.proccessSubmission(this.state.submissionID,'rejected',this.state.submission.UID)       
+        this.props.proccessSubmission(this.state.submissionID,'rejected',this.state.submission.UID)
+        this.getNextSubmission()
     }
     handleAcception(){
         this.props.proccessSubmission(this.state.submissionID,'accepted',this.state.submission.UID)
+        this.getNextSubmission()
+    }
+    getNextSubmission(){
+        this.setSubmission(this.props.pendingArray[0].id)
     }
     onDocumentLoadSuccess = ({ numPages }) => {
         this.setState({ numPages });
@@ -138,13 +151,14 @@ class Submission extends Component {
         this.setState({confirmationDialog:null})
     }  
     render(){
-
+    
+    
         const {submission,confirmationDialog} = this.state;
         const {classes, showFeedbackFormHandler} = this.props;
         const firstName = (submission.displayName?submission.displayName.split(' ')[0]:'')
         const acceptedDailog = {title:`are you sure you want to accept ${firstName}?`,body:'this will send the candidate with calender invite for the online interview',request:{action:()=>{this.handleAcception(),this.closeDialog()},label:'yes'},cancel:{action:this.closeDialog,label:'cancel'}}
         const rejedctedDailog = {title:`are you sure you want to reject ${firstName}?`,
-        body:`this will update ${submission.displayName} account to pre-review re`,request:{action:()=>{this.handleRejection(),this.closeDialog()},label:'yes'},cancel:{action:this.closeDialog,label:'cancel'}}
+        body:`this will update ${firstName} account to pre-review rejected`,request:{action:()=>{this.handleRejection(),this.closeDialog()},label:'yes'},cancel:{action:this.closeDialog,label:'cancel'}}
 
         const pages = [];
         for (let i = 0; i < this.state.numPages; i++) {
@@ -203,7 +217,10 @@ class Submission extends Component {
                         <Typography className={classes.subheading} variant="subheading">Bio:</Typography>
                         <Typography variant="body1">{submission.submissionContent.bio}</Typography>
                     </Grid>
-
+                    <Grid item>
+                        <Typography className={classes.subheading} variant="subheading">Available Days:</Typography>
+                        <Typography variant="body1">{submission.submissionContent.availableDays}</Typography>
+                    </Grid>
                     <Grid item>
                         <Typography className={classes.subheading} variant="subheading">Skills:</Typography>
                         {submission.submissionContent.skills.map(x =>
@@ -299,6 +316,7 @@ const enhance = compose(
       all: firestore.data.submissions,
       accepted: firestore.data.acceptedSubmissions,
       pending: firestore.data.pendingSubmissions,
+      pendingArray: firestore.ordered.pendingSubmissions,
       rejected: firestore.data.rejectedSubmissions,
     }))
   );

@@ -17,27 +17,20 @@ class SubmissionsContainer extends Component{
     constructor(props){
         super(props)
      //   this.candidates = React.createRef()
-        this.setCandidate = this.setCandidate.bind(this)
+    //    this.setCandidate = this.setCandidate.bind(this)
         this.getNextCandidate = this.getNextCandidate.bind(this)
         this.state = {
-            candidateUID: '',
+            submissionID: '',
             showFeedbackForm: false,
         }
         this.handleShowFeedbackForm = this.handleShowFeedbackForm.bind(this);
         this.setSubmission = this.setSubmission.bind(this)
     }
     getNextCandidate = () =>{
-        if(this.candidates){
-            console.log(this.candidates)
-            //this.candidates.setNextCandidate(this.state.candidateUID)
-        }
-      
+
     }
     componentDidMount(){
  
-    }
-    setCandidate(uid){
-        this.setState({ candidateUID: uid, showFeedbackForm: false });
     }
     setSubmission(id){
         this.setState({ submissionID: id, showFeedbackForm: false });
