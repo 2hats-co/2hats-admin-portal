@@ -9,9 +9,6 @@ import moment from 'moment';
 
 function CandidateItem(props){
     const {data} = props;
-
-
-  
     moment.updateLocale('en', {
         relativeTime : {
             future: "in %s",
