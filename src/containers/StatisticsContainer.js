@@ -18,10 +18,10 @@ const DATE_FORMAT = 'YYYY-MM-DD'
 
 const timestampLabel = (x,timeStep)=>{
     switch (timeStep) {
-        case 'weekly':
+        case 'weekly'://return `${moment(x).fromNow()}`
         case 'daily':return `${moment(x).tz('Australia/Sydney').format('Do MMM')}`
         case 'monthly':return `${moment(x).tz('Australia/Sydney').format('MMM')}`
-        case 'hourly':return `${moment(x).tz('Australia/Sydney').format('h a D-M')}`
+        case 'hourly':return `${moment(x).tz('Australia/Sydney').format('ha ddd')}`
         default:
             break;
     }
