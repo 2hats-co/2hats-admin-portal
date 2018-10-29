@@ -162,7 +162,7 @@ class StatisticsContainer extends Component{
         const lineType = 'total'
         if (statsData||isLoading){
         return(
-            <div>
+            <div style={{height: 'calc(100vh - 64px)',overflowX:'hidden',overflowY:'auto'}}>
                 <TimeBar timeStep={timeStep} changeHandler={this.handleChange}/>
             <Grid container>
                 <Grid item xs={6}>
