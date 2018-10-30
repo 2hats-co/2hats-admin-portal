@@ -42,7 +42,7 @@ class CandidatesList extends Component{
     constructor(props){
         super(props)
         this.state = {
-            submissionsFilter: 'all',
+            submissionsFilter: 'rejected',
             candidates: [],
             page: 0,
             totalPages: 0,

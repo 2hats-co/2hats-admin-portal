@@ -2,7 +2,6 @@ import React from 'react';
 import {Grid, Typography } from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
-
 import LogoInCard from '../components/LogoInCard';
 import GoogleButton from '../components/Auth/GoogleButton';
 

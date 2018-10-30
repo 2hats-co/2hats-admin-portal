@@ -96,7 +96,7 @@ class Submission extends Component {
         };
     }
     
-    componentDidUpdate(prevProps){
+    componentDidUpdate(prevProps,prevState){
        const {submissionStatus,submissionID} = this.state
         if(prevProps.id !== this.props.id){
             if(submissionID!==''){
@@ -106,6 +106,11 @@ class Submission extends Component {
             }
             this.setSubmission(this.props.id)
         }
+        if(prevState.submission !== this.state.submission){
+            if(this.state.submission.submissionStatus ==='rejected'){
+                this.props.showFeedbackFormHandler()
+            }
+        } 
     }
     componentDidMount() {
        
@@ -145,7 +150,8 @@ class Submission extends Component {
     }  
     closeDialog(){
         this.setState({confirmationDialog:null})
-    }  
+    } 
+  
     render(){
     
     
@@ -156,7 +162,7 @@ class Submission extends Component {
         const rejedctedDailog = {title:`are you sure you want to reject ${firstName}?`,
         body:`this will update ${firstName} account to pre-review rejected`,request:{action:()=>{this.handleRejection(),this.closeDialog()},label:'yes'},cancel:{action:this.closeDialog,label:'cancel'}}
 
-
+        
         let submissionStatusLabel = ''
             switch (submissionStatus) {
                 case 'accepted':
@@ -307,13 +313,13 @@ const enhance = compose(
           let updateObject = {}
           switch (submissionStatus) {
               case 'accepted':
-                  updateObject = {stage:'resume',status:'accepted',
+                  updateObject = {stage:'resume',submissionStatus:'accepted',
                   operator:props.uid,
                   updatedAt:props.firestore.FieldValue.serverTimestamp()}
                   break;
                 case 'rejected':
                   updateObject = {stage:'pre-review',
-                  status:'rejected',
+                  submissionStatus:'rejected',
                   operator:props.uid,
                   updatedAt:props.firestore.FieldValue.serverTimestamp()}
                   break;
