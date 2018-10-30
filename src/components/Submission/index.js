@@ -313,13 +313,13 @@ const enhance = compose(
           let updateObject = {}
           switch (submissionStatus) {
               case 'accepted':
-                  updateObject = {stage:'resume',submissionStatus:'accepted',
+                  updateObject = {stage:'resume',status:'accepted',
                   operator:props.uid,
                   updatedAt:props.firestore.FieldValue.serverTimestamp()}
                   break;
                 case 'rejected':
                   updateObject = {stage:'pre-review',
-                  submissionStatus:'rejected',
+                  status:'rejected',
                   operator:props.uid,
                   updatedAt:props.firestore.FieldValue.serverTimestamp()}
                   break;

@@ -15,7 +15,8 @@ import Collapse from '@material-ui/core/Collapse';
 import SendIcon from '@material-ui/icons/Send';
 import FeedbackElement from './FeedbackElement';
 import { Divider } from '@material-ui/core';
-
+ 
+import {SUBMISSION_FEEDBACK} from '../../constants/feedback'
 const styles = theme => ({
   root: {
     width: '100%',
@@ -43,19 +44,6 @@ const styles = theme => ({
     fontWeight: 700,
   },
 });
-const generalFeedback = [{id:'1',title:'Link between industry and interest',labels:['','No link','Unclear','Clear']}]
-const contentFeedback = [
-                      {id:'2',title:'Relevant content to Industry',labels:['','Bad','Okay','Good']},
-                      {id:'2a',title:'Use of bullet Points',labels:['','Lengthy','Uncondenced','Readable']},
-                      {id:'2b',title:'Max Two Page Length',labels:['','Lengthy','Uncondenced','Good']},
-                      {id:'2c',title:'Quantifiable Information',labels:['','Not Quantifiable','Not Quantifiable','Quantifiable']}]
-const grammarFeedback = [{id:'3',title:'Grammar & Spelling',labels:['','Bad','has issues','Good']}]
-const formattingFeedback = [{id:'4',title:'Formatting & Layout',labels:['','Bad','has issues','Good']}]
-const acheivementsFeedback = [{id:'5',title:'Acheivements',labels:['','None','Little','Good']}]
-const experienceFeedback = [{id:'6',title:'Relevant Experience',labels:['','None','Unfocused','Focused']}]
-const skillsFeedback = [{id:'7',title:'Relevant Skills',labels:['','None','Unfocused','Focused']}]
-
-const feedbackSections = [generalFeedback,contentFeedback,grammarFeedback,formattingFeedback,acheivementsFeedback,experienceFeedback,skillsFeedback]
 class FeedbackForm extends Component {
   constructor(props) {
     super(props);
@@ -91,10 +79,10 @@ class FeedbackForm extends Component {
         <List component="nav"
           className={classes.list}
         >
-          {feedbackSections.map(section=>
+          {SUBMISSION_FEEDBACK.map(section=>
             <React.Fragment>
           
-              {section.map(element=><FeedbackElement handleFeedbackItem={this.handleOptionClick} id={element.id} title={`${element.id}.${element.title}`} value={this.state[element.id]} labels={element.labels}/> )}
+              {section.map(element=><FeedbackElement handleFeedbackItem={this.handleOptionClick} id={element.id} title={`${element.id}. ${element.title}`} value={this.state[element.id]} contents={element.content} labels={element.labels}/> )}
              <Divider/>
             </React.Fragment>
             )}
