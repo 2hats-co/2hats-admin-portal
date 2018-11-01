@@ -6,40 +6,20 @@ import withStyles from "@material-ui/core/styles/withStyles";
 import Typography from "@material-ui/core/Typography";
 import Card from "@material-ui/core/Card";
 import Grid from "@material-ui/core/Grid";
-import IconButton from "@material-ui/core/IconButton";
 
 const styles = theme => ({
   root:{
-  width:'100%'
-  },
-  card:{  
-    width:'calc(100%0)',
-    paddingTop: 35,
-    paddingBottom: 30, 
-    marginBottom:20,
-    [theme.breakpoints.up('xs')]: {
-      paddingLeft:30,
-      paddingRight:30,
-    },
-    [theme.breakpoints.up('sm')]: {
-    paddingLeft:40,
-    paddingRight:40,
-    },[theme.breakpoints.up('md')]: {
-      paddingLeft:50,
-      paddingRight:50,
-      },
-    
+
   },
 });
 function EduExpCard(props) {
   const {classes, title, key, label, description, startDate, endDate} = props;
   return (
     <div key ={key} className={classes.root}>
-    <Card elevation={2} className={classes.card}>
       <Grid container 
       direction="column" 
       alignItems="flex-start" 
-      spacing={16}>
+      >
       <Grid container 
       direction="row" 
       alignItems="center" 
@@ -64,7 +44,6 @@ function EduExpCard(props) {
         <Typography variant="body1" style={{whiteSpace:'pre-wrap'}}>{description}</Typography>
         </Grid>
       </Grid>
-    </Card>
     </div>
   );
 }

@@ -1,17 +1,9 @@
 import React, { Component } from 'react';
-import moment from 'moment';
 
 // mui
 import {withStyles} from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
-import FlagIcon from '@material-ui/icons/Flag';
-import AcceptIcon from '@material-ui/icons/Done';
-import RejectIcon from '@material-ui/icons/Close';
-import Avatar from '@material-ui/core/Avatar';
 import PersonIcon from '@material-ui/icons/Person';
-import Chip from '@material-ui/core/Chip';
 //redux 
 import { COLLECTIONS} from "../../constants/firestore";
 import { compose } from "redux";
@@ -21,14 +13,13 @@ import { withFirestore } from "../../utilities/withFirestore";
 
 
 import ConfirmationDailog from '../ConfirmationDialog';
+import PersonDetails from './PersonDetails';
+import SubmissionDetails from './SubmissionDetails';
 import { Document,Page } from 'react-pdf';
-import EduExpCard from './EduExpCard';
-
-const styles = theme =>{ console.log(theme) 
-    return({
-   
+const styles = theme => ({
     root: {
-        height: '900px',
+        height: 'calc(100vh - 64px)',
+        boxSizing: 'border-box',
         overflowY: 'scroll',
         padding: 40,
         background: '#fff',
@@ -70,14 +61,14 @@ const styles = theme =>{ console.log(theme)
         marginRight: 4,
     },
     pdfDocument: {
-        width: 'calc(100vw - 500px)',
+        width: 'calc(100vw - 400px)',
         //width: '100%',
     },
     pdfPage: {
         boxShadow: '0 0 0 1px rgba(0,0,0,.1)',
         marginBottom: 8,
     },
-})};
+});
 
 class Submission extends Component {
     
@@ -146,9 +137,7 @@ class Submission extends Component {
     getNextSubmission(){
         this.setSubmission(this.props.pendingArray[0].id)
     }
-    onDocumentLoadSuccess = ({ numPages }) => {
-        this.setState({ numPages });
-    }  
+
     closeDialog(){
         this.setState({confirmationDialog:null})
     } 
@@ -169,7 +158,7 @@ class Submission extends Component {
                 case 'accepted':
                 case 'rejected':
                 case 'processing':
-                submissionStatusLabel = ` - ${submissionStatus} by ${submission.operator&& submission.operator.displayName.split(' ')[0]} `
+                submissionStatusLabel = ` – ${submissionStatus} by ${submission.operator&& submission.operator.displayName.split(' ')[0]} `
                 console.log('submission',submission)
                     break;
             
@@ -178,92 +167,27 @@ class Submission extends Component {
             }
         const pages = [];
         for (let i = 0; i < this.state.numPages; i++) {
-            pages.push(<Page pageNumber={i + 1} key={i} width={window.innerWidth - 500 - 64}
+            pages.push(<Page pageNumber={i + 1} key={i} width={window.innerWidth - 400 - 64}
             className={classes.pdfPage} />);
         }
 
         if(submission){
             console.log(submission);
-            const timestamp = moment.unix(submission.createdAt.seconds)
-                .format('LLLL');
 
-            let interests = '';
-            if (submission.submissionContent.careerInterests.value) {
-                for (let i = 0; i < submission.submissionContent.careerInterests.value.length; i++) {
-                    interests += submission.submissionContent.careerInterests.value[i];
-                    if (i < submission.submissionContent.careerInterests.value.length - 1) interests += ', ';
-                }
-            }
             //TODO: accept  
-            return(<div>
-                <Grid container direction="column" wrap="nowrap" className={classes.root}>
-
-                    <Grid item>
-                        <Grid container justify="space-between">
-                            <Grid item xs>
-                                <Grid container>
-                                    <Grid item>
-                                        <Avatar className={classes.avatar}><PersonIcon /></Avatar>
-                                    </Grid>
-                                    <Grid item xs>
-                                        <Typography variant="headline">{submission.displayName} {submissionStatusLabel} </Typography>
-                                        <Typography variant="body2">{interests}</Typography>
-                                        <Typography variant="body1">Submitted on {timestamp}</Typography>
-                                    </Grid>
-                                </Grid>
-                            </Grid>
-                            {(submissionStatus==='pending'|| submissionStatus ==='processing')&&<Grid item>
-                                <Button variant="fab" className={classes.greyButton} aria-label="reject">
-                                    <FlagIcon />
-                                </Button>
-                                <Button variant="fab" className={classes.greenButton} 
-                                onClick={()=>{this.setState({confirmationDialog:acceptedDailog})}}
-                                aria-label="accept">
-                                    <AcceptIcon />
-                                </Button>
-                                <Button variant="fab" className={classes.redButton} aria-label="reject"
-                                onClick={()=>{this.setState({confirmationDialog:rejedctedDailog})}}>
-                                    <RejectIcon />
-                                </Button>
-                            </Grid>}
-                        </Grid>
-                    </Grid>
-
-                    <Grid item>
-                        <Typography className={classes.subheading} variant="subheading">Bio:</Typography>
-                        <Typography variant="body1">{submission.submissionContent.bio}</Typography>
-                    </Grid>
-                    <Grid item>
-                        <Typography className={classes.subheading} variant="subheading">Available Days:</Typography>
-                        <Typography variant="body1">{submission.submissionContent.availableDays}</Typography>
-                    </Grid>
-                    <Grid item>
-                        <Typography className={classes.subheading} variant="subheading">Skills:</Typography>
-                        {submission.submissionContent.skills.map(x =>
-                            <Chip color="primary" label={x} key={x} className={classes.chip} />
-                        )}
-                    </Grid>
-                    <Grid item >
-                        <Typography className={classes.subheading} variant="subheading">{submission.submissionContent.process === 'upload' ?'Resume':'profile'}:</Typography>
-                        {submission.submissionContent.process === 'upload' &&<Document 
-                            onLoadSuccess={this.onDocumentLoadSuccess}
-                            file={submission.submissionContent.resumeFile.downloadURL}
-                            className={classes.pdfDocument}
-                        >
-                            { pages }
-                        </Document>}
-                        {submission.submissionContent.process === 'build' && 
-                        <div>
-                        <Typography className={classes.subheading} variant="subheading">education</Typography>
-                        {submission.submissionContent.education.map(x=> <EduExpCard title={x.degree} label={x.major} description={x.description} startDate={x.startDate} endDate={x.endDate}/>)}
-                        <Typography className={classes.subheading} variant="subheading">experince</Typography>
-                        {submission.submissionContent.experience.map(x=> <EduExpCard title={`${x.title} - ${x.type}`} label={x.organisation} description={x.description} startDate={x.startDate} endDate={x.endDate}/>)}
-                        </div>
-                        }
-                    </Grid>
-                </Grid>
-                {confirmationDialog&& <ConfirmationDailog data={confirmationDialog}/>}
+            return(<React.Fragment>
+                <div className={classes.root}>
+                    <PersonDetails
+                        submission={ submission }
+                        showButtons={ submissionStatus==='pending'|| submissionStatus ==='processing' }
+                        acceptHandler={()=>{this.setState({confirmationDialog:acceptedDailog})}}
+                        rejectHandler={()=>{this.setState({confirmationDialog:rejedctedDailog})}}
+                        submissionStatusLabel={submissionStatusLabel}
+                    />
+                    <SubmissionDetails submission={submission} />
                 </div>
+                {confirmationDialog&& <ConfirmationDailog data={confirmationDialog}/>}
+                </React.Fragment>
             );
         }else{
             return(
@@ -355,5 +279,3 @@ const enhance = compose(
         withStyles(styles)(Submission)
       )
   );
-  
-
