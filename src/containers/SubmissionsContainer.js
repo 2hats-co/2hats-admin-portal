@@ -57,7 +57,7 @@ class SubmissionsContainer extends Component{
             </Grid>
             { this.state.showFeedbackForm ?
                 <Grid item style={{width: 296}}>
-                    <FeedbackForm sections={SUBMISSION_FEEDBACK}/>
+                    <FeedbackForm sections={SUBMISSION_FEEDBACK} submissionID={this.state.submissionID}/>
                 </Grid>
                 : null
             }   

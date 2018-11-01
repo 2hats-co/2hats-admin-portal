@@ -2,21 +2,21 @@ import React,{Component} from 'react';
 import PropTypes, { element } from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 
-import ListSubheader from '@material-ui/core/ListSubheader';
 import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
-import Switch from '@material-ui/core/Switch';
-import Checkbox from '@material-ui/core/Checkbox';
 import Button from '@material-ui/core/Button';
 
-import Collapse from '@material-ui/core/Collapse';
+//redux 
+import { COLLECTIONS} from "../../constants/firestore";
+import { compose } from "redux";
+import { withHandlers } from "recompose";
+import { connect } from "react-redux";
+import { withFirestore } from "../../utilities/withFirestore";
+
 import SendIcon from '@material-ui/icons/Send';
 import FeedbackElement from './FeedbackElement';
 import { Divider } from '@material-ui/core';
- 
-import {SUBMISSION_FEEDBACK} from '../../constants/feedback'
+import * as _ from 'lodash'
+import {SUBMISSION_FEEDBACK,getFeedbackContent} from '../../constants/feedback'
 const styles = theme => ({
   root: {
     width: '100%',
@@ -61,16 +61,14 @@ class FeedbackForm extends Component {
     }else{
       this.setState({[id]:value})
     }
-  
   }
   saveFeedback(){
-
-   
-    console.log(this.state)
+    
+  const feedbackContent =  _.map(this.state,(value,id)=>{
+     return {id,content:getFeedbackContent(id,value)}
+    })
+    this.props.reviewSubmission(this.props.submissionID,feedbackContent)
   }
-  
-  
-
   render() {
     const { classes } = this.props;
 
@@ -79,10 +77,12 @@ class FeedbackForm extends Component {
         <List component="nav"
           className={classes.list}
         >
-          {SUBMISSION_FEEDBACK.map(section=>
+          {_.map(SUBMISSION_FEEDBACK,(section,sectionId)=>
             <React.Fragment>
           
-              {section.map(element=><FeedbackElement handleFeedbackItem={this.handleOptionClick} id={element.id} title={`${element.id}. ${element.title}`} value={this.state[element.id]} contents={element.content} labels={element.labels}/> )}
+              {section.map(element=><FeedbackElement handleFeedbackItem={this.handleOptionClick} 
+              id={sectionId+element.id} title={`${sectionId+element.id}. ${element.title}`} 
+              value={this.state[sectionId+element.id]} contents={element.content} labels={element.labels}/> )}
              <Divider/>
             </React.Fragment>
             )}
@@ -91,9 +91,10 @@ class FeedbackForm extends Component {
           <div className={classes.listPadder} />
         </List>
 
-        <Button variant="extendedFab" color="primary" aria-label="Submit Feedback" onClick={this.saveFeedback}
-          className={classes.submitButton}
-        >
+        <Button variant="extendedFab" color="primary" 
+          aria-label="Submit Feedback" 
+          onClick={this.saveFeedback}
+          className={classes.submitButton}>
           <SendIcon /> Submit Feedback
         </Button>
       </div>
@@ -101,8 +102,38 @@ class FeedbackForm extends Component {
   }
 }
 
+
+const enhance = compose(
+
+  withFirestore,
+  // Handler functions as props
+withHandlers({
+    reviewSubmission: props => (submissionID,feedbackContent) =>
+    props.firestore.update(
+      { collection: COLLECTIONS.submissions, doc: submissionID },
+      {   operator:{
+          displayName:props.displayName,
+          UID: props.uid,
+          },
+          reviewedBy:props.uid,
+          submissionStatus:'reviewed',
+          feedbackContent,
+          updatedAt: props.firestore.FieldValue.serverTimestamp()
+      }
+    ),
+    
+}),
+
+connect(({ firestore }) => ({
+    rejected: firestore.data.rejectedSubmissions,
+  }))
+);
+
+export default enhance(
+    compose(  
+      withStyles(styles)(FeedbackForm)
+    )
+);
 FeedbackForm.propTypes = {
   classes: PropTypes.object.isRequired,
 };
-
-export default withStyles(styles)(FeedbackForm);
