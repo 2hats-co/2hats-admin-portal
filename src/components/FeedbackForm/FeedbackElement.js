@@ -23,7 +23,7 @@ function FeedbackElement(props) {
     return (
     <Grid container direction='column'>
         <Grid item>
-        <Typography>{title}</Typography>
+        <Typography style={{fontWeight: 500}}>{title}</Typography>
         </Grid>
         <Grid item>
             <Grid container direction='row' justify='space-between' alignItems='center'>

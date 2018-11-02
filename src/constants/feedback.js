@@ -1,6 +1,6 @@
 const generalFeedback = [{
       id: '',
-      title: 'Link between industry and interest',
+      title: 'Link Between Industry and Interest',
       labels: ['', 'Low', 'Medium', 'High'],
       content: ['', 'There is nothing in your resume that shows a link between the industry that you’re interested in, your experience and interests. Spend time reading job description online, you can get a good indication of the profiles and skills business are looking for at this exact time. You could also try talking to people who are working to see what type of pathway you could align to.',
             'Your resume shows your interest in a particular industry. However there is no clear link to the industries that 2hats offer opportunities in. This indicates to us that you’re not sure about what you want or are trying to achieve. You could use a biography or objective section at the top of your resume to demonstrate how your experience is linked to our industries.',
@@ -10,7 +10,7 @@ const generalFeedback = [{
 }]
 const contentFeedback = [{
             id: '',
-            title: 'Relevant content to Industry',
+            title: 'Relevant Content to Industry',
             labels: ['', 'Low', 'Medium', 'High'],
             content: ['', 'A large portion of the content in your resume is not focused or relevant. Re-read your resume and make edits to keep all of your content consistent and relevant to your target industry.', 
 			'Some of the content in your resume could be more focused. Check your resume to ensure that your content is kept consistent and relevant to your target industry.', 
@@ -20,7 +20,7 @@ const contentFeedback = [{
       },
       {
             id: 'a',
-            title: 'Use of bullet Points',
+            title: 'Use of Bullet Points',
             labels: ['', 'Low', 'Medium', 'High'],
             content: ['', 'You haven’t effectively used bullet points. You should do this to make your resume easy to read and understandable.', 
 			'You can more effectively use bullet points to make your resume easier to read and more understandable.', 
