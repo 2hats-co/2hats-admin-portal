@@ -75,14 +75,17 @@ class Submission extends Component {
         this.setSubmission = this.setSubmission.bind(this);
         this.handleRejection = this.handleRejection.bind(this);
         this.handleAcception = this.handleAcception.bind(this);
-        this.proccessSubmission = this.props.proccessSubmission.bind(this)
-        this.closeDialog = this.closeDialog.bind(this)
-        this.getNextSubmission = this.getNextSubmission.bind(this)
+        this.proccessSubmission = this.props.proccessSubmission.bind(this);
+        this.closeDialog = this.closeDialog.bind(this);
+        this.getNextSubmission = this.getNextSubmission.bind(this);
+        this.handleSkip = this.handleSkip.bind(this);
         this.state = {
             submission: false,
             submissionID:'',
             submissionStatus:'',
-            confirmationDialog:null
+            confirmationDialog:null,
+            skipOffset:0,
+            disableSkip: false,
         };
     }
     
@@ -117,8 +120,8 @@ class Submission extends Component {
     }
   
     setSubmission(i){
-        const submission = this.props.pending[i];
-        console.log('submission',submission)
+        const submission = this.props.pending[i + this.state.skipOffset];
+        console.log('setSubmission', i + this.state.skipOffset);
         this.setState({
             submissionID: submission.id,
             submission: submission,
@@ -127,7 +130,6 @@ class Submission extends Component {
         // if(submissions[id].submissionStatus ==='pending'){
         //     this.props.holdSubmission(id)
         // }
-       
     }
     handleRejection(){
         this.props.proccessSubmission(this.state.submissionID,'rejected',this.state.submission.UID)
@@ -143,6 +145,18 @@ class Submission extends Component {
         // TEST ACCOUNTS
         // ZKrWA8t0Lcf54117Jy63SQ9MdXZ2
         // dg4oWTSw2VPzmO6fKgY0Z6PSkmM2
+    }
+
+    handleSkip() {
+        if (this.state.skipOffset + 1 === this.props.pending.length - 1) {
+            this.setState({ disableSkip: true });
+        }
+        if (this.state.skipOffset + 1 < this.props.pending.length) {
+            this.setState(
+                (state) => ({ skipOffset: state.skipOffset + 1 }),
+                () => {this.setSubmission(0)}
+            );
+        }
     }
 
     closeDialog(){
@@ -193,6 +207,8 @@ class Submission extends Component {
                             submissionID={this.state.submissionID}
                             acceptHandler={()=>{this.setState({confirmationDialog:acceptedDailog})}}
                             rejectHandler={()=>{this.setState({confirmationDialog:rejedctedDailog})}}
+                            skipHandler={this.handleSkip}
+                            disableSkip={this.state.disableSkip}
                         />
                     </Grid>
                 </Grid>

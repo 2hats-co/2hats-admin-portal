@@ -107,7 +107,7 @@ class FeedbackForm extends Component {
     this.props.reviewSubmission(this.props.submissionID,feedbackContent)
   }
   render() {
-    const { classes, submissionID, acceptHandler, rejectHandler, skipHandler } = this.props;
+    const { classes, submissionID, acceptHandler, rejectHandler, skipHandler, disableSkip } = this.props;
 
     if (!submissionID) return null;
 
@@ -117,7 +117,7 @@ class FeedbackForm extends Component {
         <Grid container justify="space-evenly">
           <Tooltip title="Skip">
             <Button variant="fab" className={classes.greyButton} aria-label="skip"
-            onClick={skipHandler}>
+            onClick={skipHandler} disabled={disableSkip}>
                 <RedoIcon />
             </Button>
           </Tooltip>
