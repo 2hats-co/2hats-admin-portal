@@ -5,6 +5,7 @@ import Typography from '@material-ui/core/Typography';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
+import Tooltip from '@material-ui/core/Tooltip';
 
 import PeopleIcon from '@material-ui/icons/People';
 import DescriptionIcon from '@material-ui/icons/Description';
@@ -23,6 +24,13 @@ const styles = theme => ({
     item: {
         flexDirection: 'column',
         color: '#fff',
+    },
+    selectedItem: {
+        backgroundColor: '#fff !important',
+        borderRadius: '4px 0 0 4px',
+        '& svg': {
+            color: theme.palette.primary.main,
+        },
     },
     icon: {
         color: 'rgba(255,255,255,.87)',
@@ -58,15 +66,18 @@ function NavigationItems(props){
 
     return(
        <List component="nav" className={classes.root}>
-           {navigationRoutes.map(x =>(
-                <ListItem button disableGutters
-                    key={x.route}
-                    onClick={()=>{ goTo(x.route) }}
-                    className={classes.item}
-                    selected={ currentLocation === x.route }
-                >
-                    <ListItemIcon className={classes.icon}>{x.icon}</ListItemIcon>
-                </ListItem>
+           {navigationRoutes.map((x, i) =>(
+                <Tooltip title={x.label} placement="right" key={i}>
+                    <ListItem button disableGutters
+                        key={x.route}
+                        onClick={()=>{ goTo(x.route) }}
+                        className={classes.item}
+                        selected={ currentLocation === x.route }
+                        classes={{selected: classes.selectedItem}}
+                    >
+                        <ListItemIcon className={classes.icon}>{x.icon}</ListItemIcon>
+                    </ListItem>
+                </Tooltip>
            ))}
        </List>
     )

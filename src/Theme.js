@@ -8,6 +8,9 @@ const Theme = createMuiTheme({
         primary: {
             main: primaryColor,
         },
+        secondary: {
+            main: primaryColor,
+        },
     },
     typography: {
         fontFamily: '"Helvetica Neue", Arial, sans-serif',
@@ -32,6 +35,8 @@ const Theme = createMuiTheme({
             label: {
                 color: 'rgba(0,0,0,.87)',
                 textTransform: 'none',
+                position: 'relative',
+                zIndex: 99,
             },
             selected: {
                 color: primaryColor,
@@ -47,6 +52,14 @@ const Theme = createMuiTheme({
                     marginRight: 8,
                 }
             }
+        },
+        MuiTooltip: {
+            tooltip: {
+                fontSize: 14,
+            },
+            popper: {
+                opacity: 1,
+            },
         },
     },
 });
