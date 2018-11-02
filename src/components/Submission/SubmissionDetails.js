@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 
 import {withStyles} from '@material-ui/core/styles';
+import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Chip from '@material-ui/core/Chip';
+import Slider from '@material-ui/lab/Slider';
+import SizeIcon from '@material-ui/icons/FormatSize';
 
 import { Document, Page } from 'react-pdf';
 import EduExpCard from './EduExpCard';
@@ -24,22 +27,29 @@ const styles = theme => ({
         boxShadow: '0 0 0 1px rgba(0,0,0,.1)',
         marginBottom: 8,
     },
+    scalable: {
+        transformOrigin: '50% 0',
+    },
 });
 
 class submissionDetails extends Component {
     constructor(props) {
         super(props);
 
-        this.state = { numPages: 0 };
+        this.state = { numPages: 0, sliderValue: 1 };
     }
 
     onDocumentLoadSuccess = ({ numPages }) => {
         this.setState({ numPages });
     }
 
+    handleSliderChange = (event, sliderValue) => {
+        this.setState({ sliderValue });
+    }
+
     render() {
         const { submission, classes } = this.props;
-        const { numPages } = this.state;
+        const { numPages, sliderValue } = this.state;
 
         const pages = [];
         for (let i = 0; i < numPages; i++) {
@@ -61,13 +71,23 @@ class submissionDetails extends Component {
             )}
 
             <Typography className={classes.subheading} variant="subheading">{submission.submissionContent.process === 'upload' ?'Resume':'Profile'}:</Typography>
-            {submission.submissionContent.process === 'upload' &&<Document 
-                onLoadSuccess={this.onDocumentLoadSuccess}
-                file={submission.submissionContent.resumeFile.downloadURL}
-                className={classes.pdfDocument}
-            >
-                { pages }
-            </Document>}
+            {submission.submissionContent.process === 'upload' && <React.Fragment>
+                <Grid container alignItems="center" style={{maxWidth: 200}}>
+                    <SizeIcon style={{opacity: .54}} />
+                    <Grid item xs>
+                        <Slider value={sliderValue} onChange={this.handleSliderChange} min={0} max={2} />
+                    </Grid>
+                </Grid>
+                <div className={classes.scalable} style={{transform: `scale(${sliderValue})`}}>
+                    <Document 
+                        onLoadSuccess={this.onDocumentLoadSuccess}
+                        file={submission.submissionContent.resumeFile.downloadURL}
+                        className={classes.pdfDocument}
+                    >
+                        { pages }
+                    </Document>
+                </div>
+            </React.Fragment>}
             {submission.submissionContent.process === 'build' && 
             <div>
             <Typography className={classes.subheading} variant="subheading">Education:</Typography>
