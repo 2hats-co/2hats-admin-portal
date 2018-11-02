@@ -24,6 +24,8 @@ const styles = theme => ({
     item: {
         flexDirection: 'column',
         color: '#fff',
+        padding: '16px 0',
+        position: 'relative',
     },
     selectedItem: {
         backgroundColor: '#fff !important',
