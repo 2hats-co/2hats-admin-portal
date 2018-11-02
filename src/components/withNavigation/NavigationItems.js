@@ -24,12 +24,11 @@ const styles = theme => ({
     item: {
         flexDirection: 'column',
         color: '#fff',
-        padding: '16px 0',
+        padding: '18px 0',
         position: 'relative',
     },
     selectedItem: {
         backgroundColor: '#fff !important',
-        borderRadius: '4px 0 0 4px',
         '& svg': {
             color: theme.palette.primary.main,
         },
@@ -37,6 +36,7 @@ const styles = theme => ({
     icon: {
         color: 'rgba(255,255,255,.87)',
         margin: 0,
+        fontSize: 28,
     },
 });
   
