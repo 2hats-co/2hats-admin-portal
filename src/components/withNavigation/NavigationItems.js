@@ -26,11 +26,43 @@ const styles = theme => ({
         color: '#fff',
         padding: '18px 0',
         position: 'relative',
+        transition: 'background-color .4s',
+
+        '&:hover, &:focus': {
+            backgroundColor: 'rgba(255,255,255,.16)',
+        },
     },
     selectedItem: {
         backgroundColor: '#fff !important',
+        borderRadius: '18px 0 0 18px',
         '& svg': {
             color: theme.palette.primary.main,
+        },
+        '&:before': {
+            content: '""',
+            position: 'absolute',
+            top: -20,
+            right: -20,
+
+            width: 40,
+            height: 40,
+            backgroundSize: '50% 50%',
+            backgroundRepeat: 'no-repeat',
+            backgroundImage:
+                `radial-gradient(circle at 0 0, rgba(0,0,0,0) 20px, #fff 20.75px)`,
+        },
+        '&:after': {
+            content: '""',
+            position: 'absolute',
+            bottom: -40,
+            right: -20,
+
+            width: 40,
+            height: 40,
+            backgroundSize: '50% 50%',
+            backgroundRepeat: 'no-repeat',
+            backgroundImage:
+                `radial-gradient(circle at 0 100%, rgba(0,0,0,0) 20px, #fff 20.75px)`,
         },
     },
     icon: {
