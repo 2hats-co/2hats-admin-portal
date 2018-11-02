@@ -37,7 +37,7 @@ const styles = theme => ({
     },
 });
 
-class CandidatesList extends Component{
+class SubmissionsList extends Component{
 
     constructor(props){
         super(props)
@@ -166,8 +166,6 @@ const enhance = compose(
 
   export default enhance(
       compose(  
-        withStyles(styles)(CandidatesList)
+        withStyles(styles)(SubmissionsList)
       )
   );
-  
-

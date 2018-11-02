@@ -4,10 +4,6 @@ import moment from 'moment';
 import {withStyles} from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
-import FlagIcon from '@material-ui/icons/Flag';
-import AcceptIcon from '@material-ui/icons/Done';
-import RejectIcon from '@material-ui/icons/Close';
 import Avatar from '@material-ui/core/Avatar';
 import PersonIcon from '@material-ui/icons/Person';
 
@@ -17,31 +13,10 @@ const styles = theme => ({
         height: 56,
         marginRight: 16,
     },
-    greyButton: {
-        boxShadow: 'none',
-        marginRight: 16,
-    },
-    greenButton: {
-        backgroundColor: '#24c875',
-        color: '#fff',
-        boxShadow: 'none',
-        marginRight: 16,
-        '&:hover': {
-            backgroundColor: '#1B9457',
-        },
-    },
-    redButton: {
-        backgroundColor: '#eb5858',
-        color: '#fff',
-        boxShadow: 'none',
-        '&:hover': {
-            backgroundColor: '#b84444',
-        },
-    }
 });
 
 function PersonDetails(props) {
-    const { classes, submission, showButtons, acceptHandler, rejectHandler, submissionStatusLabel } = props;
+    const { classes, submission, submissionStatusLabel } = props;
 
     const timestamp = moment.unix(submission.createdAt.seconds)
         .format('LLLL');
@@ -68,20 +43,6 @@ function PersonDetails(props) {
                     </Grid>
                 </Grid>
             </Grid>
-            {showButtons && <Grid item>
-                <Button variant="fab" className={classes.greyButton} aria-label="reject">
-                    <FlagIcon />
-                </Button>
-                <Button variant="fab" className={classes.greenButton} 
-                onClick={acceptHandler}
-                aria-label="accept">
-                    <AcceptIcon />
-                </Button>
-                <Button variant="fab" className={classes.redButton} aria-label="reject"
-                onClick={rejectHandler}>
-                    <RejectIcon />
-                </Button>
-            </Grid>}
         </Grid>
     );
 }

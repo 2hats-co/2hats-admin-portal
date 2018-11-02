@@ -1,13 +1,25 @@
 import React from 'react';
-import { Grid, Typography } from '@material-ui/core';
+import { Grid, Typography, withStyles } from '@material-ui/core';
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Tooltip from '@material-ui/core/Tooltip';
 import Star from '@material-ui/icons/Star';
 import StarBorder from '@material-ui/icons/StarBorder';
+
+const styles = theme => ({
+    descriptionTooltip: {
+        background: theme.palette.common.white,
+        color: theme.palette.text.primary,
+        fontSize: 14,
+        boxShadow: theme.shadows[1],
+        opacity: 1,
+        padding: 16,
+    }
+})
+
 function FeedbackElement(props) {
-    const {id,title,labels,value,handleFeedbackItem,contents} = props
+    const {classes,id,title,labels,value,handleFeedbackItem,contents} = props
     return (
     <Grid container direction='column'>
         <Grid item>
@@ -17,8 +29,8 @@ function FeedbackElement(props) {
             <Grid container direction='row' justify='space-between' alignItems='center'>
                 <Grid item>
                     <Grid container direction='row' justify='space-around'>
-                   {[1,2,3].map(x=><FormControlLabel
-                            control={<Tooltip title={contents[x]} enterDelay={400} placement="top">
+                   {[1,2,3].map((x, i) => <FormControlLabel key={i}
+                            control={<Tooltip title={contents[x]} placement="top" classes={{tooltip: classes.descriptionTooltip}}>
                                             <Checkbox onChange={()=>{handleFeedbackItem(id,x)}} icon={<StarBorder />} checked={x-1<value} checkedIcon={<Star />} value={x} />
                                     </Tooltip>}/>)}
                     </Grid>
@@ -30,4 +42,4 @@ function FeedbackElement(props) {
         </Grid>
     </Grid>)
 }
-export default FeedbackElement
+export default withStyles(styles)(FeedbackElement)

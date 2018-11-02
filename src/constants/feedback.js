@@ -107,7 +107,8 @@ export function getFeedbackContent(id,rating){
       return content
 }else{
       const sectionId = id[0]
-	const subSectionId = id[1]
+      const subSectionId = id[1]
+      console.log(id);
       const subsection = SUBMISSION_FEEDBACK[sectionId].filter(x=> x.id === subSectionId)
 	const content = subsection[0].content[1]
 	return content

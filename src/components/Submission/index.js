@@ -15,9 +15,15 @@ import { withFirestore } from "../../utilities/withFirestore";
 import ConfirmationDailog from '../ConfirmationDialog';
 import PersonDetails from './PersonDetails';
 import SubmissionDetails from './SubmissionDetails';
+import FeedbackForm from '../../components/FeedbackForm';
+import {SUBMISSION_FEEDBACK} from '../../constants/feedback'
+
 import { Document,Page } from 'react-pdf';
 const styles = theme => ({
     root: {
+        height: 'calc(100vh - 64px)',
+    },
+    card: {
         height: 'calc(100vh - 64px)',
         boxSizing: 'border-box',
         overflowY: 'scroll',
@@ -60,14 +66,6 @@ const styles = theme => ({
     chip: {
         marginRight: 4,
     },
-    pdfDocument: {
-        width: 'calc(100vw - 400px)',
-        //width: '100%',
-    },
-    pdfPage: {
-        boxShadow: '0 0 0 1px rgba(0,0,0,.1)',
-        marginBottom: 8,
-    },
 });
 
 class Submission extends Component {
@@ -89,41 +87,46 @@ class Submission extends Component {
     }
     
     componentDidUpdate(prevProps,prevState){
-       const {submissionStatus,submissionID} = this.state
-        if(prevProps.id !== this.props.id){
-            if(submissionID!==''){
-                if(submissionStatus ==='pending' ||submissionStatus ==='processing'){
-                    this.props.returnSubmission(submissionID)
-                }
+        if (this.props.pending) {
+            if (this.state.submissionID === '') {
+                console.log('setSubmission', this.state.submissionID)
+                this.setSubmission(0);
             }
-            this.setSubmission(this.props.id)
         }
-        if(prevState.submission !== this.state.submission){
-            if(this.state.submission.submissionStatus ==='rejected'){
-                this.props.showFeedbackFormHandler()
-            }
-        } 
+    //    const {submissionStatus,submissionID} = this.state
+    //     if(prevProps.id !== this.props.id){
+    //         if(submissionID!==''){
+    //             if(submissionStatus ==='pending' ||submissionStatus ==='processing'){
+    //                 this.props.returnSubmission(submissionID)
+    //             }
+    //         }
+    //         this.setSubmission(this.props.id)
+    //     }
+    //     if(prevState.submission !== this.state.submission){
+    //         if(this.state.submission.submissionStatus ==='rejected'){
+    //             this.props.showFeedbackFormHandler()
+    //         }
+    //     } 
     }
     componentDidMount() {
-       
+        
     }
     
     componentWillUnmount() {
         window.removeEventListener('onbeforeunload', this.handleWindowClose);
     }
   
-    setSubmission(id){
-        const {submissionID,submissionStatus} = this.state
-        let submissions = Object.assign(this.props.all,this.props.accepted)
-        submissions = Object.assign(submissions,this.props.rejected)
-        submissions = Object.assign(submissions,this.props.pending)
-
-        console.log('submissions:',submissions)
-       
-        this.setState({submissionID:id,submission:submissions[id],submissionStatus:submissions[id].submissionStatus})
-        if(submissions[id].submissionStatus ==='pending'){
-            this.props.holdSubmission(id)
-        }
+    setSubmission(i){
+        const submission = this.props.pending[i];
+        console.log('submission',submission)
+        this.setState({
+            submissionID: submission.id,
+            submission: submission,
+            submissionStatus: submission.submissionStatus,
+        });
+        // if(submissions[id].submissionStatus ==='pending'){
+        //     this.props.holdSubmission(id)
+        // }
        
     }
     handleRejection(){
@@ -135,7 +138,11 @@ class Submission extends Component {
         this.getNextSubmission()
     }
     getNextSubmission(){
-        this.setSubmission(this.props.pendingArray[0].id)
+        // CHANGE TO 0 WHEN PROCESSING IS RE-ENABLED
+        this.setSubmission(1)
+        // TEST ACCOUNTS
+        // ZKrWA8t0Lcf54117Jy63SQ9MdXZ2
+        // dg4oWTSw2VPzmO6fKgY0Z6PSkmM2
     }
 
     closeDialog(){
@@ -148,27 +155,22 @@ class Submission extends Component {
         const {submission,confirmationDialog,submissionStatus} = this.state;
         const {classes, showFeedbackFormHandler} = this.props;
         const firstName = (submission.displayName?submission.displayName.split(' ')[0]:'')
-        const acceptedDailog = {title:`are you sure you want to accept ${firstName}?`,body:'this will send the candidate with calender invite for the online interview',request:{action:()=>{this.handleAcception(),this.closeDialog()},label:'yes'},cancel:{action:this.closeDialog,label:'cancel'}}
-        const rejedctedDailog = {title:`are you sure you want to reject ${firstName}?`,
-        body:`this will update ${firstName} account to pre-review rejected`,request:{action:()=>{this.handleRejection(),this.closeDialog()},label:'yes'},cancel:{action:this.closeDialog,label:'cancel'}}
+        const acceptedDailog = {title:`Are you sure you want to accept ${firstName}?`,body:`This will send ${firstName} calendar invite for an online interview`,request:{action:()=>{this.handleAcception(),this.closeDialog()},label:'yes'},cancel:{action:this.closeDialog,label:'cancel'}}
+        const rejedctedDailog = {title:`Are you sure you want to reject ${firstName}?`,
+        body:`This will update ${firstName} account to pre-review rejected`,request:{action:()=>{this.handleRejection(),this.closeDialog()},label:'yes'},cancel:{action:this.closeDialog,label:'cancel'}}
 
         
         let submissionStatusLabel = ''
-            switch (submissionStatus) {
-                case 'accepted':
-                case 'rejected':
-                case 'processing':
-                submissionStatusLabel = ` – ${submissionStatus} by ${submission.operator&& submission.operator.displayName.split(' ')[0]} `
-                console.log('submission',submission)
-                    break;
-            
-                default:
-                    break;
-            }
-        const pages = [];
-        for (let i = 0; i < this.state.numPages; i++) {
-            pages.push(<Page pageNumber={i + 1} key={i} width={window.innerWidth - 400 - 64}
-            className={classes.pdfPage} />);
+        switch (submissionStatus) {
+            case 'accepted':
+            case 'rejected':
+            case 'processing':
+            submissionStatusLabel = ` – ${submissionStatus} by ${submission.operator&& submission.operator.displayName.split(' ')[0]} `
+            console.log('submission',submission)
+                break;
+        
+            default:
+                break;
         }
 
         if(submission){
@@ -176,23 +178,32 @@ class Submission extends Component {
 
             //TODO: accept  
             return(<React.Fragment>
-                <div className={classes.root}>
-                    <PersonDetails
-                        submission={ submission }
-                        showButtons={ submissionStatus==='pending'|| submissionStatus ==='processing' }
-                        acceptHandler={()=>{this.setState({confirmationDialog:acceptedDailog})}}
-                        rejectHandler={()=>{this.setState({confirmationDialog:rejedctedDailog})}}
-                        submissionStatusLabel={submissionStatusLabel}
-                    />
-                    <SubmissionDetails submission={submission} />
-                </div>
+                <Grid container className={classes.root}>
+                    <Grid item xs className={classes.card}>
+                        <PersonDetails
+                            submission={ submission }
+                            showButtons={ submissionStatus==='pending'|| submissionStatus ==='processing' }
+                            submissionStatusLabel={submissionStatusLabel}
+                        />
+                        <SubmissionDetails submission={submission} />
+                    </Grid>
+                    <Grid item style={{width:296}}>
+                        <FeedbackForm
+                            sections={SUBMISSION_FEEDBACK}
+                            submissionID={this.state.submissionID}
+                            acceptHandler={()=>{this.setState({confirmationDialog:acceptedDailog})}}
+                            rejectHandler={()=>{this.setState({confirmationDialog:rejedctedDailog})}}
+                        />
+                    </Grid>
+                </Grid>
                 {confirmationDialog&& <ConfirmationDailog data={confirmationDialog}/>}
                 </React.Fragment>
             );
         }else{
             return(
                 <Grid container direction="column" alignItems="center" justify="center"
-                    style={{height: '100%', color: '#808080'}}
+                    className={classes.root}
+                    style={{color: '#808080'}}
                 >
                     <PersonIcon style={{width: 64, height: 64, opacity: 0.87}} />
                     No candidate selected
@@ -266,11 +277,9 @@ const enhance = compose(
   }),
 
     connect(({ firestore }) => ({
-      all: firestore.data.submissions,
-      accepted: firestore.data.acceptedSubmissions,
-      pending: firestore.data.pendingSubmissions,
-      pendingArray: firestore.ordered.pendingSubmissions,
-      rejected: firestore.data.rejectedSubmissions,
+     
+      pending: firestore.ordered.pendingSubmissions,
+
     }))
   );
 

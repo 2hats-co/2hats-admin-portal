@@ -18,7 +18,7 @@ const styles = theme => ({
         marginBottom: 4,
     },
     pdfDocument: {
-        width: 'calc(100vw - 500px)',
+        width: 'calc(100vw - 500px - 300px)',
     },
     pdfPage: {
         boxShadow: '0 0 0 1px rgba(0,0,0,.1)',
@@ -43,7 +43,7 @@ class submissionDetails extends Component {
 
         const pages = [];
         for (let i = 0; i < numPages; i++) {
-            pages.push(<Page pageNumber={i + 1} key={i} width={window.innerWidth - 500 - 64}
+            pages.push(<Page pageNumber={i + 1} key={i} width={window.innerWidth - 500 - 64 - 300}
             className={classes.pdfPage} />);
         }
 
@@ -60,7 +60,7 @@ class submissionDetails extends Component {
                 <Chip color="primary" label={x} key={x} className={classes.chip} />
             )}
 
-            <Typography className={classes.subheading} variant="subheading">{submission.submissionContent.process === 'upload' ?'Resume':'profile'}:</Typography>
+            <Typography className={classes.subheading} variant="subheading">{submission.submissionContent.process === 'upload' ?'Resume':'Profile'}:</Typography>
             {submission.submissionContent.process === 'upload' &&<Document 
                 onLoadSuccess={this.onDocumentLoadSuccess}
                 file={submission.submissionContent.resumeFile.downloadURL}
@@ -70,10 +70,10 @@ class submissionDetails extends Component {
             </Document>}
             {submission.submissionContent.process === 'build' && 
             <div>
-            <Typography className={classes.subheading} variant="subheading">education</Typography>
-            {submission.submissionContent.education.map(x=> <EduExpCard title={x.degree} label={x.major} description={x.description} startDate={x.startDate} endDate={x.endDate}/>)}
-            <Typography className={classes.subheading} variant="subheading">experince</Typography>
-            {submission.submissionContent.experience.map(x=> <EduExpCard title={`${x.title} - ${x.type}`} label={x.organisation} description={x.description} startDate={x.startDate} endDate={x.endDate}/>)}
+            <Typography className={classes.subheading} variant="subheading">Education:</Typography>
+            {submission.submissionContent.education.map((x, i) => <EduExpCard key={i} title={x.degree} label={x.major} description={x.description} startDate={x.startDate} endDate={x.endDate}/>)}
+            <Typography className={classes.subheading} variant="subheading">Experience:</Typography>
+            {submission.submissionContent.experience.map((x, i) => <EduExpCard key={i} title={`${x.title} - ${x.type}`} label={x.organisation} description={x.description} startDate={x.startDate} endDate={x.endDate}/>)}
             </div>
             }
         </React.Fragment>);

@@ -126,7 +126,7 @@ var submissionDetails = function (_Component) {
                 _react2.default.createElement(
                     _Typography2.default,
                     { className: classes.subheading, variant: 'subheading' },
-                    submission.submissionContent.process === 'upload' ? 'Resume' : 'profile',
+                    submission.submissionContent.process === 'upload' ? 'Resume' : 'Profile',
                     ':'
                 ),
                 submission.submissionContent.process === 'upload' && _react2.default.createElement(
@@ -144,7 +144,7 @@ var submissionDetails = function (_Component) {
                     _react2.default.createElement(
                         _Typography2.default,
                         { className: classes.subheading, variant: 'subheading' },
-                        'education'
+                        'Education'
                     ),
                     submission.submissionContent.education.map(function (x) {
                         return _react2.default.createElement(_EduExpCard2.default, { title: x.degree, label: x.major, description: x.description, startDate: x.startDate, endDate: x.endDate });
@@ -152,7 +152,7 @@ var submissionDetails = function (_Component) {
                     _react2.default.createElement(
                         _Typography2.default,
                         { className: classes.subheading, variant: 'subheading' },
-                        'experince'
+                        'Experince'
                     ),
                     submission.submissionContent.experience.map(function (x) {
                         return _react2.default.createElement(_EduExpCard2.default, { title: x.title + ' - ' + x.type, label: x.organisation, description: x.description, startDate: x.startDate, endDate: x.endDate });
