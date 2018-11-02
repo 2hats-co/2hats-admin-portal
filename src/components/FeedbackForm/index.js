@@ -44,6 +44,11 @@ const styles = theme => ({
     paddingBottom: 88,
     boxSizing: 'border-box',
   },
+  listSection: {
+    borderBottom: '1px solid rgba(0,0,0,.1)',
+    marginBottom: 20,
+    paddingBottom: 8,
+  },
   nested: {
     paddingLeft: theme.spacing.unit * 6,
   },
@@ -88,16 +93,12 @@ class FeedbackForm extends Component {
   
 
   handleOptionClick(id,value) {
-    
-  
-  
-console.log(this.state.feedback)
 
     if(this.state.feedback[id] &&this.state.feedback[id] === 1 && value ===1 ){
-    const updatedFeedback = Object.assign({[id]:0},this.state.feedback)
+    const updatedFeedback = Object.assign(this.state.feedback,{[id]:0})
       this.setState({feedback:updatedFeedback})
     }else{
-    const updatedFeedback = Object.assign({[id]:value},this.state.feedback)
+    const updatedFeedback = Object.assign(this.state.feedback,{[id]:value})
       this.setState({feedback:updatedFeedback})
     }
   }
@@ -151,13 +152,18 @@ console.log(this.state.feedback)
           className={classes.list}
         >
           {_.map(SUBMISSION_FEEDBACK,(section,sectionId)=>
-            <React.Fragment key={sectionId}>
-          
-              {section.map((element, i) => <FeedbackElement key={i} handleFeedbackItem={this.handleOptionClick} 
-              id={sectionId+element.id} title={`${sectionId+element.id}. ${element.title}`} 
-              value={this.state.feedback[sectionId+element.id]} contents={element.content} labels={element.labels}/> )}
-             <Divider/>
-            </React.Fragment>
+            <div className={classes.listSection} key={sectionId}>
+              {section.map((element, i) =>
+                <FeedbackElement
+                  key={i}
+                  handleFeedbackItem={this.handleOptionClick} 
+                  id={sectionId+element.id}
+                  title={`${sectionId+element.id}. ${element.title}`} 
+                  value={this.state.feedback[sectionId+element.id]}
+                  contents={element.content}
+                  labels={element.labels}/> 
+              )}
+            </div>
             )}
             
         </List>
