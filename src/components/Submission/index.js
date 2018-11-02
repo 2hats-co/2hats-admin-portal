@@ -207,6 +207,7 @@ class Submission extends Component {
                             submissionID={this.state.submissionID}
                             acceptHandler={()=>{this.setState({confirmationDialog:acceptedDailog})}}
                             rejectHandler={()=>{this.setState({confirmationDialog:rejedctedDailog})}}
+                            getNextSubmission={this.getNextSubmission}
                             skipHandler={this.handleSkip}
                             disableSkip={this.state.disableSkip}
                         />

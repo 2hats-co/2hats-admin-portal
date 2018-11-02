@@ -86,6 +86,7 @@ class FeedbackForm extends Component {
     this.saveFeedback =this.saveFeedback.bind(this)
     this.handleOptionClick =this.handleOptionClick.bind(this)
     this.closeDialog = this.closeDialog.bind(this)
+    this.resetForm = this.resetForm.bind(this)
     this.state = {
       showFeedbackForm: false,
       feedback:{}
@@ -115,6 +116,12 @@ class FeedbackForm extends Component {
   }
   closeDialog() {
     this.setState({ confirmationDialog: null });
+  }
+  resetForm() {
+    this.setState({
+      showFeedbackForm: false,
+      feedback: {}
+    });
   }
   render() {
     const { classes, submissionID, acceptHandler, rejectHandler, skipHandler, disableSkip } = this.props;
@@ -171,7 +178,7 @@ class FeedbackForm extends Component {
     const confirmationDialogConfig = {
       title: `Submit Feedback?`,
       body: feedbackText,
-      request: {action:()=>{this.saveFeedback(), this.closeDialog()},label:'Submit Feedback'},
+      request: {action:()=>{this.saveFeedback(), this.closeDialog(), this.props.getNextSubmission(), this.resetForm()},label:'Submit Feedback'},
       cancel: {action:this.closeDialog,label:'Cancel'},
       customText: true,
     };
