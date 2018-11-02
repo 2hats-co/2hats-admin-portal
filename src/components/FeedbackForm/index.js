@@ -105,9 +105,12 @@ class FeedbackForm extends Component {
     }
   }
   saveFeedback(){
-    const feedbackContent =  _.map(this.state.feedback,(value,id)=>{
-      return {id,content:getFeedbackContent(id,value)}
-    })
+    let feedbackContent =  _.map(this.state.feedback,(value,id)=>{
+      const out = {id,content:getFeedbackContent(id,value)};
+      if (!out.content) return null;
+      return out;
+    });
+    feedbackContent = feedbackContent.filter(x => x !== null);
     this.props.reviewSubmission(this.props.submissionID,feedbackContent)
   }
   closeDialog() {
@@ -162,8 +165,6 @@ class FeedbackForm extends Component {
       if (feedbackText.length === 0 ||
         (feedbackText.length === 1 && feedbackText[0] === '')) {
           feedbackText = 'No feedback will be sent.';
-      } else {
-        
       }
     }
 
