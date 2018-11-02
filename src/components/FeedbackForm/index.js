@@ -27,7 +27,6 @@ const styles = theme => ({
   root: {
     width: '100%',
     height: '100%',
-    maxWidth: 360,
     boxSizing: 'border-box',
     backgroundColor: theme.palette.background.paper,
   },
@@ -47,7 +46,7 @@ const styles = theme => ({
   listSection: {
     borderBottom: '1px solid rgba(0,0,0,.1)',
     marginBottom: 20,
-    paddingBottom: 8,
+    paddingBottom: 16,
   },
   nested: {
     paddingLeft: theme.spacing.unit * 6,
@@ -56,7 +55,7 @@ const styles = theme => ({
     position: 'fixed',
     bottom: 20,
     right: 20,
-    width: 256,
+    width: 360,
     fontWeight: 700,
   },
   greyButton: {
@@ -103,9 +102,8 @@ class FeedbackForm extends Component {
     }
   }
   saveFeedback(){
-    
-  const feedbackContent =  _.map(this.state.feedback,(value,id)=>{
-     return {id,content:getFeedbackContent(id,value)}
+    const feedbackContent =  _.map(this.state.feedback,(value,id)=>{
+      return {id,content:getFeedbackContent(id,value)}
     })
     this.props.reviewSubmission(this.props.submissionID,feedbackContent)
   }
@@ -164,7 +162,7 @@ class FeedbackForm extends Component {
                   labels={element.labels}/> 
               )}
             </div>
-            )}
+          )}
             
         </List>
 

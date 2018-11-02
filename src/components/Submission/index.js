@@ -201,7 +201,7 @@ class Submission extends Component {
                         />
                         <SubmissionDetails submission={submission} />
                     </Grid>
-                    <Grid item style={{width:296}}>
+                    <Grid item style={{width:400}}>
                         <FeedbackForm
                             sections={SUBMISSION_FEEDBACK}
                             submissionID={this.state.submissionID}

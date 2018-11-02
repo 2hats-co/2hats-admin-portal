@@ -9,7 +9,7 @@ const generalFeedback = [{
       isRequired:true
 }]
 const contentFeedback = [{
-            id: '',
+            id: 'a',
             title: 'Relevant Content to Industry',
             labels: ['', 'Low', 'Medium', 'High'],
             content: ['', 'A large portion of the content in your resume is not focused or relevant. Re-read your resume and make edits to keep all of your content consistent and relevant to your target industry.', 
@@ -19,7 +19,7 @@ const contentFeedback = [{
             isRequired:true
       },
       {
-            id: 'a',
+            id: 'b',
             title: 'Use of Bullet Points',
             labels: ['', 'Low', 'Medium', 'High'],
             content: ['', 'You haven’t effectively used bullet points. You should do this to make your resume easy to read and understandable.', 
@@ -29,7 +29,7 @@ const contentFeedback = [{
 
       },
       {
-            id: 'b',
+            id: 'c',
             title: 'Max Two Page Length',
             labels: ['', 'Low', 'Medium', 'High'],
             content: ['', 'Your resume is too long, it should be a maximum of two pages. Remember that people only spend a few seconds judging your resume.',
@@ -38,7 +38,7 @@ const contentFeedback = [{
             isRequired:false
       },
       {
-            id: 'c',
+            id: 'd',
             title: 'Quantifiable Information',
             labels: ['', 'Not Quantifiable', 'Somewhat Quantifiable', 'Quantifiable'],
             content: ['', 'Experience and achievements can be quantified better to communicate the results of your efforts. For example, instead of writing “I was a high-achieving sales person who met all of my targets”, you should write “Achieved 100% of sales targets consistently over a 6-month period, contributing to 60% of total sales”. This same example can be applied to any situation. You can quantify time periods, money, tasks, people, etc. When you do this, it makes it much easier for a stranger (the person reading your resume) to understand you and what value you can bring.',
