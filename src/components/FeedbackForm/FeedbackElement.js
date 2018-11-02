@@ -36,7 +36,7 @@ function FeedbackElement(props) {
                                             icon={<Star style={{fontSize:40, opacity:.34}} />}
                                             checked={x-1<value}
                                             checkedIcon={<Star style={{fontSize:40}} />}
-                                            value={x}
+                                            value={x.toString()}
                                             />
                                     </Tooltip>}/>)}
                     </Grid>

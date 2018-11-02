@@ -8,7 +8,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 
 function ConfirmationDailog(props){
 
-    const {title,body,request,cancel} = props.data
+    const {title,body,request,cancel,customText} = props.data
  
         return (
             <div>
@@ -21,9 +21,11 @@ function ConfirmationDailog(props){
               >
                 <DialogTitle id="alert-dialog-title">{title}</DialogTitle>
                 <DialogContent>
-                  <DialogContentText id="alert-dialog-description">
-                   {body}
-                  </DialogContentText>
+                  { customText ? body :
+                    <DialogContentText id="alert-dialog-description">
+                    {body}
+                    </DialogContentText>
+                  }
                 </DialogContent>
                 <DialogActions>
                   <Button onClick={cancel.action} color="primary">

@@ -3,6 +3,7 @@ import PropTypes, { element } from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 
 import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
 import List from '@material-ui/core/List';
 import Button from '@material-ui/core/Button';
 import Tooltip from '@material-ui/core/Tooltip';
@@ -17,12 +18,13 @@ import { compose } from "redux";
 import { withHandlers } from "recompose";
 import { connect } from "react-redux";
 import { withFirestore } from "../../utilities/withFirestore";
+import ConfirmationDialog from '../ConfirmationDialog';
 
 import SendIcon from '@material-ui/icons/Send';
 import FeedbackElement from './FeedbackElement';
 import { Divider } from '@material-ui/core';
 import * as _ from 'lodash'
-import {SUBMISSION_FEEDBACK,getFeedbackContent} from '../../constants/feedback'
+import {SUBMISSION_FEEDBACK,getFeedbackContent, getFeedbackTitle} from '../../constants/feedback'
 const styles = theme => ({
   root: {
     width: '100%',
@@ -83,6 +85,7 @@ class FeedbackForm extends Component {
     super(props);
     this.saveFeedback =this.saveFeedback.bind(this)
     this.handleOptionClick =this.handleOptionClick.bind(this)
+    this.closeDialog = this.closeDialog.bind(this)
     this.state = {
       showFeedbackForm: false,
       feedback:{}
@@ -107,8 +110,12 @@ class FeedbackForm extends Component {
     })
     this.props.reviewSubmission(this.props.submissionID,feedbackContent)
   }
+  closeDialog() {
+    this.setState({ confirmationDialog: null });
+  }
   render() {
     const { classes, submissionID, acceptHandler, rejectHandler, skipHandler, disableSkip } = this.props;
+    const { confirmationDialog } = this.state;
 
     if (!submissionID) return null;
 
@@ -139,6 +146,35 @@ class FeedbackForm extends Component {
       </div>
     );
 
+    let feedbackText;
+    if (this.state.feedback) {
+      feedbackText = _.map(this.state.feedback,(value,id)=>{
+        const feedbackBody = getFeedbackContent(id,value);
+        if (!feedbackBody) return null;
+
+        const feedbackTitle = getFeedbackTitle(id);
+        return (<React.Fragment key={id}>
+          <Typography variant="subheading">{feedbackTitle}</Typography>
+          <Typography variant="body1" style={{marginBottom:12}}>{feedbackBody}</Typography>
+        </React.Fragment>);
+      });
+      feedbackText = feedbackText.filter(x => x !== null);
+      if (feedbackText.length === 0 ||
+        (feedbackText.length === 1 && feedbackText[0] === '')) {
+          feedbackText = 'No feedback will be sent.';
+      } else {
+        
+      }
+    }
+
+    const confirmationDialogConfig = {
+      title: `Submit Feedback?`,
+      body: feedbackText,
+      request: {action:()=>{this.saveFeedback(), this.closeDialog()},label:'Submit Feedback'},
+      cancel: {action:this.closeDialog,label:'Cancel'},
+      customText: true,
+    };
+
     return (
       <div className={classes.root}>
         <Button color="default" className={classes.backButton}
@@ -168,10 +204,12 @@ class FeedbackForm extends Component {
 
         <Button variant="extendedFab" color="primary" 
           aria-label="Submit Feedback" 
-          onClick={this.saveFeedback}
+          onClick={() => {this.setState({confirmationDialog: confirmationDialogConfig})}}
           className={classes.submitButton}>
           <SendIcon /> Submit Feedback
         </Button>
+
+        {confirmationDialog && <ConfirmationDialog data={confirmationDialog}/>}
       </div>
     );
   }
