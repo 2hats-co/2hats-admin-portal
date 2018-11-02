@@ -86,22 +86,25 @@ class FeedbackForm extends Component {
     this.handleOptionClick =this.handleOptionClick.bind(this)
     this.state = {
       showFeedbackForm: false,
+      feedback:{}
     };
   }
 
   
 
   handleOptionClick(id,value) {
-    const currentValue = this.state[id]
-    if(currentValue === 1 && value ===1 ){
-     this.setState({[id]:0})
+
+    if(this.state.feedback[id] &&this.state.feedback[id] === 1 && value ===1 ){
+    const updatedFeedback = Object.assign(this.state.feedback,{[id]:0})
+      this.setState({feedback:updatedFeedback})
     }else{
-      this.setState({[id]:value})
+    const updatedFeedback = Object.assign(this.state.feedback,{[id]:value})
+      this.setState({feedback:updatedFeedback})
     }
   }
   saveFeedback(){
     
-  const feedbackContent =  _.map(this.state,(value,id)=>{
+  const feedbackContent =  _.map(this.state.feedback,(value,id)=>{
      return {id,content:getFeedbackContent(id,value)}
     })
     this.props.reviewSubmission(this.props.submissionID,feedbackContent)
@@ -156,7 +159,7 @@ class FeedbackForm extends Component {
                   handleFeedbackItem={this.handleOptionClick} 
                   id={sectionId+element.id}
                   title={`${sectionId+element.id}. ${element.title}`} 
-                  value={this.state[sectionId+element.id]}
+                  value={this.state.feedback[sectionId+element.id]}
                   contents={element.content}
                   labels={element.labels}/> 
               )}
