@@ -2,7 +2,7 @@ const generalFeedback = [{
       id: '',
       title: 'Link Between Industry and Interest',
       labels: ['', 'Low', 'Medium', 'High'],
-      content: ['', 'There is nothing in your resume that shows a link between the industry that you’re interested in, your experience and interests. Spend time reading job description online, you can get a good indication of the profiles and skills business are looking for at this exact time. You could also try talking to people who are working to see what type of pathway you could align to.',
+      content: ['', 'There is no link in your resume between your career objectives, your experience and interests. You could spend time reading job descriptions online, this will give you a good indication of the profiles and skills that businesses are looking for at any exact time. You could also try talking to people who are working to see the types of pathways that you could align with.',
             'Your resume shows your interest in a particular industry. However there is no clear link to the industries that 2hats offer opportunities in. This indicates to us that you’re not sure about what you want or are trying to achieve. You could use a biography or objective section at the top of your resume to demonstrate how your experience is linked to our industries.',
             'Your resume shows a clear link between the industry which you’re interested in pursuing, your experience and interests. This shows that you are professionally focussed.'
       ],
