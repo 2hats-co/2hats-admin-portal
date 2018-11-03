@@ -116,10 +116,11 @@ class Submission extends Component {
     }
     
     componentWillUnmount() {
-        window.removeEventListener('onbeforeunload', this.handleWindowClose);
+        this.props.returnSubmission(this.state.submissionID)
     }
   
     setSubmission(i){
+        
         const submission = this.props.pending[i + this.state.skipOffset];
         console.log('setSubmission', i + this.state.skipOffset);
         this.setState({
@@ -127,9 +128,9 @@ class Submission extends Component {
             submission: submission,
             submissionStatus: submission.submissionStatus,
         });
-        // if(submissions[id].submissionStatus ==='pending'){
-        //     this.props.holdSubmission(id)
-        // }
+  
+           this.props.holdSubmission(submission.id) 
+
     }
     handleRejection(){
         this.props.proccessSubmission(this.state.submissionID,'rejected',this.state.submission.UID)
@@ -141,17 +142,19 @@ class Submission extends Component {
     }
     getNextSubmission(){
         // CHANGE TO 0 WHEN PROCESSING IS RE-ENABLED
-        this.setSubmission(1)
+        this.setSubmission(0)
         // TEST ACCOUNTS
         // ZKrWA8t0Lcf54117Jy63SQ9MdXZ2
         // dg4oWTSw2VPzmO6fKgY0Z6PSkmM2
     }
 
     handleSkip() {
+        
         if (this.state.skipOffset + 1 === this.props.pending.length - 1) {
             this.setState({ disableSkip: true });
         }
         if (this.state.skipOffset + 1 < this.props.pending.length) {
+            this.props.returnSubmission(this.state.submissionID)
             this.setState(
                 (state) => ({ skipOffset: state.skipOffset + 1 }),
                 () => {this.setSubmission(0)}
@@ -167,11 +170,17 @@ class Submission extends Component {
     
     
         const {submission,confirmationDialog,submissionStatus} = this.state;
-        const {classes, showFeedbackFormHandler} = this.props;
+        const {classes} = this.props;
         const firstName = (submission.displayName?submission.displayName.split(' ')[0]:'')
-        const acceptedDailog = {title:`Are you sure you want to accept ${firstName}?`,body:`This will send ${firstName} calendar invite for an online interview`,request:{action:()=>{this.handleAcception(),this.closeDialog()},label:'yes'},cancel:{action:this.closeDialog,label:'cancel'}}
+        const acceptedDailog = {title:`Are you sure you want to accept ${firstName}?`,
+        body:`This will send ${firstName} calendar invite for an online interview`,
+        request:{action:()=>{this.handleAcception(),this.closeDialog()},label:'yes'},
+        cancel:{action:this.closeDialog,label:'cancel'}}
+
         const rejedctedDailog = {title:`Are you sure you want to reject ${firstName}?`,
-        body:`This will update ${firstName} account to pre-review rejected`,request:{action:()=>{this.handleRejection(),this.closeDialog()},label:'yes'},cancel:{action:this.closeDialog,label:'cancel'}}
+        body:`This will update ${firstName} account to pre-review rejected`,
+        request:{action:()=>{this.handleRejection(),this.closeDialog()},
+        label:'yes'},cancel:{action:this.closeDialog,label:'cancel'}}
 
         
         let submissionStatusLabel = ''
@@ -267,15 +276,20 @@ const enhance = compose(
           let updateObject = {}
           switch (submissionStatus) {
               case 'accepted':
-                  updateObject = {stage:'resume',status:'accepted',
-                  operator:props.uid,
-                  updatedAt:props.firestore.FieldValue.serverTimestamp()}
+                  updateObject = {
+                    stage:'resume',
+                    status:'accepted',
+                    operator:props.uid,
+                    updatedAt:props.firestore.FieldValue.serverTimestamp()
+                }
                   break;
                 case 'rejected':
-                  updateObject = {stage:'pre-review',
-                  status:'rejected',
-                  operator:props.uid,
-                  updatedAt:props.firestore.FieldValue.serverTimestamp()}
+                  updateObject = {
+                    stage:'pre-review',
+                    status:'rejected',
+                    operator:props.uid,
+                    updatedAt:props.firestore.FieldValue.serverTimestamp()
+                }
                   break;
               default:
                   break;

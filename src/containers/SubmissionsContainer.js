@@ -64,7 +64,7 @@ class SubmissionsContainer extends Component{
 
 const filters = [{storeName:'acceptedSubmissions',query:['submissionStatus','==','accepted'],sort:[['createdAt', 'desc']],limit:20},
 {storeName:'rejectedSubmissions',query:['submissionStatus','==','rejected'],sort:[['createdAt', 'desc']],limit:20},
-{storeName:'pendingSubmissions',query:['submissionStatus','==','pending'],sort:[['createdAt', 'desc']],limit:10},
+{storeName:'pendingSubmissions',query:['submissionStatus','==','pending'],sort:[['createdAt', 'asc']],limit:10},
 {storeName:'submissions',query:[],sort:[['createdAt', 'desc']],limit:20}
 ]
 const enhance = compose(
