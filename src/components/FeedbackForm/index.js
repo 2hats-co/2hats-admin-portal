@@ -107,7 +107,7 @@ class FeedbackForm extends Component {
   }
   saveFeedback(){
     let feedbackContent =  _.map(this.state.feedback,(value,id)=>{
-      const out = {id,content:getFeedbackContent(id,value)};
+      const out = {id,content:getFeedbackContent(id,value),value};
       if (!out.content) return null;
       return out;
     });
