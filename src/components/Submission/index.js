@@ -90,7 +90,7 @@ class Submission extends Component {
     }
     
     componentDidUpdate(prevProps,prevState){
-        if (this.props.pending) {
+        if (this.props[this.props.listType]) {
             if (this.state.submissionID === '') {
                 console.log('setSubmission', this.state.submissionID)
                 this.setSubmission(0);
@@ -121,7 +121,7 @@ class Submission extends Component {
   
     setSubmission(i){
         
-        const submission = this.props.pending[i + this.state.skipOffset];
+        const submission = this.props[this.props.listType][i + this.state.skipOffset];
         console.log('setSubmission', i + this.state.skipOffset);
         this.setState({
             submissionID: submission.id,
@@ -129,7 +129,7 @@ class Submission extends Component {
             submissionStatus: submission.submissionStatus,
         });
   
-           this.props.holdSubmission(submission.id) 
+           this.props.holdSubmission(submission.id, this.props.listType) 
 
     }
     handleRejection(){
@@ -150,10 +150,10 @@ class Submission extends Component {
 
     handleSkip() {
         
-        if (this.state.skipOffset + 1 === this.props.pending.length - 1) {
+        if (this.state.skipOffset + 1 === this.props[this.props.listType].length - 1) {
             this.setState({ disableSkip: true });
         }
-        if (this.state.skipOffset + 1 < this.props.pending.length) {
+        if (this.state.skipOffset + 1 < this.props[this.props.listType].length) {
             this.props.returnSubmission(this.state.submissionID)
             this.setState(
                 (state) => ({ skipOffset: state.skipOffset + 1 }),
@@ -219,6 +219,7 @@ class Submission extends Component {
                             getNextSubmission={this.getNextSubmission}
                             skipHandler={this.handleSkip}
                             disableSkip={this.state.disableSkip}
+                            showFeedbackForm={this.props.listType === "rejected"}
                         />
                     </Grid>
                 </Grid>
@@ -245,7 +246,7 @@ const enhance = compose(
     withFirestore,
     // Handler functions as props
   withHandlers({
-      holdSubmission: props => (submissionID) =>
+      holdSubmission: props => (submissionID,type) =>
       props.firestore.update(
         { collection: COLLECTIONS.submissions, doc: submissionID },
         {   operator:{
@@ -253,7 +254,7 @@ const enhance = compose(
             UID: props.uid,
             },
             viewedAt: props.firestore.FieldValue.serverTimestamp(),
-            submissionStatus:'processing'
+            submissionStatus:`processing-${type}`
         //  updatedAt: props.firestore.FieldValue.serverTimestamp()
         }
       ),
@@ -310,6 +311,7 @@ const enhance = compose(
     connect(({ firestore }) => ({
      
       pending: firestore.ordered.pendingSubmissions,
+      rejected: firestore.ordered.rejectedSubmissions,
 
     }))
   );

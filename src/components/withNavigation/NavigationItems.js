@@ -77,7 +77,7 @@ const navigationRoutes = [
     {
         label: 'Candidates',
         icon: <PeopleIcon />,
-        route: ROUTES.candidates,
+        route: [ROUTES.candidates],
     }, {
     //     label: 'Calendar',
     //     icon: <CalendarIcon />,
@@ -85,15 +85,15 @@ const navigationRoutes = [
     // }, {
         label: 'Statistics',
         icon: <TimelineIcon />,
-        route: ROUTES.stats,
+        route: [ROUTES.stats],
     }, {
         label: 'Mail',
         icon: <MailIcon />,
-        route: ROUTES.mail,
+        route: [ROUTES.mail],
     }, {
         label: 'Submissions',
         icon: <DescriptionIcon />,
-        route: ROUTES.submissions,
+        route: [ROUTES.submissions, ROUTES.rejections],
     }
 ];
 function NavigationItems(props){
@@ -104,10 +104,10 @@ function NavigationItems(props){
            {navigationRoutes.map((x, i) =>(
                 <Tooltip title={x.label} placement="right" key={i}>
                     <ListItem button disableGutters
-                        key={x.route}
-                        onClick={()=>{ goTo(x.route) }}
+                        key={x.route[0]}
+                        onClick={()=>{ goTo(x.route[0]) }}
                         className={classes.item}
-                        selected={ currentLocation === x.route }
+                        selected={ x.route.includes(currentLocation) }
                         classes={{selected: classes.selectedItem}}
                     >
                         <ListItemIcon className={classes.icon}>{x.icon}</ListItemIcon>

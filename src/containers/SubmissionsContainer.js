@@ -42,8 +42,11 @@ class SubmissionsContainer extends Component{
         // return(<div>exists</div>)
 
         return(
-            <Submission id={this.state.submissionID}
-            showFeedbackFormHandler={this.handleShowFeedbackForm} />
+            <Submission
+                id={this.state.submissionID}
+                showFeedbackFormHandler={this.handleShowFeedbackForm}
+                listType={this.props.location.pathname.replace('/rejections','rejected').replace('/submissions','pending')}
+            />
         );
         
         return(

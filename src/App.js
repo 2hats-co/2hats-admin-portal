@@ -31,7 +31,8 @@ class App extends Component {
                         <Route exact path={ROUTES.candidates} component={() => <CandidatesContainer/>} />
                         <Route exact path={ROUTES.auth} component={() => <AuthenticationContainer/>} />
                         <Route exact path={ROUTES.resumes} component={() => <ResumesContainer/>} />
-                        <Route exact path={ROUTES.submissions} component={() => <SubmissionsContainer/>} />
+                        <Route exact path={ROUTES.submissions} component={() => <SubmissionsContainer />} />
+                        <Route exact path={ROUTES.rejections} component={() => <SubmissionsContainer />} />
                         <Route exact path={ROUTES.mail} component={() => <MailContainer/>} />
                         <Route exact path={'/'} component={() => <Landing/>} /> 
                     </div>

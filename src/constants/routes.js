@@ -8,5 +8,6 @@ export const ROUTES = {
     auth:'/auth',
     resumes:'/resumes',
     mail:'/mail',
-    submissions:'/submissions'
+    submissions:'/submissions',
+    rejections: '/rejections',
 }
