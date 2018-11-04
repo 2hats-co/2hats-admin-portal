@@ -88,7 +88,7 @@ class FeedbackForm extends Component {
     this.closeDialog = this.closeDialog.bind(this)
     this.resetForm = this.resetForm.bind(this)
     this.state = {
-      showFeedbackForm: false,
+      showFeedbackForm: this.props.showFeedbackForm,
       feedback:{}
     };
   }
@@ -185,11 +185,17 @@ class FeedbackForm extends Component {
 
     return (
       <div className={classes.root}>
-        <Button color="default" className={classes.backButton}
-        onClick={() => {this.setState({ showFeedbackForm: false })}}>
-          <BackIcon className={classes.backIcon} />
-          Back
-        </Button>
+        <Grid container justify="space-between">
+          <Button color="default" className={classes.backButton}
+          onClick={() => {this.setState({ showFeedbackForm: false })}}>
+            <BackIcon className={classes.backIcon} />
+            Back
+          </Button>
+          <Button color="default" className={classes.backButton}
+          onClick={rejectHandler}>
+            Review Later
+          </Button>
+        </Grid>
         <List component="nav"
           className={classes.list}
         >
