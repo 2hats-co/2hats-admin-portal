@@ -65,11 +65,28 @@ class SubmissionsContainer extends Component{
     }
 }
 
-const filters = [{storeName:'acceptedSubmissions',query:['submissionStatus','==','accepted'],sort:[['createdAt', 'desc']],limit:20},
-{storeName:'rejectedSubmissions',query:['submissionStatus','==','rejected'],sort:[['createdAt', 'desc']],limit:20},
-{storeName:'pendingSubmissions',query:['submissionStatus','==','pending'],sort:[['createdAt', 'asc']],limit:10},
-{storeName:'submissions',query:[],sort:[['createdAt', 'desc']],limit:20}
-]
+const filters = [
+    {storeName:'acceptedSubmissions',
+    query:[['submissionStatus','==','accepted'],
+    ['processing','==',false],
+    ['reviewed','==',false]],
+    sort:[['createdAt', 'asc']],
+    limit:10},
+    {storeName:'rejectedSubmissions',
+    query:[['submissionStatus','==','rejected'],
+    ['processing','==',false],
+    ['reviewed','==',false]],
+    sort:[['createdAt', 'asc']],
+    limit:10},
+    {storeName:'pendingSubmissions',
+    query:[
+    ['submissionStatus','==','pending'],
+    ['processing','==',false],
+    //['reviewed','==',false]
+],
+    sort:[['createdAt', 'asc']],
+    limit:10}
+    ]
 const enhance = compose(
     // add redux store (from react context) as a prop
     withFirestore,
@@ -90,9 +107,6 @@ const enhance = compose(
             this.props.loadData(submissionsListenerSettings);
         })
       },
-    //   componentDidUpdate(prevProps, prevState) {
-    //       console.log('lifecycle',this.props)
-    //   },
       componentWillUnmount() {
         
       }
