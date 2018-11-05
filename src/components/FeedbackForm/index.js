@@ -229,9 +229,7 @@ class FeedbackForm extends Component {
   }
 }
 
-
 const enhance = compose(
-
   withFirestore,
   // Handler functions as props
 withHandlers({
@@ -243,19 +241,15 @@ withHandlers({
           UID: props.uid,
           },
           reviewedBy:props.uid,
-          submissionStatus:'reviewed',
+          reviewedAt:props.firestore.FieldValue.serverTimestamp(),
+          reviewed:true,
           feedbackContent,
-          updatedAt: props.firestore.FieldValue.serverTimestamp()
       }
     ),
     
 }),
 
-connect(({ firestore }) => ({
-    rejected: firestore.data.rejectedSubmissions,
-  }))
 );
-
 export default enhance(
     compose(  
       withStyles(styles)(FeedbackForm)
