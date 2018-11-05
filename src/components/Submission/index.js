@@ -97,20 +97,6 @@ class Submission extends Component {
                 this.setSubmission(0);
             }
         }
-    //    const {submissionStatus,submissionID} = this.state
-    //     if(prevProps.id !== this.props.id){
-    //         if(submissionID!==''){
-    //             if(submissionStatus ==='pending' ||submissionStatus ==='processing'){
-    //                 this.props.returnSubmission(submissionID)
-    //             }
-    //         }
-    //         this.setSubmission(this.props.id)
-    //     }
-    //     if(prevState.submission !== this.state.submission){
-    //         if(this.state.submission.submissionStatus ==='rejected'){
-    //             this.props.showFeedbackFormHandler()
-    //         }
-    //     } 
     }
     componentDidMount() {
         
@@ -130,7 +116,7 @@ class Submission extends Component {
             submissionStatus: submission.submissionStatus,
         });
   
-        //    this.props.holdSubmission(submission.id, this.props.listType) 
+         this.props.holdSubmission(submission.id, this.props.listType) 
 
     }
     handleRejection(){
@@ -270,8 +256,9 @@ const enhance = compose(
         props.firestore.update(
             { collection: COLLECTIONS.submissions, doc: submissionID },
             {submissionStatus,
-            reviewedBy: props.uid,
-            reviewedAt: props.firestore.FieldValue.serverTimestamp(),
+            screenedBy: props.uid,
+            processing:false,
+            screenedAt: props.firestore.FieldValue.serverTimestamp(),
             updatedAt: props.firestore.FieldValue.serverTimestamp()
             }
           )
