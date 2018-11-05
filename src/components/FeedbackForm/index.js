@@ -112,7 +112,7 @@ class FeedbackForm extends Component {
       return out;
     });
     feedbackContent = feedbackContent.filter(x => x !== null);
-    this.props.reviewSubmission(this.props.submissionID,feedbackContent)
+    this.props.reviewSubmission(this.props.submissionID,feedbackContent,this.state.feedbackType)
   }
   closeDialog() {
     this.setState({ confirmationDialog: null });
@@ -192,7 +192,7 @@ class FeedbackForm extends Component {
             Back
           </Button>
           <Button color="default" className={classes.backButton}
-          onClick={rejectHandler}>
+          onClick={this.state.feedbackType === 'reject' ? rejectHandler : acceptHandler}>
             Review Later
           </Button>
         </Grid>
@@ -233,7 +233,7 @@ const enhance = compose(
   withFirestore,
   // Handler functions as props
 withHandlers({
-    reviewSubmission: props => (submissionID,feedbackContent) =>
+    reviewSubmission: props => (submissionID,feedbackContent,submissionStatus) =>
     props.firestore.update(
       { collection: COLLECTIONS.submissions, doc: submissionID },
       {   operator:{
@@ -244,6 +244,7 @@ withHandlers({
           reviewedAt:props.firestore.FieldValue.serverTimestamp(),
           reviewed:true,
           feedbackContent,
+          submissionStatus: `${submissionStatus}ed`,
       }
     ),
     
