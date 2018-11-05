@@ -45,7 +45,7 @@ class SubmissionsContainer extends Component{
             <Submission
                 id={this.state.submissionID}
                 showFeedbackFormHandler={this.handleShowFeedbackForm}
-                listType={this.props.location.pathname.replace('/rejections','rejected').replace('/submissions','pending')}
+                listType={this.props.location.pathname.split('/')[1]}
             />
         );
         

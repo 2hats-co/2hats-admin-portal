@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 // mui
 import {withStyles} from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import PersonIcon from '@material-ui/icons/Person';
 //redux 
 import { COLLECTIONS} from "../../constants/firestore";
@@ -129,7 +130,7 @@ class Submission extends Component {
             submissionStatus: submission.submissionStatus,
         });
   
-           this.props.holdSubmission(submission.id, this.props.listType) 
+        //    this.props.holdSubmission(submission.id, this.props.listType) 
 
     }
     handleRejection(){
@@ -188,7 +189,7 @@ class Submission extends Component {
             case 'accepted':
             case 'rejected':
             case 'processing':
-            submissionStatusLabel = ` – ${submissionStatus} by ${submission.operator&& submission.operator.displayName.split(' ')[0]} `
+            submissionStatusLabel = ` – ${submissionStatus} by ${submission.operator && submission.operator.displayName && submission.operator.displayName.split(' ')[0]} `
             console.log('submission',submission)
                 break;
         
@@ -219,7 +220,7 @@ class Submission extends Component {
                             getNextSubmission={this.getNextSubmission}
                             skipHandler={this.handleSkip}
                             disableSkip={this.state.disableSkip}
-                            showFeedbackForm={this.props.listType === "rejected"}
+                            showFeedbackForm={this.props.listType === "rejected" || this.props.listType === "accepted"}
                         />
                     </Grid>
                 </Grid>
@@ -230,10 +231,8 @@ class Submission extends Component {
             return(
                 <Grid container direction="column" alignItems="center" justify="center"
                     className={classes.root}
-                    style={{color: '#808080'}}
                 >
-                    <PersonIcon style={{width: 64, height: 64, opacity: 0.87}} />
-                    No candidate selected
+                    <CircularProgress size={50} />
                 </Grid>
             );
         }
@@ -249,12 +248,13 @@ const enhance = compose(
       holdSubmission: props => (submissionID,type) =>
       props.firestore.update(
         { collection: COLLECTIONS.submissions, doc: submissionID },
-        {   operator:{
-            displayName:props.displayName,
-            UID: props.uid,
-            },
+        {   
+            // operator:{
+            // displayName:props.displayName,
+            // UID: props.uid,
+            // },
             viewedAt: props.firestore.FieldValue.serverTimestamp(),
-            submissionStatus:`processing-${type}`
+            processing: true
         //  updatedAt: props.firestore.FieldValue.serverTimestamp()
         }
       ),
@@ -262,7 +262,8 @@ const enhance = compose(
       props.firestore.update(
         { collection: COLLECTIONS.submissions, doc: submissionID },
         {   
-            submissionStatus:'pending'
+            // submissionStatus:'pending'
+            processing: false
         //updatedAt: props.firestore.FieldValue.serverTimestamp()
         }
       ),proccessSubmission: props => (submissionID,submissionStatus,candidateUID) =>{
@@ -312,6 +313,7 @@ const enhance = compose(
      
       pending: firestore.ordered.pendingSubmissions,
       rejected: firestore.ordered.rejectedSubmissions,
+      accepted: firestore.ordered.acceptedSubmissions,
 
     }))
   );

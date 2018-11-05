@@ -7,15 +7,6 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import Tooltip from '@material-ui/core/Tooltip';
 
-import PeopleIcon from '@material-ui/icons/People';
-import DescriptionIcon from '@material-ui/icons/Description';
-import MailIcon from '@material-ui/icons/Mail';
-import TimelineIcon from '@material-ui/icons/Timeline';
-import CalendarIcon from '@material-ui/icons/CalendarToday';
-import StarIcon from '@material-ui/icons/Star';
-
-import {ROUTES} from '../../constants/routes';
-
 const styles = theme => ({
     root: {
         width: 64,
@@ -27,6 +18,7 @@ const styles = theme => ({
         padding: '18px 0',
         position: 'relative',
         transition: 'background-color .4s',
+        borderRadius: '18px 0 0 18px',
 
         '&:hover, &:focus': {
             backgroundColor: 'rgba(255,255,255,.16)',
@@ -34,7 +26,6 @@ const styles = theme => ({
     },
     selectedItem: {
         backgroundColor: '#fff !important',
-        borderRadius: '18px 0 0 18px',
         '& svg': {
             color: theme.palette.primary.main,
         },
@@ -57,6 +48,7 @@ const styles = theme => ({
             position: 'absolute',
             bottom: -40,
             right: -20,
+            pointerEvents: 'none',
 
             width: 40,
             height: 40,
@@ -72,42 +64,19 @@ const styles = theme => ({
         fontSize: 28,
     },
 });
-  
-const navigationRoutes = [
-    {
-        label: 'Candidates',
-        icon: <PeopleIcon />,
-        route: [ROUTES.candidates],
-    }, {
-    //     label: 'Calendar',
-    //     icon: <CalendarIcon />,
-    //     route: ROUTES.calendar,
-    // }, {
-        label: 'Statistics',
-        icon: <TimelineIcon />,
-        route: [ROUTES.stats],
-    }, {
-        label: 'Mail',
-        icon: <MailIcon />,
-        route: [ROUTES.mail],
-    }, {
-        label: 'Submissions',
-        icon: <DescriptionIcon />,
-        route: [ROUTES.submissions, ROUTES.rejections],
-    }
-];
+
 function NavigationItems(props){
-    const {classes, goTo, currentLocation} = props
+    const {classes, goTo, currentLocation, navigationRoutes, selectedIndex} = props
 
     return(
        <List component="nav" className={classes.root}>
            {navigationRoutes.map((x, i) =>(
                 <Tooltip title={x.label} placement="right" key={i}>
                     <ListItem button disableGutters
-                        key={x.route[0]}
-                        onClick={()=>{ goTo(x.route[0]) }}
+                        key={x.route}
+                        onClick={()=>{ goTo(x.route) }}
                         className={classes.item}
-                        selected={ x.route.includes(currentLocation) }
+                        selected={ selectedIndex === i }
                         classes={{selected: classes.selectedItem}}
                     >
                         <ListItemIcon className={classes.icon}>{x.icon}</ListItemIcon>

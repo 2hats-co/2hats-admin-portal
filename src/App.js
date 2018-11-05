@@ -27,12 +27,16 @@ class App extends Component {
             <MuiThemeProvider theme={Theme}>
                 <Router>
                     <div className="app"> 
+                        <Route exact path={ROUTES.auth} component={() => <AuthenticationContainer/>} />
+
                         <Route exact path={ROUTES.stats} component={() => <StatisticsContainer/>} />
                         <Route exact path={ROUTES.candidates} component={() => <CandidatesContainer/>} />
-                        <Route exact path={ROUTES.auth} component={() => <AuthenticationContainer/>} />
                         <Route exact path={ROUTES.resumes} component={() => <ResumesContainer/>} />
-                        <Route exact path={ROUTES.submissions} component={() => <SubmissionsContainer />} />
-                        <Route exact path={ROUTES.rejections} component={() => <SubmissionsContainer />} />
+
+                        <Route exact path={ROUTES.pending} component={() => <SubmissionsContainer />} />
+                        <Route exact path={ROUTES.rejected} component={() => <SubmissionsContainer />} />
+                        <Route exact path={ROUTES.accepted} component={() => <SubmissionsContainer />} />
+
                         <Route exact path={ROUTES.mail} component={() => <MailContainer/>} />
                         <Route exact path={'/'} component={() => <Landing/>} /> 
                     </div>
