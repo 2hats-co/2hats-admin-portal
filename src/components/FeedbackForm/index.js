@@ -24,7 +24,7 @@ import SendIcon from '@material-ui/icons/Send';
 import FeedbackElement from './FeedbackElement';
 import { Divider } from '@material-ui/core';
 import * as _ from 'lodash'
-import {SUBMISSION_FEEDBACK,getFeedbackContent, getFeedbackTitle} from '../../constants/feedback'
+import {SUBMISSION_FEEDBACK,getFeedbackContent, getFeedbackTitle, feedbackSections} from '../../constants/feedback'
 const styles = theme => ({
   root: {
     width: '100%',
@@ -158,15 +158,42 @@ class FeedbackForm extends Component {
 
     let feedbackText;
     if (this.state.feedback) {
+
+      const mappedFeedback = _.map(this.state.feedback,(value,id)=>{
+        return{id,value}
+      }) 
+      const sortedFeedback = _.sortBy(mappedFeedback,['id'])
+      console.log(mappedFeedback,sortedFeedback)
+
+      let prevSection = '-1';
+
       feedbackText = _.map(this.state.feedback,(value,id)=>{
         const feedbackBody = getFeedbackContent(id,value);
+    
         if (!feedbackBody) return null;
 
         const feedbackTitle = getFeedbackTitle(id);
-        return (<React.Fragment key={id}>
-          <Typography variant="subheading">{feedbackTitle}</Typography>
-          <Typography variant="body1" style={{marginBottom:12}}>{feedbackBody}</Typography>
-        </React.Fragment>);
+        if (prevSection !== id[0]) {
+          prevSection = id[0];
+          return (<React.Fragment>
+            <Typography variant="subheading" style={{marginLeft:-20}}>
+              {feedbackSections[id[0]]}
+            </Typography>
+            <li key={id}>
+              <Typography variant="body1" style={{marginBottom:12}}>
+                <b>{feedbackTitle}</b>—
+                {feedbackBody}
+              </Typography>
+            </li>
+          </React.Fragment>);
+        }
+        prevSection = id[0];
+        return (<li key={id}>
+          <Typography variant="body1" style={{marginBottom:12}}>
+            <b>{feedbackTitle}</b>—
+            {feedbackBody}
+          </Typography>
+        </li>);
       });
       feedbackText = feedbackText.filter(x => x !== null);
       if (feedbackText.length === 0 ||
@@ -177,7 +204,7 @@ class FeedbackForm extends Component {
 
     const confirmationDialogConfig = {
       title: `Submit Feedback?`,
-      body: feedbackText,
+      body: <ul style={{margin:0}}>{feedbackText}</ul>,
       request: {action:()=>{this.saveFeedback(), this.closeDialog(), this.props.getNextSubmission(), this.resetForm()},label:'Submit Feedback'},
       cancel: {action:this.closeDialog,label:'Cancel'},
       customText: true,
