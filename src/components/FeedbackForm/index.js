@@ -24,7 +24,7 @@ import SendIcon from '@material-ui/icons/Send';
 import FeedbackElement from './FeedbackElement';
 import { Divider } from '@material-ui/core';
 import * as _ from 'lodash'
-import {SUBMISSION_FEEDBACK,getFeedbackContent, getFeedbackTitle} from '../../constants/feedback'
+import {SUBMISSION_FEEDBACK,getFeedbackContent, getFeedbackTitle, feedbackSections} from '../../constants/feedback'
 const styles = theme => ({
   root: {
     width: '100%',
@@ -112,7 +112,7 @@ class FeedbackForm extends Component {
       return out;
     });
     feedbackContent = feedbackContent.filter(x => x !== null);
-    this.props.reviewSubmission(this.props.submissionID,feedbackContent)
+    this.props.reviewSubmission(this.props.submissionID,feedbackContent,this.state.feedbackType)
   }
   closeDialog() {
     this.setState({ confirmationDialog: null });
@@ -141,14 +141,14 @@ class FeedbackForm extends Component {
           </Tooltip>
           <Tooltip title="Accept">
             <Button variant="fab" className={classes.greenButton} 
-            onClick={acceptHandler}
+            onClick={() => this.setState({ showFeedbackForm: true, feedbackType: 'accept' })}
             aria-label="accept">
                 <AcceptIcon />
             </Button>
           </Tooltip>
           <Tooltip title="Reject">
             <Button variant="fab" className={classes.redButton} aria-label="reject"
-            onClick={() => this.setState({ showFeedbackForm: true })}>
+            onClick={() => this.setState({ showFeedbackForm: true, feedbackType: 'reject' })}>
                 <RejectIcon />
             </Button>
           </Tooltip>
@@ -158,15 +158,42 @@ class FeedbackForm extends Component {
 
     let feedbackText;
     if (this.state.feedback) {
+
+      const mappedFeedback = _.map(this.state.feedback,(value,id)=>{
+        return{id,value}
+      }) 
+      const sortedFeedback = _.sortBy(mappedFeedback,['id'])
+      console.log(mappedFeedback,sortedFeedback)
+
+      let prevSection = '-1';
+
       feedbackText = _.map(this.state.feedback,(value,id)=>{
         const feedbackBody = getFeedbackContent(id,value);
+    
         if (!feedbackBody) return null;
 
         const feedbackTitle = getFeedbackTitle(id);
-        return (<React.Fragment key={id}>
-          <Typography variant="subheading">{feedbackTitle}</Typography>
-          <Typography variant="body1" style={{marginBottom:12}}>{feedbackBody}</Typography>
-        </React.Fragment>);
+        if (prevSection !== id[0]) {
+          prevSection = id[0];
+          return (<React.Fragment>
+            <Typography variant="subheading" style={{marginLeft:-20}}>
+              {feedbackSections[id[0]]}
+            </Typography>
+            <li key={id}>
+              <Typography variant="body1" style={{marginBottom:12}}>
+                <b>{feedbackTitle}</b>—
+                {feedbackBody}
+              </Typography>
+            </li>
+          </React.Fragment>);
+        }
+        prevSection = id[0];
+        return (<li key={id}>
+          <Typography variant="body1" style={{marginBottom:12}}>
+            <b>{feedbackTitle}</b>—
+            {feedbackBody}
+          </Typography>
+        </li>);
       });
       feedbackText = feedbackText.filter(x => x !== null);
       if (feedbackText.length === 0 ||
@@ -177,7 +204,7 @@ class FeedbackForm extends Component {
 
     const confirmationDialogConfig = {
       title: `Submit Feedback?`,
-      body: feedbackText,
+      body: <ul style={{margin:0}}>{feedbackText}</ul>,
       request: {action:()=>{this.saveFeedback(), this.closeDialog(), this.props.getNextSubmission(), this.resetForm()},label:'Submit Feedback'},
       cancel: {action:this.closeDialog,label:'Cancel'},
       customText: true,
@@ -192,7 +219,7 @@ class FeedbackForm extends Component {
             Back
           </Button>
           <Button color="default" className={classes.backButton}
-          onClick={rejectHandler}>
+          onClick={this.state.feedbackType === 'reject' ? rejectHandler : acceptHandler}>
             Review Later
           </Button>
         </Grid>
@@ -233,7 +260,7 @@ const enhance = compose(
   withFirestore,
   // Handler functions as props
 withHandlers({
-    reviewSubmission: props => (submissionID,feedbackContent) =>
+    reviewSubmission: props => (submissionID,feedbackContent,submissionStatus) =>
     props.firestore.update(
       { collection: COLLECTIONS.submissions, doc: submissionID },
       {   operator:{
@@ -244,6 +271,7 @@ withHandlers({
           reviewedAt:props.firestore.FieldValue.serverTimestamp(),
           reviewed:true,
           feedbackContent,
+          submissionStatus: `${submissionStatus}ed`,
       }
     ),
     

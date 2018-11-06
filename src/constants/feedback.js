@@ -49,7 +49,7 @@ const contentFeedback = [{
     }
 ]
 const grammarFeedback = [{
-    id: '',
+    id: 'a',
     title: 'Grammar & Spelling',
     labels: ['', 'Low', 'Medium', 'High'],
     content: ['', 'You should revise your spelling and grammar. Any mistake shows a lack of attention to detail. Grammarly is a free tool that you can use to improve, you can also download the extension on your browser!',
@@ -57,9 +57,9 @@ const grammarFeedback = [{
         'Great spelling and grammar shows that you have good attention to detail.'
     ],
     isRequired:true
-}]
-const formattingFeedback = [{
-    id: '',
+    },
+    {
+    id: 'b',
     title: 'Formatting & Layout',
     labels: ['', 'Low', 'Medium', 'High'],
     content: ['', 'Your resume formatting is not clear. You should ensure that your sections are clear and consistent. Also ensure that dates for education and experience are in reverse chronological order (the most recent work experience first).',
@@ -98,9 +98,18 @@ const skillsFeedback = [{
         'Relevant and specific skills are listed in your resume, this indicates that you’ll be able to perform and develop in your chosen industry.'
     ],
     isRequired:true
-}]
+}];
 
-export const SUBMISSION_FEEDBACK = {'1':generalFeedback, '2':contentFeedback, '3':grammarFeedback, '4':formattingFeedback, '5':acheivementsFeedback, '6':experienceFeedback, '7':skillsFeedback}
+export const feedbackSections = {
+    '1': 'Professionally Focussed',
+    '2': 'Written Communication',
+    '3': 'Attention to Detail',
+    '4': 'Achievements',
+    '5': 'Experience',
+    '6': 'Skills',
+};
+
+export const SUBMISSION_FEEDBACK = {'1':generalFeedback, '2':contentFeedback, '3':grammarFeedback, '4':acheivementsFeedback, '5':experienceFeedback, '6':skillsFeedback}
 export function getFeedbackContent(id,rating){
     if(id.length === 1){
     const content = SUBMISSION_FEEDBACK[id][0].content[rating]
