@@ -145,7 +145,7 @@ class CandidateDialog extends Component {
         const { classes,infoData} = this.props;
        console.log('data',infoData)
         return(
-            <Dialog open={true}  maxWidth={'lg'}>
+            <Dialog open={true}  maxWidth={'lg'} onClose={this.props.dismiss}>
             <Grid
                 container
                 direction="column"

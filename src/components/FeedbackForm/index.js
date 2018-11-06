@@ -239,10 +239,8 @@ class FeedbackForm extends Component {
                   labels={element.labels}/> 
               )}
             </div>
-          )}
-            
+          )}    
         </List>
-
         <Button variant="extendedFab" color="primary" 
           aria-label="Submit Feedback" 
           onClick={() => {this.setState({confirmationDialog: confirmationDialogConfig})}}
