@@ -14,6 +14,7 @@ import CandidateCommunication from './CandidateCommunication';
 import NestedSelect from './NestedSelect';
 import EmailComposer from './EmailComposer';
 
+import Chip from '@material-ui/core/Chip';
 const styles = theme => ({
     root: {
         width: "calc(100vw - 40px)",
@@ -40,84 +41,36 @@ const styles = theme => ({
     }
 });
 
-const testInfo = [
-    {
-        title: "Contact",
-        content: ["p.jones@columbia.edu", "0400 000 000"],
-    },
-    {
-        title: "Industry",
-        content: ["Design"],
-    },
-    {
-        title: "Interests",
-        content: ["User Interface, User Experience, Graphics/Illustrations"],
-    },
-    {
-        title: "Contact",
-        content: ["p.jones@columbia.edu", "0400 000 000"],
-    },
-    {
-        title: "Industry",
-        content: ["Design"],
-    },
-    {
-        title: "Interests",
-        content: ["User Interface, User Experience, Graphics/Illustrations"],
-    }
-]
-
 const testCommItems = [
-    {
-        type: "mail",
-        author: "Perrin",
-        outgoing: false,
-        date: "11:22 AM – 7th August 2018",
-        title: "2hats Assessment Centre",
-        description: "Description",
-        body: "<b>This is the body</b> text This is the body text This is the body text This is the body text This is the body text This is the body text This is the body text This is the body text This is the body text This is the body text This is the body text",
-    },
-    {
-        type: "note",
-        author: "Natalie",
-        date: "11:22 AM – 7th August 2018",
-        description: "This is the body text",
-    },
-    {
-        type: "call",
-        author: "Perrin",
-        date: "11:22 AM – 7th August 2018",
-        description: "This is the body text",
-    },
-    {
-        type: "file",
-        author: "Perrin",
-        date: "11:22 AM – 7th August 2018",
-        linkName: "Resume Feedback",
-        link: "https://google.com",
-    },
-    {
-        type: "mail",
-        author: "Natalie",
-        outgoing: true,
-        date: "11:22 AM – 7th August 2018",
-        title: "2hats Assessment Centre",
-        description: "This is the body text This is the body text This is the body text This is the body text This is the body text This is the body text This is the body text This is the body text This is the body text This is the body text This is the body text",
-    },
-    {
-        type: "history",
-        author: "Perrin",
-        date: "11:22 AM – 7th August 2018",
-        linkName: "Resume Feedback",
-        link: "https://google.com",
-    },
-    {
-        type: "task",
-        author: "Perrin",
-        date: "11:22 AM – 7th August 2018",
-        title: "2hats Assessment Centre",
-        description: "This is the body text",
-    },
+    // {
+    //     type: "file",
+    //     author: "",
+    //     date: "",
+    //     linkName: "Resume",
+    //     link: "https://google.com",
+    // },
+    // {
+    //     type: "mail",
+    //     author: "Natalie",
+    //     outgoing: true,
+    //     date: "11:22 AM – 7th August 2018",
+    //     title: "2hats Assessment Centre",
+    //     description: "This is the body text This is the body text This is the body text This is the body text This is the body text This is the body text This is the body text This is the body text This is the body text This is the body text This is the body text",
+    // },
+    // {
+    //     type: "history",
+    //     author: "Perrin",
+    //     date: "11:22 AM – 7th August 2018",
+    //     linkName: "Resume Feedback",
+    //     link: "https://google.com",
+    // },
+    // {
+    //     type: "task",
+    //     author: "Perrin",
+    //     date: "11:22 AM – 7th August 2018",
+    //     title: "2hats Assessment Centre",
+    //     description: "This is the body text",
+    // },
 ];
 
 const stringReducer = (accumulator, currentValue) => accumulator + ', '+ currentValue;
@@ -149,6 +102,20 @@ function _generateInfoItems(infoData){
         {
             title: "Availability",
             content: [`${infoData.availabilityInt} days`],
+        },
+        {
+            title: "Resume",
+            content: [(infoData.resume && 
+                <Chip
+        label="click to open"
+        //className={classes.chip}
+        component="a"
+        href={infoData.resume.downloadURL}
+        target="_blank"
+        clickable
+        variant="outlined"
+      />
+               )],
         }
     ]
     
@@ -158,7 +125,7 @@ class CandidateDialog extends Component {
         super(props);
 
         this.state = {
-            composerMode: true,
+            composerMode: false,
             applicationStatus: 'Interview Completed / Accepted',
         };
 
@@ -176,7 +143,7 @@ class CandidateDialog extends Component {
 
     render(){
         const { classes,infoData} = this.props;
-       
+       console.log('data',infoData)
         return(
             <Dialog open={true}  maxWidth={'lg'}>
             <Grid
