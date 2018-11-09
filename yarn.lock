@@ -1384,6 +1384,10 @@ binary-extensions@^1.0.0:
   version "1.11.0"
   resolved "https://registry.yarnpkg.com/binary-extensions/-/binary-extensions-1.11.0.tgz#46aa1751fb6a2f93ee5e689bb1087d4b14c6c205"
 
+bluebird@^3.3.4:
+  version "3.5.3"
+  resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-3.5.3.tgz#7d01c6f9616c9a51ab0f8c549a79dfe6ec33efa7"
+
 bluebird@^3.4.7:
   version "3.5.1"
   resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-3.5.1.tgz#d9551f9de98f1fcda1e683d17ee91a0602ee2eb9"
@@ -3667,6 +3671,10 @@ html-webpack-plugin@2.29.0:
     pretty-error "^2.0.2"
     toposort "^1.0.0"
 
+htmlencode@^0.0.4:
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/htmlencode/-/htmlencode-0.0.4.tgz#f7e2d6afbe18a87a78e63ba3308e753766740e3f"
+
 htmlparser2@~3.3.0:
   version "3.3.0"
   resolved "https://registry.yarnpkg.com/htmlparser2/-/htmlparser2-3.3.0.tgz#cc70d05a59f6542e43f0e685c982e14c924a9efe"
@@ -3847,6 +3855,14 @@ inquirer@3.3.0, inquirer@^3.0.6:
     string-width "^2.1.0"
     strip-ansi "^4.0.0"
     through "^2.3.6"
+
+intercom-client@^2.10.3:
+  version "2.10.3"
+  resolved "https://registry.yarnpkg.com/intercom-client/-/intercom-client-2.10.3.tgz#5917e9f8665b9fa261e07ebb4e5dbc97f1c71cbd"
+  dependencies:
+    bluebird "^3.3.4"
+    htmlencode "^0.0.4"
+    request "^2.83.0"
 
 internal-ip@1.2.0:
   version "1.2.0"
@@ -6719,7 +6735,7 @@ repeating@^2.0.0:
   dependencies:
     is-finite "^1.0.0"
 
-request@^2.79.0:
+request@^2.79.0, request@^2.83.0:
   version "2.88.0"
   resolved "https://registry.yarnpkg.com/request/-/request-2.88.0.tgz#9c2fca4f7d35b592efe57c7f0a55e81052124fef"
   dependencies:
