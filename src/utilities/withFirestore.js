@@ -11,7 +11,7 @@ export const withFirestore = (WrappedComponent) => {
       store: PropTypes.object.isRequired
     }
     render() {
-      let uid = 'maptest'
+      let uid = null
       let component = (<div/>)
       let auth = this.props.authUser 
       if(auth){

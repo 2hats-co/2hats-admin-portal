@@ -13,10 +13,12 @@ import rootReducer from '../reducers'
 							
 if (process.env.REACT_APP_ENV === 'PRODUCTION') {
 	console.log('production')
-	firebase.initializeApp(productionConfig)
+	firebase.initializeApp(productionConfig);
+	firebase.firestore().settings({timestampsInSnapshots: true});
 } else {
 	console.log('staging')
-	firebase.initializeApp(stagingConfig)
+	firebase.initializeApp(stagingConfig);
+	firebase.firestore().settings({timestampsInSnapshots: true});
 }
 
 export function configureStore(initialState, history) {
@@ -46,5 +48,5 @@ export function configureStore(initialState, history) {
 	return store;
 }
 export const auth = firebase.auth();
-export const firestore = firebase.firestore().settings({timestampsInSnapshots: true});
+export const firestore = firebase.firestore()
 export const functions = firebase.functions();

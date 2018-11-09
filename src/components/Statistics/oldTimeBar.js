@@ -23,7 +23,7 @@ const styles = theme => ({
 
 });
 const DATE_FORMAT = 'YYYY-MM-DD'
-class TimeBar extends Component {
+class OldTimeBar extends Component {
     constructor(){
         super()
         this.handleRangeChange = this.handleRangeChange.bind(this)
@@ -35,6 +35,7 @@ class TimeBar extends Component {
       componentDidMount(){
        this.handleRangeChange({target:{textContent:'past week'}})
       }
+    
       handleRangeChange(e){
         const {changeHandler} = this.props
         let text = e.target.textContent.split(' ')
@@ -42,20 +43,24 @@ class TimeBar extends Component {
         this.setState({dateRange:rangeType})
         switch (rangeType) {
             case 'week':
-            changeHandler('range',{start:moment().startOf('day').subtract(1, 'weeks').unix(),end:moment().startOf('hour').unix()})
-            break;
+            changeHandler('from',moment().subtract(1, 'weeks').format(DATE_FORMAT))
+            changeHandler('to',moment().format(DATE_FORMAT))
+                break;
             case 'month':
-            changeHandler('range',{start:moment().startOf('day').subtract(1, 'months').unix(),end:moment().startOf('hour').unix()})
-            break;
+            changeHandler('from',moment().subtract(1, 'months').format(DATE_FORMAT))
+            changeHandler('to',moment().format(DATE_FORMAT))
+                break;
             default:
-            changeHandler('range',{start:moment().startOf('day').subtract(2, 'weeks').unix(),end:moment().startOf('hour').unix()})
+            changeHandler('from',moment().subtract(2, 'weeks').format(DATE_FORMAT))
+            changeHandler('to',moment().format(DATE_FORMAT))
+            changeHandler('isLoading',true)
                 break;
         }
 
     }
     
       render() {
-        const { classes,format,changeHandler } = this.props;
+        const { classes,timeStep,changeHandler } = this.props;
         const {dateRange} =this.state
         
         return (
@@ -97,16 +102,14 @@ class TimeBar extends Component {
             <Grid item xs={12} sm={6}>
               <div className={classes.toggleContainer}>
                 <ToggleButtonGroup
-                  value={format.stepSize}
+                  value={timeStep}
                   exclusive
-                  onChange={(t,v)=>changeHandler('format',v)}
+                  onChange={(t)=>changeHandler('timeStep',t.target.textContent)}
                 >
-                  <ToggleButton value={{stepSize:1,
-        label:'ha ddd'}}>hourly</ToggleButton>
-                  <ToggleButton value={{stepSize:24,
-        label:'Do MMM'}}>daily</ToggleButton>
-                  <ToggleButton value={{stepSize:24*7,
-        label:'Do MMM'}}>weekly</ToggleButton>
+                  <ToggleButton value="hourly">hourly</ToggleButton>
+                  <ToggleButton value="daily">daily</ToggleButton>
+                  <ToggleButton value="weekly">weekly</ToggleButton>
+                  <ToggleButton value="monthly">monthly</ToggleButton>
                 </ToggleButtonGroup>
               </div>
             </Grid>
@@ -115,9 +118,9 @@ class TimeBar extends Component {
       }
     }
     
-    TimeBar.propTypes = {
+    OldTimeBar.propTypes = {
       classes: PropTypes.object.isRequired
     };
     
-    export default withStyles(styles)(TimeBar);
+    export default withStyles(styles)(OldTimeBar);
     

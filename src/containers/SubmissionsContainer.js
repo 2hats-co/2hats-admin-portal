@@ -40,27 +40,13 @@ class SubmissionsContainer extends Component{
         // console.warn('exists')
         // console.log(this.props)
         // return(<div>exists</div>)
-
+        console.log('props',this.props)
         return(
             <Submission
                 id={this.state.submissionID}
                 showFeedbackFormHandler={this.handleShowFeedbackForm}
                 listType={this.props.location.pathname.split('/')[1]}
             />
-        );
-        
-        return(
-        <Grid container direction="row" wrap="nowrap" style={{height: 'calc(100vh - 64px)'}}>
-            <Grid item style={{width: 360}}>
-                <SubmissionsList setSubmission={this.setSubmission}
-                    selectedCandidate={this.state.candidateUID}
-                />
-            </Grid>
-            <Grid item xs style={{height:'100%'}}>
-                <Submission id={this.state.submissionID}
-                showFeedbackFormHandler={this.handleShowFeedbackForm} />
-            </Grid>
-        </Grid>
         );
     }
 }
@@ -98,7 +84,7 @@ const enhance = compose(
     // Run functionality on component lifecycle
     lifecycle({
       // Load data when component mounts
-      componentWillMount() {
+      componentDidMount() {
         filters.map((x)=>{
             const submissionsListenerSettings = {collection:COLLECTIONS.submissions,
                                                     storeAs:x.storeName, 
@@ -107,14 +93,7 @@ const enhance = compose(
             this.props.loadData(submissionsListenerSettings);
         })
       },
-      componentWillUnmount() {
-        
-      }
     }),
-    // Connect todos from redux state to props.todos
-    connect(({ firestore }) => ({
-      submissions: firestore.ordered.pendingSubmissions, // document data by id
-    }))
   );
 
   export default enhance(

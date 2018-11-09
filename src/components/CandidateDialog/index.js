@@ -13,6 +13,7 @@ import CandidateInfo from './CandidateInfo';
 import CandidateCommunication from './CandidateCommunication';
 import NestedSelect from './NestedSelect';
 import EmailComposer from './EmailComposer';
+import {getConverstationsWithUID} from '../../utilities/intercom/converstations'
 
 import Chip from '@material-ui/core/Chip';
 const styles = theme => ({
@@ -132,7 +133,10 @@ class CandidateDialog extends Component {
         this.changeApplicationStatus = this.changeApplicationStatus.bind(this);
         this.closeComposer = this.closeComposer.bind(this);
     }
-    
+    async componentDidMount(){
+        let converstations = await getConverstationsWithUID(this.props.infoData.objectID)
+        console.log(converstations)
+     }
     changeApplicationStatus(val) {
         this.setState({ applicationStatus: val });
     }

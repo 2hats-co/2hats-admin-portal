@@ -91,6 +91,7 @@ class Submission extends Component {
     }
     
     componentDidUpdate(prevProps,prevState){
+        
         if (this.props[this.props.listType]) {
             if (this.state.submissionID === '') {
                 console.log('setSubmission', this.state.submissionID)
@@ -154,8 +155,7 @@ class Submission extends Component {
     } 
   
     render(){
-    
-    
+        console.log(this.props)
         const {submission,confirmationDialog,submissionStatus} = this.state;
         const {classes} = this.props;
         const firstName = (submission.displayName?submission.displayName.split(' ')[0]:'')
@@ -163,13 +163,10 @@ class Submission extends Component {
         body:`This will send ${firstName} calendar invite for an online interview`,
         request:{action:()=>{this.handleAcception(),this.closeDialog()},label:'yes'},
         cancel:{action:this.closeDialog,label:'cancel'}}
-
         const rejedctedDailog = {title:`Are you sure you want to reject ${firstName}?`,
         body:`This will update ${firstName} account to pre-review rejected`,
         request:{action:()=>{this.handleRejection(),this.closeDialog()},
-        label:'yes'},cancel:{action:this.closeDialog,label:'cancel'}}
-
-        
+        label:'yes'},cancel:{action:this.closeDialog,label:'cancel'}} 
         let submissionStatusLabel = ''
         switch (submissionStatus) {
             case 'accepted':
@@ -227,30 +224,22 @@ class Submission extends Component {
 }
 
 const enhance = compose(
-
     withFirestore,
     // Handler functions as props
   withHandlers({
-      holdSubmission: props => (submissionID,type) =>
+      holdSubmission: props => (submissionID) =>
       props.firestore.update(
         { collection: COLLECTIONS.submissions, doc: submissionID },
         {   
-            // operator:{
-            // displayName:props.displayName,
-            // UID: props.uid,
-            // },
             viewedAt: props.firestore.FieldValue.serverTimestamp(),
             processing: true
-        //  updatedAt: props.firestore.FieldValue.serverTimestamp()
         }
       ),
     returnSubmission: props => (submissionID) =>
       props.firestore.update(
         { collection: COLLECTIONS.submissions, doc: submissionID },
         {   
-            // submissionStatus:'pending'
             processing: false
-        //updatedAt: props.firestore.FieldValue.serverTimestamp()
         }
       ),proccessSubmission: props => (submissionID,submissionStatus,candidateUID) =>{
         props.firestore.update(
@@ -291,17 +280,13 @@ const enhance = compose(
             { collection: COLLECTIONS.candidates, doc: candidateUID },
             updateObject
           )
-
-      }
-      
+      }    
   }),
 
     connect(({ firestore }) => ({
-     
       pending: firestore.ordered.pendingSubmissions,
       rejected: firestore.ordered.rejectedSubmissions,
       accepted: firestore.ordered.acceptedSubmissions,
-
     }))
   );
 
