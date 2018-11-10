@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
-import TrackerChart from '../components/Statistics/TrackerChart'
+import TrackerLineChart from '../components/Statistics/TrackerLineChart'
+import TrackerBarChart from '../components/Statistics/TrackerBarChart'
+import TrackerDonutChart from '../components/Statistics/TrackerDonutChart'
 import { withNavigation } from '../components/withNavigation';
 import TimeBar from '../components/Statistics/TimeBar';
 import { COLLECTIONS} from "../constants/firestore";
@@ -7,7 +9,10 @@ import { compose } from "redux";
 import { withHandlers, lifecycle } from "recompose";
 import { connect } from "react-redux";
 import { withFirestore } from "../utilities/withFirestore";
-import { Button } from '@material-ui/core';
+import { Button, Grid } from '@material-ui/core';
+import ChartBuilder from '../components/Statistics/ChartBuilder';
+import SettingsIcon from '@material-ui/icons/Settings'
+import IconButton from '@material-ui/core/IconButton'
 class StatisticsContainer extends Component {
     constructor(props) {
         super(props);
@@ -26,19 +31,38 @@ class StatisticsContainer extends Component {
         this.setState({
             [name]:value })
     }
-    
+
     render() { 
       const {range,format} = this.state
       const charts = this.props.chartsConfig
       if(charts){
         return (<div>
-          <Button onClick={()=>{this.props.updateChart('F8WOuvceKXR5RFNHM2oF',[{label:'Reviewed',type:'talentTeam',name:'submissionReviewed'},{label:'Accepted',type:'talentTeam',name:'submissionAccepted'},{label:'Rejected',type:'talentTeam',name:'submissionRejected'}])}}>update chart</Button>
-          <Button onClick={()=>{this.props.addChart([{label:'Submissions',type:'candidate',name:'submission'},{label:'Processed',type:'talentTeam',name:'submissionProcessed'}])}}>Add chart</Button>
-             <TimeBar format={format} changeHandler={this.handleChange}/>
+          <ChartBuilder chart={this.state.chart}/>
+          <TimeBar format={format} changeHandler={this.handleChange}/>
+             <Grid container>
              {charts.map(chart=>{
-               return(<TrackerChart key={chart.id} trackers={chart.trackers} range={range} format={format}/>)
-             })}
-            
+               let chartElement;
+               switch (chart.type) {
+                case 'line':  chartElement=(<TrackerLineChart title={chart.title} key={chart.id} trackers={chart.trackers} range={range} format={format}/>)
+                break;
+                case 'donut': chartElement=(<TrackerDonutChart title={chart.title} key={chart.id} trackers={chart.trackers} range={range}/>)
+                break;                
+                case 'bar':   chartElement=(<TrackerBarChart title={chart.title} key={chart.id} trackers={chart.trackers} range={range} format={format}/>)
+                break;                
+                default:      chartElement=(<TrackerLineChart title={chart.title} key={chart.id} trackers={chart.trackers} range={range} format={format}/>)
+                break;               
+              }
+               return(<Grid item xs={12} md={chart.width}>
+               <IconButton aria-label="Configure" //className={classes.button}
+               onClick={()=>{this.handleChange('chart',chart)}}
+                >
+          <SettingsIcon fontSize="small" />
+        </IconButton>
+          {chartElement}
+                
+               </Grid>)
+             })} 
+             </Grid>       
             </div>)}else{
               return(<div/>)
             }
@@ -49,35 +73,25 @@ const enhance = compose(
     withFirestore,
     // Handler functions as props
     withHandlers({
-      loadData: props => listenerSettings =>
-        props.firestore.setListener(listenerSettings),
-        updateChart: props => (chartId,trackers) =>
-      props.firestore.update(
-        { collection: COLLECTIONS.admins, doc: props.uid ,subcollections:[{collection:COLLECTIONS.charts,doc:chartId}]},
-        {   
-            trackers
-        }
-      ),
-      addChart: props => (trackers) =>
-      props.firestore.add(
-        { collection: COLLECTIONS.admins, doc: props.uid ,subcollections:[{collection:COLLECTIONS.charts}]},
-        {   
-            trackers
-        }
-      ),
+      loadData: props => () =>{
+          if(props.uid){
+            const chartsConfigListenerSettings = {collection:COLLECTIONS.admins,
+              doc:props.uid,
+              subcollections: [{collection: COLLECTIONS.charts}],
+             storeAs:'chartsConfig'
+          }
+            props.firestore.setListener(chartsConfigListenerSettings)}
+          }
     }),
     // Run functionality on component lifecycle
     lifecycle({
       // Load data when component mounts
+      componentDidMount(){
+        this.props.loadData()
+      },
       componentDidUpdate(prevProps){
         if(!prevProps.uid&&this.props.uid){
-          console.log('uid',this.props.uid)
-          const chartsConfigListenerSettings = {collection:COLLECTIONS.admins,
-              doc:this.props.uid,
-              subcollections: [{collection: COLLECTIONS.charts}],
-             storeAs:'chartsConfig'
-          }
-          this.props.loadData(chartsConfigListenerSettings);
+          this.props.loadData()
         }
       }
     }),
