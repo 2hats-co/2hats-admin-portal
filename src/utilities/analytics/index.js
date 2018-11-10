@@ -4,10 +4,11 @@ import { firestore } from '../../store';
 
 const secondsInHour = 3600
 const firstMonth = 2324
-const getTrackerDocs = (type,name)=>{
+const getTrackerDocs = (tracker,range)=>{
+  //TODO:read only relavent month docs
   return new Promise(function (fulfilled, rejected) {
     const trackerCollection = firestore.collection("eventTrackers")
-    const trackerRef = trackerCollection.doc(type).collection(name);
+    const trackerRef = trackerCollection.doc(tracker.type).collection(tracker.name);
     let docsData =[]
     let query = trackerRef.get()
     .then(snapshot => {
@@ -80,13 +81,21 @@ const timeStampLabeler = (data,labelFormat)=>{
 }
 
 
-export const getTrackerData = async(tracker,range,format) =>{
-  const data = await getTrackerDocs(tracker.type,tracker.name)//gets data from from firestore
-  const hourlyData = hourlyDataExtractor(data) //combines firestore hourly data into singleArray
+export const getTrackerLineData = async(tracker,range,format) =>{
+  const data = await getTrackerDocs(tracker,range)//gets monthly data from firestore
+  const hourlyData = hourlyDataExtractor(data) //combines firestore  data into single hourly Array
   const normalisedHourlyData = hourFiller(hourlyData,range) // add in inactive hours,to make consistant data 
   const trimmedData = dataTrimmer(normalisedHourlyData,range.start,range.end)// cuts the array to only the requested time range
   const splitData = DataSplitter(trimmedData,format.stepSize)//split the hourly data into equal portions,eg. stepSize 24, for splitting data into days
   const combinedData = splitData.map(x=>dataCombiner(x))//Sum the values of each group of points
   const labeledData = timeStampLabeler(combinedData,format.label)//replaces the unix timestamp with readable fromate
   return labeledData
+}
+
+export const getTrackerSum = async(tracker,range) =>{
+  const data = await getTrackerDocs(tracker,range)//gets monthly data from firestore
+  const hourlyData = hourlyDataExtractor(data) //combines firestore hourly data into single hourly Array
+  const trimmedData = dataTrimmer(hourlyData,range.start,range.end)// cuts the array to only the requested time range
+  const combinedData = dataCombiner(trimmedData)//Sum the values of all points
+  return combinedData.value
 }
