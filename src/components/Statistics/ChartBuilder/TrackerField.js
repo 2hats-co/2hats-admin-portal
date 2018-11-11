@@ -89,14 +89,13 @@ class TrackerField extends Component {
             margin="dense"
             id="label"
             name="label"
-            label="label"
+            placeholder="label"
             value={label}
             type="text"
             onChange={this.handleChange}
           />
           <FormControl className={classes.formControl}>
-              <InputLabel htmlFor="tracker-type-selector">Type</InputLabel>
-              <Select
+                <Select
                 value={trackerType}
                  onChange={this.handleChange}
                 input={<Input name="trackerType" id="trackerName"/>}
@@ -107,8 +106,7 @@ class TrackerField extends Component {
               </Select>
             </FormControl>
             {trackerType?<FormControl className={classes.formControl}>
-              <InputLabel htmlFor="tracker-type-selector">Name</InputLabel>
-              <Select
+               <Select
                 value={trackerName}
                  onChange={this.handleChange}
                 input={<Input name="trackerName" id="tracker-name" />}
