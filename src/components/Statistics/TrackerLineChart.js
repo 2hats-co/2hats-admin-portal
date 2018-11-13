@@ -1,36 +1,11 @@
 import React, { Component } from 'react';
 import {getTrackerLineData} from '../../utilities/analytics/index'
 import ReactEcharts from 'echarts-for-react';
-
+import withAnalytics from './withAnalytics'
 class TrackerLineChart extends Component {  
-    state = {
-         isloading:true
-    }
-    updateTrackers =(trackers) =>{this.setState({trackers,isloading:false})}
-     componentDidMount() { 
-        this.loadData()
-    }
-    componentDidUpdate(prevProps, prevState) {
-        if(prevProps.format !== this.props.format || prevProps.range !== this.props.range){
-            this.loadData()
-        }
-    }
-    loadData = async()=>{
-        const {trackers,range,format} = this.props
-     const trackerPromises = trackers.map(async(x)=>{
-        let trackerData = await getTrackerLineData(x,range,format)
-        const tracker = Object.assign({data:trackerData},x)
-        return (tracker)
-      })
-      const trackUpdater = this.updateTrackers
-      Promise.all(trackerPromises).then(function(updatedTrackers) {
-        trackUpdater(updatedTrackers)
-    })
-    }
+  
     render() { 
-        const {trackers,isloading} = this.state
-    
-        if(!isloading){
+            const {trackers} = this.props
             const xAxis = trackers[0].data.map(x=>x.label)
             const colours = trackers.map(x=>x.colour)
             console.log(trackers,colours)
@@ -60,12 +35,8 @@ class TrackerLineChart extends Component {
         yAxis: {},
         series:seriesData}}
         />)
-        }else{
-            return (<div/>)
         }
-     
-        
     }
-}
+
  
-export default TrackerLineChart;
+export default withAnalytics(TrackerLineChart);

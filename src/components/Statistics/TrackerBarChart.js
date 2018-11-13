@@ -1,35 +1,10 @@
 import React, { Component } from 'react';
 import {getTrackerLineData} from '../../utilities/analytics/index'
 import ReactEcharts from 'echarts-for-react';
-
+import withAnlytics from './withAnalytics'
 class TrackerBarChart extends Component {  
-    state = {
-         isloading:true
-    }
-    updateTrackers =(trackers) =>{this.setState({trackers,isloading:false})}
-     componentDidMount() { 
-        this.loadData()
-    }
-    componentDidUpdate(prevProps, prevState) {
-        if(prevProps.format !== this.props.format || prevProps.range !== this.props.range){
-            this.loadData()
-        }
-    }
-    loadData = async()=>{
-        const {trackers,range,format} = this.props
-     const trackerPromises = trackers.map(async(x)=>{
-        let trackerData = await getTrackerLineData(x,range,format)
-        const tracker = Object.assign({data:trackerData},x)
-        return (tracker)
-     })
-      const trackUpdater = this.updateTrackers
-      Promise.all(trackerPromises).then(function(updatedTrackers) {
-        trackUpdater(updatedTrackers)
-    })
-    }
     render() { 
-        const {trackers,isloading,title} = this.state
-        if(!isloading){
+        const {trackers,title} = this.props
             const xAxis = trackers[0].data.map(x=>x.label)
            const seriesData = trackers.map(x=> {
            const data = x.data.map(x=>x.value)
@@ -81,12 +56,7 @@ class TrackerBarChart extends Component {
             }
         }}
         />)
-        }else{
-            return (<div/>)
-        }
-     
-        
     }
 }
  
-export default TrackerBarChart;
+export default withAnlytics(TrackerBarChart);

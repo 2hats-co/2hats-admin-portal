@@ -46,11 +46,11 @@ class StatisticsContainer extends Component {
                switch (chart.type) {
                 case 'line':  chartElement=(<TrackerLineChart title={chart.title} key={chart.id} trackers={chart.trackers} range={range} format={format}/>)
                 break;
-                case 'donut': chartElement=(<TrackerDonutChart title={chart.title} key={chart.id} trackers={chart.trackers} range={range}/>)
+                case 'donut': chartElement=(<TrackerDonutChart title={chart.title} key={chart.id} trackers={chart.trackers} range={range} format={format}/>)
                 break;                
                 case 'bar':   chartElement=(<TrackerBarChart title={chart.title} key={chart.id} trackers={chart.trackers} range={range} format={format}/>)
                 break; 
-                case 'number':   chartElement=(<TrackerNumber title={chart.title} key={chart.id} trackers={chart.trackers} range={range} />)
+                case 'number':   chartElement=(<TrackerNumber title={chart.title} key={chart.id} trackers={chart.trackers} range={range} format={format}/>)
                 break;                
                 default:      chartElement=(<TrackerLineChart title={chart.title} key={chart.id} trackers={chart.trackers} range={range} format={format}/>)
                 break;               

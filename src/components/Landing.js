@@ -22,7 +22,7 @@ class Landing extends React.Component {
     componentDidUpdate(prevProps, prevState) {
         const {user} = this.props
         if (user!== prevProps.user) {
-            if(user[0].defualtRoute){
+            if(user[0].defaultRoute){
                 this.props.history.push(user[0].defaultRoute) 
             }else{
                  this.props.history.push('/oldStatistics')

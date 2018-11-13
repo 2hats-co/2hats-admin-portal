@@ -94,7 +94,11 @@ const timeStampLabeler = (data, labelFormat) => {
   }))
 }
 
+const setSum = (labeledData)=>{
+  const combinedData = dataCombiner(labeledData) //Sum the values of all points
+  return ({sum:combinedData.value, labeledData})
 
+}
 export const getTrackerLineData = async (tracker, range, format) => {
   const data = await getTrackerDocs(tracker, range) //gets monthly data from firestore
   const hourlyData = hourlyDataExtractor(data) //combines firestore  data into single hourly Array
@@ -103,7 +107,7 @@ export const getTrackerLineData = async (tracker, range, format) => {
   const splitData = DataSplitter(trimmedData, format.stepSize) //split the hourly data into equal portions,eg. stepSize 24, for splitting data into days
   const combinedData = splitData.map(x => dataCombiner(x)) //Sum the values of each group of points
   const labeledData = timeStampLabeler(combinedData, format.label) //replaces the unix timestamp with readable fromate
-  return labeledData
+  return setSum(labeledData)
 }
 
 export const getTrackerSum = async (tracker, range) => {
