@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import TrackerLineChart from '../components/Statistics/TrackerLineChart'
 import TrackerBarChart from '../components/Statistics/TrackerBarChart'
 import TrackerDonutChart from '../components/Statistics/TrackerDonutChart'
+import TrackerNumber from '../components/Statistics/TrackerNumber'
 import { withNavigation } from '../components/withNavigation';
 import TimeBar from '../components/Statistics/TimeBar';
 import { COLLECTIONS} from "../constants/firestore";
@@ -48,6 +49,8 @@ class StatisticsContainer extends Component {
                 case 'donut': chartElement=(<TrackerDonutChart title={chart.title} key={chart.id} trackers={chart.trackers} range={range}/>)
                 break;                
                 case 'bar':   chartElement=(<TrackerBarChart title={chart.title} key={chart.id} trackers={chart.trackers} range={range} format={format}/>)
+                break; 
+                case 'number':   chartElement=(<TrackerNumber title={chart.title} key={chart.id} trackers={chart.trackers} range={range} />)
                 break;                
                 default:      chartElement=(<TrackerLineChart title={chart.title} key={chart.id} trackers={chart.trackers} range={range} format={format}/>)
                 break;               

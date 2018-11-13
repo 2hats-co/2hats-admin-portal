@@ -17,7 +17,7 @@ const ChartTypePicker = (props) => {
         <ToggleButton value="donut">
           <DonutIcon/>
         </ToggleButton>
-        <ToggleButton disabled value="Number">
+        <ToggleButton value="number">
           123
         </ToggleButton>
       </ToggleButtonGroup>);

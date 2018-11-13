@@ -66,7 +66,8 @@ class ChartBuilder extends Component {
         }
       }
       handleClickOpen = () => {
-        this.setState({ open: true,chartId:null,
+        this.setState({ open: true,
+          chartId:null,
           chartWidth:6,
           chartType:null,
           trackers:[],
@@ -128,10 +129,11 @@ class ChartBuilder extends Component {
           return true
         }
       }
+     
       render() {
         const {chart,classes} = this.props
         const {chartType,trackers,chartWidth,title,chartId} = this.state
-        console.log(this.state)
+        
         return (
           <div>
             <Button variant="fab" className={classes.addButton} onClick={this.handleClickOpen} color='primary'>
@@ -150,6 +152,10 @@ class ChartBuilder extends Component {
                 </DialogContentText>
                 <Grid container alignItems='flex-end'>
                 <Grid item sm={5}>
+                <ChartTypePicker type={chartType} changeHandler={this.handleChartTypePicker}/>
+                </Grid>
+
+                <Grid item sm={5}>
                   <TextField
                   onChange={this.handleChange}
                   autoFocus
@@ -160,6 +166,9 @@ class ChartBuilder extends Component {
                   label="Chart Title"
                   type="text"
                 /></Grid>
+                
+               
+
                 <Grid item sm={2}>
                 <FormControl //className={classes.formControl}
                 >
@@ -175,10 +184,9 @@ class ChartBuilder extends Component {
               </Select>
             </FormControl>
                 </Grid>
-                <Grid item sm={5}>
-                <ChartTypePicker type={chartType} changeHandler={this.handleChartTypePicker}/>
+
                 </Grid>
-                </Grid>
+                
                 {trackers.map(tracker=><TrackerField key={tracker.id} tracker={tracker} handleDelete={this.removeTracker} handleUpdate={this.updateTracker}/>)}
              
                 <IconButton aria-label="Configure" //className={classes.button}
@@ -191,8 +199,8 @@ class ChartBuilder extends Component {
                 <Button onClick={this.handleClose} color="primary">
                   Cancel
                 </Button>
-                <Button onClick={chart? this.handleUpdate:this.handleAdd} disabled={this.disablePrimaryAction()} color="primary">
-                {chart?`Update`:'Add'}
+                <Button onClick={chartId? this.handleUpdate:this.handleAdd} disabled={this.disablePrimaryAction()} color="primary">
+                {chartId?`Update`:'Add'}
                 </Button>
               </DialogActions>
             </Dialog>

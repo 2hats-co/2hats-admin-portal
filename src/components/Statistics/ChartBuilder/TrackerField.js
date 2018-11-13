@@ -1,7 +1,7 @@
 import React,{Component} from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import { Grid,FormControl,Select,MenuItem,TextField,InputLabel,Input} from '@material-ui/core';
-import { TwitterPicker } from 'react-color'
+import { SketchPicker } from 'react-color'
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 const trackerTypes = ['candidate','link','talentTeam']
@@ -61,7 +61,9 @@ class TrackerField extends Component {
     handleChange = (value,event) => {
         if(value.hex){
             // colour picker
-            this.setState({colour:value.hex,showColourPicker:false})
+            this.setState({colour:value.hex,
+             // showColourPicker:false
+            })
         }else if(value.target.name){
           //selector and text field
           this.setState({[value.target.name]:value.target.value})
@@ -81,7 +83,7 @@ class TrackerField extends Component {
         </div>
         { showColourPicker ? <div className={ classes.popover }>
           <div className={ classes.cover } onClick={ this.toggleColourPicker }/>
-          <TwitterPicker color={colour} onChange={ this.handleChange } />
+          <SketchPicker color={colour} onChange={ this.handleChange } />
         </div> : null }
       </div>
             <TextField
