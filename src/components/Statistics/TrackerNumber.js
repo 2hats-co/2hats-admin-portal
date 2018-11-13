@@ -52,10 +52,12 @@ class TrackerNumber extends Component {
         } = this.props
         console.log('trackers', trackers)
         if (!isloading) {
-            return ( < div style={{backgroundColor:trackers[0].colour,color:'#fff',borderRadius:10,width:'80%',margin:10,paddingLeft:20}}>
-                <h3>{title}</h3>
-                <h2>{trackers[0].sum}</h2>
-                </div >
+            return ( <div>
+                <h2>{title}</h2> {trackers.map(tracker=> < div style={{backgroundColor:tracker.colour,color:'#fff',borderRadius:10,width:'80%',margin:10,paddingLeft:20}}>
+                <h3>{tracker.label}</h3>
+                <h2>{tracker.sum}</h2>
+                </div >)}
+                </div>
             )
         } else {
             return ( <div/> )
