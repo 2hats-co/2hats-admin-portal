@@ -23,7 +23,7 @@ class Landing extends React.Component {
         const {user} = this.props
         if (user!== prevProps.user) {
             if(user[0].defualtRoute){
-                this.props.history.push(user[0].defualtRoute) 
+                this.props.history.push(user[0].defaultRoute) 
             }else{
                  this.props.history.push('/oldStatistics')
             }
@@ -32,14 +32,15 @@ class Landing extends React.Component {
     }
     render() {
         if(this.props.authUser){
-            return(<LoadingCard message={'Getting things ready'} width={350} height={260}/>)
+            const {displayName} = this.props.authUser
+            const firstName = displayName.split(' ')[0]
+            return(<LoadingCard message={`${firstName} you're appreciated 🤗`} width={350} height={260}/>)
         }else{
             return (<AuthenticationContainer />)
         }
-        
     }
-
 }
+
 const enhance = compose(
     // add redux store (from react context) as a prop
     withFirestore,
