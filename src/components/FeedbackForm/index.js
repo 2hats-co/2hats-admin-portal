@@ -141,14 +141,17 @@ class FeedbackForm extends Component {
           </Tooltip>
           <Tooltip title="Accept">
             <Button variant="fab" className={classes.greenButton} 
-            onClick={() => this.setState({ showFeedbackForm: true, feedbackType: 'accept' })}
+           // onClick={() => this.setState({ showFeedbackForm: true, feedbackType: 'accept' })}
+           onClick={acceptHandler}
             aria-label="accept">
                 <AcceptIcon />
             </Button>
           </Tooltip>
           <Tooltip title="Reject">
             <Button variant="fab" className={classes.redButton} aria-label="reject"
-            onClick={() => this.setState({ showFeedbackForm: true, feedbackType: 'reject' })}>
+           // onClick={() => this.setState({ showFeedbackForm: true, feedbackType: 'reject' })}
+           onClick ={rejectHandler}
+           >
                 <RejectIcon />
             </Button>
           </Tooltip>
