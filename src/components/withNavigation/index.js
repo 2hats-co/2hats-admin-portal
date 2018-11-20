@@ -10,7 +10,7 @@ import DescriptionIcon from '@material-ui/icons/Description';
 import MailIcon from '@material-ui/icons/Mail';
 import TimelineIcon from '@material-ui/icons/Timeline';
 import CalendarIcon from '@material-ui/icons/CalendarToday';
-import StarIcon from '@material-ui/icons/Star';
+import MoneyIcon from '@material-ui/icons/AttachMoney';
 
 import {ROUTES} from '../../constants/routes';
 
@@ -62,7 +62,11 @@ const navigationRoutes = [
         icon: <DescriptionIcon />,
         route: ROUTES.pending,
         subRoutes: [ROUTES.pending, ROUTES.rejected, ROUTES.accepted],
-    }
+    }, {
+        label: 'Leads',
+        icon: <MoneyIcon />,
+        route: ROUTES.leads,
+    },
 ];
 
 export const withNavigation = (WrappedComponent) => {

@@ -6,6 +6,7 @@ import OldStatisticsContainer from './containers/oldStatisticsContainer'
 import CandidatesContainer from './containers/CandidatesContainer'
 import ResumesContainer from './containers/ResumesContainer'
 import AuthenticationContainer from './containers/AuthenticationContainer'
+import LeadsContainer from './containers/LeadsContainer'
 import MailContainer from './containers/MailContainer'
 import SubmissionsContainer from './containers/SubmissionsContainer';
 //routing
@@ -21,7 +22,7 @@ import withAuthentication from './utilities/Session/withAuthentication';
 
 class App extends Component {
     componentDidMount(){
-        
+       
     }
     render() {
         return (
@@ -33,6 +34,7 @@ class App extends Component {
                         <Route exact path={'/oldStatistics'} component={() => <OldStatisticsContainer/>} />
                         <Route exact path={ROUTES.candidates} component={() => <CandidatesContainer/>} />
                         <Route exact path={ROUTES.resumes} component={() => <ResumesContainer/>} />
+                        <Route exact path={ROUTES.leads} component={() => <LeadsContainer/>} />
                         <Route exact path={ROUTES.pending} component={() => <SubmissionsContainer />} />
                         <Route exact path={ROUTES.rejected} component={() => <SubmissionsContainer />} />
                         <Route exact path={ROUTES.accepted} component={() => <SubmissionsContainer />} />

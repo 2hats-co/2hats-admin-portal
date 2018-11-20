@@ -16,13 +16,11 @@ import RejectIcon from '@material-ui/icons/Close';
 import { COLLECTIONS} from "../../constants/firestore";
 import { compose } from "redux";
 import { withHandlers } from "recompose";
-import { connect } from "react-redux";
 import { withFirestore } from "../../utilities/withFirestore";
 import ConfirmationDialog from '../ConfirmationDialog';
 
 import SendIcon from '@material-ui/icons/Send';
-import FeedbackElement from './FeedbackElement';
-import { Divider } from '@material-ui/core';
+import FeedbackElement from './FeedbackElement'; 
 import * as _ from 'lodash'
 import {SUBMISSION_FEEDBACK,getFeedbackContent, getFeedbackTitle, feedbackSections} from '../../constants/feedback'
 const styles = theme => ({
@@ -93,10 +91,7 @@ class FeedbackForm extends Component {
     };
   }
 
-  
-
   handleOptionClick(id,value) {
-
     if(this.state.feedback[id] &&this.state.feedback[id] === 1 && value ===1 ){
     const updatedFeedback = Object.assign(this.state.feedback,{[id]:0})
       this.setState({feedback:updatedFeedback})
@@ -123,16 +118,17 @@ class FeedbackForm extends Component {
       feedback: {}
     });
   }
-  render() {
-    const { classes, submissionID, acceptHandler, rejectHandler, skipHandler, disableSkip } = this.props;
-    const { confirmationDialog } = this.state;
 
+  render() {
+    const { classes, submissionID, acceptHandler,noFeedbackHandler, rejectHandler, skipHandler, disableSkip } = this.props;
+    const { confirmationDialog } = this.state;
+    console.log(confirmationDialog)
     if (!submissionID) return null;
 
     if (!this.state.showFeedbackForm)
     return (
       <div className={classes.root}>
-        <Grid container justify="space-evenly">
+        <Grid container justify="space-evenly" alignItems='center' spacing={8}>
           <Tooltip title="Skip">
             <Button variant="fab" className={classes.greyButton} aria-label="skip"
             onClick={skipHandler} disabled={disableSkip}>
@@ -155,7 +151,9 @@ class FeedbackForm extends Component {
                 <RejectIcon />
             </Button>
           </Tooltip>
+          <Grid item xs={12}> <Button sytle={{margin:'auto'}} onClick ={noFeedbackHandler} variant='raised' >No feedback</Button></Grid>
         </Grid>
+       
       </div>
     );
 
@@ -251,7 +249,7 @@ class FeedbackForm extends Component {
           <SendIcon /> Submit Feedback
         </Button>
 
-        {confirmationDialog && <ConfirmationDialog data={confirmationDialog}/>}
+           {confirmationDialog && <ConfirmationDialog data={confirmationDialog}/>}
       </div>
     );
   }

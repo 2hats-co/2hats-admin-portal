@@ -123,17 +123,21 @@ class Submission extends Component {
     handleRejection(){
         this.props.proccessSubmission(this.state.submissionID,'rejected',this.state.submission.UID)
         this.getNextSubmission()
+        this.closeDialog()
     }
     handleAcception(){
         this.props.proccessSubmission(this.state.submissionID,'accepted',this.state.submission.UID)
         this.getNextSubmission()
+        this.closeDialog()
     }
+    handleNoFeedback=()=>{
+        this.props.proccessSubmission(this.state.submissionID,'demographic-rejected',this.state.submission.UID)
+        this.getNextSubmission()
+        this.closeDialog()
+    }
+  
     getNextSubmission(){
-        // CHANGE TO 0 WHEN PROCESSING IS RE-ENABLED
-        this.setSubmission(0)
-        // TEST ACCOUNTS
-        // ZKrWA8t0Lcf54117Jy63SQ9MdXZ2
-        // dg4oWTSw2VPzmO6fKgY0Z6PSkmM2
+        this.setSubmission(0)   
     }
 
     handleSkip() {
@@ -161,12 +165,19 @@ class Submission extends Component {
         const firstName = (submission.displayName?submission.displayName.split(' ')[0]:'')
         const acceptedDailog = {title:`Are you sure you want to accept ${firstName}?`,
         body:`This will send ${firstName} calendar invite for an online interview`,
-        request:{action:()=>{this.handleAcception(),this.closeDialog()},label:'yes'},
+        request:{action:this.handleAcception,label:'yes'},
         cancel:{action:this.closeDialog,label:'cancel'}}
         const rejedctedDailog = {title:`Are you sure you want to reject ${firstName}?`,
         body:`This will update ${firstName} account to pre-review rejected`,
-        request:{action:()=>{this.handleRejection(),this.closeDialog()},
+        request:{action:this.handleRejection,
         label:'yes'},cancel:{action:this.closeDialog,label:'cancel'}} 
+        const noFeedbackDialog = {
+            title: `No Feedback?`,
+            body: 'Is this person too experinced or in an unrelated profession to 2hats',
+            request: {action:this.handleNoFeedback,label:'Send rejection'},
+            cancel: {action:this.closeDialog,label:'Cancel'},
+            customText: true,
+          };
         let submissionStatusLabel = ''
         switch (submissionStatus) {
             case 'accepted':
@@ -179,7 +190,6 @@ class Submission extends Component {
             default:
                 break;
         }
-
         if(submission){
             console.log(submission);
 
@@ -200,6 +210,7 @@ class Submission extends Component {
                             submissionID={this.state.submissionID}
                             acceptHandler={()=>{this.setState({confirmationDialog:acceptedDailog})}}
                             rejectHandler={()=>{this.setState({confirmationDialog:rejedctedDailog})}}
+                            noFeedbackHandler={()=>{this.setState({confirmationDialog:noFeedbackDialog})}}
                             getNextSubmission={this.getNextSubmission}
                             skipHandler={this.handleSkip}
                             disableSkip={this.state.disableSkip}
@@ -247,6 +258,7 @@ const enhance = compose(
             {submissionStatus,
             screenedBy: props.uid,
             processing:false,
+            reviewed:false,
             screenedAt: props.firestore.FieldValue.serverTimestamp(),
             updatedAt: props.firestore.FieldValue.serverTimestamp()
             }
@@ -268,6 +280,13 @@ const enhance = compose(
                     operator:props.uid,
                     updatedAt:props.firestore.FieldValue.serverTimestamp()
                 }
+                case 'demographic-rejected':
+                updateObject = {
+                  stage:'resume',
+                  status:'rejected',
+                  operator:props.uid,
+                  updatedAt:props.firestore.FieldValue.serverTimestamp()
+              }
                   break;
               default:
                   break;
