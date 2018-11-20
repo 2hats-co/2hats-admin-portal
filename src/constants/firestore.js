@@ -9,5 +9,8 @@ export const COLLECTIONS = {
     remoteLogs:'remoteLogs',
     bugReports:'bugReports',
     charts:'charts',
-    admins:'admins'
+    messages:'messages',
+    admins:'admins',
+    linkedinClients:'linkedinClients',
+    linkedinMessageQueue:'linkedinMessageQueue'
 }

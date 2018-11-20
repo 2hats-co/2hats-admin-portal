@@ -6,12 +6,12 @@ class Notes extends Component {
         this.state = {  }
     }
     componentDidMount() {
-      //  this.props.addNote('FTRsKDrHqyQciTj0m5qWEBXBmBd2',{body:'admin portal test'})
+
     }
     componentDidUpdate(prevProps, prevState) {
-        // if (prevProps.uid !== this.props.uid) {
-        //     this.props.loadNotes(this.props.uid)
-        // }
+        if (prevProps.uid !== this.props.uid) {
+
+        }
     }
     render() { 
         return (<div/>);
@@ -23,11 +23,11 @@ const enhance = compose(
     withFirestore,
     // Handler functions as props
     withHandlers({
-    addNote: props =>(candidateUID,note)=>{
-        props.store.firestore.add({ collection: COLLECTIONS.candidates, doc:candidateUID,subcollections:[{ collection: 'notes'}],}, note)
+    addNote: props =>(collection,candidateUID,note)=>{
+        props.store.firestore.add({ collection: COLLECTIONS[collection], doc:candidateUID,subcollections:[{ collection: 'notes'}],}, note)
     },
       loadNotes: props => candidateUID =>
-        props.firestore.setListener({collection:COLLECTIONS.candidates,
+        props.firestore.setListener({collection:COLLECTIONS[collection],
             doc:candidateUID,
             subcollections: [{ collection: 'notes' }],
            orderBy:[['createdAt', 'desc']]}),
