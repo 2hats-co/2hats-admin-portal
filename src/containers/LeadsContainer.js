@@ -11,10 +11,15 @@ class LeadsContainer extends Component {
     constructor(props) {
         super(props);
         this.state ={
-          leadId:'pl5R6K1qBMJ9JVllEkwK'
+          leadId:'pl5R6K1qBMJ9JVllEkwK',
+          pending:[]
         }
     }
-
+    componentDidUpdate(prevProps){
+      if(prevProps.messages !== this.props.messages){
+        this.setState({pending:[]})
+      }
+    }
     handleThreadSelector = (leadId) =>{
       this.setState({leadId})
       console.log('setting thread listener',leadId)
@@ -30,13 +35,15 @@ class LeadsContainer extends Component {
     handleSendMessage = (content)=>{
         const lead = this.props.leads.filter(x=>x.id === this.state.leadId) 
         this.props.sendMessage(lead[0].thread.id,content)
+        let pending = this.state.pending.slice(0)
+        pending.push({body:content,isIncoming:false,sentAt:new Date()})
+      this.setState({pending})
     }
     render() { 
-
         const leads = this.props.leads
         let messages = []
         if(this.props.messages){
-          messages = this.props.messages
+          messages = [...this.props.messages,...this.state.pending]
         }
         if(leads){
           const threads = leads.map(lead=>{
@@ -67,9 +74,9 @@ const enhance = compose(
     withHandlers({
       loadData: props => () =>{
             const chartsConfigListenerSettings = {collection:COLLECTIONS.linkedinClients,
-            where:['hasResponed','==',true],
+            where:['hasResponded','==',true],
              storeAs:'linkedinClients',
-             orderBy:['thread.lastMessageAt', 'desc'],
+             orderBy:['lastMessage.sentAt', 'desc'],
              limit: 20
           }
             props.firestore.setListener(chartsConfigListenerSettings)
