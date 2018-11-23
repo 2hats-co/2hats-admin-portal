@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 // mui
 import {withStyles} from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import PersonIcon from '@material-ui/icons/Person';
 //redux 
@@ -18,7 +19,7 @@ import PersonDetails from './PersonDetails';
 import SubmissionDetails from './SubmissionDetails';
 import FeedbackForm from '../../components/FeedbackForm';
 import {SUBMISSION_FEEDBACK} from '../../constants/feedback'
-
+import * as R from 'ramda'
 import { Document,Page } from 'react-pdf';
 const styles = theme => ({
     root: {
@@ -69,6 +70,10 @@ const styles = theme => ({
     },
 });
 
+function sleep(millis) {
+    return new Promise(resolve => setTimeout(resolve, millis));
+}
+
 class Submission extends Component {
     
     constructor(props){
@@ -87,6 +92,7 @@ class Submission extends Component {
             confirmationDialog:null,
             skipOffset:0,
             disableSkip: false,
+            congratulate: false,
         };
     }
     
@@ -99,25 +105,33 @@ class Submission extends Component {
             }
         }
     }
-    componentDidMount() {
-        
+    componentDidMount = async() => {
+        await sleep(5000);
+        console.log('rasdf',R.isEmpty(this.props[this.props.listType]))
+        if(R.isEmpty(this.props[this.props.listType])){
+            console.log('there are no more',this.props.listType)
+            this.setState({congratulate:true})
+        }
     }
     
     componentWillUnmount() {
-        this.props.returnSubmission(this.state.submissionID)
+        if (this.state.submissionID)
+            this.props.returnSubmission(this.state.submissionID);
     }
   
     setSubmission(i){
         
         const submission = this.props[this.props.listType][i + this.state.skipOffset];
         console.log('setSubmission', i + this.state.skipOffset);
-        this.setState({
-            submissionID: submission.id,
-            submission: submission,
-            submissionStatus: submission.submissionStatus,
-        });
-  
-         this.props.holdSubmission(submission.id, this.props.listType) 
+        if (submission) {
+            this.setState({
+                submissionID: submission.id,
+                submission: submission,
+                submissionStatus: submission.submissionStatus,
+            });
+    
+            this.props.holdSubmission(submission.id, this.props.listType) 
+        }
 
     }
     handleRejection(){
@@ -159,6 +173,21 @@ class Submission extends Component {
     } 
   
     render(){
+        if (this.state.congratulate) {
+            return (<Grid container style={{height:'calc(100vh - 64px)', textAlign:'center'}} justify="center" alignItems="center">
+                <div>
+                    <Typography variant="display1" style={{color:'#000', fontFamily:'"Comic Sans MS", "Comic Sans"'}}>
+                        🍆🍑 you've done everything 🍑🍆
+                    </Typography>
+                    <Typography variant="display1" style={{color:'#000', fontFamily:'"Comic Sans MS", "Comic Sans"', fontSize:200}}>
+                        🇸🇳
+                    </Typography>
+                    <Typography variant="display1" style={{color:'#000', fontFamily:'"Comic Sans MS", "Comic Sans"'}}>
+                        💯💯😂🔥😂🔥😂🥂🎉 go home 🎉🥂 😂🔥😂🔥😂💯💯
+                    </Typography>
+                </div>
+            </Grid>)
+        }
         console.log(this.props)
         const {submission,confirmationDialog,submissionStatus} = this.state;
         const {classes} = this.props;
@@ -190,6 +219,7 @@ class Submission extends Component {
             default:
                 break;
         }
+        
         if(submission){
             console.log(submission);
 
