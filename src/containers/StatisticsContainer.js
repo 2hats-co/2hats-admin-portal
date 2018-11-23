@@ -14,7 +14,7 @@ import { Button, Grid } from '@material-ui/core';
 import ChartBuilder from '../components/Statistics/ChartBuilder';
 import SettingsIcon from '@material-ui/icons/Settings'
 import IconButton from '@material-ui/core/IconButton'
-
+import * as R from 'ramda'
 import GridLayout from 'react-grid-layout';
 import { WidthProvider } from 'react-grid-layout';
 import '../../node_modules/react-grid-layout/css/styles.css';
@@ -34,9 +34,9 @@ class StatisticsContainer extends Component {
           label: 'Do MMM',
         },
         layout: [
-          {i: 'HA7IAUmVjhSzUJSYRxbC', x: 0, y: 0, w: 1, h: 8},
-          {i: 'OEKsB7skUccUop2GwMH6', x: 1, y: 0, w: 3, h: 8},
-          {i: 'brcOktgxv4iv4D8ffd6W', x: 4, y: 0, w: 1, h: 8},
+          // {i: 'HA7IAUmVjhSzUJSYRxbC', x: 0, y: 0, w: 1, h: 8},
+          // {i: 'OEKsB7skUccUop2GwMH6', x: 1, y: 0, w: 3, h: 8},
+          // {i: 'brcOktgxv4iv4D8ffd6W', x: 4, y: 0, w: 1, h: 8},
         ],
      }
     }
@@ -44,6 +44,31 @@ class StatisticsContainer extends Component {
         console.log(name, value)
         this.setState({
             [name]:value })
+    }
+    componentDidUpdate(prevProps){
+      const {chartsConfig} = this.props
+      if(!prevProps.chartsConfig && chartsConfig){
+        const layout = chartsConfig.map((chart,i)=>({i:chart.id,x:chart.x||i,y:chart.y||0,w:chart.width,h:chart.height||7}))
+        this.setState({layout})
+      }
+    }
+    onLayoutChange=(layout)=> {
+    if(this.state.layout.length === this.props.chartsConfig.length){
+      const oldLayouts = this.state.layout.map(layout=> R.dissoc('',layout))
+      const newLayouts = layout.map(layout=> 
+        R.pickBy(R.identity, layout))
+      const updateable = R.difference(oldLayouts,newLayouts)
+      console.log('updateable',updateable,newLayouts)
+       const chartId = layout.i
+       const config = {x:layout.x,y:layout.y,width:layout.w,height:layout.h}
+       console.log('update layout',layout,chartId,config)
+       if(chartId){
+        this.props.updateChart(chartId,config)
+       }
+
+    }
+    
+   //  this.setState({ layout });
     }
 
     render() { 
@@ -54,7 +79,11 @@ class StatisticsContainer extends Component {
           <ChartBuilder chart={this.state.chart}/>
           <TimeBar format={format} changeHandler={this.handleChange}/>
           <Grid container style={{width:'100%', height:'calc(100vh - 64px)', overflowX:'hidden', verflowY:'auto'}}>
-            <ResponsiveGridLayout style={{width:'100%'}} className="layout" layout={this.state.layout} cols={12} rowHeight={40} width={1200}>
+            <ResponsiveGridLayout style={{width:'100%'}} className="layout" 
+            onLayoutChange={(layout) =>
+              this.onLayoutChange(layout)
+            }
+            layout={this.state.layout} cols={12} rowHeight={40} width={1200}>
               {charts.map(chart => {
                 let chartElement;
                 switch (chart.type) {
@@ -105,7 +134,14 @@ const enhance = compose(
              storeAs:'chartsConfig'
           }
             props.firestore.setListener(chartsConfigListenerSettings)}
-          }
+          },
+      updateChart: props => (chartId,config) =>{
+          props.firestore.update(
+        { collection: COLLECTIONS.admins, doc: props.uid ,
+          subcollections:[{collection:COLLECTIONS.charts,doc:chartId}]},
+          {...config}
+          )
+        }
     }),
     // Run functionality on component lifecycle
     lifecycle({
