@@ -118,7 +118,7 @@ export const withNavigation = (WrappedComponent) => {
                             <Grid item style={{height:64}}>
                                 <img alt="2hats logo" src={logo} className={classes.logo} />
                             </Grid>
-                            <Grid item>
+                            <Grid item style={{marginBottom:48}}>
                                 <NavigationItems
                                     goTo={this.goTo}
                                     currentLocation={path}
