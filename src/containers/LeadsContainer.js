@@ -6,44 +6,65 @@ import { withHandlers, lifecycle } from "recompose";
 import { connect } from "react-redux";
 import { withFirestore } from "../utilities/withFirestore";
 import { Button, Grid } from '@material-ui/core';
-import Messaging from '../components/Messaging/index'
+import Messaging from '../components/Messaging/index';
+import * as R from 'ramda'
+
+const messageSort = R.sortWith([
+  R.ascend(R.prop('sentAt')),
+]);
+const threadSort = R.sortWith([
+  R.ascend(R.prop('lastMessage.sentAt')),
+]);
 class LeadsContainer extends Component {
     constructor(props) {
         super(props);
         this.state ={
-          leadId:'pl5R6K1qBMJ9JVllEkwK',
-          pending:[]
+          leadId:'',
         }
     }
-    componentDidUpdate(prevProps){
-      if(prevProps.messages !== this.props.messages){
-        this.setState({pending:[]})
-      }
-    }
+ 
     handleThreadSelector = (leadId) =>{
       this.setState({leadId})
-      console.log('setting thread listener',leadId)
         const linkedInMessagesListenerSettings = {
         collection:COLLECTIONS.linkedinClients,
         doc:leadId,
         subcollections: [{collection: COLLECTIONS.messages}],
-        storeAs:'linkinThreadMessages',
-        orderBy:['sentAt', 'asc'],
-      }
+        storeAs:'linkedinThreadMessages',
+        orderBy:['sentAt', 'asc']}
         this.props.firestore.setListener(linkedInMessagesListenerSettings)
+
+        const queuedMessagesListenerSettings = {
+          collection:COLLECTIONS.linkedinMessageQueue,
+          where:[
+           ['leadId','==',leadId],
+           ['hasSynced','==',false]
+         ],
+          storeAs:'queuedMessages',
+        //  orderBy:['createdAt', 'asc']
+        }
+          this.props.firestore.setListener(queuedMessagesListenerSettings)
     }
     handleSendMessage = (content)=>{
         const lead = this.props.leads.filter(x=>x.id === this.state.leadId) 
-        this.props.sendMessage(lead[0].thread.id,content)
-        let pending = this.state.pending.slice(0)
-        pending.push({body:content,isIncoming:false,sentAt:new Date()})
-      this.setState({pending})
+        this.props.sendMessage(this.state.leadId,lead[0].thread.id,content)
     }
     render() { 
         const leads = this.props.leads
+        const queuedMessages =  this.props.queuedMessage
         let messages = []
         if(this.props.messages){
-          messages = [...this.props.messages,...this.state.pending]
+          messages = this.props.messages
+        }
+        if(!R.isNil(queuedMessages)){
+          console.log('queuedMessages',queuedMessages)
+         const formatedMessages = queuedMessages.map(message=> {
+            const sentAt = message.createdAt
+            const isIncoming = false
+          return ({body:message.body,sentAt,isIncoming})
+         })
+         messages = [...this.props.messages,...formatedMessages]
+        }else if(this.props.messages){
+          messages = this.props.messages
         }
         if(leads){
           const threads = leads.map(lead=>{
@@ -57,10 +78,10 @@ class LeadsContainer extends Component {
         return (
           <Grid container direction="row" wrap="nowrap" style={{height: 'calc(100vh - 64px)'}}>
             <Messaging 
-            threads={threads} 
+            threads={threadSort(R.dropRepeats(threads))} 
             handleSendMessage={this.handleSendMessage} 
             handleThreadSelector={this.handleThreadSelector}
-            messages={messages}/>
+            messages={messageSort(R.dropRepeats(messages))}/>
           </Grid>
         )}
             else{
@@ -73,18 +94,18 @@ const enhance = compose(
     withFirestore,
     withHandlers({
       loadData: props => () =>{
-            const chartsConfigListenerSettings = {collection:COLLECTIONS.linkedinClients,
+            const leadsListenerSettings = {collection:COLLECTIONS.linkedinClients,
             where:['hasResponded','==',true],
              storeAs:'linkedinClients',
              orderBy:['lastMessage.sentAt', 'desc'],
              limit: 20
           }
-            props.firestore.setListener(chartsConfigListenerSettings)
+            props.firestore.setListener(leadsListenerSettings)
           },
-          sendMessage: props => (threadId,message) =>{
+          sendMessage: props => (leadId,threadId,body) =>{
             props.firestore.add( { collection: COLLECTIONS.linkedinMessageQueue},
               {   
-                threadId,message,hasSent:false
+                leadId,threadId,body,hasSent:false,hasSynced:false,createdAt:new Date(),
               })
           }
     }),
@@ -103,11 +124,10 @@ const enhance = compose(
     }),
     connect(({ firestore }) => ({
       leads: firestore.ordered.linkedinClients,
-      messages: firestore.ordered.linkinThreadMessages
+      messages: firestore.ordered.linkedinThreadMessages,
+      queuedMessages: firestore.ordered.queuedMessages
     }))
   );
-
-
 
   export default withNavigation(enhance(
       compose(  
