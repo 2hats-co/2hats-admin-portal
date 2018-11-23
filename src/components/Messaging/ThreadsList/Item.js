@@ -1,4 +1,6 @@
 import React from 'react';
+
+import Typography from '@material-ui/core/Typography';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 
@@ -35,10 +37,18 @@ const styles = theme => ({
     starIcon: {
         fontSize: 18,
     },
+    unreadIndicator: {
+        width: 12,
+        height: 12,
+        backgroundColor: theme.palette.primary.main,
+        borderRadius: 6,
+        marginRight: theme.spacing.unit,
+        display: 'inline-block',
+    },
 });
 
 function CandidateItem(props){
-    const { data, classes,selected } = props;
+    const { data, classes, selected, isUnread } = props;
     moment.updateLocale('en', {
         relativeTime : {
             future: 'in %s',
@@ -64,17 +74,20 @@ function CandidateItem(props){
         >
             <Avatar><PersonIcon /></Avatar>
             <ListItemText
-                primary={data.fullName}
+                primary={<React.Fragment>
+                    {isUnread && <div className={classes.unreadIndicator} />}
+                    <Typography variant="subheading" style={{display:'inline-block'}}>
+                        {data.fullName}
+                    </Typography>
+                </React.Fragment>}
                 secondary={data.body}
                 classes={{secondary: classes.clipBodyText}}
-              
             />
             <ListItemText
                 primary={<IconButton className={classes.iconButton}><StarBorderIcon className={classes.starIcon} /></IconButton>}
                 secondary={moment(data.date.seconds*1000).fromNow()}
                 className={classes.rightText}
                 classes={{primary: classes.iconWrapper}}
-              
             />
         </ListItem>
     );

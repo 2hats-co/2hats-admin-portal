@@ -51,8 +51,10 @@ class LeadsContainer extends Component {
             let id = lead.id
             let body = lead.lastMessage.body
             let date = lead.lastMessage.sentAt
+            let isUnread = lead.thread.isUnread
+            // let isStarred = lead.thread.isStarred
 
-            return({fullName,body,date,id})
+            return({fullName,body,date,id,isUnread})
           })
         return (
           <Grid container direction="row" wrap="nowrap" style={{height: 'calc(100vh - 64px)'}}>

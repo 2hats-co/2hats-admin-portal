@@ -50,7 +50,8 @@ class ThreadsList extends Component{
     constructor(props){
         super(props)
         this.state = { 
-            selectedThread:''
+            selectedThread: '',
+            candidateFilter: 'all',
         }
       
     }
@@ -61,19 +62,40 @@ class ThreadsList extends Component{
         }
        
     }
+    handleCandidateFilter = (event, value) => {
+        this.setState({ candidateFilter: value });
+    }
     componentDidMount(){
        
     }
     render(){
-        const {threads,classes} = this.props
-       const {selectedThread} = this.state
-       return( <Grid container direction="column" style={{height: 'calc(100vh - 64px)'}}>
+        const {threads,classes} = this.props;
+        const {selectedThread, candidateFilter} = this.state;
+
+        let filteredThreads;
+        switch (candidateFilter) {
+            case 'unread':
+                filteredThreads = threads.filter(x => x.isUnread);
+                break;
+
+            case 'read':
+                filteredThreads = threads.filter(x => !x.isUnread);
+                break;
+
+            case 'starred':
+
+            default:
+                filteredThreads = threads;
+                break;
+        }
+
+        return( <Grid container direction="column" style={{height: 'calc(100vh - 64px)'}}>
         <Grid item>
             <ToggleButtonGroup
-           // value={candidateFilter}
-         //   exclusive
-          //  onChange={this.handleCandidateFilter}
-            style={{display: 'flex', justifyContent: 'center', boxShadow: 'none'}}
+              value={candidateFilter}
+              exclusive
+              onChange={this.handleCandidateFilter}
+              style={{display: 'flex', justifyContent: 'center', boxShadow: 'none'}}
             >
                 <ToggleButton value="all">All</ToggleButton>
                 <ToggleButton value="unread"><MailIcon /></ToggleButton>
@@ -117,12 +139,13 @@ class ThreadsList extends Component{
 
         <Grid item xs style={{overflowY: 'scroll'}}>
             <List disablePadding>
-                {threads.map((x) =>
+                {filteredThreads.map((x) =>
                     <Item
                         onClick={()=>{this.handleItemClick(x.id)}}
                         data={x}
-                         key={x.id}
+                        key={x.id}
                         selected={x.id === selectedThread}
+                        isUnread={x.isUnread}
                     />)
                 }
             </List>

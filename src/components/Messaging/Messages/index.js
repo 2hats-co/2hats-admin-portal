@@ -28,8 +28,8 @@ class Messages extends Component{
             direction="row"
             justify="flex-end"
             alignItems="center">
-            { messages.map((data) => (
-                <Grid item align={data.isIncoming? 'left':'right'} style={{width:'100%'}}>
+            { messages.map((data, i) => (
+                <Grid key={i} item align={data.isIncoming? 'left':'right'} style={{width:'100%'}}>
                 <Message data={data} key={data.id} />
                 </Grid>
                 )
