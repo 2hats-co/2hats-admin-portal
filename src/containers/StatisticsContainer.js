@@ -54,7 +54,13 @@ class StatisticsContainer extends Component {
           <ChartBuilder chart={this.state.chart}/>
           <TimeBar format={format} changeHandler={this.handleChange}/>
           <Grid container style={{width:'100%', height:'calc(100vh - 64px)', overflowX:'hidden', verflowY:'auto'}}>
-            <ResponsiveGridLayout style={{width:'100%'}} className="layout" layout={this.state.layout} cols={12} rowHeight={40} width={1200}>
+            <ResponsiveGridLayout
+              style={{width:'100%'}}
+              className="layout"
+              layout={this.state.layout}
+              onLayoutChange={layout => {this.setState({ layout })}}
+              cols={12} rowHeight={40} width={1200}
+            >
               {charts.map(chart => {
                 let chartElement;
                 switch (chart.type) {
@@ -82,7 +88,6 @@ class StatisticsContainer extends Component {
                       <SettingsIcon />
                     </IconButton>
                     {chartElement}
-                
                   </Grid>
                 )
               })}
