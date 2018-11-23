@@ -55,6 +55,7 @@ const Theme = createMuiTheme({
         },
         MuiTooltip: {
             tooltip: {
+                backgroundColor: 'rgba(0,0,0,.75)',
                 fontSize: 14,
             },
             popper: {

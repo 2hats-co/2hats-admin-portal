@@ -5,6 +5,9 @@ import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 
+import Avatar from '@material-ui/core/Avatar';
+import Tooltip from '@material-ui/core/Tooltip';
+
 import PeopleIcon from '@material-ui/icons/People';
 import DescriptionIcon from '@material-ui/icons/Description';
 import MailIcon from '@material-ui/icons/Mail';
@@ -18,6 +21,8 @@ import logo from '../../assets/logo/WhiteIcon.svg';
 import NavigationItems from './NavigationItems';
 import SubNavigation from './SubNavigation';
 import withAuthentication from '../../utilities/Session/withAuthentication';
+
+import { withFirestore } from "../../utilities/withFirestore";
 
 const styles = theme => ({
     leftNav: {
@@ -37,6 +42,15 @@ const styles = theme => ({
         fontWeight: 700,
         cursor: 'default',
         userSelect: 'none',
+    },
+    avatar: {
+        position: 'absolute',
+        bottom: (64 - 40) / 2,
+        left: (64 - 40) / 2,
+
+        backgroundColor: 'rgba(255,255,255,.87)',
+        color: theme.palette.primary.main,
+        fontWeight: 500,
     },
 });
 
@@ -80,7 +94,7 @@ export const withNavigation = (WrappedComponent) => {
             this.props.history.push(route);
         }
         render(){
-            const { classes } = this.props;
+            const { classes, displayName, uid } = this.props;
             const path = this.props.location.pathname;
             let currentContainer =  path.split('/')[1];
 
@@ -95,6 +109,12 @@ export const withNavigation = (WrappedComponent) => {
                 }
             }
 
+            let initials;
+            if (displayName) {
+                initials = displayName.match(/\b\w/g) || [];
+                initials = ((initials.shift() || '') + (initials.pop() || '')).toUpperCase();
+            }
+
             return(
                 <Grid container wrap="nowrap">
                     <Grid item className={classes.leftNav}>
@@ -105,6 +125,20 @@ export const withNavigation = (WrappedComponent) => {
                             selectedIndex={index}
                             navigationRoutes={navigationRoutes}
                         />
+                        { initials && displayName && uid &&
+                            <Tooltip
+                                title={<React.Fragment>
+                                    <div style={{fontSize:12}}>Signed in as:</div>
+                                    <div>{displayName}</div>
+                                    <div>{uid}</div>
+                                </React.Fragment>}
+                                interactive
+                                placement="top-start"
+                                leaveDelay={5000}
+                            >
+                                <Avatar className={classes.avatar}>{initials ? initials : null}</Avatar>
+                            </Tooltip>
+                        }
                     </Grid>
                     <Grid item xs>
                         <Grid container direction="column">
@@ -131,5 +165,5 @@ export const withNavigation = (WrappedComponent) => {
             );
         }
     }
-    return withAuthentication(withRouter(withStyles(styles)(WithNavigation)));
+    return withAuthentication(withRouter(withStyles(styles)(withFirestore(WithNavigation))));
 }

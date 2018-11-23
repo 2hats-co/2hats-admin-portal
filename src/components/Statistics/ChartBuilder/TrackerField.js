@@ -75,7 +75,7 @@ class TrackerField extends Component {
         const{showColourPicker,colour,trackerType,id,trackerName,label} =this.state
         return (<Grid container alignItems='flex-end'>
             <IconButton aria-label="Delete" className={classes.button} onClick={()=>{handleDelete(id)}}>
-          <DeleteIcon fontSize="small" />
+          <DeleteIcon />
         </IconButton>
             <div>
         <div className={ classes.swatch } style={{ background:colour}}onClick={ this.toggleColourPicker} >
