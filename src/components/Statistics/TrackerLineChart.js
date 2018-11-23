@@ -8,7 +8,6 @@ class TrackerLineChart extends Component {
             const {trackers} = this.props
             const xAxis = trackers[0].data.map(x=>x.label)
             const colours = trackers.map(x=>x.colour)
-            console.log(trackers,colours)
            const seriesData = trackers.map(x=> {
            const data = x.data.map(x=>x.value)
            return( {

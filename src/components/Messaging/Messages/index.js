@@ -11,7 +11,6 @@ const styles = theme => ({
        
    }
 });
-
 class Messages extends Component{      
       componentDidUpdate(prevProps) {
           if(!prevProps.data){
@@ -32,8 +31,7 @@ class Messages extends Component{
                 <Grid item align={data.isIncoming? 'left':'right'} style={{width:'100%'}}>
                 <Message data={data} key={data.id} />
                 </Grid>
-                )
-            )
+                ))
              }
                <div style={{ float:"left", clear: "both" }}
              ref={(el) => { this.messagesEnd = el; }}>

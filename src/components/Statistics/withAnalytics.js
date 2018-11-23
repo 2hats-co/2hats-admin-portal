@@ -42,7 +42,6 @@ function withAnalytics(WrappedComponent) {
             const trackerPromises = trackers.map(async (x) => {
             
                 let trackerData = await getTrackerLineData(x, range, format)
-                console.log('trackerData',trackerData)
                 const tracker = Object.assign({
                     data: trackerData.labeledData,
                     sum: trackerData.sum

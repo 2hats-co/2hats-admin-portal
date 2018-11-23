@@ -55,7 +55,6 @@ class ChartBuilder extends Component {
       componentDidUpdate(prevProps, prevState) {
         const {chart} = this.props
         if(chart&& chart!==prevProps.chart){
-          console.log('chart',chart)
           this.setState({
             open:true,
             chartId:chart.id,
@@ -98,9 +97,7 @@ class ChartBuilder extends Component {
           this.setState({trackers})
       }
       removeTracker =(id) =>{
-        console.log(id)
         let trackers = this.state.trackers.filter(tracker=> tracker.id !== id)
-        console.log(id,trackers)
           this.setState({trackers})
       }
       updateTracker = (updatedtracker) =>{
@@ -121,7 +118,6 @@ class ChartBuilder extends Component {
         if(title&&chartWidth&&chartType&&trackers.length !==0){
           let disabled = false
           trackers.forEach(x=>{
-            console.log('xxx',x)
             if(!x.colour||!x.label||!x.name||!x.type){
             disabled = true
           }})
