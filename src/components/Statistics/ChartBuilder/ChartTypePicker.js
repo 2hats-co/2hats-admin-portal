@@ -7,7 +7,13 @@ import BarIcon from '@material-ui/icons/BarChart';
 import LineIcon from '@material-ui/icons/Timeline';
 const ChartTypePicker = (props) => {
     console.log('props',    props)
-    return (<ToggleButtonGroup exclusive value={props.type} onChange={props.changeHandler}>
+    return (
+      <ToggleButtonGroup
+        exclusive
+        value={props.type}
+        onChange={props.changeHandler}
+        style={{ boxShadow: 'none' }}
+      >
         <ToggleButton value="bar">
           <BarIcon/>
         </ToggleButton>

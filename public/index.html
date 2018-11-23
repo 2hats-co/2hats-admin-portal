@@ -25,12 +25,44 @@
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/instantsearch.css@7.0.0/themes/algolia-min.css">
     -->
     <title>2hats Admin</title>
+
+    <style>
+      body {
+        margin: 0;
+      }
+      #crash {
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: -1;
+        display: none;
+      }
+      .app {
+        background-color: #fff;
+      }
+    </style>
   </head>
   <body>
     <noscript>
       You need to enable JavaScript to run this app.
     </noscript>
-    <div id="root"></div>
+    <div id="crash">oopsie no bueno</div>
+
+    <div id="root">
+      <div style="display:flex; justify-content:center; align-items:center; height:100vh; background-image:url('./thatsallfolks.png'); background-size:cover; background-position:center">
+        <div style="position:relative">
+          <img src="./loading.gif" style="border-radius:50%; width:33vw; height:33vw; margin-left:10px; margin-top:-4px" />
+          <img src="./thatsallfolks-text.svg" style="position:absolute; top:calc(50% - 6vw); left:-7vw; width:48vw" />
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function sleep(millis) {
+        return new Promise(resolve => setTimeout(resolve, millis));
+      }
+      sleep(10000).then(() => { document.getElementById('crash').style.display = 'block'; });
+    </script>
     <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.

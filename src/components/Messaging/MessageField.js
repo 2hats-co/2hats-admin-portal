@@ -7,9 +7,10 @@ import SendIcon from '@material-ui/icons/Send';
 import TextField from '@material-ui/core/TextField';
 
 const styles = theme => ({
-
+    root: {
+        backgroundColor: '#fff',
+    },
     replyButton: {
-        marginBottom:10
     },
  
 });
@@ -29,30 +30,34 @@ class MessageField extends Component {
         const {messageContent} = this.state
         const {classes} = this.props 
         return (  
-            <Grid container 
-            justify='space-around'
-            alignItems='flex-end'>
-            <Grid item xs={10}>
-            <TextField
-         value={messageContent}
-         onChange={this.handleChange}
-         id="outlined-textarea"
-         label="message"
-         name="messageContent"
-         placeholder="type a message..."
-         multiline
-         fullWidth={true}
-         margin="normal"
-         variant="outlined"/>
-
-       </Grid>
-          <Button disabled={messageContent.length ===0} 
+            <Grid container
+                className={classes.root}
+                justify="space-around"
+                alignItems="flex-end"
+            >
+                <Grid item xs={10}>
+                    <TextField
+                        value={messageContent}
+                        onChange={this.handleChange}
+                        id="outlined-textarea"
+                        label="Message"
+                        name="messageContent"
+                        placeholder="Type a message..."
+                        multiline
+                        fullWidth={true}
+                        margin="none"
+                        variant="outlined"
+                    />
+                </Grid>
+                <Button disabled={messageContent.length === 0}
                     variant="extendedFab" 
                     color="primary" 
                     aria-label="Reply" 
                     onClick={this.handleSend}
-                    className={classes.replyButton}> 
-            <SendIcon /> Send </Button>
+                    className={classes.replyButton}
+                >
+                    <SendIcon /> Send
+                </Button>
         </Grid>
 
 

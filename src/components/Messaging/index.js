@@ -18,11 +18,13 @@ const styles = theme => ({
         borderRadius: '10px 0 0 0',
     },
     messageField: {
+        backgroundColor: '#fff',
+        boxShadow: '0 -1px 0 #ddd',
         width:'calc(100% - 485px)',
         position: 'fixed',
         bottom: 0,
         right: 0,
-        height:100,
+        padding: `${theme.spacing.unit * 2}px 0`,
     },
 });
 
@@ -32,7 +34,11 @@ function Messaging(props) {
             <React.Fragment>
         <Grid container direction='row' style={{height: 'calc(100vh - 64px)'}}>
             <Grid item style={{width: 420,height: 'calc(100vh - 64px)'}}>
-             <ThreadsList threads={threads} handleThreadSelector={handleThreadSelector}/> 
+             <ThreadsList
+                threads={threads}
+                handleThreadSelector={handleThreadSelector}
+                handleStarThread={props.handleStarThread}
+            /> 
             </Grid>
             <Grid item xs className={classes.mailItems}>
                 <Messages messages={messages} />
@@ -40,7 +46,7 @@ function Messaging(props) {
           
         </Grid>
         <div className={classes.messageField}>
-         <MessageField handleSendMessage={handleSendMessage}/></div>
+          <MessageField handleSendMessage={handleSendMessage}/></div>
         </React.Fragment>
         );
 }

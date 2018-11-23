@@ -22,8 +22,12 @@ class LeadsContainer extends Component {
           leadId:'',
         }
     }
- 
+    
+    handleStarThread = (isStarred)=>{
+      this.props.starThread(this.state.leadId, isStarred);
+    }
     handleThreadSelector = (leadId) =>{
+      this.props.readThread(leadId);
       this.setState({leadId})
         const linkedInMessagesListenerSettings = {
         collection:COLLECTIONS.linkedinClients,
@@ -72,8 +76,10 @@ class LeadsContainer extends Component {
             let id = lead.id
             let body = lead.lastMessage.body
             let date = lead.lastMessage.sentAt
+            let isUnread = lead.thread.isUnread
+            let isStarred = lead.thread.isStarred
 
-            return({fullName,body,date,id})
+            return({fullName,body,date,id,isUnread,isStarred})
           })
         return (
           <Grid container direction="row" wrap="nowrap" style={{height: 'calc(100vh - 64px)'}}>
@@ -81,7 +87,8 @@ class LeadsContainer extends Component {
             threads={threadSort(R.dropRepeats(threads))} 
             handleSendMessage={this.handleSendMessage} 
             handleThreadSelector={this.handleThreadSelector}
-            messages={messageSort(R.dropRepeats(messages))}/>
+            messages={messageSort(R.dropRepeats(messages))}
+            handleStarThread={this.handleStarThread}/>
           </Grid>
         )}
             else{
@@ -107,6 +114,22 @@ const enhance = compose(
               {   
                 leadId,threadId,body,hasSent:false,hasSynced:false,createdAt:new Date(),
               })
+          },
+          readThread: props => leadId =>{
+            props.firestore.update({
+              collection: COLLECTIONS.linkedinClients,
+              doc: leadId
+            },{
+              thread: {isUnread: false}
+            })
+          },
+          starThread: props => (leadId,isStarred) =>{
+            props.firestore.update({
+              collection: COLLECTIONS.linkedinClients,
+              doc: leadId
+            },{
+              thread: {isStarred}
+            })
           }
     }),
     

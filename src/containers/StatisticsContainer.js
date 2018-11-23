@@ -111,7 +111,6 @@ class StatisticsContainer extends Component {
                       <SettingsIcon />
                     </IconButton>
                     {chartElement}
-                
                   </Grid>
                 )
               })}
