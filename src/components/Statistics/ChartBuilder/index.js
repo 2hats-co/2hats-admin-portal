@@ -173,7 +173,7 @@ class ChartBuilder extends Component {
                   Choose a chart type, set the title and width, then add trackers
                 </DialogContentText>
                 <Grid container alignItems="center" className={classes.chartConfig}>
-                  <Grid item>
+                  <Grid item xs={6}>
                     <Typography variant="caption">Chart Type</Typography>
                       <ChartTypePicker
                         type={chartType}
@@ -181,7 +181,7 @@ class ChartBuilder extends Component {
                       />
                   </Grid>
 
-                  <Grid item>
+                  <Grid item xs={6}>
                     <TextField
                     onChange={this.handleChange}
                     autoFocus
@@ -193,7 +193,7 @@ class ChartBuilder extends Component {
                     type="text"
                   /></Grid>
 
-                  <Grid item>
+                  {/* <Grid item>
                     <FormControl margin="dense">
                       <InputLabel htmlFor="chartWidth">Width</InputLabel>
                       <Select
@@ -204,7 +204,7 @@ class ChartBuilder extends Component {
                         {[3,6,9,12].map(x=><MenuItem value={x}>{x}</MenuItem>)}
                       </Select>
                     </FormControl>
-                  </Grid>
+                  </Grid> */}
 
                 </Grid>
 
