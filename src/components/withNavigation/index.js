@@ -44,10 +44,6 @@ const styles = theme => ({
         userSelect: 'none',
     },
     avatar: {
-        position: 'absolute',
-        bottom: (64 - 40) / 2,
-        left: (64 - 40) / 2,
-
         backgroundColor: 'rgba(255,255,255,.87)',
         color: theme.palette.primary.main,
         fontWeight: 500,
@@ -118,27 +114,34 @@ export const withNavigation = (WrappedComponent) => {
             return(
                 <Grid container wrap="nowrap">
                     <Grid item className={classes.leftNav}>
-                        <img alt="2hats logo" src={logo} className={classes.logo} />
-                        <NavigationItems
-                            goTo={this.goTo}
-                            currentLocation={path}
-                            selectedIndex={index}
-                            navigationRoutes={navigationRoutes}
-                        />
-                        { initials && displayName && uid &&
-                            <Tooltip
-                                title={<React.Fragment>
-                                    <div style={{fontSize:12}}>Signed in as:</div>
-                                    <div>{displayName}</div>
-                                    <div>{uid}</div>
-                                </React.Fragment>}
-                                interactive
-                                placement="top-start"
-                                leaveDelay={5000}
-                            >
-                                <Avatar className={classes.avatar}>{initials ? initials : null}</Avatar>
-                            </Tooltip>
-                        }
+                        <Grid container style={{height:'100vh'}} justify="center" alignContent="space-between">
+                            <Grid item style={{height:64}}>
+                                <img alt="2hats logo" src={logo} className={classes.logo} />
+                            </Grid>
+                            <Grid item>
+                                <NavigationItems
+                                    goTo={this.goTo}
+                                    currentLocation={path}
+                                    selectedIndex={index}
+                                    navigationRoutes={navigationRoutes}
+                                />
+                            </Grid>
+                            <Grid item style={{height:64,padding:12}}>
+                                { initials && displayName && uid && 
+                                <Tooltip
+                                    title={<React.Fragment>
+                                        <div style={{fontSize:12}}>Signed in as:</div>
+                                        <div>{displayName}</div>
+                                        <div>{uid}</div>
+                                    </React.Fragment>}
+                                    interactive
+                                    placement="top-start"
+                                    leaveDelay={5000}
+                                >
+                                    <Avatar className={classes.avatar}>{initials ? initials : null}</Avatar>
+                                </Tooltip>}
+                            </Grid>
+                        </Grid>
                     </Grid>
                     <Grid item xs>
                         <Grid container direction="column">
