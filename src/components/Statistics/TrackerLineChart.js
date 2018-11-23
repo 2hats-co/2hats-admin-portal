@@ -21,7 +21,7 @@ class TrackerLineChart extends Component {
             andimationDelay: 1000,
             })
         })
-           return(<ReactEcharts theme="light" style={{height:300}} option={{
+           return(<ReactEcharts theme="light" style={{height:'100%'}} option={{
             title: { show: false },
             color: colours,
           

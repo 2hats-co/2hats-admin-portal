@@ -6,7 +6,7 @@ import withAnalytics from './withAnalytics'
 class TrackerDonutChart extends Component {  
     render() { 
         const {title,trackers} = this.props
-        return(<ReactEcharts theme="light" style={{height:300}} 
+        return(<ReactEcharts theme="light" style={{height:'100%'}} 
         option = {{
             tooltip: {
                 trigger: 'item',

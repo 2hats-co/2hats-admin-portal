@@ -7,20 +7,41 @@ import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
 import TextField from '@material-ui/core/TextField';
 import moment from 'moment'
 const styles = theme => ({
+  root: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    width: 'auto',
+    height: 64,
+    paddingTop: (64 - 32) / 2,
+    paddingBottom: (64 - 32) / 2,
+  },
   toggleContainer: {
-    height: 56,
-    padding: `${theme.spacing.unit}px ${theme.spacing.unit * 2}px`,
+    height: 32,
+    padding: 0,
     display: "flex",
     alignItems: "center",
     justifyContent: "flex-start",
-    margin: `${theme.spacing.unit}px 0`,
-    background: theme.palette.background.default
-  },textField: {
+    margin: 0,
+    background: '#fff',
+    padding: '0 16px',
+  },
+  form: {
+    marginLeft: 20,
+  },
+  textField: {
     marginLeft: theme.spacing.unit,
     marginRight: theme.spacing.unit,
-    width: 200,
+    width: 150,
   },
-
+  textFieldInput: {
+    '& input': {
+      fontSize: 14,
+    }
+  },
+  toggleButtonLabel: {
+    textTransform: 'capitalize',
+  },
 });
 const DATE_FORMAT = 'YYYY-MM-DD'
 class TimeBar extends Component {
@@ -59,54 +80,59 @@ class TimeBar extends Component {
         const {dateRange} =this.state
         
         return (
-          <Grid container spacing={16}>
+          <Grid container className={classes.root}>
             <Grid item>
-            <div className={classes.toggleContainer}>
+              <div className={classes.toggleContainer} style={{borderRight:'1px solid #ddd'}}>
                 <ToggleButtonGroup
                   value={dateRange}
                   exclusive
-                onChange={this.handleRangeChange}
+                  onChange={this.handleRangeChange}
+                  style={{boxShadow: 'none'}}
                 >
-                  <ToggleButton value="week">Past week</ToggleButton>
-                  <ToggleButton value="month">past month</ToggleButton>
-                  <ToggleButton value="custom">custom</ToggleButton>
+                  <ToggleButton classes={{label:classes.toggleButtonLabel}} value="week">Past week</ToggleButton>
+                  <ToggleButton classes={{label:classes.toggleButtonLabel}} value="month">past month</ToggleButton>
+                  <ToggleButton classes={{label:classes.toggleButtonLabel}} value="custom">custom</ToggleButton>
                 </ToggleButtonGroup>
+                {dateRange === 'custom' && <form className={classes.form} noValidate>
+                  <TextField
+                    id="date"
+                    label="from"
+                    type="date"
+                    defaultValue={moment().subtract(2, 'weeks').format(DATE_FORMAT)}
+                    onChange={(e)=>{changeHandler('from',e.target.value)}}
+                    className={classes.textField}
+                    classes={{root: classes.textFieldInput}}
+                    InputLabelProps={{
+                      shrink: true,
+                    }}/>
+                  <TextField
+                    id="date"
+                    label="to"
+                    type="date"
+                    defaultValue={moment().format(DATE_FORMAT)}
+                    onChange={(e)=>{changeHandler('to',e.target.value)}}
+                    className={classes.textField}
+                    classes={{root: classes.textFieldInput}}
+                    InputLabelProps={{
+                      shrink: true,
+                    }}/>
+                </form>}
               </div>
-           {dateRange === 'custom'&& <form className={classes.container} noValidate>
-      <TextField
-        id="date"
-        label="from"
-        type="date"
-        defaultValue={moment().subtract(2, 'weeks').format(DATE_FORMAT)}
-        onChange={(e)=>{changeHandler('from',e.target.value)}}
-        className={classes.textField}
-        InputLabelProps={{
-          shrink: true,
-        }}/>
-       <TextField
-        id="date"
-        label="to"
-        type="date"
-        defaultValue={moment().format(DATE_FORMAT)}
-        onChange={(e)=>{changeHandler('to',e.target.value)}}
-        className={classes.textField}
-        InputLabelProps={{
-          shrink: true,
-        }}/>
-           </form>}</Grid>
-            <Grid item xs={12} sm={6}>
+           </Grid>
+            <Grid item>
               <div className={classes.toggleContainer}>
                 <ToggleButtonGroup
                   value={format.stepSize}
                   exclusive
                   onChange={(t,v)=>changeHandler('format',v)}
+                  style={{boxShadow: 'none'}}
                 >
-                  <ToggleButton value={{stepSize:1,
-        label:'ha ddd'}}>hourly</ToggleButton>
-                  <ToggleButton value={{stepSize:24,
-        label:'Do MMM'}}>daily</ToggleButton>
-                  <ToggleButton value={{stepSize:24*7,
-        label:'Do MMM'}}>weekly</ToggleButton>
+                  <ToggleButton classes={{label:classes.toggleButtonLabel}} value={{stepSize:1,
+        label:'ha ddd'}} selected={format.stepSize === 1}>hourly</ToggleButton>
+                  <ToggleButton classes={{label:classes.toggleButtonLabel}} value={{stepSize:24,
+        label:'Do MMM'}} selected={format.stepSize === 24}>daily</ToggleButton>
+                  <ToggleButton classes={{label:classes.toggleButtonLabel}} value={{stepSize:24*7,
+        label:'Do MMM'}} selected={format.stepSize === 24*7}>weekly</ToggleButton>
                 </ToggleButtonGroup>
               </div>
             </Grid>
@@ -120,4 +146,3 @@ class TimeBar extends Component {
     };
     
     export default withStyles(styles)(TimeBar);
-    

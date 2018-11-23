@@ -17,7 +17,7 @@ class TrackerBarChart extends Component {
             }
         })
         })
-           return(<ReactEcharts theme="light" style={{height:300}} 
+           return(<ReactEcharts theme="light" style={{height:'100%'}} 
            option = {{
             title: {
                 text: title
