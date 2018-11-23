@@ -3,7 +3,9 @@ import { COLLECTIONS} from "../../../constants/firestore";
 import { compose } from "redux";
 import { withHandlers } from "recompose";
 import { withFirestore } from "../../../utilities/withFirestore";
+import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -16,11 +18,20 @@ import ChartTypePicker from './ChartTypePicker';
 import { FormControl,Select,MenuItem,InputLabel,Input} from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import AddIcon from '@material-ui/icons/Add';
-import AddCirlceIcon from '@material-ui/icons/AddCircleOutline'
-import IconButton from '@material-ui/core/IconButton'
+import AddCirlceIcon from '@material-ui/icons/AddCircleOutline';
+import DeleteIcon from '@material-ui/icons/Delete';
 const styles = theme => ({
   root: {
-   
+
+  },
+  chartConfig: {
+    marginTop: theme.spacing.unit * 2,
+    marginBottom: theme.spacing.unit,
+    paddingBottom: theme.spacing.unit * 2,
+    borderBottom: '1px solid #ddd',
+    '& > div:not(:last-of-type)': {
+      marginRight: 18,
+    },
   },
   formControl:{
       //minWidth :80
@@ -145,57 +156,77 @@ class ChartBuilder extends Component {
               onClose={this.handleClose}
               aria-labelledby="form-dialog-title"
             >
-              <Grid container><DialogTitle id="form-dialog-title">{chart?`Edit ${chart.title}`:'Create new chart'}</DialogTitle>
-        {chartId&&<Button onClick={this.handleChartDelete}>DELETE</Button>}</Grid>
+              <Grid container alignItems="center">
+                <Grid item xs>
+                  <DialogTitle id="form-dialog-title">
+                    {chart?`Edit ${chart.title}`:'New chart'}
+                  </DialogTitle>
+                </Grid>
+                {chartId &&
+                  <IconButton onClick={this.handleChartDelete} style={{marginRight:8}}>
+                    <DeleteIcon />
+                  </IconButton>
+                }
+              </Grid>
               <DialogContent className={classes.formContent}>
                 <DialogContentText>
-                  To create a new chart enter the title, set the width ,type of chart, then add the trackers
+                  Choose a chart type, set the title and width, then add trackers
                 </DialogContentText>
-                <Grid container alignItems='flex-end'>
-                <Grid item sm={5}>
-                <ChartTypePicker type={chartType} changeHandler={this.handleChartTypePicker}/>
+                <Grid container alignItems="center" className={classes.chartConfig}>
+                  <Grid item>
+                    <Typography variant="caption">Chart Type</Typography>
+                      <ChartTypePicker
+                        type={chartType}
+                        changeHandler={this.handleChartTypePicker}
+                      />
+                  </Grid>
+
+                  <Grid item>
+                    <TextField
+                    onChange={this.handleChange}
+                    autoFocus
+                    margin="dense"
+                    id="title"
+                    value={title}
+                    name="title"
+                    label="Chart Title"
+                    type="text"
+                  /></Grid>
+
+                  <Grid item>
+                    <FormControl margin="dense">
+                      <InputLabel htmlFor="chartWidth">Width</InputLabel>
+                      <Select
+                        value={chartWidth}
+                        onChange={this.handleChange}
+                        input={<Input name="chartWidth" id="chartWidth" />}
+                      >
+                        {[3,6,9,12].map(x=><MenuItem value={x}>{x}</MenuItem>)}
+                      </Select>
+                    </FormControl>
+                  </Grid>
+
                 </Grid>
 
-                <Grid item sm={5}>
-                  <TextField
-                  onChange={this.handleChange}
-                  autoFocus
-                  margin="dense"
-                  id="title"
-                  value={title}
-                  name="title"
-                  label="Chart Title"
-                  type="text"
-                /></Grid>
-                
-               
-
-                <Grid item sm={2}>
-                <FormControl //className={classes.formControl}
+                <Button aria-label="Add Tracker" //className={classes.button}
+                  onClick={this.addTracker}
+                  color="primary"
+                  style={{padding: '8px 12px'}}
                 >
-              <InputLabel htmlFor="tracker-type-selector">width</InputLabel>
-              <Select
-                value={chartWidth}
-                 onChange={this.handleChange}
-                input={<Input name="chartWidth" id="chartWidth" />}
-              >
-                <MenuItem value="">
-                  <em>set width</em>
-                </MenuItem> {[3,6,9,12].map(x=><MenuItem value={x}>{x}</MenuItem>)}
-              </Select>
-            </FormControl>
-                </Grid>
-
-                </Grid>
+                  <AddCirlceIcon style={{marginRight:8}} />
+                  Add Tracker
+                </Button>
                 
-                {trackers.map(tracker=><TrackerField key={tracker.id} tracker={tracker} handleDelete={this.removeTracker} handleUpdate={this.updateTracker}/>)}
-             
-                <IconButton aria-label="Configure" //className={classes.button}
-              onClick={this.addTracker}
-                >
-          <AddCirlceIcon fontSize="large" />
-        </IconButton>
+                { trackers.map( tracker =>
+                  <TrackerField
+                    key={tracker.id}
+                    tracker={tracker}
+                    handleDelete={this.removeTracker}
+                    handleUpdate={this.updateTracker}/>
+                  )
+                }
               </DialogContent>
+
               <DialogActions>
                 <Button onClick={this.handleClose} color="primary">
                   Cancel

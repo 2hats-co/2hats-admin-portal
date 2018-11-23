@@ -2,8 +2,10 @@ import React,{Component} from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import { Grid,FormControl,Select,MenuItem,TextField,InputLabel,Input} from '@material-ui/core';
 import { SketchPicker } from 'react-color'
+
 import IconButton from '@material-ui/core/IconButton';
-import DeleteIcon from '@material-ui/icons/Delete';
+import RemoveCircleOutlineIcon from '@material-ui/icons/RemoveCircleOutline';
+
 const trackerTypes = ['candidate','link','talentTeam']
 const trackerNames = {
     candidate:['signup','signup-3rdParty','signup-password','signup-speedy','submission'],
@@ -16,27 +18,30 @@ const styles = theme => ({
     formControl:{
         minWidth :80
     },
-        swatch: {
-          padding: '5px',
-          background: '#fff',
-          width:20,
-          height:20,    
-          borderRadius: 20,
-          boxShadow: '0 0 0 1px rgba(0,0,0,.1)',
-          display: 'inline-block',
-          cursor: 'pointer',
-        },
-        popover: {
-          position: 'absolute',
-          zIndex: '2',
-        },
-        cover: {
-          position: 'relative',
-          top: '-100px',
-          right: '100px',
-          bottom: '0px',
-          left: '0px',
-        },
+    swatchWrapper: {
+      paddingBottom: 16,
+    },
+    swatch: {
+      margin: '0 8px -6px 0',
+      display: 'inline-block',
+      cursor: 'pointer',
+      background: '#fff',
+      width:20,
+      height:20,
+      borderRadius: 10,
+      boxShadow: '0 0 1px 0 rgba(0,0,0,.5) inset',
+    },
+    popover: {
+      position: 'absolute',
+      zIndex: '2',
+    },
+    cover: {
+      position: 'relative',
+      top: '-100px',
+      right: '100px',
+      bottom: '0px',
+      left: '0px',
+    },
    
 });
 class TrackerField extends Component {
@@ -73,53 +78,73 @@ class TrackerField extends Component {
     render() { 
         const {classes,handleDelete} = this.props
         const{showColourPicker,colour,trackerType,id,trackerName,label} =this.state
-        return (<Grid container alignItems='flex-end'>
+        return (
+        <Grid container alignItems="baseline" className={classes.root} spacing="8">
+          <Grid item>
             <IconButton aria-label="Delete" className={classes.button} onClick={()=>{handleDelete(id)}}>
-          <DeleteIcon />
-        </IconButton>
-            <div>
-        <div className={ classes.swatch } style={{ background:colour}}onClick={ this.toggleColourPicker} >
-          <div className={ classes.color } />
-        </div>
-        { showColourPicker ? <div className={ classes.popover }>
-          <div className={ classes.cover } onClick={ this.toggleColourPicker }/>
-          <SketchPicker color={colour} onChange={ this.handleChange } />
-        </div> : null }
-      </div>
+              <RemoveCircleOutlineIcon fontSize="small" />
+            </IconButton>
+          </Grid>
+
+          <Grid item className={classes.swatchWrapper}>
+            <div
+              className={ classes.swatch }
+              style={{background:colour}}
+              onClick={this.toggleColourPicker}
+            />
+            { showColourPicker ? <div className={ classes.popover }>
+              <div className={ classes.cover } onClick={ this.toggleColourPicker }/>
+              <SketchPicker color={colour} onChange={ this.handleChange } />
+            </div> : null }
+          </Grid>
+
+          <Grid item>
             <TextField
-            autoFocus
-            margin="dense"
-            id="label"
-            name="label"
-            placeholder="label"
-            value={label}
-            type="text"
-            onChange={this.handleChange}
-          />
-          <FormControl className={classes.formControl}>
-                <Select
+              autoFocus
+              margin="dense"
+              id="label"
+              name="label"
+              label="Label"
+              value={label}
+              type="text"
+              onChange={this.handleChange}
+              InputLabelProps={{ shrink: label }}
+            />
+          </Grid>
+
+          <Grid item>
+            <FormControl className={classes.formControl} margin="dense">
+              <InputLabel htmlFor="trackerName" shrink={trackerType}>Type</InputLabel>
+              <Select
                 value={trackerType}
-                 onChange={this.handleChange}
+                onChange={this.handleChange}
                 input={<Input name="trackerType" id="trackerName"/>}
               >
-                <MenuItem value="">
-                  <em>select a type</em>
+                <MenuItem value="" disabled>
+                  Select a type
                 </MenuItem> {trackerTypes.map(x=><MenuItem value={x}>{x}</MenuItem>)}
               </Select>
             </FormControl>
-            {trackerType?<FormControl className={classes.formControl}>
-               <Select
-                value={trackerName}
-                 onChange={this.handleChange}
-                input={<Input name="trackerName" id="tracker-name" />}
-              >
-                <MenuItem value="">
-                  <em>select a name</em>
-                </MenuItem> {trackerNames[trackerType].map(x=><MenuItem value={x}>{x}</MenuItem>)}
-              </Select>
-            </FormControl>:null}
+          </Grid>
 
-            
+          {trackerType ?
+            <Grid item>
+              <FormControl className={classes.formControl} margin="dense">
+                <InputLabel htmlFor="tracker-name" shrink={trackerName}>Name</InputLabel>
+                <Select
+                  value={trackerName}
+                  onChange={this.handleChange}
+                  input={<Input name="trackerName" id="tracker-name" />}
+                >
+                  <MenuItem value="" disabled>
+                    Select a name
+                  </MenuItem> {trackerNames[trackerType].map(x=><MenuItem value={x}>{x}</MenuItem>)}
+                </Select>
+              </FormControl>
+            </Grid>
+            : null
+          }
+
         </Grid>);
     }
 }
