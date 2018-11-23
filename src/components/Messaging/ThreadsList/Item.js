@@ -84,7 +84,12 @@ function CandidateItem(props){
                 classes={{secondary: classes.clipBodyText}}
             />
             <ListItemText
-                primary={<IconButton className={classes.iconButton}><StarBorderIcon className={classes.starIcon} /></IconButton>}
+                primary={<IconButton className={classes.iconButton} onClick={()=>{
+                    props.handleStarThread(!props.isStarred)
+                }}>{
+                    props.isStarred ? <StarIcon className={classes.starIcon} /> :
+                    <StarBorderIcon className={classes.starIcon} />
+                }</IconButton>}
                 secondary={moment(data.date.seconds*1000).fromNow()}
                 className={classes.rightText}
                 classes={{primary: classes.iconWrapper}}

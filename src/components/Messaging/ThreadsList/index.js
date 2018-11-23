@@ -83,6 +83,8 @@ class ThreadsList extends Component{
                 break;
 
             case 'starred':
+                filteredThreads = threads.filter(x => x.isStarred);
+                break;
 
             default:
                 filteredThreads = threads;
@@ -146,6 +148,8 @@ class ThreadsList extends Component{
                         key={x.id}
                         selected={x.id === selectedThread}
                         isUnread={x.isUnread}
+                        isStarred={x.isStarred}
+                        handleStarThread={this.props.handleStarThread}
                     />)
                 }
             </List>

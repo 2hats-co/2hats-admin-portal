@@ -11,16 +11,15 @@ class LeadsContainer extends Component {
     constructor(props) {
         super(props);
         this.state ={
-          leadId:'pl5R6K1qBMJ9JVllEkwK',
+          leadId:'',
           pending:[]
         }
     }
-    componentDidUpdate(prevProps){
-      if(prevProps.messages !== this.props.messages){
-        this.setState({pending:[]})
-      }
+    handleStarThread = (isStarred)=>{
+      this.props.starThread(this.state.leadId, isStarred);
     }
     handleThreadSelector = (leadId) =>{
+      this.props.readThread(leadId);
       this.setState({leadId})
       console.log('setting thread listener',leadId)
         const linkedInMessagesListenerSettings = {
@@ -52,9 +51,9 @@ class LeadsContainer extends Component {
             let body = lead.lastMessage.body
             let date = lead.lastMessage.sentAt
             let isUnread = lead.thread.isUnread
-            // let isStarred = lead.thread.isStarred
+            let isStarred = lead.thread.isStarred
 
-            return({fullName,body,date,id,isUnread})
+            return({fullName,body,date,id,isUnread,isStarred})
           })
         return (
           <Grid container direction="row" wrap="nowrap" style={{height: 'calc(100vh - 64px)'}}>
@@ -62,7 +61,8 @@ class LeadsContainer extends Component {
             threads={threads} 
             handleSendMessage={this.handleSendMessage} 
             handleThreadSelector={this.handleThreadSelector}
-            messages={messages}/>
+            messages={messages}
+            handleStarThread={this.handleStarThread}/>
           </Grid>
         )}
             else{
@@ -88,6 +88,22 @@ const enhance = compose(
               {   
                 threadId,message,hasSent:false
               })
+          },
+          readThread: props => leadId =>{
+            props.firestore.update({
+              collection: COLLECTIONS.linkedinClients,
+              doc: leadId
+            },{
+              thread: {isUnread: false}
+            })
+          },
+          starThread: props => (leadId,isStarred) =>{
+            props.firestore.update({
+              collection: COLLECTIONS.linkedinClients,
+              doc: leadId
+            },{
+              thread: {isStarred}
+            })
           }
     }),
     
