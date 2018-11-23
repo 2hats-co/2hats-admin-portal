@@ -3,6 +3,7 @@ import TrackerLineChart from '../components/Statistics/TrackerLineChart'
 import TrackerBarChart from '../components/Statistics/TrackerBarChart'
 import TrackerDonutChart from '../components/Statistics/TrackerDonutChart'
 import TrackerNumber from '../components/Statistics/TrackerNumber'
+import TrackerPercentage from '../components/Statistics/TrackerPercentage'
 import { withNavigation } from '../components/withNavigation';
 import TimeBar from '../components/Statistics/TimeBar';
 import { COLLECTIONS} from "../constants/firestore";
@@ -19,6 +20,7 @@ import GridLayout from 'react-grid-layout';
 import { WidthProvider } from 'react-grid-layout';
 import '../../node_modules/react-grid-layout/css/styles.css';
 import '../../node_modules/react-resizable/css/styles.css';
+import SaveIcon from '@material-ui/icons/Save';
 
 const ResponsiveGridLayout = WidthProvider(GridLayout);
 class StatisticsContainer extends Component {
@@ -67,8 +69,6 @@ class StatisticsContainer extends Component {
        }
 
     }
-    
-   //  this.setState({ layout });
     }
 
     render() { 
@@ -76,6 +76,18 @@ class StatisticsContainer extends Component {
       const charts = this.props.chartsConfig
       if(charts){
         return (<div style={{boxShadow:'0 -1px 0 #ddd'}}>
+           <Button variant="fab" 
+           style={{
+            position: 'absolute',
+            top: 70,
+            right: 8 * 2,
+            zIndex: 99,
+           }}
+           //className={classes.saveButton} 
+           //onClick={this.handleClickOpen} 
+           color='primary'>
+              <SaveIcon/>
+            </Button>
           <ChartBuilder chart={this.state.chart}/>
           <TimeBar format={format} changeHandler={this.handleChange}/>
           <Grid container style={{width:'100%', height:'calc(100vh - 64px)', overflowX:'hidden', verflowY:'auto'}}>
@@ -85,6 +97,7 @@ class StatisticsContainer extends Component {
             }
             layout={this.state.layout} cols={12} rowHeight={40} width={1200}>
               {charts.map(chart => {
+                console.log('chart',chart)
                 let chartElement;
                 switch (chart.type) {
                   case 'line':
@@ -98,6 +111,9 @@ class StatisticsContainer extends Component {
                     break; 
                   case 'number':
                     chartElement = (<TrackerNumber title={chart.title} key={chart.id} trackers={chart.trackers} range={range} format={format}/>)
+                    break;
+                  case 'percentage':
+                    chartElement = (<TrackerPercentage title={chart.title} key={chart.id} trackers={chart.trackers} range={range} format={format}/>)
                     break;
                   default:
                     chartElement = (<TrackerLineChart title={chart.title} key={chart.id} trackers={chart.trackers} range={range} format={format}/>)

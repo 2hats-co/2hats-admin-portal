@@ -57,12 +57,12 @@ function withAnalytics(WrappedComponent) {
             const {
                 trackers,
                 isloading,
-                title
             } = this.state
             if (!isloading) {
                 return <WrappedComponent trackers = {
                     trackers
                 }
+                title={this.props.title}
                 />;
             } else {
                 return ( < div / > )

@@ -29,10 +29,10 @@ class TrackerBarChart extends Component {
             toolbox: {
                 // y: 'bottom',
                 feature: {
-                    magicType: {
-                        type: ['stack', 'tiled']
-                    },
-                    dataView: {},
+                    // magicType: {
+                    //     type: ['stack', 'tiled']
+                    // },
+                   // dataView: {},
                     saveAsImage: {
                         pixelRatio: 2
                     }

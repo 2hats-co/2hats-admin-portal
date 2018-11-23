@@ -140,7 +140,7 @@ class ChartBuilder extends Component {
      
       render() {
         const {chart,classes} = this.props
-        const {chartType,trackers,chartWidth,title,chartId} = this.state
+        const {chartType,trackers,title,chartId} = this.state
         
         return (
           <div>
@@ -188,19 +188,6 @@ class ChartBuilder extends Component {
                     label="Chart Title"
                     type="text"
                   /></Grid>
-
-                  {/* <Grid item>
-                    <FormControl margin="dense">
-                      <InputLabel htmlFor="chartWidth">Width</InputLabel>
-                      <Select
-                        value={chartWidth}
-                        onChange={this.handleChange}
-                        input={<Input name="chartWidth" id="chartWidth" />}
-                      >
-                        {[3,6,9,12].map(x=><MenuItem value={x}>{x}</MenuItem>)}
-                      </Select>
-                    </FormControl>
-                  </Grid> */}
 
                 </Grid>
 

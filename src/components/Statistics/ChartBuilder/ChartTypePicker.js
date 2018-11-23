@@ -26,6 +26,9 @@ const ChartTypePicker = (props) => {
         <ToggleButton value="number">
           123
         </ToggleButton>
+        <ToggleButton value="percentage">
+          %
+        </ToggleButton>
       </ToggleButtonGroup>);
 }
  

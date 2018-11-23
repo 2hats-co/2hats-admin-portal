@@ -50,6 +50,7 @@ class LeadsContainer extends Component {
     }
     handleSendMessage = (content)=>{
         const lead = this.props.leads.filter(x=>x.id === this.state.leadId) 
+        console.log(this.state.leadId,lead[0].thread.id,content)
         this.props.sendMessage(this.state.leadId,lead[0].thread.id,content)
     }
     render() { 
@@ -112,7 +113,8 @@ const enhance = compose(
           sendMessage: props => (leadId,threadId,body) =>{
             props.firestore.add( { collection: COLLECTIONS.linkedinMessageQueue},
               {   
-                leadId,threadId,body,hasSent:false,hasSynced:false,createdAt:new Date(),
+                leadId,threadId,body,hasSent:false,hasSynced:false,
+                createdAt:props.firestore.FieldValue.serverTimestamp(),
               })
           },
           readThread: props => leadId =>{
