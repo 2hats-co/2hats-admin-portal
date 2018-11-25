@@ -1,10 +1,9 @@
-import React, { Component } from 'react';
-import {getTrackerLineData} from '../../utilities/analytics/index'
+import React from 'react';
 import ReactEcharts from 'echarts-for-react';
 import withAnlytics from './withAnalytics'
-class TrackerBarChart extends Component {  
-    render() { 
-        const {trackers,title} = this.props
+function TrackerBarChart (props){  
+
+        const {trackers,title} = props
             const xAxis = trackers[0].data.map(x=>x.label)
            const seriesData = trackers.map(x=> {
            const data = x.data.map(x=>x.value)
@@ -56,7 +55,7 @@ class TrackerBarChart extends Component {
             }
         }}
         />)
-    }
+    
 }
  
 export default withAnlytics(TrackerBarChart);

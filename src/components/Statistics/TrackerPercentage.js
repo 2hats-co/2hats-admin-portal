@@ -1,16 +1,12 @@
-import React, {
-    Component
-} from 'react';
+import React from 'react';
 import withAnalytics from './withAnalytics'
 
 
-class TrackerPercentage extends Component {
-    render() {
+function TrackerPercentage(props) {
         const {
             title,
             trackers
-        } = this.props
-        console.log(title)
+        } = props
         let percentage = 0
         if(trackers[0].sum<trackers[1].sum){
             percentage = Math.round((trackers[0].sum/trackers[1].sum)*100)
@@ -23,8 +19,7 @@ class TrackerPercentage extends Component {
                 <h2>{percentage}%</h2>
                 </div >
                 </div>
-            )
-    }
+            )  
 }
 
 export default withAnalytics(TrackerPercentage);

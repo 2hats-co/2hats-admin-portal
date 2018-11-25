@@ -1,11 +1,10 @@
 
-import React, { Component } from 'react';
-import {getTrackerSum} from '../../utilities/analytics/index'
+import React from 'react';
 import ReactEcharts from 'echarts-for-react';
 import withAnalytics from './withAnalytics'
-class TrackerDonutChart extends Component {  
-    render() { 
-        const {title,trackers} = this.props
+function TrackerDonutChart(props){  
+
+        const {title,trackers} = props
         return(<ReactEcharts theme="light" style={{height:'100%'}} 
         option = {{
             tooltip: {
@@ -46,8 +45,6 @@ class TrackerDonutChart extends Component {
             ]
         }}
         />)
-        
-    }
 }
  
 export default withAnalytics(TrackerDonutChart);
