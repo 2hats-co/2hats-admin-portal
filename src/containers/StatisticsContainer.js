@@ -49,28 +49,34 @@ class StatisticsContainer extends Component {
     }
     componentDidUpdate(prevProps){
       const {chartsConfig} = this.props
-      if(!prevProps.chartsConfig && chartsConfig){
-        const layout = chartsConfig.map((chart,i)=>({i:chart.id,x:chart.x||i,y:chart.y||0,w:chart.width,h:chart.height||7}))
+      console.log(chartsConfig)
+      if(!prevProps.chartsConfig && chartsConfig !== prevProps.chartsConfig){
+        const layout = chartsConfig.map((chart,i)=>({i:chart.id,x:chart.layout.x||i,
+          y:chart.layout.y||0,
+          w:chart.layout.w,
+          h:chart.layout.h||7}))
+          console.log(layout)
         this.setState({layout})
       }
     }
     onLayoutChange=(layout)=> {
-    if(this.state.layout.length === this.props.chartsConfig.length){
-      const oldLayouts = this.state.layout.map(layout=> R.dissoc('',layout))
-      const newLayouts = layout.map(layout=> 
-        R.pickBy(R.identity, layout))
-      const updateable = R.difference(oldLayouts,newLayouts)
-      console.log('updateable',updateable,newLayouts)
-       const chartId = layout.i
-       const config = {x:layout.x,y:layout.y,width:layout.w,height:layout.h}
-       console.log('update layout',layout,chartId,config)
-       if(chartId){
-        this.props.updateChart(chartId,config)
-       }
+    this.setState({layout})
 
     }
-    }
+    
+    handleSaveLayout=()=>{
+      const {layout} = this.state
+      const charts = layout.map((chart)=>{
+      const chartId = chart.i
+       const config = {x:chart.x,y:chart.y,w:chart.w,h:chart.h}
+        return ({chartId,config})
+      })
+      charts.forEach((chart)=>{
+        console.log(chart.chartId,chart.config)
+       this.props.updateChart(chart.chartId,{layout:chart.config}) 
+      })
 
+    }
     render() { 
       const {range,format} = this.state
       const charts = this.props.chartsConfig
@@ -84,7 +90,7 @@ class StatisticsContainer extends Component {
             zIndex: 99,
            }}
            //className={classes.saveButton} 
-           //onClick={this.handleClickOpen} 
+           onClick={this.handleSaveLayout} 
            color='primary'>
               <SaveIcon/>
             </Button>

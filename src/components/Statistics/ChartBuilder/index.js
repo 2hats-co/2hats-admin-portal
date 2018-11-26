@@ -191,7 +191,7 @@ class ChartBuilder extends Component {
 
                 </Grid>
 
-                <Button aria-label="Add Tracker" //className={classes.button}
+                <Button aria-label="Add Tracker"
                   onClick={this.addTracker}
                   color="primary"
                   style={{padding: '8px 12px'}}

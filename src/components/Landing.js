@@ -14,10 +14,11 @@ class Landing extends React.Component {
     }
    
     componentDidMount() {
+        this.props.loadData()
         if (this.props.authUser == ! null) {
                 this.props.history.push(ROUTES.stats)
         }
-
+     
     }
     componentDidUpdate(prevProps, prevState) {
         const {user} = this.props
@@ -29,6 +30,9 @@ class Landing extends React.Component {
             }
             
         }
+        if(!prevProps.uid&&this.props.uid){
+            this.props.loadData()
+          }
     }
     render() {
         if(this.props.authUser){
@@ -54,18 +58,6 @@ const enhance = compose(
             }
             props.firestore.setListener(adminListenerSettings)}
           }
-    }),
-    // Run functionality on component lifecycle
-    lifecycle({
-      // Load data when component mounts
-      componentDidMount(){
-        this.props.loadData()
-      },
-      componentDidUpdate(prevProps){
-        if(!prevProps.uid&&this.props.uid){
-          this.props.loadData()
-        }
-      }
     }),
     connect(({ firestore }) => ({
       user: firestore.ordered.adminUser // document data by id
