@@ -106,7 +106,7 @@ const enhance = compose(
             where:['hasResponded','==',true],
              storeAs:'linkedinClients',
              orderBy:['lastMessage.sentAt', 'desc'],
-             limit: 20
+             limit: 200
           }
             props.firestore.setListener(leadsListenerSettings)
           },
