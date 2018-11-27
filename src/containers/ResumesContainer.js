@@ -48,7 +48,6 @@ class ResumeContainer extends Component{
     }
     getNextCandidate = () =>{
         if(this.candidates){
-            console.log(this.candidates)
             //this.candidates.setNextCandidate(this.state.candidateUID)
         }
       

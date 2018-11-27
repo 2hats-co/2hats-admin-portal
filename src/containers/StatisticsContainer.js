@@ -35,11 +35,7 @@ class StatisticsContainer extends Component {
           stepSize: 24,
           label: 'Do MMM',
         },
-        layout: [
-          // {i: 'HA7IAUmVjhSzUJSYRxbC', x: 0, y: 0, w: 1, h: 8},
-          // {i: 'OEKsB7skUccUop2GwMH6', x: 1, y: 0, w: 3, h: 8},
-          // {i: 'brcOktgxv4iv4D8ffd6W', x: 4, y: 0, w: 1, h: 8},
-        ],
+        layout: [],
      }
     }
     handleChange=(name, value)=> {
@@ -49,13 +45,11 @@ class StatisticsContainer extends Component {
     }
     componentDidUpdate(prevProps){
       const {chartsConfig} = this.props
-      console.log(chartsConfig)
       if(!prevProps.chartsConfig && chartsConfig !== prevProps.chartsConfig){
         const layout = chartsConfig.map((chart,i)=>({i:chart.id,x:chart.layout.x||i,
           y:chart.layout.y||0,
           w:chart.layout.w,
           h:chart.layout.h||7}))
-          console.log(layout)
         this.setState({layout})
       }
     }
@@ -72,7 +66,6 @@ class StatisticsContainer extends Component {
         return ({chartId,config})
       })
       charts.forEach((chart)=>{
-        console.log(chart.chartId,chart.config)
        this.props.updateChart(chart.chartId,{layout:chart.config}) 
       })
 
@@ -103,7 +96,6 @@ class StatisticsContainer extends Component {
             }
             layout={this.state.layout} cols={12} rowHeight={40} width={1200}>
               {charts.map(chart => {
-                console.log('chart',chart)
                 let chartElement;
                 switch (chart.type) {
                   case 'line':
@@ -180,8 +172,6 @@ const enhance = compose(
       chartsConfig: firestore.ordered.chartsConfig // document data by id
     }))
   );
-
-
 
   export default withNavigation(enhance(
       compose(  

@@ -7,6 +7,7 @@ import { connect } from "react-redux";
 import { withFirestore } from "../utilities/withFirestore";
 import { Button, Grid } from '@material-ui/core';
 import Messaging from '../components/Messaging/index';
+import Toolbar from '../components/Messaging/Toolbar'
 import * as R from 'ramda'
 
 const messageSort = R.sortWith([
@@ -55,6 +56,7 @@ class LeadsContainer extends Component {
     }
     render() { 
         const leads = this.props.leads
+        const {leadId} = this.state
         const queuedMessages =  this.props.queuedMessage
         let messages = []
         if(this.props.messages){
@@ -82,7 +84,17 @@ class LeadsContainer extends Component {
 
             return({fullName,body,date,id,isUnread,isStarred})
           })
+       let leadHeader = {label:'',path:''}
+       if(leadId !==''){
+         const leadIndex = R.findIndex(R.propEq('id',leadId))(leads)
+
+         const currentLead = leads[leadIndex]
+          leadHeader = {label:currentLead.fullName,path:currentLead.profileURL}
+
+       }
         return (
+        <React.Fragment>
+          <Toolbar header={leadHeader}/>
           <Grid container direction="row" wrap="nowrap" style={{height: 'calc(100vh - 64px)'}}>
             <Messaging 
             threads={threadSort(R.dropRepeats(threads))} 
@@ -91,6 +103,8 @@ class LeadsContainer extends Component {
             messages={messageSort(R.dropRepeats(messages))}
             handleStarThread={this.handleStarThread}/>
           </Grid>
+        </React.Fragment>
+
         )}
             else{
                 return(<div/>)
@@ -106,7 +120,7 @@ const enhance = compose(
             where:['hasResponded','==',true],
              storeAs:'linkedinClients',
              orderBy:['lastMessage.sentAt', 'desc'],
-             limit: 200
+             limit:  10
           }
             props.firestore.setListener(leadsListenerSettings)
           },
