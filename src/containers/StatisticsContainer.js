@@ -53,6 +53,16 @@ class StatisticsContainer extends Component {
         this.setState({layout})
       }
     }
+    componentDidMount(){
+      const {chartsConfig} = this.props
+      if(chartsConfig){
+        const layout = chartsConfig.map((chart,i)=>({i:chart.id,x:chart.layout.x||i,
+          y:chart.layout.y||0,
+          w:chart.layout.w,
+          h:chart.layout.h||7}))
+        this.setState({layout})
+      }
+    }
     onLayoutChange=(layout)=> {
     this.setState({layout})
 
