@@ -169,15 +169,14 @@ class ChartBuilder extends Component {
                   Choose a chart type, set the title and width, then add trackers
                 </DialogContentText>
                 <Grid container alignItems="center" className={classes.chartConfig}>
-                  <Grid item xs={6}>
+                  <Grid item xs={7}>
                     <Typography variant="caption">Chart Type</Typography>
                       <ChartTypePicker
                         type={chartType}
                         changeHandler={this.handleChartTypePicker}
                       />
                   </Grid>
-
-                  <Grid item xs={6}>
+                  <Grid item xs={4}>
                     <TextField
                     onChange={this.handleChange}
                     autoFocus

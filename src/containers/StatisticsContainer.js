@@ -88,7 +88,7 @@ class StatisticsContainer extends Component {
            <Button variant="fab" 
            style={{
             position: 'absolute',
-            top: 70,
+            top: 64 + 16,
             right: 8 * 2,
             zIndex: 99,
            }}
