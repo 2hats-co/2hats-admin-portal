@@ -18,6 +18,7 @@ import ConfirmationDailog from '../ConfirmationDialog';
 import PersonDetails from './PersonDetails';
 import SubmissionDetails from './SubmissionDetails';
 import FeedbackForm from '../../components/FeedbackForm';
+import ScreeningForm from '../../components/ScreeningForm';
 import {SUBMISSION_FEEDBACK} from '../../constants/feedback'
 import * as R from 'ramda'
 import Done from '../Done'
@@ -219,7 +220,7 @@ class Submission extends Component {
                         <SubmissionDetails submission={submission} />
                     </Grid>
                     <Grid item style={{width:400}}>
-                        <FeedbackForm
+                        {/* <FeedbackForm
                             sections={SUBMISSION_FEEDBACK}
                             submissionID={this.state.submissionID}
                             acceptHandler={()=>{this.setState({confirmationDialog:acceptedDailog})}}
@@ -229,7 +230,8 @@ class Submission extends Component {
                             skipHandler={this.handleSkip}
                             disableSkip={this.state.disableSkip}
                             showFeedbackForm={this.props.listType === "rejected" || this.props.listType === "accepted"}
-                        />
+                        /> */}
+                        <ScreeningForm />
                     </Grid>
                 </Grid>
                 {confirmationDialog&& <ConfirmationDailog data={confirmationDialog}/>}
