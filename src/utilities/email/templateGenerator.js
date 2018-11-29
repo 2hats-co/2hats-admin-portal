@@ -16,10 +16,12 @@ const makeElements = (template,elements) =>{
 const footerElements = [{
   type:'footerText',
   replaceables:{text:'66 Devonshire Street, Surry Hills, Sydney.'}
-},{
-  type:'footerLink',
-  replaceables:{url:'https://2hats.com',label:'Unsubscribe from our emails'}
-},]
+},
+// {
+//   type:'footerLink',
+//   replaceables:{url:'https://portal.2hats.com.au/?unsubscribe=123#unsubscribe',label:'Unsubscribe from our emails'}
+// },
+]
 export const makeEmail = (template,bodyElements) =>{
 
   let output = template.wrapper

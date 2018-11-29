@@ -19,12 +19,9 @@ import {ROUTES} from './constants/routes'
 import Landing from './components/Landing';
 // containers
 import withAuthentication from './utilities/Session/withAuthentication';
+import TemplateGenerator from './components/TemplateGenerator'
+function App() {
 
-class App extends Component {
-    componentDidMount(){
-       
-    }
-    render() {
         return (
             <MuiThemeProvider theme={Theme}>
                 <Router>
@@ -40,11 +37,11 @@ class App extends Component {
                         <Route exact path={ROUTES.accepted} component={() => <SubmissionsContainer />} />
                         <Route exact path={ROUTES.mail} component={() => <MailContainer/>} />
                         <Route exact path={'/'} component={() => <Landing/>} /> 
-                    </div>
+                    </div> 
                 </Router>
             </MuiThemeProvider>
         );
     }
-}
+
 
 export default withAuthentication(App);

@@ -40,8 +40,6 @@ export const withFirestore = (WrappedComponent) => {
       )
     }
   }
-  // Note, for full statics support, use hoist-non-react-statics as done
-  // in react-redux-firebase's withFirestore: https://goo.gl/4pxmPv
   function mapStateToProps(state){
     return{
       authUser: state.sessionState.authUser

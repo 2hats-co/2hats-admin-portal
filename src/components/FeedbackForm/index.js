@@ -120,7 +120,7 @@ class FeedbackForm extends Component {
   }
 
   render() {
-    const { classes, submissionID, acceptHandler,noFeedbackHandler, rejectHandler, skipHandler, disableSkip } = this.props;
+    const { classes, submissionID, acceptHandler,demographicRectedHandler,industryRectedHandler, rejectHandler, skipHandler, disableSkip } = this.props;
     const { confirmationDialog } = this.state;
     console.log(confirmationDialog)
     if (!submissionID) return null;
@@ -137,7 +137,6 @@ class FeedbackForm extends Component {
           </Tooltip>
           <Tooltip title="Accept">
             <Button variant="fab" className={classes.greenButton} 
-           // onClick={() => this.setState({ showFeedbackForm: true, feedbackType: 'accept' })}
            onClick={acceptHandler}
             aria-label="accept">
                 <AcceptIcon />
@@ -145,13 +144,13 @@ class FeedbackForm extends Component {
           </Tooltip>
           <Tooltip title="Reject">
             <Button variant="fab" className={classes.redButton} aria-label="reject"
-           // onClick={() => this.setState({ showFeedbackForm: true, feedbackType: 'reject' })}
            onClick ={rejectHandler}
            >
                 <RejectIcon />
             </Button>
           </Tooltip>
-          <Grid item xs={12}> <Button sytle={{margin:'auto'}} onClick ={noFeedbackHandler} variant='raised' >No feedback</Button></Grid>
+          <Grid item xs={6}> <Button sytle={{margin:'auto'}} onClick ={demographicRectedHandler} variant='raised' >Outside Demographic</Button></Grid>
+          <Grid item xs={6}> <Button sytle={{margin:'auto'}} onClick ={industryRectedHandler} variant='raised' >Outside Industry</Button></Grid>
         </Grid>
        
       </div>

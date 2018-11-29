@@ -119,7 +119,7 @@ class CandidatesContainer extends Component{
                     catFilters={this.state.catFilters}
                     deleteFilterHandler={this.handleDeleteFilter}
                 />
-                <Table
+                <Table style={{width:'100%', height:'calc(100vh - 64px)', overflowX:'hidden', verflowY:'auto'}}
                     candidateData={hits}
                     resultData={resultData}
                     changeHandler={this.handleChange}

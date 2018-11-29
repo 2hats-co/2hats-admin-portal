@@ -1,7 +1,8 @@
 import {functions } from '../store'
 export const CLOUD_FUNCTIONS = {
     stats:'restApiQueryStageAndStatus',
-    auth:'restApiAuthenticateAdmin'
+    auth:'restApiAuthenticateAdmin',
+    createSmartLink:'callablesCreateSmartLink'
 };
 
 export const cloudFunction = (name, input ,success, fail) =>{

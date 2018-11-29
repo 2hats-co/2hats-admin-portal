@@ -20,7 +20,8 @@ import SubmissionDetails from './SubmissionDetails';
 import FeedbackForm from '../../components/FeedbackForm';
 import {SUBMISSION_FEEDBACK} from '../../constants/feedback'
 import * as R from 'ramda'
-import { Document,Page } from 'react-pdf';
+import Done from '../Done'
+
 const styles = theme => ({
     root: {
         height: 'calc(100vh - 64px)',
@@ -116,11 +117,10 @@ class Submission extends Component {
     
     componentWillUnmount() {
         if (this.state.submissionID)
-            this.props.returnSubmission(this.state.submissionID);
+        this.props.returnSubmission(this.state.submissionID);
     }
   
     setSubmission(i){
-        
         const submission = this.props[this.props.listType][i + this.state.skipOffset];
         console.log('setSubmission', i + this.state.skipOffset);
         if (submission) {
@@ -129,9 +129,13 @@ class Submission extends Component {
                 submission: submission,
                 submissionStatus: submission.submissionStatus,
             });
-    
-            this.props.holdSubmission(submission.id, this.props.listType) 
+          //  this.props.holdSubmission(submission.id, this.props.listType) 
         }
+    }
+    handleScreening(type){
+        this.props.proccessSubmission(this.state.submissionID,type,this.state.submission.UID)
+        this.getNextSubmission()
+        this.closeDialog()
 
     }
     handleRejection(){
@@ -144,8 +148,14 @@ class Submission extends Component {
         this.getNextSubmission()
         this.closeDialog()
     }
-    handleNoFeedback=()=>{
+    demographicRectedHandler=()=>{
         this.props.proccessSubmission(this.state.submissionID,'demographic-rejected',this.state.submission.UID)
+        this.getNextSubmission()
+        this.closeDialog()
+    }
+
+    industryRectedHandler=()=>{
+        this.props.proccessSubmission(this.state.submissionID,'indusrty-rejected',this.state.submission.UID)
         this.getNextSubmission()
         this.closeDialog()
     }
@@ -174,21 +184,8 @@ class Submission extends Component {
   
     render(){
         if (this.state.congratulate) {
-            return (<Grid container style={{height:'calc(100vh - 64px)', textAlign:'center'}} justify="center" alignItems="center">
-                <div>
-                    <Typography variant="display1" style={{color:'#000', fontFamily:'"Comic Sans MS", "Comic Sans"'}}>
-                        🍆🍑 you've done everything 🍑🍆
-                    </Typography>
-                    <Typography variant="display1" style={{color:'#000', fontFamily:'"Comic Sans MS", "Comic Sans"', fontSize:200}}>
-                        🇸🇳
-                    </Typography>
-                    <Typography variant="display1" style={{color:'#000', fontFamily:'"Comic Sans MS", "Comic Sans"'}}>
-                        💯💯😂🔥😂🔥😂🥂🎉 go home 🎉🥂 😂🔥😂🔥😂💯💯
-                    </Typography>
-                </div>
-            </Grid>)
+            return (<Done/>)
         }
-        console.log(this.props)
         const {submission,confirmationDialog,submissionStatus} = this.state;
         const {classes} = this.props;
         const firstName = (submission.displayName?submission.displayName.split(' ')[0]:'')
@@ -207,22 +204,9 @@ class Submission extends Component {
             cancel: {action:this.closeDialog,label:'Cancel'},
             customText: true,
           };
-        let submissionStatusLabel = ''
-        switch (submissionStatus) {
-            case 'accepted':
-            case 'rejected':
-            case 'processing':
-            submissionStatusLabel = ` – ${submissionStatus} by ${submission.operator && submission.operator.displayName && submission.operator.displayName.split(' ')[0]} `
-            console.log('submission',submission)
-                break;
-        
-            default:
-                break;
-        }
-        
-        if(submission){
-            console.log(submission);
 
+        let submissionStatusLabel = ` – ${submissionStatus} by ${submission.operator && submission.operator.displayName && submission.operator.displayName.split(' ')[0]} `
+        if(submission){
             //TODO: accept  
             return(<React.Fragment>
                 <Grid container className={classes.root}>
@@ -254,8 +238,7 @@ class Submission extends Component {
         }else{
             return(
                 <Grid container direction="column" alignItems="center" justify="center"
-                    className={classes.root}
-                >
+                    className={classes.root}>
                     <CircularProgress size={50} />
                 </Grid>
             );
@@ -318,8 +301,7 @@ const enhance = compose(
                   updatedAt:props.firestore.FieldValue.serverTimestamp()
               }
                   break;
-              default:
-                  break;
+              default: break;
           }
           props.firestore.update(
             { collection: COLLECTIONS.users, doc: candidateUID },

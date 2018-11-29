@@ -15,8 +15,6 @@ import SubmissionsList from '../components/Submission/SubmissionsList';
 class SubmissionsContainer extends Component{
     constructor(props){
         super(props)
-     //   this.candidates = React.createRef()
-    //    this.setCandidate = this.setCandidate.bind(this)
         this.state = {
             submissionID: '',
             showFeedbackForm: false,
@@ -36,10 +34,6 @@ class SubmissionsContainer extends Component{
     }
 
     render(){
-        // if (!this.props.submissions) return(<CircularProgress size={50} />)
-        // console.warn('exists')
-        // console.log(this.props)
-        // return(<div>exists</div>)
         console.log('props',this.props)
         return(
             <Submission

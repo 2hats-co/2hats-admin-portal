@@ -21,7 +21,7 @@
     "ramda": "^0.26.0",
     "react": "^16.7.0-alpha.2",
     "react-color": "^2.14.1",
-    "react-dom": "^16.4.2",
+    "react-dom": "^16.7.0-alpha.2",
     "react-grid-layout": "^0.16.6",
     "react-instantsearch": "^5.2.3",
     "react-pdf": "^3.0.5",
