@@ -4,7 +4,6 @@ import React, {
 import {
     getTrackerLineData
 } from '../../utilities/analytics/index'
-import ReactEcharts from 'echarts-for-react';
 
 // This function takes a component...
 function withAnalytics(WrappedComponent) {

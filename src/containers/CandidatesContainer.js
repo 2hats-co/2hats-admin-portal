@@ -3,7 +3,6 @@ import {withNavigation} from '../components/withNavigation'
 import Table from '../components/Candidates/Table'
 import { ALGOLIA_INDEX, createAlgoliaIndex } from '../config/algolia'
 import SearchBar from '../components/Candidates/SearchBar';
-import CandidateDialog from '../components/CandidateDialog';
 
 class CandidatesContainer extends Component{
     constructor(props){
@@ -126,9 +125,6 @@ class CandidatesContainer extends Component{
                     addFilterHandler={this.handleAddFilter}
                     catFilters={this.state.catFilters}
                 />
-                {selectedCandidate !=='' &&<CandidateDialog dismiss={this.handleDismiss}
-                    infoData={selectedCandidate}
-                />}
             </div>
         )
     }

@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
 //containers
 import StatisticsContainer from './containers/StatisticsContainer'
-import OldStatisticsContainer from './containers/oldStatisticsContainer'
 import CandidatesContainer from './containers/CandidatesContainer'
 import ResumesContainer from './containers/ResumesContainer'
 import AuthenticationContainer from './containers/AuthenticationContainer'
@@ -28,7 +27,6 @@ function App() {
                     <div className="app"> 
                         <Route exact path={ROUTES.auth} component={() => <AuthenticationContainer/>} />
                         <Route exact path={ROUTES.stats} component={() => <StatisticsContainer/>} />
-                        <Route exact path={'/oldStatistics'} component={() => <OldStatisticsContainer/>} />
                         <Route exact path={ROUTES.candidates} component={() => <CandidatesContainer/>} />
                         <Route exact path={ROUTES.resumes} component={() => <ResumesContainer/>} />
                         <Route exact path={ROUTES.leads} component={() => <LeadsContainer/>} />
