@@ -26,7 +26,7 @@ const styles = theme => ({
             height: 64,
         },
         '& img': {
-            height: 64,
+            height: 56,
         },
     },
 });
@@ -40,16 +40,16 @@ function Confidence(props) {
     return (
         <Grid container direction="column" className={classes.root}>
             <Typography variant="subheading">
-                Confidence: <span className={classes.confidenceLabel}>{confidenceLevel}</span>
+                Confidence: <span className={classes.confidenceLabel}>{confidenceLevel.value}</span>
             </Typography>
             <ToggleButtonGroup
                 exclusive
-                value={confidenceLevel}
+                value={confidenceLevel.value}
                 className={classes.toggleButtonGroup}
-                onChange={(e, val) => { setConfidenceLevel(val); } }
+                onChange={(e, val) => { setConfidenceLevel({ value: val, index: CONFIDENCE_LEVELS.indexOf(val) }); } }
             >
                 { CONFIDENCE_LEVELS.map((x, i) => (
-                    <ToggleButton value={x.toLowerCase()} key={i}>
+                    <ToggleButton value={x} key={i}>
                         <Tooltip title={x}>
                             <img src={CONFIDENCE_IMAGES[i]} alt={x} />
                         </Tooltip>

@@ -1,99 +1,89 @@
-import React,{Component} from 'react'
-import {withNavigation} from '../components/withNavigation'
-import CandidatesList from '../components/Resumes/CandidatesList'
-import Grid from '@material-ui/core/Grid'
-import Submission from '../components/Submission'
+import React, { useState, useEffect } from 'react'
+import {withNavigation} from '../components/withNavigation';
+
+import Grid from '@material-ui/core/Grid';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-//redux 
-import { COLLECTIONS} from "../constants/firestore";
-import { compose } from "redux";
-import { withHandlers, lifecycle } from "recompose";
-import { connect } from "react-redux";
-import { withFirestore } from "../utilities/withFirestore";
-import SubmissionsList from '../components/Submission/SubmissionsList';
-class SubmissionsContainer extends Component{
-    constructor(props){
-        super(props)
-        this.state = {
-            submissionID: '',
-            showFeedbackForm: false,
-        }
-        this.handleShowFeedbackForm = this.handleShowFeedbackForm.bind(this);
-        this.setSubmission = this.setSubmission.bind(this)
-    }
-    componentDidMount(){
- 
-    }
-    setSubmission(id){
-        this.setState({ submissionID: id, showFeedbackForm: false });
-    }
-    handleShowFeedbackForm() {
-        
-        this.setState({ showFeedbackForm: true });
+import { useSubmission } from '../hooks/useSubmission';
+
+import LocationIndicator from '../components/LocationIndicator';
+import Done from '../components/Done';
+import Submission from '../components/Submission';
+import ScreeningForm from '../components/ScreeningForm';
+import FeedbackForm from '../components/FeedbackForm';
+import TemplateGenerator from '../components/TemplateGenerator';
+
+function SumbissionsContainer(props) {
+    const { location } = props;
+
+    const [template, setTemplate] = useState(null);
+    const [showDisqualify, setShowDisqualify] = useState(false);
+
+    const submission = useSubmission(location.pathname.replace('/',''));
+
+    const locationIndicator = <LocationIndicator
+                                title="Submissions"
+                                subRoutes={['/pending', '/rejected', '/accepted']}
+                            />;
+
+    if (!submission) {
+        return <React.Fragment>
+            { locationIndicator }
+            <Grid container justify="center" alignItems="center" style={{ height: 'calc(100vh - 64px)' }}>
+                <CircularProgress size={50} />
+            </Grid>
+        </React.Fragment>;
     }
 
-    render(){
-        console.log('props',this.props)
-        return(
-            <Submission
-                id={this.state.submissionID}
-                showFeedbackFormHandler={this.handleShowFeedbackForm}
-                listType={this.props.location.pathname.split('/')[1]}
-            />
-        );
+    let rightPanel;
+    switch (location.pathname) {
+        case '/pending':
+            rightPanel = <ScreeningForm
+                            submissionID={submission.id}
+                            setTemplate={setTemplate}
+                            showDisqualify={showDisqualify}
+                            setShowDisqualify={setShowDisqualify}
+                        />;
+            break;
+        case '/rejected':
+        case '/accepted':
+            rightPanel = null;
+            break;
+            // rightPanel = <FeedbackForm
+            //     sections={/*SUBMISSION_FEEDBACK*/null}
+            //     submissionID={submission.id}
+            //     getNextSubmission={this.getNextSubmission}
+            //     skipHandler={this.handleSkip}
+            //     disableSkip={this.state.disableSkip}
+            // />;
     }
+
+    if (submission.complete) {
+        return <React.Fragment> { locationIndicator } <Done /> </React.Fragment>
+    }
+
+    return(<React.Fragment>
+        { locationIndicator }
+        <Grid container style={{ height: 'calc(100vh - 64px)' }}>
+            <Grid item xs>
+                <Submission
+                    submission={submission}
+                    listType={location.pathname.split('/')[1]}
+                />
+                { template &&
+                    <TemplateGenerator
+                        template={template}
+                        recipientUID={submission.UID}
+                        route=""
+                        close={ () => { setTemplate(null); setShowDisqualify(false) } }
+                    />
+                }
+            </Grid>
+            <Grid item style={{width:400}}>
+                { rightPanel }
+            </Grid>
+        </Grid>
+    </React.Fragment>);
 }
 
-const filters = [
-    {storeName:'acceptedSubmissions',
-    query:[['submissionStatus','==','accepted'],
-    ['processing','==',false],
-    ['reviewed','==',false]],
-    sort:[['createdAt', 'asc']],
-    limit:10},
-    {storeName:'rejectedSubmissions',
-    query:[['submissionStatus','==','rejected'],
-    ['processing','==',false],
-    ['reviewed','==',false]],
-    sort:[['createdAt', 'asc']],
-    limit:10},
-    {storeName:'pendingSubmissions',
-    query:[
-    ['submissionStatus','==','pending'],
-    ['processing','==',false],
-    //['reviewed','==',false]
-],
-    sort:[['createdAt', 'asc']],
-    limit:10}
-    ]
-const enhance = compose(
-    // add redux store (from react context) as a prop
-    withFirestore,
-    // Handler functions as props
-    withHandlers({
-      loadData: props => listenerSettings =>
-        props.firestore.setListener(listenerSettings),
-    }),
-    // Run functionality on component lifecycle
-    lifecycle({
-      // Load data when component mounts
-      componentDidMount() {
-        filters.map((x)=>{
-            const submissionsListenerSettings = {collection:COLLECTIONS.submissions,
-                                                    storeAs:x.storeName, 
-                                                    where:x.query,orderBy:x.sort,
-                                                    limit: x.limit}
-            this.props.loadData(submissionsListenerSettings);
-        })
-      },
-    }),
-  );
-
-  export default enhance(
-      compose(  
-            withNavigation(SubmissionsContainer)
-      )
-  );
-  
-//export default withNavigation(SubmissionsContainer)
+export default withNavigation(SumbissionsContainer);

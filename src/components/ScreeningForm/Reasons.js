@@ -36,7 +36,7 @@ function Reasons(props) {
     }
 
     return <Grid container direction="column" className={classes.root}>
-        <Typography variant="subheading">What Went Wrong</Typography>
+        <Typography variant="subheading">Why?</Typography>
         <TextField
             id="add-reason" placeholder="Add reason…"
             onKeyPress={handleAdd}
@@ -44,7 +44,7 @@ function Reasons(props) {
 
         <FormGroup row className={classes.formGroup}>
             { reasons.map((x, i) => (
-                <FormControlLabel id={i} label={x.label} className={classes.formControlLabel} control={
+                <FormControlLabel key={i} label={x.label} className={classes.formControlLabel} control={
                     <Checkbox
                         checked={x.checked}
                         value="x.label"

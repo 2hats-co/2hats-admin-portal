@@ -19,7 +19,6 @@ import {ROUTES} from '../../constants/routes';
 
 import logo from '../../assets/logo/WhiteIcon.svg';
 import NavigationItems from './NavigationItems';
-import SubNavigation from './SubNavigation';
 import withAuthentication from '../../utilities/Session/withAuthentication';
 
 import { withFirestore } from "../../utilities/withFirestore";
@@ -134,7 +133,6 @@ export const withNavigation = (WrappedComponent) => {
                                         <div>{displayName}</div>
                                         <div>{uid}</div>
                                     </React.Fragment>}
-                                    interactive
                                     placement="top-start"
                                     leaveDelay={5000}
                                 >
@@ -144,25 +142,7 @@ export const withNavigation = (WrappedComponent) => {
                         </Grid>
                     </Grid>
                     <Grid item xs>
-                        <Grid container direction="column">
-                            <Grid item style={{height: 64}}>
-                                <Grid container wrap="nowrap" alignItems="baseline" style={{height: 64}}>
-                                    <Grid item>
-                                        <Typography variant="title" className={classes.routeHeader}>{navigationRoutes[index].label}</Typography>
-                                    </Grid>
-                                    <Grid item>
-                                        {navigationRoutes[index].subRoutes && <SubNavigation
-                                            currentLocation={path.split('/')[1]}
-                                            subRoutes={navigationRoutes[index].subRoutes}
-                                            goTo={this.goTo}
-                                        />}
-                                    </Grid>
-                                </Grid>
-                            </Grid>
-                            <Grid item xs>
-                                <WrappedComponent {...this.props} />
-                            </Grid>
-                        </Grid>
+                        <WrappedComponent {...this.props} />
                     </Grid>
                 </Grid>
             );
