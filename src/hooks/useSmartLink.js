@@ -6,8 +6,6 @@ export function useSmartLink(uid, route) {
   const [smartLink, setSmartLink] = useState(null);
 
   const handleCreateSmartLink = async() => {
-    
-
     let slDoc = {
         UID: uid,
         expireTime: new Date(7 * 24 * 60 * 60 * 1000),
@@ -17,11 +15,14 @@ export function useSmartLink(uid, route) {
         disable: false,
     };
   let smartLinkDoc = await firestore.collection(COLLECTIONS.smartLinks).add(slDoc);
-    setSmartLink(smartLinkDoc.id)
+
+  setSmartLink(smartLinkDoc.id)
     
   }
 
   useEffect(() => {
     if(!smartLink)handleCreateSmartLink()
 },[smartLink])
+
+return smartLink
 }

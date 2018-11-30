@@ -8,6 +8,7 @@ import IconButton from '@material-ui/core/IconButton';
 
 import BackIcon from '@material-ui/icons/ArrowBack';
 import SendIcon from '@material-ui/icons/Send';
+import RedoIcon from '@material-ui/icons/Redo';
 import DisqualifyIcon from '@material-ui/icons/Cancel';
 
 import Confidence from './Confidence';
@@ -67,7 +68,7 @@ const handleSubmit = (submissionID, confidenceLevel, reasons) => {
 }
 
 function ScreeningForm(props) {
-    const { classes, setTemplate, showDisqualify, setShowDisqualify, submissionID } = props;
+    const { classes, setTemplate, showDisqualify, setShowDisqualify, submissionID, submissionDispatch } = props;
 
     const [confidenceLevel, setConfidenceLevel] = useState({ value: '', index: -1 });
 
@@ -80,7 +81,7 @@ function ScreeningForm(props) {
 
     if (showDisqualify) return (
         <Grid container className={classes.root} direction="column">
-            <IconButton onClick={() => { setShowDisqualify(false) }} className={classes.back}>
+            <IconButton onClick={() => { setShowDisqualify(false); setTemplate(null) }} className={classes.back}>
                 <BackIcon />
             </IconButton>
             <Typography variant="title">
@@ -101,9 +102,11 @@ function ScreeningForm(props) {
     return (
     <Grid container className={classes.root} direction="column">
         <Confidence confidenceLevel={confidenceLevel} 
-        
         setConfidenceLevel={setConfidenceLevel} />
-        <Reasons reasons={reasons} setReasons={setReasons} />
+
+        {reasons.length > 0 &&
+            <Reasons reasons={reasons} setReasons={setReasons} />
+        }
         
         <Grid container direction="column">
             <Button
@@ -112,6 +115,9 @@ function ScreeningForm(props) {
                 onClick={() => { handleSubmit(submissionID, confidenceLevel.index, reasons) }}
             >
                 <SendIcon className={classes.icon} />Submit
+            </Button>
+            <Button className={classes.button} onClick={() => { submissionDispatch({type:'skip'}) }}>
+                <RedoIcon className={classes.icon} />Skip
             </Button>
             <Button className={classes.button} onClick={() => { setShowDisqualify(true); }}>
                 <DisqualifyIcon className={classes.icon} />Disqualify

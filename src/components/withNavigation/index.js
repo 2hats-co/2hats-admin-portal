@@ -28,6 +28,8 @@ const styles = theme => ({
         backgroundColor: theme.palette.primary.main,
         width: 64,
         height: '100vh',
+        position: 'relative',
+        zIndex: 999,
     },
     logo: {
         width: 40,
