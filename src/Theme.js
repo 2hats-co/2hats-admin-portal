@@ -13,9 +13,9 @@ const Theme = createMuiTheme({
         },
     },
     typography: {
-        fontFamily: '"Helvetica Neue", Arial, sans-serif',
+        fontFamily: '"Helvetica Neue", Roboto, Arial, sans-serif',
         headline: {
-            fontWeight: 600,
+            fontWeight: 500,
         },
         subheading: {
             fontWeight: 500,

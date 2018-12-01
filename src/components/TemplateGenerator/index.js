@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import {THEME1} from '../../constants/emails/themes'
 import {makeEmail, personaliseElements} from '../../utilities/email/templateGenerator'
-import {rejectedWithFeedback,outsideDemographic,outsideIndusty} from '../../constants/emails/templates'
+
 import {sendEmail} from '../../utilities/email/send'
-import renderHTML from 'react-render-html';
-import smartLinks from '../../utilities/smartLinks'
 import {useUserInfo} from '../../hooks/useUserInfo'
+
+import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import SendIcon from '@material-ui/icons/Send';
 import * as R from 'ramda'
-import { userInfo } from 'os';
 
+import { useCandidate } from '../../hooks/useCandidate';
 
 const initialState = {count: 0};
 
@@ -30,39 +30,48 @@ function reducer(state, action) {
 }
 
 function TemplateGenerator(props) {
-  const [smartLink, setSmartLinks] = useState('');
   const [emailBody, setEmailBody] = useState('');
-  const UserInfo = useUserInfo()
-  const template =  R.clone(props.template)
+
+  const { template, close, recipientUID, smartLink } = props;
+
+  const userInfo = useUserInfo()
+  const candidate = useCandidate(recipientUID)
+
+  if (!candidate) return null;
+  
+  const recipient = { UID: candidate.UID, email: candidate.email };
+  console.log(recipient)
+
+  const templateClone =  R.clone(template)
   const theme = R.clone(THEME1)
-    useEffect(() => {
-    if(smartLink === ''){
-   // const smartLink = await smartLinks.create('w1MOePRfhWV54CYsZIjSkW1v2Jw1','prevSubmission?6Lwl3roQDOiWSyW7tWZb')
-    const smartLink = 'w1MOePRfhWV54CYsZIjSkW1v2Jw1'
-    setSmartLinks(smartLink)
-    }},[smartLink])
 
     useEffect(() => {
-      console.log('UserInfo',UserInfo)
-      if(smartLink!==''&&emailBody ==='' && UserInfo){
-        const personalisables = [{firstName:'shams',
-        smartLink,
-        senderTitle:UserInfo.title,
-        senderName:`${UserInfo.givenName} ${UserInfo.familyName}`}] 
-        const personalisedElements = personaliseElements(template.elements,personalisables)
+      console.log('userInfo',userInfo)
+      console.log('candidate',candidate)
+      if(emailBody ==='' && userInfo&&candidate){
+        const personalisables = [{firstName:candidate.firstName,
+        senderTitle:userInfo.title,
+        senderName:`${userInfo.givenName} ${userInfo.familyName}`,
+        smartLink}] 
+        const personalisedElements = personaliseElements(templateClone.elements,personalisables)
         const emailBody = makeEmail(theme,personalisedElements)
         setEmailBody(emailBody)
       }
-    },[smartLink,UserInfo,emailBody])
-        return (<React.Fragment>
-          <Button onClick={()=>{
-              const sender = {UID:UserInfo.UID,email:userInfo.email}
-              const reciever = {UID:props.reciever.UID,email:props.reciever.email}
+    },[candidate,userInfo,emailBody])
+        return (<div style={{position:'absolute',left:64,bottom:0,width:'calc(100vw - 64px - 400px)',height:200,overflowY:'scroll',borderTop:'1px solid #ddd'}}>
+          <Button
+            variant="extendedFab"
+            color="primary"
+            style={{position:'fixed',bottom:16,right:416}}
+            onClick={()=>{
+              const sender = {UID:userInfo.UID,email:`${userInfo.givenName}@2hats.com`}
+              const reciever = {UID:recipient.UID,email:recipient.email}
               const email = {subject:template.subject,body:emailBody}
-             //sendEmail(reciever,sender,email)
-             props.close()
-          }}style={{position:'absolute',bottom:10,right:10}}>Send<SendIcon/>
-          </Button>{renderHTML(emailBody)}
-          </React.Fragment>);  
+             sendEmail(reciever,sender,email)
+             close()
+          }}><SendIcon style={{marginRight:8}}/> Send
+          </Button>
+          <div style={{width:'100%',height:'100%'}}  dangerouslySetInnerHTML={{__html: emailBody}} />
+          </div>);
 }
 export default TemplateGenerator

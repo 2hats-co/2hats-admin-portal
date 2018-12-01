@@ -1,99 +1,103 @@
-import React,{Component} from 'react'
-import {withNavigation} from '../components/withNavigation'
-import CandidatesList from '../components/Resumes/CandidatesList'
-import Grid from '@material-ui/core/Grid'
-import Submission from '../components/Submission'
+import React, { useState, useEffect } from 'react'
+import {withNavigation} from '../components/withNavigation';
+import withStyles from '@material-ui/core/styles/withStyles';
+
+import Grid from '@material-ui/core/Grid';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-//redux 
-import { COLLECTIONS} from "../constants/firestore";
-import { compose } from "redux";
-import { withHandlers, lifecycle } from "recompose";
-import { connect } from "react-redux";
-import { withFirestore } from "../utilities/withFirestore";
-import SubmissionsList from '../components/Submission/SubmissionsList';
-class SubmissionsContainer extends Component{
-    constructor(props){
-        super(props)
-        this.state = {
-            submissionID: '',
-            showFeedbackForm: false,
-        }
-        this.handleShowFeedbackForm = this.handleShowFeedbackForm.bind(this);
-        this.setSubmission = this.setSubmission.bind(this)
-    }
-    componentDidMount(){
- 
-    }
-    setSubmission(id){
-        this.setState({ submissionID: id, showFeedbackForm: false });
-    }
-    handleShowFeedbackForm() {
-        
-        this.setState({ showFeedbackForm: true });
+import { useSubmission } from '../hooks/useSubmission';
+import { useSmartLink } from '../hooks/useSmartLink';
+
+import LocationIndicator from '../components/LocationIndicator';
+import Done from '../components/Done';
+import Submission from '../components/Submission';
+import ScreeningForm from '../components/ScreeningForm';
+import FeedbackForm from '../components/FeedbackForm';
+import TemplateGenerator from '../components/TemplateGenerator';
+
+const styles = theme => ({
+    card: {
+        height: '100%',
+        overflowY: 'scroll',
+        boxSizing: 'border-box',
+        padding: 40,
+        background: '#fff',
+        boxShadow: '0 0 10px rgba(0,0,0,.1), 0 30px 60px -15px rgba(0,0,0,.125), 0 60px 80px -20px rgba(0,0,0,.1), 0 50px 100px -30px rgba(0,0,0,.15), 0 40px 120px -5px rgba(0,0,0,.15)',
+        borderRadius: '0 10px 0 0',
+    },
+});
+
+function SumbissionsContainer(props) {
+    const { classes, location } = props;
+
+    const [template, setTemplate] = useState(null);
+    const [showDisqualify, setShowDisqualify] = useState(false);
+
+    const [submissionState, submissionDispatch] = useSubmission(location.pathname.replace('/',''));
+    const submission = submissionState.submission
+
+    const locationIndicator = <LocationIndicator
+                                title="Submissions"
+                                subRoutes={['/pending', '/rejected', '/accepted']}
+                            />;
+
+    if (!submission) {
+        return <React.Fragment>
+            { locationIndicator }
+            <Grid container justify="center" alignItems="center" style={{ height: 'calc(100vh - 64px)' }}>
+                <CircularProgress size={50} />
+            </Grid>
+        </React.Fragment>;
     }
 
-    render(){
-        console.log('props',this.props)
-        return(
-            <Submission
-                id={this.state.submissionID}
-                showFeedbackFormHandler={this.handleShowFeedbackForm}
-                listType={this.props.location.pathname.split('/')[1]}
-            />
-        );
+    if (submission.complete) {
+        const smartLink = useSmartLink(submission.UID, `/prevSubmission?${submission.id}`)
+        return <React.Fragment> { locationIndicator } <Done /> </React.Fragment>
     }
+
+    let rightPanel;
+    switch (location.pathname) {
+        case '/pending':
+            rightPanel = <ScreeningForm
+                            submissionID={submission.id}
+                            setTemplate={setTemplate}
+                            showDisqualify={showDisqualify}
+                            setShowDisqualify={setShowDisqualify}
+                            submissionDispatch={submissionDispatch}
+                        />;
+            break;
+        case '/rejected':
+        case '/accepted':   
+            rightPanel = <FeedbackForm
+                submission={submission}
+                setTemplate={setTemplate}
+            />;
+    }
+
+    const smartLink = useSmartLink(submission.UID, `/prevSubmission?${submission.id}`)
+
+    return(<React.Fragment>
+        { locationIndicator }
+        <Grid container style={{ height: 'calc(100vh - 64px)' }}>
+            <Grid item xs className={classes.card}>
+                <Submission
+                    submission={submission}
+                    listType={location.pathname.split('/')[1]}
+                />
+                { template && smartLink &&
+                    <TemplateGenerator
+                        template={template}
+                        recipientUID={submission.UID}
+                        smartLink={smartLink}
+                        close={ () => { setTemplate(null); setShowDisqualify(false) } }
+                    />
+                }
+            </Grid>
+            <Grid item style={{width:400}}>
+                { rightPanel }
+            </Grid>
+        </Grid>
+    </React.Fragment>);
 }
 
-const filters = [
-    {storeName:'acceptedSubmissions',
-    query:[['submissionStatus','==','accepted'],
-    ['processing','==',false],
-    ['reviewed','==',false]],
-    sort:[['createdAt', 'asc']],
-    limit:10},
-    {storeName:'rejectedSubmissions',
-    query:[['submissionStatus','==','rejected'],
-    ['processing','==',false],
-    ['reviewed','==',false]],
-    sort:[['createdAt', 'asc']],
-    limit:10},
-    {storeName:'pendingSubmissions',
-    query:[
-    ['submissionStatus','==','pending'],
-    ['processing','==',false],
-    //['reviewed','==',false]
-],
-    sort:[['createdAt', 'asc']],
-    limit:10}
-    ]
-const enhance = compose(
-    // add redux store (from react context) as a prop
-    withFirestore,
-    // Handler functions as props
-    withHandlers({
-      loadData: props => listenerSettings =>
-        props.firestore.setListener(listenerSettings),
-    }),
-    // Run functionality on component lifecycle
-    lifecycle({
-      // Load data when component mounts
-      componentDidMount() {
-        filters.map((x)=>{
-            const submissionsListenerSettings = {collection:COLLECTIONS.submissions,
-                                                    storeAs:x.storeName, 
-                                                    where:x.query,orderBy:x.sort,
-                                                    limit: x.limit}
-            this.props.loadData(submissionsListenerSettings);
-        })
-      },
-    }),
-  );
-
-  export default enhance(
-      compose(  
-            withNavigation(SubmissionsContainer)
-      )
-  );
-  
-//export default withNavigation(SubmissionsContainer)
+export default withNavigation(withStyles(styles)(SumbissionsContainer));

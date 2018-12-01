@@ -2,7 +2,7 @@ import React from 'react';
 import moment from 'moment';
 import { withStyles } from '@material-ui/core/styles';
 
-import renderHTML from 'react-render-html';
+// import renderHTML from 'react-render-html';
 
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
@@ -107,7 +107,7 @@ function MailItem(props) {
         </ExpansionPanelSummary>
 
         <ExpansionPanelDetails classes={{root: classes.mailBody}}>
-            <Typography variant="body1">{body ? renderHTML(body) : 'There is no body text'}</Typography>
+            <Typography variant="body1">{/*body ? renderHTML(body) : 'There is no body text'*/}</Typography>
         </ExpansionPanelDetails>
 
     </ExpansionPanel>);
