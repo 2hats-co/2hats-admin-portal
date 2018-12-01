@@ -42,12 +42,9 @@ export const rejectedWithFeedback ={
     {  
       type:'paragraph',
       replaceables:{content:`2hats is a talent incubator, created to help students get onto professional pathways. At this stage we look for current students or recent graduates to take through our industry readiness selection processes and training. We believe there’s a mismatch between your experience and the pathways we offer. Based on this we won’t progress your application further and wish you all the best with your job search.`}
-    }, {  
-      type:'paragraph',
-      replaceables:{content:`Best of luck,`}
-    },
+    }, 
     {
-      type:'signture',
+      type:'Best of luck,',
       replaceables:{greeting:'Regards',title:'#senderTitle#',name:'#senderName#',company:'2hats'}
      },
   ]}
@@ -77,7 +74,7 @@ export const rejectedWithFeedback ={
       replaceables:{greeting:'Regards',title:'#senderTitle#',name:'#senderName#',company:'2hats'}
      },
   ] }
-  export const InterviewAccepted ={ 
+  export const interviewAccepted ={ 
     index:4,
     templateName:'Interview Accepted',
     subject:'2hats Interview Outcome!',
@@ -114,7 +111,7 @@ export const rejectedWithFeedback ={
       replaceables:{greeting:'Regards',title:'#senderTitle#',name:'#senderName#',company:'2hats'}
      },
   ] }
-  export const InterviewRejected ={ 
+  export const interviewRejected ={ 
     index:5,
     templateName:'Interview Rejected',
     subject:'2hats Interview Outcome',
@@ -143,7 +140,7 @@ export const rejectedWithFeedback ={
       replaceables:{greeting:'Regards',title:'#senderTitle#',name:'#senderName#',company:'2hats'}
      },
   ] }
-  export const AssessmentCentreInfo ={ 
+  export const acInfo ={ 
     index:5,
     templateName:'Assessment Centre Information',
     subject:'2hats Assessment Centre Information',
@@ -231,7 +228,7 @@ export const rejectedWithFeedback ={
      },
   ] }
   
-  export const PsychSales ={ 
+  export const psychSales ={ 
     index:6,
     templateName:'Psych Quiz (Sales) ',
     subject:'Psychometric Quiz',
@@ -253,7 +250,7 @@ export const rejectedWithFeedback ={
      },
   ] }
   
-  export const PsychMarketing ={ 
+  export const psychMarketing ={ 
     index:7,
     templateName:'Psych Quiz (Marketing) ',
     subject:'Psychometric Quiz',
@@ -380,4 +377,48 @@ export const rejectedWithFeedback ={
   ] }
   
   
-  
+  export const resumeAccepted ={ 
+    index:11,
+    templateName:'rejected with Feedback',
+    subject:'Thank You For Applying!',
+    elements:[
+    { type:'paragraph',
+      replaceables:{content:`Hi #firstName#,`}
+    },
+    { type:'paragraph',
+      replaceables:{content:`Your resume has now been reviewed by a 2hats expert, congratulations!`}
+    },
+    { type:'paragraph',
+      replaceables:{content:`We are pleased to inform you that you are among the top 20% of applicants and have progressed to an <b>online video interview</b> with a 2hats staff member. This will give us a chance to get to know you better.`}
+    }, 
+    { type:'paragraph',
+      replaceables:{content:`If you're successful in the interview, you'll be one step closer to joining the 2hats talent pool!`}
+    },
+    { type:'paragraph',
+      replaceables:{content:`<b>How to book:</b>'`}
+    },{ type:'paragraph',
+    replaceables:{content:`You can view our open time slots and schedule your preferred time <a href="https://calendly.com/2hats">here</a>. You will have 5 days after receiving this email to book a time slot.',
+    `}
+  },{ type:'paragraph',
+  replaceables:{content:`<b>Where will the interview be held?</b>`}
+},{  
+      type:'paragraph',
+      replaceables:{content:`The interview is online. Simply click <a href='https://appear.in/2hats'>here</a> when it is time for your interview. You will be prompted to click 'knock to enter', which will allow you to enter the chat room. Please make sure to be on time, as you would for any other interview 😊`}
+    },{  
+      type:'paragraph',
+      replaceables:{content:`<b>What can I expect to be asked?</b>`}
+    },{  
+      type:'paragraph',
+      replaceables:{content:`You should be prepared to talk about yourself, your interests, skills and aspirations. Consider this as great practice for your future job applications!`}
+    },{  
+      type:'paragraph',
+      replaceables:{content:`If you have any questions, don't hesitate to send me an email.`}
+    },
+    {
+      type:'button',
+      replaceables:{url:'https://calendly.com/2hats',label:'Book an interview'}
+     },{
+      type:'Speak to you soon!',
+      replaceables:{greeting:'Regards',title:'#senderTitle#',name:'#senderName#',company:'2hats'}
+     },
+  ] }
