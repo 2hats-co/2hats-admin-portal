@@ -28,7 +28,7 @@
     "redux-logger": "^3.0.6"
   },
   "scripts": {
-    "start": "react-scripts --max_old_space_size=8192 start",
+    "start": "node --max_old_space_size=4096 node_modules/.bin/react-scripts start",
     "build": "node generate-build-id.js && react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
