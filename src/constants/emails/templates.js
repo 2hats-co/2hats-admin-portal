@@ -418,7 +418,7 @@ export const rejectedWithFeedback ={
       type:'button',
       replaceables:{url:'https://calendly.com/2hats',label:'Book an interview'}
      },{
-      type:'Speak to you soon!',
-      replaceables:{greeting:'Regards',title:'#senderTitle#',name:'#senderName#',company:'2hats'}
+      type:'signture',
+      replaceables:{greeting:'Speak to you soon!',title:'#senderTitle#',name:'#senderName#',company:'2hats'}
      },
   ] }
