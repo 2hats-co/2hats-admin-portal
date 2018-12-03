@@ -14,7 +14,7 @@ import DisqualifyIcon from '@material-ui/icons/Cancel';
 import Confidence from './Confidence';
 import Reasons from './Reasons';
 
-import {outsideDemographic,outsideIndusty} from '../../constants/emails/templates';
+import { outsideDemographic, outsideIndusty, resumeAccepted } from '../../constants/emails/templates';
 import { updateProperties } from '../../utilities/firestore';
 import { COLLECTIONS } from '../../constants/firestore';
 
@@ -60,19 +60,28 @@ const handleConfidence = (confidence) => {
         default: return[]   
     }
 }
-const handleSubmit = (submissionID, confidenceLevel, reasons) => {
-    const outputReasons = reasons.filter(x => x.checked).map(x => x.label);
-    console.log(submissionID, confidenceLevel, outputReasons);
-    const properties = {confidence:confidenceLevel,reasons:outputReasons,screened:true}
-    updateProperties(COLLECTIONS.submissions, submissionID, properties);
+const handleSubmit = (submissionID, confidenceLevel, reasons, setTemplate, resetScreeningForm) => {
+    switch (confidenceLevel) {
+        case 0:
+        case 1:
+            const outputReasons = reasons.filter(x => x.checked).map(x => x.label);
+            const properties = {confidence:confidenceLevel,reasons:outputReasons,screened:true}
+            updateProperties(COLLECTIONS.submissions, submissionID, properties);
+            resetScreeningForm();
+            break;
+        case 2:
+        case 3:
+            setTemplate(resumeAccepted);
+            break;
+    }
 }
 
 function ScreeningForm(props) {
-    const { classes, setTemplate, showDisqualify, setShowDisqualify, submissionID, submissionDispatch } = props;
+    const { classes, setTemplate, showDisqualify, setShowDisqualify,
+        submissionID, submissionDispatch, confidenceLevel, setConfidenceLevel,
+        reasons, setReasons, resetScreeningForm } = props;
 
-    const [confidenceLevel, setConfidenceLevel] = useState({ value: '', index: -1 });
-
-    const [reasons, setReasons] = useState([]);
+    
 
     useEffect(() => {
         setReasons(handleConfidence(confidenceLevel.index))
@@ -112,7 +121,7 @@ function ScreeningForm(props) {
             <Button
                 disabled={reasons.filter(x => x.checked).length === 0}
                 variant="extendedFab" color="primary" className={classes.button}
-                onClick={() => { handleSubmit(submissionID, confidenceLevel.index, reasons) }}
+                onClick={() => { handleSubmit(submissionID, confidenceLevel.index, reasons, setTemplate, resetScreeningForm) }}
             >
                 <SendIcon className={classes.icon} />Submit
             </Button>

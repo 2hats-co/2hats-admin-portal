@@ -5,12 +5,26 @@ import {makeEmail, personaliseElements} from '../../utilities/email/templateGene
 import {sendEmail} from '../../utilities/email/send'
 import {useUserInfo} from '../../hooks/useUserInfo'
 
-import Grid from '@material-ui/core/Grid';
+import withStyles from '@material-ui/core/styles/withStyles';
 import Button from '@material-ui/core/Button';
 import SendIcon from '@material-ui/icons/Send';
 import * as R from 'ramda'
 
 import { useCandidate } from '../../hooks/useCandidate';
+
+const styles = theme => ({
+  root: {
+    position: 'absolute',
+    left: 64,
+    bottom: 0,
+    zIndex: 2,
+
+    width: 'calc(100vw - 64px - 400px)',
+    height: 300,
+    overflowY: 'scroll',
+    borderTop: '1px solid #ddd'
+  }
+})
 
 const initialState = {count: 0};
 
@@ -29,10 +43,12 @@ function reducer(state, action) {
   }
 }
 
+
 function TemplateGenerator(props) {
   const [emailBody, setEmailBody] = useState('');
 
-  const { template, close, recipientUID, smartLink } = props;
+  const { classes, template, close, recipientUID, smartLink, handleSubmit } = props;
+  console.log(template)
 
   const userInfo = useUserInfo()
   const candidate = useCandidate(recipientUID)
@@ -57,8 +73,8 @@ function TemplateGenerator(props) {
         const emailBody = makeEmail(theme,personalisedElements)
         setEmailBody(emailBody)
       }
-    },[candidate,userInfo,emailBody])
-        return (<div style={{position:'absolute',left:64,bottom:0,width:'calc(100vw - 64px - 400px)',height:200,overflowY:'scroll',borderTop:'1px solid #ddd'}}>
+    },[candidate,userInfo,emailBody,template])
+        return (<div className={classes.root}>
           <Button
             variant="extendedFab"
             color="primary"
@@ -67,11 +83,12 @@ function TemplateGenerator(props) {
               const sender = {UID:userInfo.UID,email:`${userInfo.givenName}@2hats.com`}
               const reciever = {UID:recipient.UID,email:recipient.email}
               const email = {subject:template.subject,body:emailBody}
-             sendEmail(reciever,sender,email)
-             close()
+              sendEmail(reciever,sender,email)
+              handleSubmit()
+              close()
           }}><SendIcon style={{marginRight:8}}/> Send
           </Button>
           <div style={{width:'100%',height:'100%'}}  dangerouslySetInnerHTML={{__html: emailBody}} />
           </div>);
 }
-export default TemplateGenerator
+export default withStyles(styles)(TemplateGenerator);

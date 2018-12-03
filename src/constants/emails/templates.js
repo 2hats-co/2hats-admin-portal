@@ -44,8 +44,8 @@ export const rejectedWithFeedback ={
       replaceables:{content:`2hats is a talent incubator, created to help students get onto professional pathways. At this stage we look for current students or recent graduates to take through our industry readiness selection processes and training. We believe there’s a mismatch between your experience and the pathways we offer. Based on this we won’t progress your application further and wish you all the best with your job search.`}
     }, 
     {
-      type:'Best of luck,',
-      replaceables:{greeting:'Regards',title:'#senderTitle#',name:'#senderName#',company:'2hats'}
+      type:'signture',
+      replaceables:{greeting:'Best of luck,',title:'#senderTitle#',name:'#senderName#',company:'2hats'}
      },
   ]}
   
@@ -395,10 +395,9 @@ export const rejectedWithFeedback ={
       replaceables:{content:`If you're successful in the interview, you'll be one step closer to joining the 2hats talent pool!`}
     },
     { type:'paragraph',
-      replaceables:{content:`<b>How to book:</b>'`}
+      replaceables:{content:`<b>How to book:</b>`}
     },{ type:'paragraph',
-    replaceables:{content:`You can view our open time slots and schedule your preferred time <a href="https://calendly.com/2hats">here</a>. You will have 5 days after receiving this email to book a time slot.',
-    `}
+    replaceables:{content:`You can view our open time slots and schedule your preferred time <a href="https://calendly.com/2hats">here</a>. You will have 5 days after receiving this email to book a time slot.`}
   },{ type:'paragraph',
   replaceables:{content:`<b>Where will the interview be held?</b>`}
 },{  
