@@ -3,6 +3,7 @@ import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
 //containers
 import StatisticsContainer from './containers/StatisticsContainer'
 import CandidatesContainer from './containers/CandidatesContainer'
+import SubjectsContainer from './containers/SubjectsContainer'
 import ResumesContainer from './containers/ResumesContainer'
 import AuthenticationContainer from './containers/AuthenticationContainer'
 import LeadsContainer from './containers/LeadsContainer'
@@ -28,6 +29,7 @@ function App() {
                         <Route exact path={ROUTES.auth} component={() => <AuthenticationContainer/>} />
                         <Route exact path={ROUTES.stats} component={() => <StatisticsContainer/>} />
                         <Route exact path={ROUTES.candidates} component={() => <CandidatesContainer/>} />
+                        <Route exact path={ROUTES.subjects} component={() => <SubjectsContainer/>} />
                         <Route exact path={ROUTES.resumes} component={() => <ResumesContainer/>} />
                         <Route exact path={ROUTES.leads} component={() => <LeadsContainer/>} />
                         <Route exact path={ROUTES.pending} component={() => <SubmissionsContainer />} />

@@ -1,29 +1,32 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import withStyles from '@material-ui/core/styles/withStyles';
+import ButtonBase from '@material-ui/core/ButtonBase';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
 import Avatar from '@material-ui/core/Avatar';
 import Chip from '@material-ui/core/Chip';
-import Snackbar from '@material-ui/core/Snackbar';
 
 import MailIcon from '@material-ui/icons/MailOutline';
 import PhoneIcon from '@material-ui/icons/Phone';
 import PersonIcon from '@material-ui/icons/Person';
 
-import { TAG_COLORS } from '../constants/tags';
-import { copyToClipboard } from '../utilities';
+import { TAG_COLORS } from '../../constants/tags';
+import { copyToClipboard } from '../../utilities';
 
 const styles = theme => ({
+    rootButton: {
+        display: 'block',
+        width: '100%',
+        textAlign: 'left',
+    },
     root: {
         height: 72,
         margin: 0,
         padding: '0 18px',
-        '&:not(:last-of-type)': {
-            borderBottom: '1px solid #eee',
-        },
+        borderBottom: '1px solid #eee',
     },
     iconButton: {
         padding: 6,
@@ -37,13 +40,13 @@ const styles = theme => ({
         marginRight: 4,
         marginBottom: 4,
         color: '#fff',
+        fontSize: '.875rem',
+        height: 24,
     },
 });
 
 function SubjectItem(props) {
-    const { classes, name, email, phone, industry, tags, note } = props;
-
-    const [showSnackbar, setShowSnackbar] = useState(false);
+    const { classes, name, email, phone, industry, tags, note, setSnackbarContent } = props;
 
     const tagChips = props.tags.map((x, i) => (
         <Chip
@@ -53,20 +56,19 @@ function SubjectItem(props) {
             style={{ backgroundColor: TAG_COLORS[x.type][x.label] }}
         />
     ));
-    console.log(props.tags, tagChips);
 
-    return (
+    return (<ButtonBase className={classes.rootButton}>
     <Grid container className={classes.root} alignItems="center" spacing={16}>
 
         <Grid item>
             <Grid container direction="column" justify="space-evenly">
                 <Tooltip title={props.email}>
-                    <IconButton className={classes.iconButton} onClick={()=>{ copyToClipboard(props.email); setShowSnackbar(true); }}>
+                    <IconButton className={classes.iconButton} onClick={()=>{ copyToClipboard(props.email); setSnackbarContent(props.email); }}>
                         <MailIcon className={classes.smallIcon} />
                     </IconButton>
                 </Tooltip>
                 <Tooltip title={props.phone}>
-                    <IconButton className={classes.iconButton} onClick={()=>{ copyToClipboard(props.phone); setShowSnackbar(true); }}>
+                    <IconButton className={classes.iconButton} onClick={()=>{ copyToClipboard(props.phone); setSnackbarContent(props.phone); }}>
                         <PhoneIcon className={classes.smallIcon} />
                     </IconButton>
                 </Tooltip>
@@ -95,15 +97,7 @@ function SubjectItem(props) {
             </Grid>
         </Grid>
 
-        <Snackbar
-            anchorOrigin={{ vertical:'top', horizontal:'center' }}
-            open={showSnackbar}
-            autoHideDuration={2000}
-            onClose={() => { setShowSnackbar(false) }}
-            message={<span id="message-id">Copied!</span>}
-        />
-
-    </Grid>);
+    </Grid></ButtonBase>);
 }
 
 export default withStyles(styles)(SubjectItem);

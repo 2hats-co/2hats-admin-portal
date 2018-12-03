@@ -32,7 +32,7 @@ const styles = theme => ({
 function LocationIndicator(props) {
     const { classes, location, subRoutes, title, history } = props;
 
-    const navItems = subRoutes.map((x, i) =>
+    const navItems = subRoutes && location && history ? subRoutes.map((x, i) =>
         <Button
             key={i}
             color={location.pathname === x ? 'primary' : null}
@@ -42,7 +42,7 @@ function LocationIndicator(props) {
         >
             {x.split('/')[1]}
         </Button>
-    );
+    ) : null;
 
     return(
         <Grid className={classes.root} container alignItems="center">
