@@ -9,11 +9,12 @@ import Avatar from '@material-ui/core/Avatar';
 import Tooltip from '@material-ui/core/Tooltip';
 
 import PeopleIcon from '@material-ui/icons/People';
+import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
 import DescriptionIcon from '@material-ui/icons/Description';
 import MailIcon from '@material-ui/icons/Mail';
-import TimelineIcon from '@material-ui/icons/Timeline';
+import StatisticsIcon from '@material-ui/icons/InsertChart';
 import CalendarIcon from '@material-ui/icons/CalendarToday';
-import MoneyIcon from '@material-ui/icons/AttachMoney';
+import LeadsIcon from '@material-ui/icons/BusinessCenter';
 
 import {ROUTES} from '../../constants/routes';
 
@@ -62,7 +63,7 @@ const navigationRoutes = [
     //     route: ROUTES.calendar,
     // }, {
         label: 'Statistics',
-        icon: <TimelineIcon />,
+        icon: <StatisticsIcon />,
         route: ROUTES.stats,
     }, {
         label: 'Mail',
@@ -75,8 +76,12 @@ const navigationRoutes = [
         subRoutes: [ROUTES.pending, ROUTES.rejected, ROUTES.accepted],
     }, {
         label: 'Leads',
-        icon: <MoneyIcon />,
+        icon: <LeadsIcon />,
         route: ROUTES.leads,
+    }, {
+        label: 'Subjects',
+        icon: <SupervisorAccountIcon />,
+        route: ROUTES.subjects,
     },
 ];
 

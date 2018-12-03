@@ -39,6 +39,7 @@ const personaliseElement = (element,personalisables)=>{
   personalisables.forEach(personalisable => {
     for ( const field in personalisable){
       for (const replaceable in element.replaceables){
+        console.log(output.replaceables[replaceable])
         output.replaceables[replaceable] = globalReplace(output.replaceables[replaceable],`#${field}#`,personalisable[field])
       }
     }
