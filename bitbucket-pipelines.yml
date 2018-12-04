@@ -17,7 +17,7 @@ pipelines:
             - yarn global add firebase-tools
             - yarn install
             - CI=false yarn build
-            - firebase deploy --token "$FIREBASE_TOKEN" --project staging2hats --non-interactive build --only hosting
+            - firebase deploy --token "$FIREBASE_TOKEN" --only hosting
     production:
       - step:
           caches:
