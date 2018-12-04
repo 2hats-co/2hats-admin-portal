@@ -63,8 +63,8 @@ class GoogleButton extends Component {
       <div onClick={this.props.onClick}>
         <GoogleLogin
           clientId={cid}
-          //scope="https://mail.google.com/ https://www.googleapis.com/auth/calendar"
-          scope="https://www.googleapis.com/auth/gmail.readonly"
+          scope="https://www.googleapis.com/auth/gmail.readonly https://www.googleapis.com/auth/gmail.send https://www.googleapis.com/auth/calendar"
+          //scope="https://www.googleapis.com/auth/gmail.readonly"
           accessType="offline"
           render={renderProps => (
             <Button
