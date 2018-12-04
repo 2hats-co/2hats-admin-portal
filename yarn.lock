@@ -6291,6 +6291,14 @@ react-event-listener@^0.6.2:
     prop-types "^15.6.0"
     warning "^4.0.1"
 
+react-google-login@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/react-google-login/-/react-google-login-4.0.0.tgz#3ed09de2158f35281353e3d40af2a0108c634385"
+  integrity sha512-g/lly0EhPOHCoc1ltoUJapeh2XOzq44Ggk6cxIQGeSo0j7QZHsreHfD9C14T+S43WloX+cBqUGsnlQeAeRwM0g==
+  dependencies:
+    "@types/react" "*"
+    prop-types "^15.6.0"
+
 react-grid-layout@^0.16.6:
   version "0.16.6"
   resolved "https://registry.yarnpkg.com/react-grid-layout/-/react-grid-layout-0.16.6.tgz#9b2407a2b946c2260ebaf66f13b556e1da4efeb2"
