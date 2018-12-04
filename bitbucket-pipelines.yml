@@ -17,7 +17,7 @@ pipelines:
             - yarn global add firebase-tools
             - yarn install
             - CI=false yarn build
-            - firebase deploy --token "$FIREBASE_TOKEN" --project staging2hats --non-interactive --public build --only hosting
+            - firebase deploy --token "$FIREBASE_TOKEN" --project staging2hats --non-interactive build --only hosting
     production:
       - step:
           caches:
@@ -28,7 +28,7 @@ pipelines:
             - yarn global add firebase-tools
             - yarn install
             - CI=false yarn build
-            - firebase deploy --token "$FIREBASE_TOKEN" --project dev2hats --non-interactive --public build --only hosting
+            - firebase deploy --token "$FIREBASE_TOKEN" --project dev2hats --non-interactive build --only hosting
 definitions:
   caches:
     globalnode: /usr/local/lib/node_modules
