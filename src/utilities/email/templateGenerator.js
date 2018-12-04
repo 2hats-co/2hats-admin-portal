@@ -16,10 +16,12 @@ const makeElements = (template,elements) =>{
 const footerElements = [{
   type:'footerText',
   replaceables:{text:'66 Devonshire Street, Surry Hills, Sydney.'}
-},{
-  type:'footerLink',
-  replaceables:{url:'https://2hats.com',label:'Unsubscribe from our emails'}
-},]
+},
+// {
+//   type:'footerLink',
+//   replaceables:{url:'https://portal.2hats.com.au/?unsubscribe=123#unsubscribe',label:'Unsubscribe from our emails'}
+// },
+]
 export const makeEmail = (template,bodyElements) =>{
 
   let output = template.wrapper
@@ -37,6 +39,7 @@ const personaliseElement = (element,personalisables)=>{
   personalisables.forEach(personalisable => {
     for ( const field in personalisable){
       for (const replaceable in element.replaceables){
+        console.log(output.replaceables[replaceable])
         output.replaceables[replaceable] = globalReplace(output.replaceables[replaceable],`#${field}#`,personalisable[field])
       }
     }

@@ -99,7 +99,7 @@ class StatisticsContainer extends Component {
             </Button>
           <ChartBuilder chart={this.state.chart}/>
           <TimeBar format={format} changeHandler={this.handleChange}/>
-          <Grid container style={{width:'100%', height:'calc(100vh - 64px)', overflowX:'hidden', verflowY:'auto'}}>
+          <Grid container style={{width:'100%', marginTop:55, height:'calc(100vh - 64px)', overflowX:'hidden', verflowY:'auto'}}>
             <ResponsiveGridLayout style={{width:'100%'}} className="layout" 
             onLayoutChange={(layout) =>
               this.onLayoutChange(layout)

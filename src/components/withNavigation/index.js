@@ -9,17 +9,17 @@ import Avatar from '@material-ui/core/Avatar';
 import Tooltip from '@material-ui/core/Tooltip';
 
 import PeopleIcon from '@material-ui/icons/People';
+import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
 import DescriptionIcon from '@material-ui/icons/Description';
 import MailIcon from '@material-ui/icons/Mail';
-import TimelineIcon from '@material-ui/icons/Timeline';
+import StatisticsIcon from '@material-ui/icons/InsertChart';
 import CalendarIcon from '@material-ui/icons/CalendarToday';
-import MoneyIcon from '@material-ui/icons/AttachMoney';
+import LeadsIcon from '@material-ui/icons/BusinessCenter';
 
 import {ROUTES} from '../../constants/routes';
 
 import logo from '../../assets/logo/WhiteIcon.svg';
 import NavigationItems from './NavigationItems';
-import SubNavigation from './SubNavigation';
 import withAuthentication from '../../utilities/Session/withAuthentication';
 
 import { withFirestore } from "../../utilities/withFirestore";
@@ -29,6 +29,8 @@ const styles = theme => ({
         backgroundColor: theme.palette.primary.main,
         width: 64,
         height: '100vh',
+        position: 'relative',
+        zIndex: 999,
     },
     logo: {
         width: 40,
@@ -61,7 +63,7 @@ const navigationRoutes = [
     //     route: ROUTES.calendar,
     // }, {
         label: 'Statistics',
-        icon: <TimelineIcon />,
+        icon: <StatisticsIcon />,
         route: ROUTES.stats,
     }, {
         label: 'Mail',
@@ -74,8 +76,12 @@ const navigationRoutes = [
         subRoutes: [ROUTES.pending, ROUTES.rejected, ROUTES.accepted],
     }, {
         label: 'Leads',
-        icon: <MoneyIcon />,
+        icon: <LeadsIcon />,
         route: ROUTES.leads,
+    }, {
+        label: 'Subjects',
+        icon: <SupervisorAccountIcon />,
+        route: ROUTES.subjects,
     },
 ];
 
@@ -134,7 +140,6 @@ export const withNavigation = (WrappedComponent) => {
                                         <div>{displayName}</div>
                                         <div>{uid}</div>
                                     </React.Fragment>}
-                                    interactive
                                     placement="top-start"
                                     leaveDelay={5000}
                                 >
@@ -144,25 +149,7 @@ export const withNavigation = (WrappedComponent) => {
                         </Grid>
                     </Grid>
                     <Grid item xs>
-                        <Grid container direction="column">
-                            <Grid item style={{height: 64}}>
-                                <Grid container wrap="nowrap" alignItems="baseline" style={{height: 64}}>
-                                    <Grid item>
-                                        <Typography variant="title" className={classes.routeHeader}>{navigationRoutes[index].label}</Typography>
-                                    </Grid>
-                                    <Grid item>
-                                        {navigationRoutes[index].subRoutes && <SubNavigation
-                                            currentLocation={path.split('/')[1]}
-                                            subRoutes={navigationRoutes[index].subRoutes}
-                                            goTo={this.goTo}
-                                        />}
-                                    </Grid>
-                                </Grid>
-                            </Grid>
-                            <Grid item xs>
-                                <WrappedComponent {...this.props} />
-                            </Grid>
-                        </Grid>
+                        <WrappedComponent {...this.props} />
                     </Grid>
                 </Grid>
             );

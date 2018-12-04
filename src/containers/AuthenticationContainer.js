@@ -4,6 +4,7 @@ import { withStyles } from '@material-ui/core/styles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import LogoInCard from '../components/LogoInCard';
 import GoogleButton from '../components/Auth/GoogleButton';
+import { CLOUD_FUNCTIONS, cloudFunction } from '../firebase/functions';
 
 const styles = theme => ({
     root: {
@@ -18,7 +19,9 @@ class AuthenticationContainer extends React.Component{
         this.handleGoogleButton = this.handleGoogleButton.bind(this);
     }
     componentDidMount(){
-
+        cloudFunction(CLOUD_FUNCTIONS.createSmartLink,{r:1},
+            (o)=>{console.log('success',o)},
+            (o)=>{console.log('fail',o)})
     }
 
     handleGoogleButton() {

@@ -3,7 +3,6 @@ import {withNavigation} from '../components/withNavigation'
 import Table from '../components/Candidates/Table'
 import { ALGOLIA_INDEX, createAlgoliaIndex } from '../config/algolia'
 import SearchBar from '../components/Candidates/SearchBar';
-import CandidateDialog from '../components/CandidateDialog';
 
 class CandidatesContainer extends Component{
     constructor(props){
@@ -119,16 +118,13 @@ class CandidatesContainer extends Component{
                     catFilters={this.state.catFilters}
                     deleteFilterHandler={this.handleDeleteFilter}
                 />
-                <Table
+                <Table style={{width:'100%', height:'calc(100vh - 64px)', overflowX:'hidden', verflowY:'auto'}}
                     candidateData={hits}
                     resultData={resultData}
                     changeHandler={this.handleChange}
                     addFilterHandler={this.handleAddFilter}
                     catFilters={this.state.catFilters}
                 />
-                {selectedCandidate !=='' &&<CandidateDialog dismiss={this.handleDismiss}
-                    infoData={selectedCandidate}
-                />}
             </div>
         )
     }
