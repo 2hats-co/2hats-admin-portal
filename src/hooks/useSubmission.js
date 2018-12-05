@@ -8,18 +8,18 @@ const setListener = (type,skipOffset,submissionDispatch) => {
     let sorts = [];
     switch (type) {
         case 'pending':
-            filters = [{field:'screened',operator:'==',value:false}];
+            filters = [{field:'outcome',operator:'==',value:type}];
             break;
 
         case 'accepted':
-            filters = [{field:'screened',operator:'==',value:true},
-                {field:'confidence',operator:'>=',value:2}];
-            sorts = [{ field:'confidence', direction:'asc' }];
+            filters = [{field:'outcome',operator:'==',value:type},
+                {field:'feedbacked',operator:'==',value:false}];
+            sorts = [];
             break;
         case 'rejected':
-            filters = [{field:'screened',operator:'==',value:true},
-                {field:'confidence',operator:'<=',value:1}];
-            sorts = [{ field:'confidence', direction:'asc' }];
+            filters = [{field:'outcome',operator:'==',value:type},
+                {field:'feedbacked',operator:'==',value:false}];
+            sorts = [];
             break;
 
         default:
@@ -60,7 +60,7 @@ const submissionReducer = (state, action) => {
 
 export function useSubmission(type) {
     const [submissionState, submissionDispatch] = useReducer(submissionReducer,
-         { type, submission: null, skipOffset: 0 });
+         { type, submission: null, skipOffset: 0, prevSkipOffset: 0 });
 
     useEffect(() => {
         if(!submissionState.submission || submissionState.prevSkipOffset !== submissionState.skipOffset){

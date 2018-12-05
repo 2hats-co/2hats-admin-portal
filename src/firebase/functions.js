@@ -1,8 +1,7 @@
 import { functions } from "../store";
 export const CLOUD_FUNCTIONS = {
   stats: "restApiQueryStageAndStatus",
-  auth: "callablesAdminAuthentication",
-  createSmartLink: "callablesCreateSmartLink"
+  auth: "callablesAdminAuthentication"
 };
 
 export const cloudFunction = (name, input, success, fail) => {

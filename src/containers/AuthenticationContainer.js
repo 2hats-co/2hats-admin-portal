@@ -18,12 +18,7 @@ class AuthenticationContainer extends React.Component{
 
         this.handleGoogleButton = this.handleGoogleButton.bind(this);
     }
-    componentDidMount(){
-        cloudFunction(CLOUD_FUNCTIONS.createSmartLink,{r:1},
-            (o)=>{console.log('success',o)},
-            (o)=>{console.log('fail',o)})
-    }
-
+    
     handleGoogleButton() {
         this.setState({ loading: true });
     }
