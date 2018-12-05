@@ -66,10 +66,6 @@ export const rejectedWithFeedback ={
       type:'paragraph',
       replaceables:{content:`In the meantime, we encourage you to keep building up your skills and experience!`}
     }, {  
-      type:'paragraph',
-      replaceables:{content:`Best regards`}
-    },
-    {
       type:'signture',
       replaceables:{greeting:'Regards',title:'#senderTitle#',name:'#senderName#',company:'2hats'}
      },

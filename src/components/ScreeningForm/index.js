@@ -7,6 +7,7 @@ import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 
 import BackIcon from '@material-ui/icons/ArrowBack';
+import DoneIcon from '@material-ui/icons/Done';
 import SendIcon from '@material-ui/icons/Send';
 import RedoIcon from '@material-ui/icons/Redo';
 import DisqualifyIcon from '@material-ui/icons/Cancel';
@@ -63,7 +64,7 @@ const handleConfidence = (confidence) => {
 }
 
 function ScreeningForm(props) {
-    const { classes, setTemplate, submission, submissionDispatch, handleSendEmail } = props;
+    const { classes, setTemplate, submission, submissionDispatch, handleSendEmail, emailReady, setEmailReady } = props;
     const submissionID = submission.id;
 
     const [confidenceLevel, setConfidenceLevel] = useState({ value: '', index: -1 });
@@ -77,7 +78,7 @@ function ScreeningForm(props) {
     const userInfo = useUserInfo();
 
     useEffect(() => {
-        setReasons(handleConfidence(confidenceLevel.index))
+        setReasons(handleConfidence(confidenceLevel.index));
     }, [confidenceLevel])
 
     const handleSubmit = () => {
@@ -131,11 +132,18 @@ function ScreeningForm(props) {
         setReasons([]);
         setShowSend(false);
         setShowDisqualify(false);
+        setTemplate(null);
+        setEmailReady(false);
     };
 
     if (showDisqualify) return (
         <Grid container className={classes.root} direction="column">
-            <IconButton onClick={() => { setShowDisqualify(false); setTemplate(null) }} className={classes.back}>
+            <IconButton onClick={() => {
+                setShowDisqualify(false);
+                setTemplate(null);
+                setEmailReady(false);
+                setShowSend(false);
+            }} className={classes.back}>
                 <BackIcon />
             </IconButton>
             <Typography variant="title">
@@ -148,10 +156,24 @@ function ScreeningForm(props) {
                 overqualified or people who are in a completely different
                 industry to what we do.
             </Typography>
-            <Button variant="outlined" onClick={() => { setTemplate(outsideDemographic); setDisqualifyType('demographic'); setShowSend(true); }}>Demographic</Button>
-            <Button variant="outlined" onClick={() => { setTemplate(outsideIndusty); setDisqualifyType('industry'); setShowSend(true); }}>Industry</Button>
+            <Button variant="outlined" onClick={() => {
+                setTemplate(null); setEmailReady(false);
+                setTimeout(() => { setTemplate(outsideDemographic); }, 100);
+                setDisqualifyType('demographic');
+                setShowSend(true);
+            }}>
+                Demographic
+            </Button>
+            <Button variant="outlined" onClick={() => {
+                setTemplate(null); setEmailReady(false);
+                setTimeout(() => { setTemplate(outsideIndusty); }, 100);
+                setDisqualifyType('industry');
+                setShowSend(true);
+            }}>
+                Industry
+            </Button>
             <Button
-                disabled={!showSend}
+                disabled={!(showSend && emailReady)}
                 variant="extendedFab" color="primary" className={classes.button}
                 onClick={ () => { handleSendEmail(); disqualifySubmission(); } }
             >
@@ -171,19 +193,20 @@ function ScreeningForm(props) {
         
         <Grid container direction="column">
             <Button
-                disabled={reasons.filter(x => x.checked).length === 0}
+                disabled={showSend ? !emailReady : reasons.filter(x => x.checked).length === 0}
                 variant="extendedFab" color="primary" className={classes.button}
                 onClick={ showSend ?
                     () => { handleSendEmail(); updateSubmission(); resetScreeningForm(); }
                     : handleSubmit
                 }
             >
-                <SendIcon className={classes.icon} />{showSend ? 'Send Email' : 'Submit'}
+                {showSend ? <SendIcon className={classes.icon} /> : <DoneIcon className={classes.icon} />}
+                {showSend ? 'Send Email' : 'Submit'}
             </Button>
-            <Button className={classes.button} onClick={() => { submissionDispatch({type:'skip'}) }}>
+            <Button className={classes.button} onClick={() => { submissionDispatch({type:'skip'}); resetScreeningForm(); }}>
                 <RedoIcon className={classes.icon} />Skip
             </Button>
-            <Button className={classes.button} onClick={() => { setShowDisqualify(true); }}>
+            <Button className={classes.button} onClick={() => { setShowDisqualify(true); setTemplate(null); setEmailReady(false); }}>
                 <DisqualifyIcon className={classes.icon} />Disqualify
             </Button>
         </Grid>

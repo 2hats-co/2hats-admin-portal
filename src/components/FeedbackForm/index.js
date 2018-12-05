@@ -11,6 +11,7 @@ import { COLLECTIONS } from "../../constants/firestore";
 
 import DeleteIcon from '@material-ui/icons/Delete';
 import RedoIcon from '@material-ui/icons/Redo';
+import DoneIcon from '@material-ui/icons/Done';
 import SendIcon from '@material-ui/icons/Send';
 import FeedbackElement from './FeedbackElement'; 
 import * as _ from 'lodash'
@@ -65,7 +66,7 @@ const feedbackReducer = (state, action) => {
 };
 
 function FeedbackForm(props){
-    const { classes, submission, setTemplate, submissionDispatch, handleSendEmail, location } = props;
+    const { classes, submission, setTemplate, submissionDispatch, handleSendEmail, location, emailReady } = props;
 
     const [feedback, feedbackDispatch] = useReducer(feedbackReducer, {});
     const [showSend, setShowSend] = useState(false);
@@ -130,11 +131,13 @@ function FeedbackForm(props){
           )}
         </List>
         <Button variant="extendedFab" color="primary" 
+          disabled={ showSend && !emailReady }
           aria-label="Submit Feedback" 
           className={classes.submitButton}
           onClick={ (showSend || location.pathname === '/accepted') ? sendEmail : handleSubmit }
         >
-          <SendIcon /> { showSend ? 'Send Email' : 'Submit Feedback' }
+          { showSend ? <SendIcon /> : <DoneIcon /> }
+          { showSend ? 'Send Email and Submit Feedback' : location.pathname === '/rejected' ? 'Ready to Submit' : 'Submit Feedback' }
         </Button>
       </div>
     );
