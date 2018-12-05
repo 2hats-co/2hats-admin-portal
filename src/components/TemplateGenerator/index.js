@@ -5,8 +5,8 @@ import {makeEmail, personaliseElements} from '../../utilities/email/templateGene
 import {useUserInfo} from '../../hooks/useUserInfo'
 
 import withStyles from '@material-ui/core/styles/withStyles';
-import Button from '@material-ui/core/Button';
-import SendIcon from '@material-ui/icons/Send';
+import Grid from '@material-ui/core/Grid';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import * as R from 'ramda'
 
 import { useCandidate } from '../../hooks/useCandidate';
@@ -18,6 +18,7 @@ const styles = theme => ({
     bottom: 0,
     zIndex: 2,
 
+    backgroundColor: '#fff',
     width: 'calc(100vw - 64px - 400px)',
     height: 300,
     overflowY: 'scroll',
@@ -46,13 +47,16 @@ function reducer(state, action) {
 function TemplateGenerator(props) {
   const [emailBody, setEmailBody] = useState('');
 
-  const { classes, template, recipientUID, smartLink, setEmail } = props;
+  const { classes, template, recipientUID, smartLink, setEmail, setEmailReady } = props;
   console.log(template)
 
   const userInfo = useUserInfo()
   const candidate = useCandidate(recipientUID)
 
-  if (!candidate) return null;
+  if (!candidate) return (
+  <Grid container justify="center" alignItems="center" className={classes.root}>
+    <CircularProgress />
+  </Grid>);
   
   const recipient = { UID: candidate.UID, email: candidate.email };
   console.log(recipient)
@@ -75,11 +79,13 @@ function TemplateGenerator(props) {
         const sender = {UID:userInfo.UID,email:`${userInfo.givenName}@2hats.com`}
         const recipient = {UID:candidate.UID,email:candidate.email}
         const email = {subject:template.subject,body:emailBody}
-        setEmail({recipient,sender,email})
+        setEmail({recipient,sender,email});
+        setEmailReady(true);
       }
-    },[candidate,userInfo,emailBody,template])
-        return (<div className={classes.root}>
-          <div style={{width:'100%',height:'100%'}}  dangerouslySetInnerHTML={{__html: emailBody}} />
-          </div>);
+    },[candidate,userInfo,emailBody,template]);
+
+    return (<div className={classes.root}>
+      <div style={{width:'100%',height:'100%'}} dangerouslySetInnerHTML={{__html: emailBody}} />
+    </div>);
 }
 export default withStyles(styles)(TemplateGenerator);

@@ -47,6 +47,7 @@ function SumbissionsContainer(props) {
     const submission = submissionState.submission;
 
     const [email, setEmail] = useState(null);
+    const [emailReady, setEmailReady] = useState(false);
 
     const [showSnackbar, setShowSnackbar] = useState(false);
 
@@ -73,6 +74,7 @@ function SumbissionsContainer(props) {
         sendEmail(email);
         setShowSnackbar(true);
         setTemplate(null);
+        setEmailReady(false);
     };
 
     let rightPanel;
@@ -83,15 +85,18 @@ function SumbissionsContainer(props) {
                             setTemplate={setTemplate}
                             submissionDispatch={submissionDispatch}
                             handleSendEmail={handleSendEmail}
+                            emailReady={emailReady}
+                            setEmailReady={setEmailReady}
                         />;
             break;
         case '/rejected':
-        case '/accepted':   
+        case '/accepted':
             rightPanel = <FeedbackForm
                 submission={submission}
                 setTemplate={setTemplate}
                 submissionDispatch={submissionDispatch}
                 handleSendEmail={handleSendEmail}
+                emailReady={emailReady}
                 location={location}
             />;
     }
@@ -112,6 +117,7 @@ function SumbissionsContainer(props) {
                         recipientUID={submission.UID}
                         smartLink={smartLink}
                         setEmail= {setEmail}
+                        setEmailReady={setEmailReady}
                     />
                 }
             </Grid>
@@ -126,7 +132,7 @@ function SumbissionsContainer(props) {
             open={showSnackbar}
             autoHideDuration={1500}
             onClose={() => { setShowSnackbar(false) }}
-            message={<span id="message-id">Sent!</span>}
+            message={<span id="message-id">Sent email!</span>}
         />
     </React.Fragment>);
 }
