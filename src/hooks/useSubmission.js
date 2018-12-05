@@ -34,7 +34,7 @@ const setListener = (type,skipOffset,submissionDispatch) => {
         query = query.orderBy(sort.field,sort.direction)
     })
     query
-    .orderBy('createdAt','desc')
+    .orderBy('createdAt','asc')
     .limit(skipOffset+1)
     .onSnapshot(snapshot => {
        if(snapshot.docs.length > 0){
