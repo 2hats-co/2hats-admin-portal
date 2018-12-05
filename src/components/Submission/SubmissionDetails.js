@@ -5,7 +5,9 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Chip from '@material-ui/core/Chip';
 import Slider from '@material-ui/lab/Slider';
+
 import SizeIcon from '@material-ui/icons/FormatSize';
+import DownloadIcon from '@material-ui/icons/ArrowDownward';
 
 import { Document, Page } from 'react-pdf';
 import EduExpCard from './EduExpCard';
@@ -29,6 +31,12 @@ const styles = theme => ({
     },
     scalable: {
         transformOrigin: '50% 0',
+    },
+    iframe: {
+        width: '100%',
+        border: 'none',
+        height: 600,
+        marginBottom: 40,
     },
 });
 
@@ -71,23 +79,9 @@ class submissionDetails extends Component {
             )}
 
             <Typography className={classes.subheading} variant="subheading">{submission.submissionContent.process === 'upload' ?'Resume':'Profile'}:</Typography>
-            {submission.submissionContent.process === 'upload' && <React.Fragment>
-                <Grid container alignItems="center" style={{maxWidth: 200}}>
-                    <SizeIcon style={{opacity: .54}} />
-                    <Grid item xs>
-                        <Slider value={sliderValue} onChange={this.handleSliderChange} min={0} max={2} />
-                    </Grid>
-                </Grid>
-                <div className={classes.scalable} style={{transform: `scale(${sliderValue})`}}>
-                    <Document 
-                        onLoadSuccess={this.onDocumentLoadSuccess}
-                        file={submission.submissionContent.resumeFile.downloadURL}
-                        className={classes.pdfDocument}
-                    >
-                        { pages }
-                    </Document>
-                </div>
-            </React.Fragment>}
+            {submission.submissionContent.process === 'upload' && 
+                <iframe src={submission.submissionContent.resumeFile.downloadURL} className={classes.iframe} />
+            }
             {submission.submissionContent.process === 'build' && 
             <div>
             <Typography className={classes.subheading} variant="subheading">Education:</Typography>

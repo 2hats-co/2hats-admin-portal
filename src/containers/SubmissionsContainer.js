@@ -110,6 +110,7 @@ function SumbissionsContainer(props) {
                 <Submission
                     submission={submission}
                     listType={location.pathname.split('/')[1]}
+                    extraPadding={template !== null}
                 />
                 { template && smartLink &&
                     <TemplateGenerator

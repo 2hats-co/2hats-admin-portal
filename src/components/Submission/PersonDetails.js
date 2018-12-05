@@ -37,7 +37,7 @@ function PersonDetails(props) {
                         <Avatar className={classes.avatar}><PersonIcon /></Avatar>
                     </Grid>
                     <Grid item xs>
-                        <Typography variant="headline">{submission.displayName} {submissionStatusLabel} </Typography>
+                        <Typography variant="headline">{submission.displayName}</Typography>
                         <Typography variant="body2">{interests}</Typography>
                         <Typography variant="body1">Submitted on {timestamp}</Typography>
                     </Grid>
