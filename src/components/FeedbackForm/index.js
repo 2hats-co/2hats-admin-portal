@@ -5,17 +5,23 @@ import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import List from '@material-ui/core/List';
 import Button from '@material-ui/core/Button';
-import BackIcon from '@material-ui/icons/ArrowBack';
 
-import { COLLECTIONS } from "../../constants/firestore";
+import Dialog from '@material-ui/core/Dialog';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogActions from '@material-ui/core/DialogActions';
 
 import DeleteIcon from '@material-ui/icons/Delete';
 import RedoIcon from '@material-ui/icons/Redo';
 import DoneIcon from '@material-ui/icons/Done';
 import SendIcon from '@material-ui/icons/Send';
-import FeedbackElement from './FeedbackElement'; 
+import SendToPendingIcon from '@material-ui/icons/SettingsBackupRestore';
+
+import FeedbackElement from './FeedbackElement';
 import * as _ from 'lodash'
 
+import { COLLECTIONS } from "../../constants/firestore";
 import {SUBMISSION_FEEDBACK, getFeedbackContent, getFeedbackTitle, feedbackSections} from '../../constants/feedback'
 import { rejectedWithFeedback } from '../../constants/emails/templates';
 import { updateProperties } from '../../utilities/firestore';
@@ -71,6 +77,8 @@ function FeedbackForm(props){
     const [feedback, feedbackDispatch] = useReducer(feedbackReducer, {});
     const [showSend, setShowSend] = useState(false);
 
+    const [showDialog, setShowDialog] = useState(false);
+
     const userInfo = useUserInfo();
 
     const storeFeedback = () => {
@@ -108,8 +116,11 @@ function FeedbackForm(props){
           <Button color="primary" onClick={() => { feedbackDispatch({type:'reset'}) }}>
             <DeleteIcon className={classes.icon} />Reset
           </Button>
+          <Button color="primary" onClick={() => { setShowDialog(true) }}>
+            <SendToPendingIcon className={classes.icon} />Send to Pending
+          </Button>
           <Button color="primary" onClick={() => { submissionDispatch({type:'skip'}) }}>
-            <RedoIcon className={classes.icon} />Review Later
+            <RedoIcon className={classes.icon} />Skip
           </Button>
         </Grid>
         <List component="nav"
@@ -139,6 +150,36 @@ function FeedbackForm(props){
           { showSend ? <SendIcon /> : <DoneIcon /> }
           { showSend ? 'Send Email and Submit Feedback' : location.pathname === '/rejected' ? 'Ready to Submit' : 'Submit Feedback' }
         </Button>
+
+        <Dialog
+          open={showDialog}
+          onClose={() => { setShowDialog(false) }}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">Send {submission.displayName} back to Pending?</DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+              From Pending, you can set {submission.displayName} to Rejected or 
+              Accepted. When you set them to Accepted, it will send them an email.
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => { setShowDialog(false) }} color="primary">
+              Cancel
+            </Button>
+            <Button onClick={() => {
+              updateProperties(
+                COLLECTIONS.submissions, submission.id,
+                { outcome:'pending', feedbacked:false }
+              );
+              setShowDialog(false);
+              feedbackDispatch({type:'reset'})
+            }} color="primary">
+              Send Back to Pending
+            </Button>
+          </DialogActions>
+        </Dialog>
       </div>
     );
   }
