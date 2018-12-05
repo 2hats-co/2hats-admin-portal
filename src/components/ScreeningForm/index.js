@@ -140,7 +140,7 @@ function ScreeningForm(props) {
                     : handleSubmit
                 }
             >
-                <SendIcon className={classes.icon} />{showSend ? 'Send' : 'Submit'}
+                <SendIcon className={classes.icon} />{showSend ? 'Send Email' : 'Submit'}
             </Button>
             <Button className={classes.button} onClick={() => { submissionDispatch({type:'skip'}) }}>
                 <RedoIcon className={classes.icon} />Skip

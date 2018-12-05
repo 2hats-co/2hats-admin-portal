@@ -1,4 +1,4 @@
-import React, { useReducer, useEffect } from 'react';
+import React, { useReducer, useState } from 'react';
 import PropTypes, { element } from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 
@@ -9,8 +9,9 @@ import BackIcon from '@material-ui/icons/ArrowBack';
 
 import { COLLECTIONS } from "../../constants/firestore";
 
-import SendIcon from '@material-ui/icons/Send';
+import DeleteIcon from '@material-ui/icons/Delete';
 import RedoIcon from '@material-ui/icons/Redo';
+import SendIcon from '@material-ui/icons/Send';
 import FeedbackElement from './FeedbackElement'; 
 import * as _ from 'lodash'
 
@@ -57,6 +58,8 @@ const feedbackReducer = (state, action) => {
   switch (action.type) {
     case 'update':
       return Object.assign(state, {[action.field]: action.value });
+    case 'reset':
+      return {};
   }
 };
 
@@ -65,17 +68,26 @@ const storeFeedback = (feedback, submissionID) => {
     const content = getFeedbackContent(id,value)
     return({id,content,value});
   });
-  updateProperties(COLLECTIONS.submissions, submissionID, { feedbackContent: mappedFeedback, hasFeedback: true, });
+  updateProperties(COLLECTIONS.submissions, submissionID, { feedbackContent: mappedFeedback, feedbacked: true, });
 }
 
 function FeedbackForm(props){
     const { classes, submission, setTemplate, submissionDispatch, handleSendEmail } = props;
 
     const [feedback, feedbackDispatch] = useReducer(feedbackReducer, {});
+    const [showSend, setShowSend] = useState(false);
+
+    const handleSubmit = () => {
+      setTemplate(rejectedWithFeedback);
+      setShowSend(true);
+    }
     
     return (
       <div className={classes.root}>
-        <Grid container justify="flex-end">
+        <Grid container justify="space-between">
+          <Button color="primary" onClick={() => { feedbackDispatch({type:'reset'}) }}>
+            <DeleteIcon className={classes.icon} />Reset
+          </Button>
           <Button color="primary" onClick={() => { submissionDispatch({type:'skip'}) }}>
             <RedoIcon className={classes.icon} />Review Later
           </Button>
@@ -101,13 +113,12 @@ function FeedbackForm(props){
         <Button variant="extendedFab" color="primary" 
           aria-label="Submit Feedback" 
           className={classes.submitButton}
-          onClick={() => {
-            setTemplate(rejectedWithFeedback);
-            //setHandleTemplateSubmit(null);
-            storeFeedback(feedback, submission.id);
-          }}
+          onClick={ showSend ?
+            () => { handleSendEmail(); storeFeedback(feedback, submission.id); feedbackDispatch({type:'reset'}); }
+            : handleSubmit
+          }
         >
-          <SendIcon /> Submit Feedback
+          <SendIcon /> { showSend ? 'Send Email' : 'Submit Feedback' }
         </Button>
       </div>
     );
