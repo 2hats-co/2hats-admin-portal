@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import {THEME1} from '../../constants/emails/themes'
 import {makeEmail, personaliseElements} from '../../utilities/email/templateGenerator'
 
-import {sendEmail} from '../../utilities/email/send'
 import {useUserInfo} from '../../hooks/useUserInfo'
 
 import withStyles from '@material-ui/core/styles/withStyles';
@@ -47,7 +46,7 @@ function reducer(state, action) {
 function TemplateGenerator(props) {
   const [emailBody, setEmailBody] = useState('');
 
-  const { classes, template, close, recipientUID, smartLink, handleSubmit } = props;
+  const { classes, template, recipientUID, smartLink, setEmail } = props;
   console.log(template)
 
   const userInfo = useUserInfo()
@@ -72,22 +71,14 @@ function TemplateGenerator(props) {
         const personalisedElements = personaliseElements(templateClone.elements,personalisables)
         const emailBody = makeEmail(theme,personalisedElements)
         setEmailBody(emailBody)
+
+        const sender = {UID:userInfo.UID,email:`${userInfo.givenName}@2hats.com`}
+        const recipient = {UID:candidate.UID,email:candidate.email}
+        const email = {subject:template.subject,body:emailBody}
+        setEmail({recipient,sender,email})
       }
     },[candidate,userInfo,emailBody,template])
         return (<div className={classes.root}>
-          <Button
-            variant="extendedFab"
-            color="primary"
-            style={{position:'fixed',bottom:16,right:416}}
-            onClick={()=>{
-              const sender = {UID:userInfo.UID,email:`${userInfo.givenName}@2hats.com`}
-              const reciever = {UID:recipient.UID,email:recipient.email}
-              const email = {subject:template.subject,body:emailBody}
-              sendEmail(reciever,sender,email)
-              handleSubmit()
-              close()
-          }}><SendIcon style={{marginRight:8}}/> Send
-          </Button>
           <div style={{width:'100%',height:'100%'}}  dangerouslySetInnerHTML={{__html: emailBody}} />
           </div>);
 }

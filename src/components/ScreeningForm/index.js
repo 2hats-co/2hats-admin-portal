@@ -60,33 +60,47 @@ const handleConfidence = (confidence) => {
         default: return[]   
     }
 }
-const handleSubmit = (submissionID, confidenceLevel, reasons, setTemplate, resetScreeningForm) => {
-    switch (confidenceLevel) {
-        case 0:
-        case 1:
-            const outputReasons = reasons.filter(x => x.checked).map(x => x.label);
-            const properties = {confidence:confidenceLevel,reasons:outputReasons,screened:true}
-            updateProperties(COLLECTIONS.submissions, submissionID, properties);
-            resetScreeningForm();
-            break;
-        case 2:
-        case 3:
-            setTemplate(resumeAccepted);
-            break;
-    }
-}
 
 function ScreeningForm(props) {
-    const { classes, setTemplate, showDisqualify, setShowDisqualify,
-        submissionID, submissionDispatch, confidenceLevel, setConfidenceLevel,
-        reasons, setReasons, resetScreeningForm } = props;
+    const { classes, setTemplate, submissionID, submissionDispatch, handleSendEmail } = props;
 
-    
+    const [confidenceLevel, setConfidenceLevel] = useState({ value: '', index: -1 });
+    const [reasons, setReasons] = useState([]);
+
+    const [showDisqualify, setShowDisqualify] = useState(false);
+    const [showSend, setShowSend] = useState(false);
 
     useEffect(() => {
         setReasons(handleConfidence(confidenceLevel.index))
     }, [confidenceLevel])
 
+    const handleSubmit = () => {
+        switch (confidenceLevel.index) {
+            case 0:
+            case 1:
+                updateSubmission();
+                break;
+            case 2:
+            case 3:
+                setTemplate(resumeAccepted);
+                setShowSend(true);
+                break;
+        }
+    };
+
+    const updateSubmission = () => {
+        const outputReasons = reasons.filter(x => x.checked).map(x => x.label);
+        const properties = {confidence:confidenceLevel,reasons:outputReasons,outcome:(confidenceLevel.index < 2 ? 'rejected' : 'accepted')}
+        updateProperties(COLLECTIONS.submissions, submissionID, properties);
+        resetScreeningForm();
+    }
+
+    const resetScreeningForm = () => {
+        setConfidenceLevel({ value: '', index: -1 });
+        setReasons([]);
+        setShowSend(false);
+        setShowDisqualify(false);
+    };
 
     if (showDisqualify) return (
         <Grid container className={classes.root} direction="column">
@@ -121,9 +135,12 @@ function ScreeningForm(props) {
             <Button
                 disabled={reasons.filter(x => x.checked).length === 0}
                 variant="extendedFab" color="primary" className={classes.button}
-                onClick={() => { handleSubmit(submissionID, confidenceLevel.index, reasons, setTemplate, resetScreeningForm) }}
+                onClick={ showSend ?
+                    () => { handleSendEmail(); updateSubmission(); resetScreeningForm(); }
+                    : handleSubmit
+                }
             >
-                <SendIcon className={classes.icon} />Submit
+                <SendIcon className={classes.icon} />{showSend ? 'Send' : 'Submit'}
             </Button>
             <Button className={classes.button} onClick={() => { submissionDispatch({type:'skip'}) }}>
                 <RedoIcon className={classes.icon} />Skip

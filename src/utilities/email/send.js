@@ -3,17 +3,19 @@ import {COLLECTIONS} from '../../constants/firestore'
 
 /**
  * 
- * @param {{UID:string,email:string}} user 
- * @param {{UID:string,email:string}} admin 
+ * @param {{UID:string,email:string}} recipient 
+ * @param {{UID:string,email:string}} sender 
  * @param {{subject:string,body:string}} email 
  */
-export const sendEmail = async (user,admin,email) => {
+export const sendEmail = async (emailObject) => {
+    const {recipient, sender, email} = emailObject;
+
     const commDoc = {
-       UID: user.UID,
-       candidateEmail: user.email,
+       UID: recipient.UID,
+       candidateEmail: recipient.email,
        type: "outbox",
-       adminEmail: admin.email,
-       adminUID: admin.UID,
+       adminEmail: sender.email,
+       adminUID: sender.UID,
        subject: email.subject,
        body: email.body,
        createdAt: new Date()

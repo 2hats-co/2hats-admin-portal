@@ -16,6 +16,7 @@ import Submission from '../components/Submission';
 import ScreeningForm from '../components/ScreeningForm';
 import FeedbackForm from '../components/FeedbackForm';
 import TemplateGenerator from '../components/TemplateGenerator';
+import {sendEmail} from '../utilities/email/send'
 
 import { updateProperties } from '../utilities/firestore';
 import { COLLECTIONS } from '../constants/firestore';
@@ -37,24 +38,15 @@ const styles = theme => ({
     },
 });
 
-const handleSubmit = (submissionID, confidenceLevel, reasons, resetScreeningForm) => {
-    const outputReasons = reasons.filter(x => x.checked).map(x => x.label);
-    const properties = {confidence:confidenceLevel,reasons:outputReasons,screened:true}
-    updateProperties(COLLECTIONS.submissions, submissionID, properties);
-    resetScreeningForm();
-}
-
 function SumbissionsContainer(props) {
     const { classes, location } = props;
 
     const [template, setTemplate] = useState(null);
-    const [showDisqualify, setShowDisqualify] = useState(false);
 
     const [submissionState, submissionDispatch] = useSubmission(location.pathname.replace('/',''));
-    const submission = submissionState.submission
+    const submission = submissionState.submission;
 
-    const [confidenceLevel, setConfidenceLevel] = useState({ value: '', index: -1 });
-    const [reasons, setReasons] = useState([]);
+    const [email, setEmail] = useState(null);
 
     const [showSnackbar, setShowSnackbar] = useState(false);
 
@@ -77,10 +69,10 @@ function SumbissionsContainer(props) {
         return <React.Fragment> { locationIndicator } <Done /> </React.Fragment>
     }
 
-    const resetScreeningForm = () => {
-        setConfidenceLevel(-1);
-        setReasons([]);
+    const handleSendEmail = () => {
+        sendEmail(email);
         setShowSnackbar(true);
+        setTemplate(null);
     };
 
     let rightPanel;
@@ -89,16 +81,8 @@ function SumbissionsContainer(props) {
             rightPanel = <ScreeningForm
                             submissionID={submission.id}
                             setTemplate={setTemplate}
-                            showDisqualify={showDisqualify}
-                            setShowDisqualify={setShowDisqualify}
                             submissionDispatch={submissionDispatch}
-
-                            confidenceLevel={confidenceLevel}
-                            setConfidenceLevel={setConfidenceLevel}
-                            reasons={reasons}
-                            setReasons={setReasons}
-
-                            resetScreeningForm={resetScreeningForm}
+                            handleSendEmail={handleSendEmail}
                         />;
             break;
         case '/rejected':
@@ -106,6 +90,8 @@ function SumbissionsContainer(props) {
             rightPanel = <FeedbackForm
                 submission={submission}
                 setTemplate={setTemplate}
+                submissionDispatch={submissionDispatch}
+                handleSendEmail={handleSendEmail}
             />;
     }
 
@@ -124,8 +110,9 @@ function SumbissionsContainer(props) {
                         template={template}
                         recipientUID={submission.UID}
                         smartLink={smartLink}
-                        handleSubmit={() => { handleSubmit(submission.id, confidenceLevel.index, reasons, resetScreeningForm) }}
-                        close={ () => { setTemplate(null); setShowDisqualify(false); } }
+                        setEmail= {setEmail}
+                       // handleSubmit={() => { handleSubmit(submission.id, confidenceLevel.index, reasons, resetScreeningForm) }}
+                      //  close={ () => { setTemplate(null); setShowDisqualify(false); } }
                     />
                 }
             </Grid>

@@ -10,6 +10,7 @@ import BackIcon from '@material-ui/icons/ArrowBack';
 import { COLLECTIONS } from "../../constants/firestore";
 
 import SendIcon from '@material-ui/icons/Send';
+import RedoIcon from '@material-ui/icons/Redo';
 import FeedbackElement from './FeedbackElement'; 
 import * as _ from 'lodash'
 
@@ -23,9 +24,6 @@ const styles = theme => ({
     height: '100%',
     boxSizing: 'border-box',
     backgroundColor: theme.palette.background.paper,
-  },
-  backIcon: {
-    marginRight: 8,
   },
   list: {
     borderTop: '1px solid rgba(0,0,0,.1)',
@@ -50,6 +48,9 @@ const styles = theme => ({
     width: 360,
     fontWeight: 700,
   },
+  icon: {
+    marginRight: 8,
+  },
 });
 
 const feedbackReducer = (state, action) => {
@@ -68,19 +69,15 @@ const storeFeedback = (feedback, submissionID) => {
 }
 
 function FeedbackForm(props){
-    const { classes, submission, setTemplate } = props;
+    const { classes, submission, setTemplate, submissionDispatch, handleSendEmail } = props;
 
     const [feedback, feedbackDispatch] = useReducer(feedbackReducer, {});
     
     return (
       <div className={classes.root}>
-        <Grid container justify="space-between">
-          <Button color="default" className={classes.backButton}>
-            <BackIcon className={classes.backIcon} />
-            Back
-          </Button>
-          <Button color="default" className={classes.backButton}>
-            Review Later
+        <Grid container justify="flex-end">
+          <Button color="primary" onClick={() => { submissionDispatch({type:'skip'}) }}>
+            <RedoIcon className={classes.icon} />Review Later
           </Button>
         </Grid>
         <List component="nav"
@@ -106,6 +103,7 @@ function FeedbackForm(props){
           className={classes.submitButton}
           onClick={() => {
             setTemplate(rejectedWithFeedback);
+            //setHandleTemplateSubmit(null);
             storeFeedback(feedback, submission.id);
           }}
         >
