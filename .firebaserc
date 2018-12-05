@@ -1,5 +1,14 @@
 {
   "projects": {
-    "default": "dev2hats"
+    "default": "staging2hats"
+  },
+  "targets": {
+    "staging2hats": {
+      "hosting": {
+        "staging": [
+          "staging2hatsadmin"
+        ]
+      }
+    }
   }
 }

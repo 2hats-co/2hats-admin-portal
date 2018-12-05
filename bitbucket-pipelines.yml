@@ -10,26 +10,26 @@ pipelines:
     staging:
       - step:
           caches:
-          - node
-          - globalnode
-          - localnode
+            - node
+            - globalnode
+            - localnode
           script: # Modify the commands below to build your repository.
-          - yarn global add firebase-tools
-          - yarn install
-          - CI=false yarn build
-          - firebase deploy --token "$FIREBASE_TOKEN" --project dev2hats --non-interactive --public build --only hosting
+            - yarn global add firebase-tools
+            - yarn install
+            - CI=false yarn build
+            - firebase deploy --token "$FIREBASE_TOKEN" --project staging2hats --non-interactive --public build --only hosting
     production:
       - step:
           caches:
-          - node
-          - globalnode
-          - localnode
+            - node
+            - globalnode
+            - localnode
           script: # Modify the commands below to build your repository.
-          - yarn global add firebase-tools
-          - yarn install
-          - CI=false yarn build
-          - firebase deploy --token "$FIREBASE_TOKEN" --project dev2hats --non-interactive --public build --only hosting
-definitions: 
-   caches: 
-     globalnode: /usr/local/lib/node_modules
-     localnode: /opt/atlassian/pipelines/agent/build/functions/node_modules
+            - yarn global add firebase-tools
+            - yarn install
+            - CI=false yarn build
+            - firebase deploy --token "$FIREBASE_TOKEN" --project dev2hats --non-interactive --public build --only hosting
+definitions:
+  caches:
+    globalnode: /usr/local/lib/node_modules
+    localnode: /opt/atlassian/pipelines/agent/build/functions/node_modules
