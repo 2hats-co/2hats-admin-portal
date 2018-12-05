@@ -101,7 +101,7 @@ function ScreeningForm(props) {
             outcome: (confidenceLevel.index < 2 ? 'rejected' : 'accepted'),
             processes: oldProcesses.concat([ {
                 type: 'screened',
-                value: confidenceLevel.index,
+                value: confidenceLevel.value,
                 operator: userInfo.UID,
                 timestamp: new Date(),
             } ]),
