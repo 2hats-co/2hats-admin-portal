@@ -45,18 +45,18 @@ const handleConfidence = (confidence) => {
         case 0:
         case 1:
         return [
-            { label: 'Writing Quality', checked: false },
-            { label: 'Format Issue', checked: false },
+            { label: 'Writtten Communication', checked: false },
+            { label: 'Formatting Issue', checked: false },
             { label: 'Experience Issue', checked: false },
             { label: 'Commitment Issue', checked: false },
         ]
         case 2:
         case 3:
         return [
-            { label: 'Writing Quality', checked: false },
+            { label: 'Writtten Communication', checked: false },
             { label: 'Relevant Skills', checked: false },
-            { label: 'Good Experience', checked: false },
-            { label: 'Not Currently Situated in Vietnam', checked: false },
+            { label: 'Relevant Experience', checked: false },
+            { label: 'Relevant Degree', checked: false },
         ]
         default: return[]   
     }

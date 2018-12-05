@@ -64,7 +64,6 @@ export function useSubmission(type) {
 
     useEffect(() => {
         if(!submissionState.submission || submissionState.prevSkipOffset !== submissionState.skipOffset){
-            console.log(submissionState.prevSkipOffset !== submissionState.skipOffset)
             setListener(type,submissionState.skipOffset,submissionDispatch)
         }
   
