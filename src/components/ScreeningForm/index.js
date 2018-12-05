@@ -17,6 +17,7 @@ import Reasons from './Reasons';
 import { outsideDemographic, outsideIndusty, resumeAccepted } from '../../constants/emails/templates';
 import { updateProperties } from '../../utilities/firestore';
 import { COLLECTIONS } from '../../constants/firestore';
+import { useUserInfo } from '../../hooks/useUserInfo';
 
 const styles = theme => ({
     root: {
@@ -62,13 +63,18 @@ const handleConfidence = (confidence) => {
 }
 
 function ScreeningForm(props) {
-    const { classes, setTemplate, submissionID, submissionDispatch, handleSendEmail } = props;
+    const { classes, setTemplate, submission, submissionDispatch, handleSendEmail } = props;
+    const submissionID = submission.id;
 
     const [confidenceLevel, setConfidenceLevel] = useState({ value: '', index: -1 });
     const [reasons, setReasons] = useState([]);
 
     const [showDisqualify, setShowDisqualify] = useState(false);
     const [showSend, setShowSend] = useState(false);
+
+    const [disqualifyType, setDisqualifyType] = useState('');
+
+    const userInfo = useUserInfo();
 
     useEffect(() => {
         setReasons(handleConfidence(confidenceLevel.index))
@@ -90,10 +96,35 @@ function ScreeningForm(props) {
 
     const updateSubmission = () => {
         const outputReasons = reasons.filter(x => x.checked).map(x => x.label);
-        const properties = {confidence:confidenceLevel,reasons:outputReasons,outcome:(confidenceLevel.index < 2 ? 'rejected' : 'accepted')}
+        const oldProcesses = submission.processes ? submission.processes : [];
+        const properties = {
+            outcome: (confidenceLevel.index < 2 ? 'rejected' : 'accepted'),
+            processes: oldProcesses.concat([ {
+                type: 'screened',
+                value: confidenceLevel.index,
+                operator: userInfo.UID,
+                timestamp: new Date(),
+            } ]),
+            reasons: outputReasons,
+        }
         updateProperties(COLLECTIONS.submissions, submissionID, properties);
         resetScreeningForm();
-    }
+    };
+
+    const disqualifySubmission = () => {
+        const oldProcesses = submission.processes ? submission.processes : [];
+        const properties = {
+            outcome: 'disqualified',
+            processes: oldProcesses.concat([ {
+                type: 'screened',
+                value: `disqualified-${disqualifyType}`,
+                operator: userInfo.UID,
+                timestamp: new Date(),
+            } ]),
+        }
+        updateProperties(COLLECTIONS.submissions, submissionID, properties);
+        resetScreeningForm();
+    };
 
     const resetScreeningForm = () => {
         setConfidenceLevel({ value: '', index: -1 });
@@ -117,8 +148,15 @@ function ScreeningForm(props) {
                 overqualified or people who are in a completely different
                 industry to what we do.
             </Typography>
-            <Button onClick={() => { setTemplate(outsideDemographic) }}>Demographic</Button>
-            <Button onClick={() => { setTemplate(outsideIndusty) }}>Industry</Button>
+            <Button variant="outlined" onClick={() => { setTemplate(outsideDemographic); setDisqualifyType('demographic'); setShowSend(true); }}>Demographic</Button>
+            <Button variant="outlined" onClick={() => { setTemplate(outsideIndusty); setDisqualifyType('industry'); setShowSend(true); }}>Industry</Button>
+            <Button
+                disabled={!showSend}
+                variant="extendedFab" color="primary" className={classes.button}
+                onClick={ () => { handleSendEmail(); disqualifySubmission(); } }
+            >
+                <SendIcon className={classes.icon} /> Send Email
+            </Button>
         </Grid>
     );
 

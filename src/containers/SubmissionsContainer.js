@@ -79,7 +79,7 @@ function SumbissionsContainer(props) {
     switch (location.pathname) {
         case '/pending':
             rightPanel = <ScreeningForm
-                            submissionID={submission.id}
+                            submission={submission}
                             setTemplate={setTemplate}
                             submissionDispatch={submissionDispatch}
                             handleSendEmail={handleSendEmail}
@@ -92,6 +92,7 @@ function SumbissionsContainer(props) {
                 setTemplate={setTemplate}
                 submissionDispatch={submissionDispatch}
                 handleSendEmail={handleSendEmail}
+                location={location}
             />;
     }
 
@@ -111,8 +112,6 @@ function SumbissionsContainer(props) {
                         recipientUID={submission.UID}
                         smartLink={smartLink}
                         setEmail= {setEmail}
-                       // handleSubmit={() => { handleSubmit(submission.id, confidenceLevel.index, reasons, resetScreeningForm) }}
-                      //  close={ () => { setTemplate(null); setShowDisqualify(false); } }
                     />
                 }
             </Grid>

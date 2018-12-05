@@ -18,6 +18,7 @@ import * as _ from 'lodash'
 import {SUBMISSION_FEEDBACK, getFeedbackContent, getFeedbackTitle, feedbackSections} from '../../constants/feedback'
 import { rejectedWithFeedback } from '../../constants/emails/templates';
 import { updateProperties } from '../../utilities/firestore';
+import { useUserInfo } from '../../hooks/useUserInfo';
 
 const styles = theme => ({
   root: {
@@ -63,23 +64,41 @@ const feedbackReducer = (state, action) => {
   }
 };
 
-const storeFeedback = (feedback, submissionID) => {
-  const mappedFeedback = _.map(feedback,(value,id)=>{
-    const content = getFeedbackContent(id,value)
-    return({id,content,value});
-  });
-  updateProperties(COLLECTIONS.submissions, submissionID, { feedbackContent: mappedFeedback, feedbacked: true, });
-}
-
 function FeedbackForm(props){
-    const { classes, submission, setTemplate, submissionDispatch, handleSendEmail } = props;
+    const { classes, submission, setTemplate, submissionDispatch, handleSendEmail, location } = props;
 
     const [feedback, feedbackDispatch] = useReducer(feedbackReducer, {});
     const [showSend, setShowSend] = useState(false);
 
+    const userInfo = useUserInfo();
+
+    const storeFeedback = () => {
+      const mappedFeedback = _.map(feedback, (value,id) => {
+        const content = getFeedbackContent(id,value)
+        return({id,content,value});
+      });
+      const oldProcesses = submission.processes ? submission.processes : [];
+
+      const properties = {
+        feedbackContent: mappedFeedback,
+        feedbacked: true,
+        processes: oldProcesses.concat([ {
+            type: 'feedbacked',
+            operator: userInfo.UID,
+            timestamp: new Date(),
+        } ]),
+      };
+      updateProperties(COLLECTIONS.submissions, submission.id, properties);
+    }
+
     const handleSubmit = () => {
-      setTemplate(rejectedWithFeedback);
+      if (location.pathname === '/rejected') setTemplate(rejectedWithFeedback);
       setShowSend(true);
+    }
+    const sendEmail = () => {
+      if (location.pathname === '/rejected') handleSendEmail();
+      storeFeedback();
+      feedbackDispatch({type:'reset'});
     }
     
     return (
@@ -108,15 +127,12 @@ function FeedbackForm(props){
                   labels={element.labels}/> 
               )}
             </div>
-          )}    
+          )}
         </List>
         <Button variant="extendedFab" color="primary" 
           aria-label="Submit Feedback" 
           className={classes.submitButton}
-          onClick={ showSend ?
-            () => { handleSendEmail(); storeFeedback(feedback, submission.id); feedbackDispatch({type:'reset'}); }
-            : handleSubmit
-          }
+          onClick={ (showSend || location.pathname === '/accepted') ? sendEmail : handleSubmit }
         >
           <SendIcon /> { showSend ? 'Send Email' : 'Submit Feedback' }
         </Button>
