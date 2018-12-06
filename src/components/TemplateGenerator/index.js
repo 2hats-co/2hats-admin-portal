@@ -7,6 +7,8 @@ import {useUserInfo} from '../../hooks/useUserInfo'
 import withStyles from '@material-ui/core/styles/withStyles';
 import Grid from '@material-ui/core/Grid';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Slide from '@material-ui/core/Slide';
+
 import * as R from 'ramda'
 
 import { useCandidate } from '../../hooks/useCandidate';
@@ -53,10 +55,11 @@ function TemplateGenerator(props) {
   const userInfo = useUserInfo()
   const candidate = useCandidate(recipientUID)
 
-  if (!candidate) return (
+  if (!candidate) return (<Slide in direction="up">
   <Grid container justify="center" alignItems="center" className={classes.root}>
     <CircularProgress />
-  </Grid>);
+  </Grid>
+  </Slide>);
   
   const recipient = { UID: candidate.UID, email: candidate.email };
   console.log(recipient)
@@ -84,8 +87,10 @@ function TemplateGenerator(props) {
       }
     },[candidate,userInfo,emailBody,template]);
 
-    return (<div className={classes.root}>
+    return (<Slide in direction="up">
+    <div className={classes.root}>
       <div style={{width:'100%',height:'100%'}} dangerouslySetInnerHTML={{__html: emailBody}} />
-    </div>);
+    </div>
+    </Slide>);
 }
 export default withStyles(styles)(TemplateGenerator);

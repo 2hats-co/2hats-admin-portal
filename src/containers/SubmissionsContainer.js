@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react';
 import {withNavigation} from '../components/withNavigation';
 import withStyles from '@material-ui/core/styles/withStyles';
 import green from '@material-ui/core/colors/green';
@@ -30,6 +30,7 @@ const styles = theme => ({
         background: '#fff',
         boxShadow: '0 0 10px rgba(0,0,0,.1), 0 30px 60px -15px rgba(0,0,0,.125), 0 60px 80px -20px rgba(0,0,0,.1), 0 50px 100px -30px rgba(0,0,0,.15), 0 40px 120px -5px rgba(0,0,0,.15)',
         borderRadius: '0 10px 0 0',
+        zIndex: 2,
     },
     successSnackbar: {
         '& > div': {
@@ -39,12 +40,19 @@ const styles = theme => ({
 });
 
 function SumbissionsContainer(props) {
-    const { classes, location } = props;
+    const { classes, location, history } = props;
 
     const [template, setTemplate] = useState(null);
-
-    const [submissionState, submissionDispatch] = useSubmission(location.pathname.replace('/',''));
+    const currentRoute = location.pathname.replace('/','')
+    const [submissionState, submissionDispatch] = useSubmission(currentRoute);
     const submission = submissionState.submission;
+
+    useEffect(() => {
+        if (!submission && location.search.indexOf('?uid=') > -1) {
+            const uid = location.search.replace('?uid=','')
+            submissionDispatch({ type:'get', uid, route:currentRoute});
+        }
+    }, [submission, location.search]);
 
     const [email, setEmail] = useState(null);
     const [emailReady, setEmailReady] = useState(false);
@@ -66,7 +74,8 @@ function SumbissionsContainer(props) {
     }
 
     if (submission.complete) {
-        const smartLink = useSmartLink(submission.UID, `/prevSubmission?${submission.id}`)
+        console.log(submission)
+        // const smartLink = useSmartLink(submission.UID, `/prevSubmission?${submission.id}`)
         return <React.Fragment> { locationIndicator } <Done /> </React.Fragment>
     }
 
@@ -98,6 +107,7 @@ function SumbissionsContainer(props) {
                 handleSendEmail={handleSendEmail}
                 emailReady={emailReady}
                 location={location}
+                history={history}
             />;
     }
 
@@ -122,7 +132,7 @@ function SumbissionsContainer(props) {
                     />
                 }
             </Grid>
-            <Grid item style={{width:400}}>
+            <Grid item style={{width:400, overflowY:'scroll'}}>
                 { rightPanel }
             </Grid>
         </Grid>

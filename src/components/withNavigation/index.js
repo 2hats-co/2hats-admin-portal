@@ -155,5 +155,5 @@ export const withNavigation = (WrappedComponent) => {
             );
         }
     }
-    return withAuthentication(withRouter(withStyles(styles)(withFirestore(WithNavigation))));
+    return withAuthentication(withRouter(withFirestore(withStyles(styles)(WithNavigation))));
 }
