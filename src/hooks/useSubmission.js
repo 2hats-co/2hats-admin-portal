@@ -2,37 +2,44 @@ import {auth,firestore} from '../store'
 import {COLLECTIONS} from '../constants/firestore'
 import { useEffect, useState, useReducer } from 'react';
 
+import * as R from 'ramda'
 
-const setListener = (type,skipOffset,submissionDispatch) => {
+const setFilters = (type,route,submissionDispatch) => {
     let filters = [];
-    let sorts = [];
     switch (type) {
         case 'pending':
             filters = [{field:'outcome',operator:'==',value:type}];
             break;
-
         case 'accepted':
             filters = [{field:'outcome',operator:'==',value:type},
                 {field:'feedbacked',operator:'==',value:false}];
-            sorts = [];
             break;
         case 'rejected':
             filters = [{field:'outcome',operator:'==',value:type},
                 {field:'feedbacked',operator:'==',value:false}];
-            sorts = [];
             break;
-
         default:
-            break;
+            filters = [
+                {field:'outcome',operator:'==',value:route},
+                {field:'UID',operator:'==',value:type}
+            ];
+            if (route === 'accepted' || route === 'rejected')
+                filters.push({field:'feedbacked',operator:'==',value:false});
+        break;
     }
-    let query = firestore
-    .collection(COLLECTIONS.submissions);
+    submissionDispatch({type:'filters',filters})
+}
+
+const getSubmissions = (filters,skipOffset,equalOffsets,submissionDispatch) =>{
+    console.log(filters)
+    if(!equalOffsets){
+    submissionDispatch({ type:'setPrevSkip',prevSkipOffset:skipOffset});
+    }
+
+    let query = firestore.collection(COLLECTIONS.submissions);
     filters.forEach((filter)=>{
         query = query.where(filter.field,filter.operator,filter.value)
-    })
-    sorts.forEach((sort)=>{
-        query = query.orderBy(sort.field,sort.direction)
-    })
+    });
     query
     .orderBy('createdAt','asc')
     .limit(skipOffset+1)
@@ -42,36 +49,39 @@ const setListener = (type,skipOffset,submissionDispatch) => {
             id: snapshot.docs[snapshot.docs.length - 1].id,
             ...snapshot.docs[snapshot.docs.length - 1].data()
         }
-        submissionDispatch({ type: 'set',submission });
+        if (skipOffset >= snapshot.docs.length) {
+            submissionDispatch({ type:'clear',prevFilters:filters,prevSkipOffset:skipOffset});
         } else {
-            return submissionDispatch({type:'complete'})
+            submissionDispatch({ type:'set', submission , prevFilters:filters,prevSkipOffset:skipOffset});
+        }
+        }else{
+             submissionDispatch({type:'complete',prevFilters:filters,prevSkipOffset:skipOffset})
         }
     });
-}
+} 
 const submissionReducer = (state, action) => {
-
+    let props = {...action}
+    delete props.type
     switch (action.type) {
-        case 'set': return ({...state,submission:action.submission,prevSkipOffset:state.skipOffset})
-        case 'skip': return ({...state,prevSkipOffset:state.skipOffset,skipOffset:state.skipOffset+1})
-        case 'complete' : return ({...state,submission:{complete:true}})
+  
     }
 }
 
+export function useSubmission(route) {
+    
+    const [submissionState, submissionDispatch] = useReducer(submissionReducer,{submission: null, 
+            skipOffset: 0, prevSkipOffset: 0,
+            uid:null,prevUid:null,
+            filters:[{field:'outcome',operator:'==',value:route}],prevFilters:[]});
 
-export function useSubmission(type) {
-    const [submissionState, submissionDispatch] = useReducer(submissionReducer,
-         { type, submission: null, skipOffset: 0, prevSkipOffset: 0 });
 
     useEffect(() => {
-        if(!submissionState.submission || submissionState.prevSkipOffset !== submissionState.skipOffset){
-            setListener(type,submissionState.skipOffset,submissionDispatch)
-        }
-  
-
+        const {uid,prevUid,filters,prevFilters,prevSkipOffset,skipOffset,submission} = submissionState
+        
         return () => {
             firestore.collection(COLLECTIONS.submissions).onSnapshot(() => {});
         };
-    },[submissionState,submissionDispatch]);
+    },[submissionState]);
 
     return [submissionState, submissionDispatch];
 }
