@@ -50,7 +50,7 @@ function SumbissionsContainer(props) {
     useEffect(() => {
         if (!submission && location.search.indexOf('?uid=') > -1) {
             const uid = location.search.replace('?uid=','')
-            submissionDispatch({ type:'get', uid, route:currentRoute});
+            submissionDispatch({uid});
         }
     }, [submission, location.search]);
 
