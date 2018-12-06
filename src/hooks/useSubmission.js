@@ -3,10 +3,11 @@ import {COLLECTIONS} from '../constants/firestore'
 import { useEffect, useReducer } from 'react';
 
 const generateFilters = (route,uid) => {
-    let filters = [{field:'outcome',operator:'==',value:route}];
+    let filters = [];
     if(uid !== ''){
         filters.push( {field:'UID',operator:'==',value:uid})
     }else {
+         filters = [{field:'outcome',operator:'==',value:route}];
         switch (route) {
             case 'accepted':
             case 'rejected':filters.push({field:'feedbacked',operator:'==',value:false})
@@ -37,11 +38,11 @@ const getSubmissions = (filters,skipOffset,uid,submissionDispatch) =>{
     });
 } 
 
-const submissionReducer = (prevState, state) => {
-    switch (state.type) {
+const submissionReducer = (prevState, newProps) => {
+    switch (newProps.type) {
         case 'skip':if(prevState.uid ==='')return({...prevState,skipOffset:prevState.skipOffset+1}) 
         case 'clear':return({...prevState,uid:'',prevUid:prevState.uid}) 
-        default:return({...prevState,...state})
+        default:return({...prevState,...newProps})
     }
 }
 

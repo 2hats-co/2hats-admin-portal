@@ -87,8 +87,8 @@ function SumbissionsContainer(props) {
     };
 
     let rightPanel;
-    switch (location.pathname) {
-        case '/pending':
+    switch (submission.outcome) {
+        case 'pending':
             rightPanel = <ScreeningForm
                             submission={submission}
                             setTemplate={setTemplate}
@@ -98,8 +98,8 @@ function SumbissionsContainer(props) {
                             setEmailReady={setEmailReady}
                         />;
             break;
-        case '/rejected':
-        case '/accepted':
+        case 'rejected':
+        case 'accepted':
             rightPanel = <FeedbackForm
                 submission={submission}
                 setTemplate={setTemplate}

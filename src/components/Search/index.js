@@ -40,12 +40,8 @@ function Search(props){
     const handleRoute = (hit) => {
         const {stage,status,objectID} = hit
         console.log(stage,status,objectID)
-        if(status ==='in-review'){
-            history.push(`/pending?uid=${objectID}`)
-        }else if(stage !=='pre-review' || !(stage === 'resume'&& status==='rejected' )){
-            history.push(`/accepted?uid=${objectID}`)
-        }else if(status==='rejected'){
-            history.push(`/rejected?uid=${objectID}`)
+        if(status !=='pre-review' || status !=='incomplete' || status !=='complete'){
+            history.push(`/submissions?uid=${objectID}`)
         }
     }
     const [searchState,searchDispatch] = useSearch()
