@@ -1,7 +1,7 @@
-import React,{Component} from 'react';
+import React from 'react';
 import { withStyles } from '@material-ui/core/styles';
+import { withRouter } from 'react-router-dom';
 
-import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import TextField  from '@material-ui/core/TextField';
 import { useSearch } from '../../hooks/useSearch';
@@ -36,8 +36,17 @@ const styles = theme => ({
 
 
 function Search(props){
+    const {history} = props
     const handleRoute = (hit) => {
-        
+        const {stage,status,objectID} = hit
+        console.log(stage,status,objectID)
+        if(status ==='in-review'){
+            history.push(`/pending?uid=${objectID}`)
+        }else if(stage !=='pre-review' || !(stage === 'resume'&& status==='rejected' )){
+            history.push(`/accepted?uid=${objectID}`)
+        }else if(status==='rejected'){
+            history.push(`/rejected?uid=${objectID}`)
+        }
     }
     const [searchState,searchDispatch] = useSearch()
     const {results} = searchState
@@ -48,9 +57,9 @@ function Search(props){
             onChange={e => { searchDispatch({search:e.target.value})}}
            />
            <ul>
-           {results.hits && results.hits.map(hit=> <li onClick={()=>{console.log(hit)}}>{hit.firstName}</li>)}
+           {results.hits && results.hits.map(hit=> <li onClick={()=>{handleRoute(hit)}}>{hit.firstName}</li>)}
            </ul>
         </Grid>)
     
 }
-export default withStyles(styles)(Search);
+export default withRouter(withStyles(styles)(Search));

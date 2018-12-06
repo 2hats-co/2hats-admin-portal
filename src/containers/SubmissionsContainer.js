@@ -18,9 +18,7 @@ import FeedbackForm from '../components/FeedbackForm';
 import TemplateGenerator from '../components/TemplateGenerator';
 import {sendEmail} from '../utilities/email/send'
 
-import { updateProperties } from '../utilities/firestore';
-import { COLLECTIONS } from '../constants/firestore';
-
+import Search from '../components/Search'
 const styles = theme => ({
     card: {
         height: '100%',
@@ -59,10 +57,12 @@ function SumbissionsContainer(props) {
 
     const [showSnackbar, setShowSnackbar] = useState(false);
 
-    const locationIndicator = <LocationIndicator
+    const locationIndicator = <Grid container direction='row'><LocationIndicator
                                 title="Submissions"
                                 subRoutes={['/pending', '/rejected', '/accepted']}
-                            />;
+                            />
+                            <Search/>
+                            </Grid>;
 
     if (!submission) {
         return <React.Fragment>

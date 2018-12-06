@@ -39,10 +39,7 @@ const getSubmissions = (filters,skipOffset,uid,submissionDispatch) =>{
 
 const submissionReducer = (prevState, state) => {
     switch (state.type) {
-        case 'skip':if(prevState.uid ===''){
-            //only inc if there's no uid
-            return({...prevState,skipOffset:prevState.skipOffset+1}) 
-        }
+        case 'skip':if(prevState.uid ==='')return({...prevState,skipOffset:prevState.skipOffset+1}) 
         case 'clear':return({...prevState,uid:'',prevUid:prevState.uid}) 
         default:return({...prevState,...state})
     }
@@ -57,9 +54,7 @@ export function useSubmission(route) {
             const filters = generateFilters(route,uid)
             getSubmissions(filters,skipOffset,uid,submissionDispatch)
         }
-        return () => {
-            firestore.collection(COLLECTIONS.submissions).onSnapshot(() => {});
-        };
+        return () => {firestore.collection(COLLECTIONS.submissions).onSnapshot(() => {});};
     },[submissionState]);
     return [submissionState, submissionDispatch];
 }
