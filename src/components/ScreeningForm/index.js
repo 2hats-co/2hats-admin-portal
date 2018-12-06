@@ -4,7 +4,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
+import Tooltip from '@material-ui/core/Tooltip';
 
 import BackIcon from '@material-ui/icons/ArrowBack';
 import DoneIcon from '@material-ui/icons/Done';
@@ -22,22 +22,31 @@ import { useUserInfo } from '../../hooks/useUserInfo';
 
 const styles = theme => ({
     root: {
-        padding: theme.spacing.unit * 2,
-        paddingTop: 0,
-
         '& > *': {
-            marginBottom: theme.spacing.unit * 4,
+            padding: theme.spacing.unit * 2,
         }
     },
-    button: {
-        marginBottom: 8,
+    topButtons: {
+        borderBottom: '1px solid rgba(0,0,0,.1)',
+        padding: 0,
     },
     icon: {
         marginRight: 8,
     },
-    back: {
-        position: 'relative',
-        left: -8,
+    submitButton: {
+        position: 'fixed',
+        bottom: theme.spacing.unit * 2,
+        right: theme.spacing.unit * 2,
+        width: 400 - theme.spacing.unit * 4,
+        fontWeight: 700,
+        padding: 0,
+        marginBottom: 0,
+    },
+    disqualifyButton: {
+        padding: '8px 16px',
+        margin: theme.spacing.unit * 2,
+        marginBottom: 0,
+        transition: 'all .2s',
     },
 });
 
@@ -79,21 +88,7 @@ function ScreeningForm(props) {
 
     useEffect(() => {
         setReasons(handleConfidence(confidenceLevel.index));
-    }, [confidenceLevel])
-
-    const handleSubmit = () => {
-        switch (confidenceLevel.index) {
-            case 0:
-            case 1:
-                updateSubmission();
-                break;
-            case 2:
-            case 3:
-                setTemplate(resumeAccepted);
-                setShowSend(true);
-                break;
-        }
-    };
+    }, [confidenceLevel]);
 
     const updateSubmission = () => {
         const outputReasons = reasons.filter(x => x.checked).map(x => x.label);
@@ -134,19 +129,17 @@ function ScreeningForm(props) {
         setShowDisqualify(false);
         setTemplate(null);
         setEmailReady(false);
+        setDisqualifyType('');
     };
 
     if (showDisqualify) return (
         <Grid container className={classes.root} direction="column">
-            <IconButton onClick={() => {
-                setShowDisqualify(false);
-                setTemplate(null);
-                setEmailReady(false);
-                setShowSend(false);
-            }} className={classes.back}>
-                <BackIcon />
-            </IconButton>
-            <Typography variant="title">
+            <Grid item className={classes.topButtons}>
+                <Button onClick={resetScreeningForm} color="primary">
+                    <BackIcon className={classes.icon} /> Back
+                </Button>
+            </Grid>
+            <Typography variant="title" style={{marginTop:16}}>
                 <DisqualifyIcon className={classes.icon} style={{ verticalAlign: 'bottom' }} />
                 Disqualify Submission
             </Typography>
@@ -156,60 +149,73 @@ function ScreeningForm(props) {
                 overqualified or people who are in a completely different
                 industry to what we do.
             </Typography>
-            <Button variant="outlined" onClick={() => {
+
+            <Button variant={ disqualifyType === 'demographic' ? 'contained' : 'outlined' }
+            onClick={() => {
                 setTemplate(null); setEmailReady(false);
                 setTimeout(() => { setTemplate(outsideDemographic); }, 100);
                 setDisqualifyType('demographic');
                 setShowSend(true);
-            }}>
-                Demographic
+            }} className={classes.disqualifyButton} color="primary">
+                Demographic Mismatch
             </Button>
-            <Button variant="outlined" onClick={() => {
+            <Button variant={ disqualifyType === 'industry' ? 'contained' : 'outlined' }
+            onClick={() => {
                 setTemplate(null); setEmailReady(false);
                 setTimeout(() => { setTemplate(outsideIndusty); }, 100);
                 setDisqualifyType('industry');
                 setShowSend(true);
-            }}>
-                Industry
+            }} className={classes.disqualifyButton} color="primary">
+                Industry Mismatch
             </Button>
-            <Button
-                disabled={!(showSend && emailReady)}
-                variant="extendedFab" color="primary" className={classes.button}
-                onClick={ () => { handleSendEmail(); disqualifySubmission(); } }
-            >
-                <SendIcon className={classes.icon} /> Send Email
-            </Button>
+
+            <Tooltip title={`Sends email. ${submission.displayName} is removed from Pending.`}>
+                <Button
+                    disabled={!(showSend && emailReady)}
+                    variant="extendedFab" color="primary" className={classes.submitButton}
+                    onClick={ () => { handleSendEmail(); disqualifySubmission(); } }
+                >
+                    <SendIcon className={classes.icon} /> Send Email
+                </Button>
+            </Tooltip>
         </Grid>
     );
 
     return (
     <Grid container className={classes.root} direction="column">
+        <Grid container justify="space-between" className={classes.topButtons}>
+            <Button color="primary" onClick={() => { resetScreeningForm(); setShowDisqualify(true); }}>
+                <DisqualifyIcon className={classes.icon} /> Disqualify
+            </Button>
+            <Button color="primary" onClick={() => { submissionDispatch({type:'skip'}); resetScreeningForm(); }}>
+                <RedoIcon className={classes.icon} /> Skip
+            </Button>
+        </Grid>
+
         <Confidence confidenceLevel={confidenceLevel} 
         setConfidenceLevel={setConfidenceLevel} />
 
-        {reasons.length > 0 &&
+        { reasons.length > 0 &&
             <Reasons reasons={reasons} setReasons={setReasons} />
         }
         
-        <Grid container direction="column">
+        <Tooltip title={
+            <React.Fragment>
+                Place {submission.displayName} in 
+                <b> {confidenceLevel.index < 2 ? 'Rejected' : 'Accepted'}</b>.
+                <br />{submission.displayName} will <b>not</b> see the reasons
+                you gave here.
+                <br />No email will be sent.
+            </React.Fragment>
+        }>
             <Button
-                disabled={showSend ? !emailReady : reasons.filter(x => x.checked).length === 0}
-                variant="extendedFab" color="primary" className={classes.button}
-                onClick={ showSend ?
-                    () => { handleSendEmail(); updateSubmission(); resetScreeningForm(); }
-                    : handleSubmit
-                }
+                disabled={reasons.filter(x => x.checked).length === 0}
+                variant="extendedFab" color="primary" className={classes.submitButton}
+                onClick={updateSubmission}
             >
-                {showSend ? <SendIcon className={classes.icon} /> : <DoneIcon className={classes.icon} />}
-                {showSend ? 'Send Email' : 'Submit'}
+                <DoneIcon className={classes.icon} />Submit
             </Button>
-            <Button className={classes.button} onClick={() => { submissionDispatch({type:'skip'}); resetScreeningForm(); }}>
-                <RedoIcon className={classes.icon} />Skip
-            </Button>
-            <Button className={classes.button} onClick={() => { setShowDisqualify(true); setTemplate(null); setEmailReady(false); }}>
-                <DisqualifyIcon className={classes.icon} />Disqualify
-            </Button>
-        </Grid>
+        </Tooltip>
     </Grid>);
 }
 

@@ -12,6 +12,9 @@ import Checkbox from "@material-ui/core/Checkbox";
 const styles = theme => ({
     root: {
     },
+    textField: {
+        margin: '4px 0 8px',
+    },
     formGroup: {
         display: 'block',
     },
@@ -22,6 +25,8 @@ const styles = theme => ({
 
 function Reasons(props) {
     const { classes, reasons, setReasons } = props;
+
+    const [customReason, setCustomReason] = useState('');
 
     const handleAdd = event => {
         if (event.key === 'Enter') {
@@ -40,6 +45,9 @@ function Reasons(props) {
         <TextField
             id="add-reason" placeholder="Add reason…"
             onKeyPress={handleAdd}
+            onChange={e => { setCustomReason(e.target.value.substring(0,50)) }}
+            className={classes.textField}
+            value={customReason}
         />
 
         <FormGroup row className={classes.formGroup}>
