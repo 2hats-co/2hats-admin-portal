@@ -29,9 +29,10 @@ function Reasons(props) {
     const [customReason, setCustomReason] = useState('');
 
     const handleAdd = event => {
-        if (event.key === 'Enter') {
+        if (event.key === 'Enter' && event.target.value.length > 0) {
             reasons.push({ label: event.target.value, checked: true });
             setReasons(reasons);
+            setCustomReason('');
         }
     }
 

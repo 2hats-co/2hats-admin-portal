@@ -59,4 +59,4 @@ function FeedbackElement(props) {
         </Grid>
     </Grid>)
 }
-export default withStyles(styles)(FeedbackElement)
+export default withStyles(styles)(FeedbackElement);

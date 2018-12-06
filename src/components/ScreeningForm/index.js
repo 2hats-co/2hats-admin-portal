@@ -15,20 +15,29 @@ import DisqualifyIcon from '@material-ui/icons/Cancel';
 import Confidence from './Confidence';
 import Reasons from './Reasons';
 
-import { outsideDemographic, outsideIndusty, resumeAccepted } from '../../constants/emails/templates';
+import { outsideDemographic, outsideIndusty } from '../../constants/emails/templates';
 import { updateProperties } from '../../utilities/firestore';
 import { COLLECTIONS } from '../../constants/firestore';
 import { useUserInfo } from '../../hooks/useUserInfo';
 
 const styles = theme => ({
     root: {
+        paddingTop: theme.spacing.unit * 6,
+        paddingBottom: theme.spacing.unit * 7,
+        position: 'relative',
         '& > *': {
             padding: theme.spacing.unit * 2,
         }
     },
     topButtons: {
+        backgroundColor: '#fff',
         borderBottom: '1px solid rgba(0,0,0,.1)',
         padding: 0,
+        position: 'fixed',
+        right: 0,
+        top: 64,
+        zIndex: 1,
+        width: 400,
     },
     icon: {
         marginRight: 8,
@@ -38,7 +47,7 @@ const styles = theme => ({
         bottom: theme.spacing.unit * 2,
         right: theme.spacing.unit * 2,
         width: 400 - theme.spacing.unit * 4,
-        fontWeight: 700,
+        height: 48,
         padding: 0,
         marginBottom: 0,
     },
@@ -105,6 +114,7 @@ function ScreeningForm(props) {
         }
         updateProperties(COLLECTIONS.submissions, submissionID, properties);
         resetScreeningForm();
+        submissionDispatch({ type:'clear' });
     };
 
     const disqualifySubmission = () => {
@@ -120,6 +130,7 @@ function ScreeningForm(props) {
         }
         updateProperties(COLLECTIONS.submissions, submissionID, properties);
         resetScreeningForm();
+        submissionDispatch({ type:'clear' });
     };
 
     const resetScreeningForm = () => {
@@ -169,7 +180,7 @@ function ScreeningForm(props) {
                 Industry Mismatch
             </Button>
 
-            <Tooltip title={`Sends email. ${submission.displayName} is removed from Pending.`}>
+            <Tooltip title={`Sends email. ${submission.displayName} is removed from Pending.`}><div className={classes.submitButton}>
                 <Button
                     disabled={!(showSend && emailReady)}
                     variant="extendedFab" color="primary" className={classes.submitButton}
@@ -177,7 +188,7 @@ function ScreeningForm(props) {
                 >
                     <SendIcon className={classes.icon} /> Send Email
                 </Button>
-            </Tooltip>
+            </div></Tooltip>
         </Grid>
     );
 
@@ -198,7 +209,7 @@ function ScreeningForm(props) {
         { reasons.length > 0 &&
             <Reasons reasons={reasons} setReasons={setReasons} />
         }
-        
+
         <Tooltip title={
             <React.Fragment>
                 Place {submission.displayName} in 
@@ -207,7 +218,7 @@ function ScreeningForm(props) {
                 you gave here.
                 <br />No email will be sent.
             </React.Fragment>
-        }>
+        }><div className={classes.submitButton}>
             <Button
                 disabled={reasons.filter(x => x.checked).length === 0}
                 variant="extendedFab" color="primary" className={classes.submitButton}
@@ -215,7 +226,7 @@ function ScreeningForm(props) {
             >
                 <DoneIcon className={classes.icon} />Submit
             </Button>
-        </Tooltip>
+        </div></Tooltip>
     </Grid>);
 }
 
