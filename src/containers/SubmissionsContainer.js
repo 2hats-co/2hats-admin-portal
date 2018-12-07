@@ -8,7 +8,6 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import Snackbar from '@material-ui/core/Snackbar';
 
 import { useSubmission } from '../hooks/useSubmission';
-import { useSmartLink } from '../hooks/useSmartLink';
 
 import LocationIndicator from '../components/LocationIndicator';
 import Done from '../components/Done';
@@ -18,7 +17,7 @@ import FeedbackForm from '../components/FeedbackForm';
 import TemplateGenerator from '../components/TemplateGenerator';
 import {sendEmail} from '../utilities/email/send'
 
-import Search from '../components/Search'
+// import Search from '../components/Search'
 const styles = theme => ({
     card: {
         height: '100%',
@@ -41,6 +40,8 @@ function SumbissionsContainer(props) {
     const { classes, location, history } = props;
 
     const [template, setTemplate] = useState(null);
+    const [smartLink, setSmartLink] = useState(null);
+
     const currentRoute = location.pathname.replace('/','')
     const [submissionState, submissionDispatch] = useSubmission(currentRoute);
     const submission = submissionState.submission;
@@ -60,8 +61,7 @@ function SumbissionsContainer(props) {
     const locationIndicator = <Grid container direction='row'><LocationIndicator
                                 title="Submissions"
                                 subRoutes={['/pending', '/rejected', '/accepted']}
-                            />
-                            <Search/>
+                            /> 
                             </Grid>;
 
     if (!submission) {
@@ -75,7 +75,6 @@ function SumbissionsContainer(props) {
 
     if (submission.complete) {
         console.log(submission)
-        // const smartLink = useSmartLink(submission.UID, `/prevSubmission?${submission.id}`)
         return <React.Fragment> { locationIndicator } <Done /> </React.Fragment>
     }
 
@@ -103,6 +102,7 @@ function SumbissionsContainer(props) {
             rightPanel = <FeedbackForm
                 submission={submission}
                 setTemplate={setTemplate}
+                setSmartLink={setSmartLink}
                 submissionDispatch={submissionDispatch}
                 handleSendEmail={handleSendEmail}
                 emailReady={emailReady}
@@ -110,8 +110,6 @@ function SumbissionsContainer(props) {
                 history={history}
             />;
     }
-
-    const smartLink = useSmartLink(submission.UID, `/prevSubmission?${submission.id}`)
 
     return(<React.Fragment>
         { locationIndicator }

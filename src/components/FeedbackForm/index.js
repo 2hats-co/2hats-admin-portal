@@ -18,9 +18,11 @@ import RedoIcon from '@material-ui/icons/Redo';
 import DoneIcon from '@material-ui/icons/Done';
 import SendIcon from '@material-ui/icons/Send';
 import SendToPendingIcon from '@material-ui/icons/SettingsBackupRestore';
+//import { useSmartKey} from '../../hooks/useSmartKey';
 
 import FeedbackElement from './FeedbackElement';
 import * as _ from 'lodash'
+import {firestore} from '../../store'
 
 import { COLLECTIONS } from "../../constants/firestore";
 import {SUBMISSION_FEEDBACK, getFeedbackContent, getFeedbackTitle, feedbackSections} from '../../constants/feedback'
@@ -29,6 +31,7 @@ import { updateProperties } from '../../utilities/firestore';
 import { useUserInfo } from '../../hooks/useUserInfo';
 import { TextField } from '@material-ui/core';
 
+import {makeId} from '../../utilities/index'
 const styles = theme => ({
   root: {
     paddingTop: theme.spacing.unit * 6,
@@ -78,6 +81,20 @@ const styles = theme => ({
   },
 });
 
+const generateSmartKey =(uid,route)=>{
+  const smartKey = makeId(36)
+  let slDoc = {
+    UID: uid,
+    expireTime: new Date(7 * 24 * 60 * 60 * 1000),
+    route: route,
+    startTime: new Date(),
+    createdAt: new Date(),
+    disable: false,
+};
+  firestore.collection(COLLECTIONS.smartLinks).doc(smartKey).set(slDoc);
+  return smartKey
+}
+
 const feedbackReducer = (state, action) => {
   console.log(state,action)
   switch (action.type) {
@@ -90,21 +107,27 @@ const feedbackReducer = (state, action) => {
 };
 
 function FeedbackForm(props){
-    const { classes, submission, setTemplate, submissionDispatch,
+    const { classes, submission, setTemplate,setSmartLink, submissionDispatch,
       handleSendEmail, location, history, emailReady } = props;
 
     const [feedback, feedbackDispatch] = useReducer(feedbackReducer, {});
-
     const [showSend, setShowSend] = useState(false);
     const [showDialog, setShowDialog] = useState(false);
-
+ 
     const userInfo = useUserInfo();
 
+    // useEffect(()=>{
+    //   if(smartKeyState && smartKeyState.smartKey){
+    //     props.setSmartLink(smartKeyState.smartKey)
+    //   }
+    // },[smartKeyState])
     const storeFeedback = () => {
       const mappedFeedback = _.map(feedback, (value,id) => {
-        const content = getFeedbackContent(id,value)
-        return({id,content,value});
-      });
+        if(id !== 'additional'){
+          const content = getFeedbackContent(id,value)
+          return({id,content,value});
+        }
+      }).filter(x=> x !== undefined);
 
       const additionalComments = document.getElementById('additionalCommentsTextarea').value;
       if (additionalComments.length > 0) mappedFeedback.push({
@@ -127,13 +150,17 @@ function FeedbackForm(props){
     };
 
     const handleSubmit = () => {
-      if (location.pathname === '/rejected') setTemplate(rejectedWithFeedback);
-      if (location.pathname === '/accepted') setTemplate(resumeAccepted);
+      storeFeedback();
+      if (submission.outcome === 'rejected') {
+        const smartKey = generateSmartKey(submission.UID,`prevSubmission?${submission.id}`)
+        setSmartLink(smartKey)
+        setTemplate(rejectedWithFeedback)
+      };
+      if (location.outcome === 'accepted') setTemplate(resumeAccepted);
       setShowSend(true);
     };
     const sendEmail = () => {
       handleSendEmail();
-      storeFeedback();
       resetFeedbackForm();
       submissionDispatch({ type:'clear' });
     };

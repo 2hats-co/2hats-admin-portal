@@ -15,5 +15,12 @@ export const copyToClipboard = (text) => {
     document.execCommand('copy');
     document.body.removeChild(dummy);
 }
+export function makeId(chars) {
+    var text = "";
+    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    for (var i = 0; i < chars; i++)
+      text += possible.charAt(Math.floor(Math.random() * possible.length));
+    return text;
+  }
 
 export const propsIntoObject = (props) =>{return props.reduce(((r, c) => Object.assign(r, c)), {})}
