@@ -150,7 +150,7 @@ export const withNavigation = (WrappedComponent) => {
                                                 <div>{displayName}</div>
                                                 <div>{uid}</div>
 
-                                                <div className={classes.avatarTooltipHeading}>Build #{metadata.build}</div>
+                                                <div className={classes.avatarTooltipHeading}>Build {metadata.hash}</div>
                                                 <div>{new Date(metadata.date).toLocaleString()}</div>
                                             </React.Fragment>}
                                             placement="top-start"
