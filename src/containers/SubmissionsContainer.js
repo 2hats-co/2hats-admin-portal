@@ -18,9 +18,7 @@ import FeedbackForm from '../components/FeedbackForm';
 import TemplateGenerator from '../components/TemplateGenerator';
 import {sendEmail} from '../utilities/email/send'
 
-import { updateProperties } from '../utilities/firestore';
-import { COLLECTIONS } from '../constants/firestore';
-
+import Search from '../components/Search'
 const styles = theme => ({
     card: {
         height: '100%',
@@ -50,7 +48,7 @@ function SumbissionsContainer(props) {
     useEffect(() => {
         if (!submission && location.search.indexOf('?uid=') > -1) {
             const uid = location.search.replace('?uid=','')
-            submissionDispatch({ type:'get', uid, route:currentRoute});
+            submissionDispatch({uid});
         }
     }, [submission, location.search]);
 
@@ -59,10 +57,12 @@ function SumbissionsContainer(props) {
 
     const [showSnackbar, setShowSnackbar] = useState(false);
 
-    const locationIndicator = <LocationIndicator
+    const locationIndicator = <Grid container direction='row'><LocationIndicator
                                 title="Submissions"
                                 subRoutes={['/pending', '/rejected', '/accepted']}
-                            />;
+                            />
+                            <Search/>
+                            </Grid>;
 
     if (!submission) {
         return <React.Fragment>
@@ -87,8 +87,8 @@ function SumbissionsContainer(props) {
     };
 
     let rightPanel;
-    switch (location.pathname) {
-        case '/pending':
+    switch (submission.outcome) {
+        case 'pending':
             rightPanel = <ScreeningForm
                             submission={submission}
                             setTemplate={setTemplate}
@@ -98,8 +98,8 @@ function SumbissionsContainer(props) {
                             setEmailReady={setEmailReady}
                         />;
             break;
-        case '/rejected':
-        case '/accepted':
+        case 'rejected':
+        case 'accepted':
             rightPanel = <FeedbackForm
                 submission={submission}
                 setTemplate={setTemplate}

@@ -1,41 +1,25 @@
-import {auth,firestore} from '../store'
+import {firestore} from '../store'
 import {COLLECTIONS} from '../constants/firestore'
-import { useEffect, useState, useReducer } from 'react';
+import { useEffect, useReducer } from 'react';
 
-import * as R from 'ramda'
-
-const setFilters = (type,route,submissionDispatch) => {
+const generateFilters = (route,uid) => {
     let filters = [];
-    switch (type) {
-        case 'pending':
-            filters = [{field:'outcome',operator:'==',value:type}];
+    if(uid !== ''){
+        filters.push( {field:'UID',operator:'==',value:uid})
+    }else {
+         filters = [{field:'outcome',operator:'==',value:route}];
+        switch (route) {
+            case 'accepted':
+            case 'rejected':filters.push({field:'feedbacked',operator:'==',value:false})
             break;
-        case 'accepted':
-            filters = [{field:'outcome',operator:'==',value:type},
-                {field:'feedbacked',operator:'==',value:false}];
-            break;
-        case 'rejected':
-            filters = [{field:'outcome',operator:'==',value:type},
-                {field:'feedbacked',operator:'==',value:false}];
-            break;
-        default:
-            filters = [
-                {field:'outcome',operator:'==',value:route},
-                {field:'UID',operator:'==',value:type}
-            ];
-            if (route === 'accepted' || route === 'rejected')
-                filters.push({field:'feedbacked',operator:'==',value:false});
-        break;
+        }
     }
-    submissionDispatch({type:'filters',filters})
+   return filters
 }
 
-const getSubmissions = (filters,skipOffset,equalOffsets,submissionDispatch) =>{
-    console.log(filters)
-    if(!equalOffsets){
-    submissionDispatch({ type:'setPrevSkip',prevSkipOffset:skipOffset});
-    }
-
+const getSubmissions = (filters,skipOffset,uid,submissionDispatch) =>{
+    //updates prev values
+  submissionDispatch({prevSkipOffset:skipOffset,prevUid:uid})
     let query = firestore.collection(COLLECTIONS.submissions);
     filters.forEach((filter)=>{
         query = query.where(filter.field,filter.operator,filter.value)
@@ -49,39 +33,29 @@ const getSubmissions = (filters,skipOffset,equalOffsets,submissionDispatch) =>{
             id: snapshot.docs[snapshot.docs.length - 1].id,
             ...snapshot.docs[snapshot.docs.length - 1].data()
         }
-        if (skipOffset >= snapshot.docs.length) {
-            submissionDispatch({ type:'clear',prevFilters:filters,prevSkipOffset:skipOffset});
-        } else {
-            submissionDispatch({ type:'set', submission , prevFilters:filters,prevSkipOffset:skipOffset});
-        }
-        }else{
-             submissionDispatch({type:'complete',prevFilters:filters,prevSkipOffset:skipOffset})
+        submissionDispatch({submission})
         }
     });
 } 
-const submissionReducer = (state, action) => {
-    let props = {...action}
-    delete props.type
-    switch (action.type) {
-  
+
+const submissionReducer = (prevState, newProps) => {
+    switch (newProps.type) {
+        case 'skip':if(prevState.uid ==='')return({...prevState,skipOffset:prevState.skipOffset+1}) 
+        case 'clear':return({...prevState,uid:'',prevUid:prevState.uid}) 
+        default:return({...prevState,...newProps})
     }
 }
 
 export function useSubmission(route) {
-    
-    const [submissionState, submissionDispatch] = useReducer(submissionReducer,{submission: null, 
-            skipOffset: 0, prevSkipOffset: 0,
-            uid:null,prevUid:null,
-            filters:[{field:'outcome',operator:'==',value:route}],prevFilters:[]});
-
-
+    const [submissionState, submissionDispatch] = useReducer(submissionReducer,
+        {submission: null, skipOffset: 0, prevSkipOffset: null, uid:'',prevUid:null});
     useEffect(() => {
-        const {uid,prevUid,filters,prevFilters,prevSkipOffset,skipOffset,submission} = submissionState
-        
-        return () => {
-            firestore.collection(COLLECTIONS.submissions).onSnapshot(() => {});
-        };
+        const {uid,prevUid,prevSkipOffset,skipOffset} = submissionState
+        if(uid !== prevUid ||skipOffset!==prevSkipOffset){
+            const filters = generateFilters(route,uid)
+            getSubmissions(filters,skipOffset,uid,submissionDispatch)
+        }
+        return () => {firestore.collection(COLLECTIONS.submissions).onSnapshot(() => {});};
     },[submissionState]);
-
     return [submissionState, submissionDispatch];
 }

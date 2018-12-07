@@ -15,3 +15,5 @@ export const copyToClipboard = (text) => {
     document.execCommand('copy');
     document.body.removeChild(dummy);
 }
+
+export const propsIntoObject = (props) =>{return props.reduce(((r, c) => Object.assign(r, c)), {})}

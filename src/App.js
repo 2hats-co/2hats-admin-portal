@@ -32,6 +32,7 @@ function App() {
                         <Route exact path={ROUTES.subjects} component={() => <SubjectsContainer/>} />
                         <Route exact path={ROUTES.resumes} component={() => <ResumesContainer/>} />
                         <Route exact path={ROUTES.leads} component={() => <LeadsContainer/>} />
+                        <Route exact path={ROUTES.submissions} component={() => <SubmissionsContainer />} />
                         <Route exact path={ROUTES.pending} component={() => <SubmissionsContainer />} />
                         <Route exact path={ROUTES.rejected} component={() => <SubmissionsContainer />} />
                         <Route exact path={ROUTES.accepted} component={() => <SubmissionsContainer />} />

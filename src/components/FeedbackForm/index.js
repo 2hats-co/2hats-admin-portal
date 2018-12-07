@@ -1,7 +1,7 @@
-import React, { useReducer, useState } from 'react';
+import React, { useReducer, useState,useEffect } from 'react';
 import PropTypes, { element } from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-
+import {propsIntoObject} from '../../utilities/index'
 import Grid from '@material-ui/core/Grid';
 import List from '@material-ui/core/List';
 import Button from '@material-ui/core/Button';
@@ -79,11 +79,13 @@ const styles = theme => ({
 });
 
 const feedbackReducer = (state, action) => {
+  console.log(state,action)
   switch (action.type) {
-    case 'update':
-      return Object.assign(state, {[action.field]: action.value });
-    case 'reset':
-      return {};
+    case 'set':let feedbackElements =  action.storedFeedback.map((element)=> {if(element.id ==='additional'){
+      return({[element.id]:element.content})}else{return({[element.id]:element.value})}})
+      return propsIntoObject(feedbackElements)
+    case 'update':return({...state,[action.field]:action.value});
+    case 'reset':return {};
   }
 };
 
@@ -152,7 +154,13 @@ function FeedbackForm(props){
       setShowDialog(false);
       document.getElementById('additionalCommentsTextarea').value = '';
     };
+    useEffect(()=>{
+
+    if(submission.feedbackContent){
+      feedbackDispatch({type:'set',storedFeedback:submission.feedbackContent})
+    }
     
+    },[submission])
     return (
       <div className={classes.root}>
         <Grid container justify="space-between" className={classes.topButtons}>
@@ -167,7 +175,7 @@ function FeedbackForm(props){
           </Button>
         </Grid>
 
-        { location.pathname === '/rejected' &&
+        { submission.outcome === 'rejected' &&
           <List component="nav"
             className={classes.list}
           >
