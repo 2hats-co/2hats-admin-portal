@@ -3,10 +3,11 @@ import {withRouter} from 'react-router-dom';
 
 import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
 
 import Avatar from '@material-ui/core/Avatar';
 import Tooltip from '@material-ui/core/Tooltip';
+import Slide from '@material-ui/core/Slide';
+import Fade from '@material-ui/core/Fade';
 
 import PeopleIcon from '@material-ui/icons/People';
 import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
@@ -21,6 +22,7 @@ import {ROUTES} from '../../constants/routes';
 import logo from '../../assets/logo/WhiteIcon.svg';
 import NavigationItems from './NavigationItems';
 import withAuthentication from '../../utilities/Session/withAuthentication';
+import metadata from '../../metadata.json';
 
 import { withFirestore } from "../../utilities/withFirestore";
 
@@ -49,6 +51,12 @@ const styles = theme => ({
         backgroundColor: 'rgba(255,255,255,.87)',
         color: theme.palette.primary.main,
         fontWeight: 500,
+    },
+    avatarTooltipHeading: {
+        fontWeight: 'bold',
+        '&:not(:first-of-type)': {
+            marginTop: theme.spacing.unit,
+        },
     },
 });
 
@@ -119,38 +127,47 @@ export const withNavigation = (WrappedComponent) => {
 
             return(
                 <Grid container wrap="nowrap">
-                    <Grid item className={classes.leftNav}>
-                        <Grid container style={{height:'100vh'}} justify="center" alignContent="space-between">
-                            <Grid item style={{height:64}}>
-                                <img alt="2hats logo" src={logo} className={classes.logo} />
-                            </Grid>
-                            <Grid item style={{marginBottom:48}}>
-                                <NavigationItems
-                                    goTo={this.goTo}
-                                    currentLocation={path}
-                                    selectedIndex={index}
-                                    navigationRoutes={navigationRoutes}
-                                />
-                            </Grid>
-                            <Grid item style={{height:64,padding:12}}>
-                                { initials && displayName && uid && 
-                                <Tooltip
-                                    title={<React.Fragment>
-                                        <div style={{fontSize:12}}>Signed in as:</div>
-                                        <div>{displayName}</div>
-                                        <div>{uid}</div>
-                                    </React.Fragment>}
-                                    placement="top-start"
-                                    leaveDelay={5000}
-                                >
-                                    <Avatar className={classes.avatar}>{initials ? initials : null}</Avatar>
-                                </Tooltip>}
+                    <Slide in direction="right">
+                        <Grid item className={classes.leftNav}>
+                            <Grid container style={{height:'100vh'}} justify="center" alignContent="space-between">
+                                <Grid item style={{height:64}}>
+                                    <img alt="2hats logo" src={logo} className={classes.logo} />
+                                </Grid>
+                                <Grid item style={{marginBottom:48}}>
+                                    <NavigationItems
+                                        goTo={this.goTo}
+                                        currentLocation={path}
+                                        selectedIndex={index}
+                                        navigationRoutes={navigationRoutes}
+                                    />
+                                </Grid>
+                                <Grid item style={{height:64,padding:12}}>
+                                    { initials && displayName && uid &&
+                                    <Slide in direction="right">
+                                        <Tooltip
+                                            title={<React.Fragment>
+                                                <div className={classes.avatarTooltipHeading}>Signed in as</div>
+                                                <div>{displayName}</div>
+                                                <div>{uid}</div>
+
+                                                <div className={classes.avatarTooltipHeading}>Build #{metadata.build}</div>
+                                                <div>{new Date(metadata.date).toLocaleString()}</div>
+                                            </React.Fragment>}
+                                            placement="top-start"
+                                            leaveDelay={5000}
+                                        >
+                                            <Avatar className={classes.avatar}>{initials ? initials : null}</Avatar>
+                                        </Tooltip>
+                                    </Slide>}
+                                </Grid>
                             </Grid>
                         </Grid>
-                    </Grid>
-                    <Grid item xs>
-                        <WrappedComponent {...this.props} />
-                    </Grid>
+                    </Slide>
+                    <Fade in timeout={400}>
+                        <Grid item xs>
+                            <WrappedComponent {...this.props} />
+                        </Grid>
+                    </Fade>
                 </Grid>
             );
         }
