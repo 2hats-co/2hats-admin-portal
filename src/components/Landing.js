@@ -3,15 +3,10 @@ import { withRouter } from "react-router-dom";
 import { ROUTES } from "../constants/routes";
 import AuthenticationContainer from "../containers/AuthenticationContainer";
 import LoadingCard from "../components/LoadingCard";
-import { COLLECTIONS } from "../constants/firestore";
-import { compose } from "redux";
-import { withHandlers, lifecycle } from "recompose";
-import { connect } from "react-redux";
-import { withFirestore } from "../utilities/withFirestore";
-import { useUserInfo } from '../hooks/useUserInfo';
+import { useAuthedUser } from '../hooks/useAuthedUser';
 
 function Landing(props){
-  const currentUser = useUserInfo()
+  const currentUser = useAuthedUser()
   //   this.props.loadData();
   //   if (this.props.authUser == !null) {
   //     this.props.history.push(ROUTES.stats);
@@ -34,7 +29,9 @@ function Landing(props){
     if (currentUser) {
         if(currentUser.defaultRoute)
            props.history.push(currentUser.defaultRoute);
-        }else
+        }else{
+          props.history.push(ROUTES.stats);
+        }
     console.log(currentUser)
   },[
     currentUser

@@ -37,12 +37,6 @@ const SubjectsContainer = Loadable({
       return loadingCard
     }
 });
-const ResumesContainer = Loadable({
-    loader: () => import('./containers/ResumesContainer'),
-    loading() {
-      return loadingCard
-    }
-});
 
 const AuthenticationContainer = Loadable({
     loader: () => import('./containers/AuthenticationContainer'),
@@ -83,7 +77,6 @@ function App() {
                         <Route exact path={ROUTES.stats} component={() => <StatisticsContainer/>} />
                         <Route exact path={ROUTES.candidates} component={() => <CandidatesContainer/>} />
                         <Route exact path={ROUTES.subjects} component={() => <SubjectsContainer/>} />
-                        <Route exact path={ROUTES.resumes} component={() => <ResumesContainer/>} />
                         <Route exact path={ROUTES.leads} component={() => <LeadsContainer/>} />
                         <Route exact path={ROUTES.submissions} component={() => <SubmissionsContainer />} />
                         <Route exact path={ROUTES.pending} component={() => <SubmissionsContainer />} />

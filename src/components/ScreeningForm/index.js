@@ -18,7 +18,7 @@ import Reasons from './Reasons';
 import { outsideDemographic, outsideIndusty } from '../../constants/emails/templates';
 import { updateProperties } from '../../utilities/firestore';
 import { COLLECTIONS } from '../../constants/firestore';
-import { useUserInfo } from '../../hooks/useUserInfo';
+import { useAuthedUser } from '../../hooks/useAuthedUser';
 
 const styles = theme => ({
     root: {
@@ -93,7 +93,7 @@ function ScreeningForm(props) {
 
     const [disqualifyType, setDisqualifyType] = useState('');
 
-    const userInfo = useUserInfo();
+    const authedUser = useAuthedUser();
 
     useEffect(() => {
         setReasons(handleConfidence(confidenceLevel.index));
@@ -107,7 +107,7 @@ function ScreeningForm(props) {
             processes: oldProcesses.concat([ {
                 type: 'screened',
                 value: confidenceLevel.value,
-                operator: userInfo.UID,
+                operator: authedUser.UID,
                 timestamp: new Date(),
             } ]),
             reasons: outputReasons,
@@ -124,7 +124,7 @@ function ScreeningForm(props) {
             processes: oldProcesses.concat([ {
                 type: 'screened',
                 value: `disqualified-${disqualifyType}`,
-                operator: userInfo.UID,
+                operator: authedUser.UID,
                 timestamp: new Date(),
             } ]),
         }

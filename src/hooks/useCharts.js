@@ -1,12 +1,12 @@
 import {auth,firestore} from '../store'
 import {COLLECTIONS} from '../constants/firestore'
 import { useState, useEffect } from 'react';
-import {useUserInfo} from './useUserInfo'
+import {useAuthedUser} from './useAuthedUser'
 export function useCharts(uid) {
   const [charts, setCharts] = useState(null);
-  const currentUser = useUserInfo()
+  const currentUser = useAuthedUser()
   useEffect(() => {
-    console.log('userInfo',uid,currentUser)
+    console.log('authedUser',uid,currentUser)
     if(currentUser){
         console.log(currentUser)
   }

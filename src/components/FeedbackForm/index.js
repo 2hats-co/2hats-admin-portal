@@ -28,7 +28,7 @@ import { COLLECTIONS } from "../../constants/firestore";
 import {SUBMISSION_FEEDBACK, getFeedbackContent, getFeedbackTitle, feedbackSections} from '../../constants/feedback'
 import { rejectedWithFeedback, resumeAccepted } from '../../constants/emails/templates';
 import { updateProperties } from '../../utilities/firestore';
-import { useUserInfo } from '../../hooks/useUserInfo';
+import { useAuthedUser } from '../../hooks/useAuthedUser';
 import { TextField } from '@material-ui/core';
 
 import {makeId} from '../../utilities/index'
@@ -114,7 +114,7 @@ function FeedbackForm(props){
     const [showSend, setShowSend] = useState(false);
     const [showDialog, setShowDialog] = useState(false);
  
-    const userInfo = useUserInfo();
+    const authedUser = useAuthedUser();
 
     // useEffect(()=>{
     //   if(smartKeyState && smartKeyState.smartKey){
@@ -142,7 +142,7 @@ function FeedbackForm(props){
         feedbacked: true,
         processes: oldProcesses.concat([ {
             type: 'feedbacked',
-            operator: userInfo.UID,
+            operator: authedUser.UID,
             timestamp: new Date(),
         } ]),
       };

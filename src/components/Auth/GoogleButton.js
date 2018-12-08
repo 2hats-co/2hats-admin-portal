@@ -3,7 +3,8 @@ import { withStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import { GOOGLE_CID_PRODUCTION, GOOGLE_CID_STAGING } from "../../config/auth";
 import GoogleIcon from "../../assets/Google.svg";
-import GoogleLogin from "react-google-login";
+//import GoogleLogin from "react-google-login";
+import GoogleLogin from "../../utilities/auth/GoogleLogin";
 import { withRouter } from "react-router-dom";
 import { authAdmin } from "../../firebase/auth";
 const styles = theme => ({
