@@ -15,7 +15,6 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Grid from '@material-ui/core/Grid';
 import TrackerField from './TrackerField';
 import ChartTypePicker from './ChartTypePicker';
-import { FormControl,Select,MenuItem,InputLabel,Input} from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import AddIcon from '@material-ui/icons/Add';
 import AddCirlceIcon from '@material-ui/icons/AddCircleOutline';

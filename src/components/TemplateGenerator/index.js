@@ -9,7 +9,7 @@ import Grid from '@material-ui/core/Grid';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Slide from '@material-ui/core/Slide';
 
-import * as R from 'ramda'
+import clone from 'ramda/es/clone'
 
 import { useCandidate } from '../../hooks/useCandidate';
 
@@ -64,8 +64,8 @@ function TemplateGenerator(props) {
   const recipient = { UID: candidate.UID, email: candidate.email };
   console.log(recipient)
 
-  const templateClone =  R.clone(template)
-  const theme = R.clone(THEME1)
+  const templateClone =  clone(template)
+  const theme = clone(THEME1)
 
     useEffect(() => {
       console.log('userInfo',userInfo)

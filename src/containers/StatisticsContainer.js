@@ -15,7 +15,6 @@ import { Button, Grid } from '@material-ui/core';
 import ChartBuilder from '../components/Statistics/ChartBuilder';
 import SettingsIcon from '@material-ui/icons/Settings'
 import IconButton from '@material-ui/core/IconButton'
-import * as R from 'ramda'
 import GridLayout from 'react-grid-layout';
 import { WidthProvider } from 'react-grid-layout';
 import '../../node_modules/react-grid-layout/css/styles.css';

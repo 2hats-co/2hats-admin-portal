@@ -21,7 +21,7 @@ import SendToPendingIcon from '@material-ui/icons/SettingsBackupRestore';
 //import { useSmartKey} from '../../hooks/useSmartKey';
 
 import FeedbackElement from './FeedbackElement';
-import * as _ from 'lodash'
+import map from 'lodash/map';
 import {firestore} from '../../store'
 
 import { COLLECTIONS } from "../../constants/firestore";
@@ -122,7 +122,7 @@ function FeedbackForm(props){
     //   }
     // },[smartKeyState])
     const storeFeedback = () => {
-      const mappedFeedback = _.map(feedback, (value,id) => {
+      const mappedFeedback = map(feedback, (value,id) => {
         if(id !== 'additional'){
           const content = getFeedbackContent(id,value)
           return({id,content,value});
@@ -206,7 +206,7 @@ function FeedbackForm(props){
           <List component="nav"
             className={classes.list}
           >
-            {_.map(SUBMISSION_FEEDBACK,(section,sectionId)=>
+            {map(SUBMISSION_FEEDBACK,(section,sectionId)=>
               <div className={classes.listSection} key={sectionId}>
                 {section.map((element, i) =>
                   <FeedbackElement

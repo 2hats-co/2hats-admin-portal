@@ -1,7 +1,6 @@
 import {auth,firestore} from '../store'
 import {COLLECTIONS} from '../constants/firestore'
 import { useState, useEffect } from 'react';
-import * as R from 'ramda'
 import {useUserInfo} from './useUserInfo'
 export function useCharts(uid) {
   const [charts, setCharts] = useState(null);

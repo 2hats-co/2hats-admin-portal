@@ -21,7 +21,8 @@ import ConfirmationDialog from '../ConfirmationDialog';
 
 import SendIcon from '@material-ui/icons/Send';
 import FeedbackElement from './FeedbackElement'; 
-import * as _ from 'lodash'
+import map from 'lodash/map';
+import sortBy from 'lodash/sortBy';
 import {SUBMISSION_FEEDBACK,getFeedbackContent, getFeedbackTitle, feedbackSections} from '../../constants/feedback'
 const styles = theme => ({
   root: {
@@ -101,7 +102,7 @@ class FeedbackForm extends Component {
     }
   }
   saveFeedback(){
-    let feedbackContent =  _.map(this.state.feedback,(value,id)=>{
+    let feedbackContent =  map(this.state.feedback,(value,id)=>{
       const out = {id,content:getFeedbackContent(id,value),value};
       if (!out.content) return null;
       return out;
@@ -172,15 +173,15 @@ updateDB = () =>{this.props.firestore.update({collection: COLLECTIONS.submission
     let feedbackText;
     if (this.state.feedback) {
 
-      const mappedFeedback = _.map(this.state.feedback,(value,id)=>{
+      const mappedFeedback = map(this.state.feedback,(value,id)=>{
         return{id,value}
       }) 
-      const sortedFeedback = _.sortBy(mappedFeedback,['id'])
+      const sortedFeedback = sortBy(mappedFeedback,['id'])
       console.log(mappedFeedback,sortedFeedback)
 
       let prevSection = '-1';
 
-      feedbackText = _.map(this.state.feedback,(value,id)=>{
+      feedbackText = map(this.state.feedback,(value,id)=>{
         const feedbackBody = getFeedbackContent(id,value);
     
         if (!feedbackBody) return null;
@@ -239,7 +240,7 @@ updateDB = () =>{this.props.firestore.update({collection: COLLECTIONS.submission
         <List component="nav"
           className={classes.list}
         >
-          {_.map(SUBMISSION_FEEDBACK,(section,sectionId)=>
+          {map(SUBMISSION_FEEDBACK,(section,sectionId)=>
             <div className={classes.listSection} key={sectionId}>
               {section.map((element, i) =>
                 <FeedbackElement

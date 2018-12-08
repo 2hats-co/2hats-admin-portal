@@ -1,6 +1,8 @@
-import React, { Component } from 'react';
-import {getTrackerLineData} from '../../utilities/analytics/index'
-import ReactEcharts from 'echarts-for-react';
+import React from 'react';
+
+import ReactEchartsCore from 'echarts-for-react/lib/core';
+import echarts from 'echarts/lib/echarts';
+import 'echarts/lib/chart/line';
 import withAnalytics from './withAnalytics'
 function TrackerLineChart(props){  
             const {trackers} = props
@@ -18,7 +20,9 @@ function TrackerLineChart(props){
             andimationDelay: 1000,
             })
         })
-           return(<ReactEcharts theme="light" style={{height:'100%'}} option={{
+           return(<ReactEchartsCore      
+            echarts={echarts}
+             theme="light" style={{height:'100%'}} option={{
             title: { show: false },
             color: colours,
           
