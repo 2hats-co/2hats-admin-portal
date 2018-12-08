@@ -1,7 +1,7 @@
 import React,{useEffect} from 'react'
 
 import {resumeAccepted} from '../../constants/emails/templates'
-import {useUserInfo} from '../../hooks/useUserInfo'
+import {useAuthedUser} from '../../hooks/useAuthedUser'
 import TemplateGenerator from './index'
 function TestEmail(props) {
     return(<TemplateGenerator

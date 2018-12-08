@@ -1,14 +1,8 @@
-import React, { Component } from 'react';
+import React from 'react';
 import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
-//containers
-import StatisticsContainer from './containers/StatisticsContainer'
-import CandidatesContainer from './containers/CandidatesContainer'
-import SubjectsContainer from './containers/SubjectsContainer'
-import ResumesContainer from './containers/ResumesContainer'
-import AuthenticationContainer from './containers/AuthenticationContainer'
-import LeadsContainer from './containers/LeadsContainer'
-import MailContainer from './containers/MailContainer'
-import SubmissionsContainer from './containers/SubmissionsContainer';
+import Loadable from 'react-loadable';
+import Grid from '@material-ui/core/Grid';
+import CircularProgress from '@material-ui/core/CircularProgress';
 //routing
 import {
     BrowserRouter as Router,
@@ -19,7 +13,60 @@ import {ROUTES} from './constants/routes'
 import Landing from './components/Landing';
 // containers
 import withAuthentication from './utilities/Session/withAuthentication';
-import TemplateGenerator from './components/TemplateGenerator'
+//import TemplateGenerator from './components/TemplateGenerator'
+
+//containers
+const loadingCard = (<Grid container alignItems="center" justify="center" style={{height:'100%',position:'absolute',top:0,left:0}}><CircularProgress color="primary" size={60}/></Grid>)
+
+const StatisticsContainer = Loadable({
+    loader: () => import('./containers/StatisticsContainer'),
+    loading() {
+      return loadingCard
+    }
+});
+
+const CandidatesContainer = Loadable({
+    loader: () => import('./containers/CandidatesContainer'),
+    loading() {
+      return loadingCard
+    }
+});
+const SubjectsContainer = Loadable({
+    loader: () => import('./containers/SubjectsContainer'),
+    loading() {
+      return loadingCard
+    }
+});
+
+const AuthenticationContainer = Loadable({
+    loader: () => import('./containers/AuthenticationContainer'),
+    loading() {
+      return loadingCard
+    }
+});
+
+const LeadsContainer = Loadable({
+    loader: () => import('./containers/LeadsContainer'),
+    loading() {
+      return loadingCard
+    }
+});
+
+const MailContainer = Loadable({
+    loader: () => import('./containers/MailContainer'),
+    loading() {
+      return loadingCard
+    }
+});
+
+const SubmissionsContainer = Loadable({
+    loader: () => import('./containers/SubmissionsContainer'),
+    loading() {
+      return loadingCard
+    }
+});
+
+
 function App() {
 
         return (
@@ -30,8 +77,8 @@ function App() {
                         <Route exact path={ROUTES.stats} component={() => <StatisticsContainer/>} />
                         <Route exact path={ROUTES.candidates} component={() => <CandidatesContainer/>} />
                         <Route exact path={ROUTES.subjects} component={() => <SubjectsContainer/>} />
-                        <Route exact path={ROUTES.resumes} component={() => <ResumesContainer/>} />
                         <Route exact path={ROUTES.leads} component={() => <LeadsContainer/>} />
+                        <Route exact path={ROUTES.submissions} component={() => <SubmissionsContainer />} />
                         <Route exact path={ROUTES.pending} component={() => <SubmissionsContainer />} />
                         <Route exact path={ROUTES.rejected} component={() => <SubmissionsContainer />} />
                         <Route exact path={ROUTES.accepted} component={() => <SubmissionsContainer />} />

@@ -1,5 +1,6 @@
 import moment from 'moment'
-import * as _ from 'lodash'
+import forEach from 'lodash/forEach';
+
 import {
   firestore
 } from '../../store';
@@ -53,8 +54,7 @@ const hourlyDataExtractor = (data) => {
   let hourlyData = []
   data.forEach(month => {
     const hourly = month.hourly
-    _.forEach(hourly, (value, timeStamp) => {
-
+    forEach(hourly, (value, timeStamp) => {
       hourlyData.push({
         value,
         timeStamp

@@ -1,18 +1,18 @@
 import {auth,firestore} from '../store'
 import {COLLECTIONS} from '../constants/firestore'
 import { useState, useEffect } from 'react';
-import * as R from 'ramda'
-export function useUserInfo() {
+import assoc from 'ramda/es/assoc'
+export function useAuthedUser() {
   const [currentUser, setCurrentUser] = useState(null);
-  const handleGetUserInfo = async(uid) => { 
+  const handleGetAuthedUser = async(uid) => { 
     const user = await firestore.collection(COLLECTIONS.admins).doc(uid).get()
-    const currentUser = R.assoc('UID',user.id,user.data())
+    const currentUser = assoc('UID',user.id,user.data())
     setCurrentUser(currentUser)    
   }
   useEffect(() => {
     if(!currentUser){
     auth.onAuthStateChanged(authUser => {
-      handleGetUserInfo(authUser.uid)
+      handleGetAuthedUser(authUser.uid)
     });
   }
 },[currentUser]);

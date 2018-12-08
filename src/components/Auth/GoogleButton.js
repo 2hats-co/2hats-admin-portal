@@ -3,7 +3,8 @@ import { withStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import { GOOGLE_CID_PRODUCTION, GOOGLE_CID_STAGING } from "../../config/auth";
 import GoogleIcon from "../../assets/Google.svg";
-import GoogleLogin from "react-google-login";
+//import GoogleLogin from "react-google-login";
+import GoogleLogin from "../../utilities/auth/GoogleLogin";
 import { withRouter } from "react-router-dom";
 import { authAdmin } from "../../firebase/auth";
 const styles = theme => ({
@@ -38,10 +39,9 @@ class GoogleButton extends Component {
       console.log("google auth staging", GOOGLE_CID_STAGING);
     }
   }
-
-  componentDidMount() {}
+  
   handleRouting(route) {
-    // this.props.history.replace(route);
+     this.props.history.replace(route);
   }
   handleGoogleAuthFail = error => {
     console.log("google auth fail", error);
@@ -63,8 +63,8 @@ class GoogleButton extends Component {
       <div onClick={this.props.onClick}>
         <GoogleLogin
           clientId={cid}
-          responseType="code"
-          scope="https://www.googleapis.com/auth/gmail.readonly"
+          scope="https://www.googleapis.com/auth/gmail.readonly https://www.googleapis.com/auth/gmail.send https://www.googleapis.com/auth/calendar"
+          //scope="https://www.googleapis.com/auth/gmail.readonly"
           accessType="offline"
           render={renderProps => (
             <Button

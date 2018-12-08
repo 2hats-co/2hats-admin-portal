@@ -1,10 +1,12 @@
-import { applyMiddleware, createStore, compose } from 'redux'
+import { 
+	//applyMiddleware, 
+	createStore, compose } from 'redux'
 import { reduxFirestore } from 'redux-firestore'
 import firebase from 'firebase/app'
 import 'firebase/auth'
 import 'firebase/firestore'
 import 'firebase/functions'
-import logger from 'redux-logger'
+//import logger from 'redux-logger'
 
 
 import { productionConfig, stagingConfig } from '../config/firebase'
@@ -39,7 +41,7 @@ export function configureStore(initialState, history) {
 	const createStoreWithMiddleware = compose(
 		// Add redux firestore store enhancer
 		reduxFirestore(firebase),
-		applyMiddleware(logger),
+		//applyMiddleware(logger),
 		...enhancers
 	)(createStore)
 

@@ -2,13 +2,14 @@ import React, { useState, useEffect } from 'react';
 import {THEME1} from '../../constants/emails/themes'
 import {makeEmail, personaliseElements} from '../../utilities/email/templateGenerator'
 
-import {sendEmail} from '../../utilities/email/send'
-import {useUserInfo} from '../../hooks/useUserInfo'
+import {useAuthedUser} from '../../hooks/useAuthedUser'
 
 import withStyles from '@material-ui/core/styles/withStyles';
-import Button from '@material-ui/core/Button';
-import SendIcon from '@material-ui/icons/Send';
-import * as R from 'ramda'
+import Grid from '@material-ui/core/Grid';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Slide from '@material-ui/core/Slide';
+
+import clone from 'ramda/es/clone'
 
 import { useCandidate } from '../../hooks/useCandidate';
 
@@ -19,6 +20,7 @@ const styles = theme => ({
     bottom: 0,
     zIndex: 2,
 
+    backgroundColor: '#fff',
     width: 'calc(100vw - 64px - 400px)',
     height: 300,
     overflowY: 'scroll',
@@ -47,48 +49,48 @@ function reducer(state, action) {
 function TemplateGenerator(props) {
   const [emailBody, setEmailBody] = useState('');
 
-  const { classes, template, close, recipientUID, smartLink, handleSubmit } = props;
+  const { classes, template, recipientUID, smartLink, setEmail, setEmailReady } = props;
   console.log(template)
 
-  const userInfo = useUserInfo()
+  const authedUser = useAuthedUser()
   const candidate = useCandidate(recipientUID)
 
-  if (!candidate) return null;
+  if (!candidate) return (<Slide in direction="up">
+  <Grid container justify="center" alignItems="center" className={classes.root}>
+    <CircularProgress />
+  </Grid>
+  </Slide>);
   
   const recipient = { UID: candidate.UID, email: candidate.email };
   console.log(recipient)
 
-  const templateClone =  R.clone(template)
-  const theme = R.clone(THEME1)
+  const templateClone =  clone(template)
+  const theme = clone(THEME1)
 
     useEffect(() => {
-      console.log('userInfo',userInfo)
+      console.log('authedUser',authedUser)
       console.log('candidate',candidate)
-      if(emailBody ==='' && userInfo&&candidate){
+      if(emailBody ==='' && authedUser&&candidate){
         const personalisables = [{firstName:candidate.firstName,
-        senderTitle:userInfo.title,
-        senderName:`${userInfo.givenName} ${userInfo.familyName}`,
+        senderTitle:authedUser.title,
+        senderName:`${authedUser.givenName} ${authedUser.familyName}`,
         smartLink}] 
         const personalisedElements = personaliseElements(templateClone.elements,personalisables)
         const emailBody = makeEmail(theme,personalisedElements)
         setEmailBody(emailBody)
+
+        const sender = {UID:authedUser.UID,email:`${authedUser.givenName}@2hats.com`}
+        const recipient = {UID:candidate.UID,email:candidate.email}
+        const email = {subject:template.subject,body:emailBody}
+        setEmail({recipient,sender,email});
+        setEmailReady(true);
       }
-    },[candidate,userInfo,emailBody,template])
-        return (<div className={classes.root}>
-          <Button
-            variant="extendedFab"
-            color="primary"
-            style={{position:'fixed',bottom:16,right:416}}
-            onClick={()=>{
-              const sender = {UID:userInfo.UID,email:`${userInfo.givenName}@2hats.com`}
-              const reciever = {UID:recipient.UID,email:recipient.email}
-              const email = {subject:template.subject,body:emailBody}
-              sendEmail(reciever,sender,email)
-              handleSubmit()
-              close()
-          }}><SendIcon style={{marginRight:8}}/> Send
-          </Button>
-          <div style={{width:'100%',height:'100%'}}  dangerouslySetInnerHTML={{__html: emailBody}} />
-          </div>);
+    },[candidate,authedUser,emailBody,template]);
+
+    return (<Slide in direction="up">
+    <div className={classes.root}>
+      <div style={{width:'100%',height:'100%'}} dangerouslySetInnerHTML={{__html: emailBody}} />
+    </div>
+    </Slide>);
 }
 export default withStyles(styles)(TemplateGenerator);

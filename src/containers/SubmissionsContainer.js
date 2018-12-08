@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react';
 import {withNavigation} from '../components/withNavigation';
 import withStyles from '@material-ui/core/styles/withStyles';
 import green from '@material-ui/core/colors/green';
@@ -8,7 +8,6 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import Snackbar from '@material-ui/core/Snackbar';
 
 import { useSubmission } from '../hooks/useSubmission';
-import { useSmartLink } from '../hooks/useSmartLink';
 
 import LocationIndicator from '../components/LocationIndicator';
 import Done from '../components/Done';
@@ -16,10 +15,9 @@ import Submission from '../components/Submission';
 import ScreeningForm from '../components/ScreeningForm';
 import FeedbackForm from '../components/FeedbackForm';
 import TemplateGenerator from '../components/TemplateGenerator';
+import {sendEmail} from '../utilities/email/send'
 
-import { updateProperties } from '../utilities/firestore';
-import { COLLECTIONS } from '../constants/firestore';
-
+// import Search from '../components/Search'
 const styles = theme => ({
     card: {
         height: '100%',
@@ -29,6 +27,7 @@ const styles = theme => ({
         background: '#fff',
         boxShadow: '0 0 10px rgba(0,0,0,.1), 0 30px 60px -15px rgba(0,0,0,.125), 0 60px 80px -20px rgba(0,0,0,.1), 0 50px 100px -30px rgba(0,0,0,.15), 0 40px 120px -5px rgba(0,0,0,.15)',
         borderRadius: '0 10px 0 0',
+        zIndex: 2,
     },
     successSnackbar: {
         '& > div': {
@@ -37,31 +36,33 @@ const styles = theme => ({
     },
 });
 
-const handleSubmit = (submissionID, confidenceLevel, reasons, resetScreeningForm) => {
-    const outputReasons = reasons.filter(x => x.checked).map(x => x.label);
-    const properties = {confidence:confidenceLevel,reasons:outputReasons,screened:true}
-    updateProperties(COLLECTIONS.submissions, submissionID, properties);
-    resetScreeningForm();
-}
-
 function SumbissionsContainer(props) {
-    const { classes, location } = props;
+    const { classes, location, history } = props;
 
     const [template, setTemplate] = useState(null);
-    const [showDisqualify, setShowDisqualify] = useState(false);
+    const [smartLink, setSmartLink] = useState(null);
 
-    const [submissionState, submissionDispatch] = useSubmission(location.pathname.replace('/',''));
-    const submission = submissionState.submission
+    const currentRoute = location.pathname.replace('/','')
+    const [submissionState, submissionDispatch] = useSubmission(currentRoute);
+    const submission = submissionState.submission;
 
-    const [confidenceLevel, setConfidenceLevel] = useState({ value: '', index: -1 });
-    const [reasons, setReasons] = useState([]);
+    useEffect(() => {
+        if (!submission && location.search.indexOf('?uid=') > -1) {
+            const uid = location.search.replace('?uid=','')
+            submissionDispatch({uid});
+        }
+    }, [submission, location.search]);
+
+    const [email, setEmail] = useState(null);
+    const [emailReady, setEmailReady] = useState(false);
 
     const [showSnackbar, setShowSnackbar] = useState(false);
 
-    const locationIndicator = <LocationIndicator
+    const locationIndicator = <Grid container direction='row'><LocationIndicator
                                 title="Submissions"
                                 subRoutes={['/pending', '/rejected', '/accepted']}
-                            />;
+                            /> 
+                            </Grid>;
 
     if (!submission) {
         return <React.Fragment>
@@ -73,43 +74,42 @@ function SumbissionsContainer(props) {
     }
 
     if (submission.complete) {
-        const smartLink = useSmartLink(submission.UID, `/prevSubmission?${submission.id}`)
+        console.log(submission)
         return <React.Fragment> { locationIndicator } <Done /> </React.Fragment>
     }
 
-    const resetScreeningForm = () => {
-        setConfidenceLevel(-1);
-        setReasons([]);
+    const handleSendEmail = () => {
+        sendEmail(email);
         setShowSnackbar(true);
+        setTemplate(null);
+        setEmailReady(false);
     };
 
     let rightPanel;
-    switch (location.pathname) {
-        case '/pending':
+    switch (submission.outcome) {
+        case 'pending':
             rightPanel = <ScreeningForm
-                            submissionID={submission.id}
+                            submission={submission}
                             setTemplate={setTemplate}
-                            showDisqualify={showDisqualify}
-                            setShowDisqualify={setShowDisqualify}
                             submissionDispatch={submissionDispatch}
-
-                            confidenceLevel={confidenceLevel}
-                            setConfidenceLevel={setConfidenceLevel}
-                            reasons={reasons}
-                            setReasons={setReasons}
-
-                            resetScreeningForm={resetScreeningForm}
+                            handleSendEmail={handleSendEmail}
+                            emailReady={emailReady}
+                            setEmailReady={setEmailReady}
                         />;
             break;
-        case '/rejected':
-        case '/accepted':   
+        case 'rejected':
+        case 'accepted':
             rightPanel = <FeedbackForm
                 submission={submission}
                 setTemplate={setTemplate}
+                setSmartLink={setSmartLink}
+                submissionDispatch={submissionDispatch}
+                handleSendEmail={handleSendEmail}
+                emailReady={emailReady}
+                location={location}
+                history={history}
             />;
     }
-
-    const smartLink = useSmartLink(submission.UID, `/prevSubmission?${submission.id}`)
 
     return(<React.Fragment>
         { locationIndicator }
@@ -118,18 +118,19 @@ function SumbissionsContainer(props) {
                 <Submission
                     submission={submission}
                     listType={location.pathname.split('/')[1]}
+                    extraPadding={template !== null}
                 />
                 { template && smartLink &&
                     <TemplateGenerator
                         template={template}
                         recipientUID={submission.UID}
                         smartLink={smartLink}
-                        handleSubmit={() => { handleSubmit(submission.id, confidenceLevel.index, reasons, resetScreeningForm) }}
-                        close={ () => { setTemplate(null); setShowDisqualify(false); } }
+                        setEmail= {setEmail}
+                        setEmailReady={setEmailReady}
                     />
                 }
             </Grid>
-            <Grid item style={{width:400}}>
+            <Grid item style={{width:400, overflowY:'scroll'}}>
                 { rightPanel }
             </Grid>
         </Grid>
@@ -140,7 +141,7 @@ function SumbissionsContainer(props) {
             open={showSnackbar}
             autoHideDuration={1500}
             onClose={() => { setShowSnackbar(false) }}
-            message={<span id="message-id">Sent!</span>}
+            message={<span id="message-id">Sent email!</span>}
         />
     </React.Fragment>);
 }

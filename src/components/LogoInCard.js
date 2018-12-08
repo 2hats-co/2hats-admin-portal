@@ -5,13 +5,13 @@ import Paper from '@material-ui/core/Paper';
 import DarkLogo from '../assets/logo/DarkText.png';
 import LinearProgress from '@material-ui/core/LinearProgress';
 
-const styles = theme => ({
+const styles = () => ({
   root:{
+    backgroundColor: '#fff',
     display: 'table',
     position: 'absolute',
     height: '100%',
     width: '100%',
-    borderRadius:20
   },
   middle:{
     display: 'table-cell',

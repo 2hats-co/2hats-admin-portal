@@ -41,11 +41,11 @@ export const rejectedWithFeedback ={
     },
     {  
       type:'paragraph',
-      replaceables:{content:`2hats is a talent incubator, created to help students get onto professional pathways. At this stage we look for current students or recent graduates to take through our industry readiness selection processes and training. We believe there’s a mismatch between your experience and the pathways we offer. Based on this we won’t progress your application further and wish you all the best with your job search.`}
+      replaceables:{content:`2hats is a talent incubator, created to help students get onto professional pathways. At this stage we are looking for current students or recent graduates with an interest in business development and marketing to take through our readiness selection processes and training. We believe there’s a mismatch between your experience and the pathways we offer. Based on this we won’t be progressing your application further and wish you all the best with your job search.`}
     }, 
     {
       type:'signture',
-      replaceables:{greeting:'Best of luck,',title:'#senderTitle#',name:'#senderName#',company:'2hats'}
+      replaceables:{greeting:'Best of luck',title:'#senderTitle#',name:'#senderName#',company:'2hats'}
      },
   ]}
   
@@ -61,15 +61,11 @@ export const rejectedWithFeedback ={
     },
     {  
       type:'paragraph',
-      replaceables:{content:`2hats is a talent incubator, created to help students get onto professional pathways. We're currently accepting students into marketing and sales, however wish to keep your details in case we experience demand from businesses in your area - we may be in touch!`}
+      replaceables:{content:`2hats is a talent incubator, created to help students get onto professional pathways. We're currently progressing students into marketing and sales only. However we'd like to keep your details so as soon as we have demand in your area we can be in touch!`}
     }, {  
       type:'paragraph',
-      replaceables:{content:`In the meantime, we encourage you to keep building up your skills and experience as well as to seek out other opportunities!`}
+      replaceables:{content:`In the meantime, we encourage you to keep building up your skills and experience!`}
     }, {  
-      type:'paragraph',
-      replaceables:{content:`Best regards,`}
-    },
-    {
       type:'signture',
       replaceables:{greeting:'Regards',title:'#senderTitle#',name:'#senderName#',company:'2hats'}
      },
@@ -132,7 +128,7 @@ export const rejectedWithFeedback ={
     },
     {
   type:'paragraph',
-      replaceables:{content:`We wish you all the best,`}
+      replaceables:{content:`We wish you all the best`}
     }, 
     {  
     

@@ -15,7 +15,6 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Grid from '@material-ui/core/Grid';
 import TrackerField from './TrackerField';
 import ChartTypePicker from './ChartTypePicker';
-import { FormControl,Select,MenuItem,InputLabel,Input} from '@material-ui/core';
 import { withStyles } from '@material-ui/core/styles';
 import AddIcon from '@material-ui/icons/Add';
 import AddCirlceIcon from '@material-ui/icons/AddCircleOutline';
@@ -169,15 +168,14 @@ class ChartBuilder extends Component {
                   Choose a chart type, set the title and width, then add trackers
                 </DialogContentText>
                 <Grid container alignItems="center" className={classes.chartConfig}>
-                  <Grid item xs={6}>
+                  <Grid item xs={7}>
                     <Typography variant="caption">Chart Type</Typography>
                       <ChartTypePicker
                         type={chartType}
                         changeHandler={this.handleChartTypePicker}
                       />
                   </Grid>
-
-                  <Grid item xs={6}>
+                  <Grid item xs={4}>
                     <TextField
                     onChange={this.handleChange}
                     autoFocus

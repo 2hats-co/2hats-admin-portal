@@ -3,7 +3,7 @@ const generalFeedback = [{
     title: 'Link Between Industry and Interest',
     labels: ['', 'Low', 'Medium', 'High'],
     content: ['', 'Your resume doesn’t show a link between the industry that you’re interested in, your experience and interests. Spend some time reading job descriptions online, you can get a good indication of the profiles and skills businesses are looking for at any given time. You could also reach out to people in your industry of interest to find out about the type of pathways available to you.',
-        'Your resume shows your interest in a particular industry. However there’s no clear link to the business functions that 2hats offers opportunities in: marketing, business development, web development, data and design. You should use your biography and/or experience section to show how your interests and past experiences relate to the opportunities that we offer.',
+        'Your resume shows your interest in a particular industry. However there’s no clear link to the business functions that 2hats offers opportunities in marketing and sales. You should use your biography and/or experience section to show how your interests and past experiences relate to the opportunities that we offer.',
         'Your resume shows a clear link between the industry which you’re interested in pursuing, your experience and interests. This shows that you are professionally focussed.'
     ],
     isRequired:true
@@ -12,10 +12,9 @@ const contentFeedback = [{
         id: 'a',
         title: 'Relevant Content to Industry',
         labels: ['', 'Low', 'Medium', 'High'],
-        content: ['', 'A large portion of the content in your resume is not focused or relevant. Re-read your resume and make edits to ensure that all of your content is consistent and relevant to your target industry.', 
-            'Some of the content in your resume could be more focused. Check your resume to ensure that your content is kept consistent and relevant to your target industry.', 
+        content: ['', 'A large portion of the content in your resume is not focused or relevant. Re-read your resume and make edits to ensure that all of your content is consistent and relevant to your target industry.',
+            'Some of the content in your resume could be more focused. Check your resume to ensure that your content is kept consistent and relevant to your target industry.',
             'All of your content is focused and relevant to your industry.'],
-            
         isRequired:true
     },
     {
@@ -26,7 +25,6 @@ const contentFeedback = [{
             'You can more effectively use bullet points throughout your resume to improve its readability.', 
             'How you’ve used bullet points is ideal;  they’ve made your resume easy to read and to understand.'],
         isRequired:false
-
     },
     {
         id: 'c',
@@ -74,7 +72,7 @@ const acheivementsFeedback = [{
     title: 'Acheivements',
     labels: ['', 'Low', 'Medium', 'High'],
     content: ['', 'You have not listed any achievements. It’s important to highlight any projects/ volunteering/ and/or extracurricular activities that you’ve undertaken as well as the results of such activities; this shows passion and commitment.',
-        'You have listed some achievements which is great; it’s important to highlight any projects/ volunteering/ and/or extracurricular activities that you’ve undertaken. You could include more or go out and gain more!',
+        'Your achievements list could be more focused; it’s important to highlight any projects/ volunteering/ and/or extracurricular activities that you’ve undertaken. You could include more relevant achievements or go out and gain more!',
         'It’s essential to include your achievements in order to demonstrate your competitiveness. You have listed some great achievements that shows your passion and commitment. You also have clear results from your projects/ volunteering/ extracurricular activities.'
     ],
     isRequired:true
@@ -94,7 +92,7 @@ const skillsFeedback = [{
     title: 'Relevant Skills',
     labels: ['', 'Low', 'Medium', 'High'],
     content: ['', 'You have not listed relevant skills. This makes it hard for the person reading your resume to determine whether or not you have the tools to perform and develop in your chosen industry. Note that skills such  as competency in the Microsoft suite are now assumed, therefore they don’t count as skills worthy of listing. Upskilling online in a good way to gain skills - there are plenty of courses, try Udemy or Youtube!',
-        'You have listed some relevant skills. To make it simpler for the person assessing your resume, edit your choices and list only relevant skills (maximum of around 6) to make it clear how you’re capable to perform in your chosen industry. Note that skills such as competency in the Microsoft suite are now assumed , therefore they don’t count as skills worthy of listing. You should always prioritise hard skills. To gain more skills, you can upskill online - there are plenty of courses, try Udemy or Youtube!',
+        'You have listed some relevant skills. To make it simpler for the person assessing your resume, edit your choices and list only relevant skills (maximum of around 6) to make it clear how you’re capable to perform in your chosen industry. Note that skills such as competency in the Microsoft suite are now assumed, therefore they don’t count as skills worthy of listing. You should always prioritise hard skills. To gain more skills, you can upskill online - there are plenty of courses, try Udemy or Youtube!',
         'Good job, only listing relevant and specific skills in your resume. This indicates that you’ll be able to perform and develop in your chosen industry.'
     ],
     isRequired:true
