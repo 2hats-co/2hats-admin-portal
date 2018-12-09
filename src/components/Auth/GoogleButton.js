@@ -49,12 +49,12 @@ class GoogleButton extends Component {
 
   getToken(r) {
     console.log(r);
-    if (r.profileObj.email.split("@")[1] === "2hats.com.au") {
-      console.log("yay");
-      authAdmin(r, this.handleRouting);
-    } else {
-      console.log("nay");
-    }
+    // if (r.profileObj.email.split("@")[1] === "2hats.com.au") {
+    //   console.log("yay");
+    authAdmin(r, this.handleRouting);
+    // } else {
+    //   console.log("nay");
+    // }
   }
   render() {
     const { classes } = this.props;
