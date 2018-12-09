@@ -22,6 +22,7 @@ import {ROUTES} from '../../constants/routes';
 import logo from '../../assets/logo/WhiteIcon.svg';
 import NavigationItems from './NavigationItems';
 import withAuthentication from '../../utilities/Session/withAuthentication';
+import { getInitials } from '../../utilities';
 import metadata from '../../metadata.json';
 
 import { withFirestore } from "../../utilities/withFirestore";
@@ -120,10 +121,7 @@ export const withNavigation = (WrappedComponent) => {
             }
 
             let initials;
-            if (displayName) {
-                initials = displayName.match(/\b\w/g) || [];
-                initials = ((initials.shift() || '') + (initials.pop() || '')).toUpperCase();
-            }
+            if (displayName) initials = getInitials(displayName);
 
             return(
                 <Grid container wrap="nowrap">

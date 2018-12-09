@@ -24,3 +24,9 @@ export function makeId(chars) {
   }
 
 export const propsIntoObject = (props) =>{return props.reduce(((r, c) => Object.assign(r, c)), {})}
+
+export const getInitials = (displayName) => {
+    let initials = displayName.match(/\b\w/g) || [];
+    initials = ((initials.shift() || '') + (initials.pop() || '')).toUpperCase();
+    return initials;
+}
