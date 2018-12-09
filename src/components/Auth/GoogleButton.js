@@ -41,7 +41,7 @@ class GoogleButton extends Component {
 
   componentDidMount() {}
   handleRouting(route) {
-    // this.props.history.replace(route);
+    this.props.history.replace(route);
   }
   handleGoogleAuthFail = error => {
     console.log("google auth fail", error);
