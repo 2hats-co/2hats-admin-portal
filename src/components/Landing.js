@@ -7,35 +7,13 @@ import { useAuthedUser } from '../hooks/useAuthedUser';
 
 function Landing(props){
   const currentUser = useAuthedUser()
-  //   this.props.loadData();
-  //   if (this.props.authUser == !null) {
-  //     this.props.history.push(ROUTES.stats);
-  //   }
-
-  // componentDidUpdate(prevProps, prevState) {
-  //   const { user } = this.props;
-  //   if (user !== prevProps.user) {
-  //     if (user[0].defaultRoute) {
-  //       this.props.history.push(user[0].defaultRoute);
-  //     } else {
-  //       this.props.history.push("/statistics");
-  //     }
-  //   }
-  //   if (!prevProps.uid && this.props.uid) {
-  //     this.props.loadData();
-  //   }
-  // }
   useEffect(()=>{
-    if (currentUser) {
-        if(currentUser.defaultRoute)
-           props.history.push(currentUser.defaultRoute);
-        }else{
-          props.history.push(ROUTES.stats);
+    if (currentUser && !currentUser.isLoading) {
+        if(currentUser.defaultRoute) props.history.push(currentUser.defaultRoute);
+        else props.history.push(ROUTES.stats);
         }
     console.log(currentUser)
-  },[
-    currentUser
-  ])
+  },[currentUser])
     if (currentUser) {
       const { givenName } = currentUser;
       return (
@@ -49,8 +27,4 @@ function Landing(props){
       return <AuthenticationContainer />;
     }
   }
-
-
-
-
 export default withRouter(Landing);
