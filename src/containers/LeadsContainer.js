@@ -5,7 +5,7 @@ import { compose } from "redux";
 import { withHandlers, lifecycle } from "recompose";
 import { connect } from "react-redux";
 import { withFirestore } from "../utilities/withFirestore";
-import { Grid } from '@material-ui/core';
+import Grid from '@material-ui/core/Grid';
 import Messaging from '../components/Messaging/index';
 import Toolbar from '../components/Messaging/Toolbar'
 import prop from 'ramda/es/prop'

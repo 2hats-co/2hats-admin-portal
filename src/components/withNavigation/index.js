@@ -1,7 +1,7 @@
 import React,{Component} from 'react';
 import {withRouter} from 'react-router-dom';
 
-import { withStyles } from '@material-ui/core/styles';
+import withStyles from '@material-ui/core/styles/withStyles';
 import Grid from '@material-ui/core/Grid';
 
 import Avatar from '@material-ui/core/Avatar';

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
+import withStyles from '@material-ui/core/styles/withStyles';
 import Paper from '@material-ui/core/Paper';
 import DarkLogo from '../assets/logo/DarkText.png';
 import LinearProgress from '@material-ui/core/LinearProgress';

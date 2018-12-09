@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { withStyles } from "@material-ui/core/styles";
+import withStyles from "@material-ui/core/styles/withStyles";
 import Button from "@material-ui/core/Button";
 import { GOOGLE_CID_PRODUCTION, GOOGLE_CID_STAGING } from "../../config/auth";
 import GoogleIcon from "../../assets/Google.svg";

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {withStyles} from '@material-ui/core/styles';
+import withStyles from '@material-ui/core/sytles/withStyles';
 
 import PersonDetails from './PersonDetails';
 import SubmissionDetails from './SubmissionDetails';

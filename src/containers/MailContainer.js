@@ -1,7 +1,7 @@
 import React,{ Component } from 'react'
 //import ReactQuill from 'react-quill';
 
-import { withStyles } from '@material-ui/core/styles';
+import withStyles from '@material-ui/core/styles/withStyles';
 import Grid from '@material-ui/core/Grid';
 
 import Button from '@material-ui/core/Button';

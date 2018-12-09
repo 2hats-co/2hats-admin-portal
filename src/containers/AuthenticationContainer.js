@@ -1,12 +1,13 @@
 import React from 'react';
-import {Grid, Typography } from '@material-ui/core';
-import { withStyles } from '@material-ui/core/styles';
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
+import withStyles from '@material-ui/core/styles/withStyles';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Slide from '@material-ui/core/Slide';
 
 import LogoInCard from '../components/LogoInCard';
 import GoogleButton from '../components/Auth/GoogleButton';
-import { CLOUD_FUNCTIONS, cloudFunction } from '../firebase/functions';
+// import { CLOUD_FUNCTIONS, cloudFunction } from '../firebase/functions';
 
 const styles = theme => ({
     root: {

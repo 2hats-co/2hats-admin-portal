@@ -1,6 +1,6 @@
 import React, { useReducer, useState,useEffect } from 'react';
 import PropTypes, { element } from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
+import withStyles from '@material-ui/core/styles/withStyles';
 import {propsIntoObject} from '../../utilities/index'
 import Grid from '@material-ui/core/Grid';
 import List from '@material-ui/core/List';
@@ -12,6 +12,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogActions from '@material-ui/core/DialogActions';
+import TextField from '@material-ui/core/TextField';
 
 import DeleteIcon from '@material-ui/icons/Delete';
 import RedoIcon from '@material-ui/icons/Redo';
@@ -29,7 +30,6 @@ import {SUBMISSION_FEEDBACK, getFeedbackContent, getFeedbackTitle, feedbackSecti
 import { rejectedWithFeedback, resumeAccepted } from '../../constants/emails/templates';
 import { updateProperties } from '../../utilities/firestore';
 import { useAuthedUser } from '../../hooks/useAuthedUser';
-import { TextField } from '@material-ui/core';
 
 import {makeId} from '../../utilities/index'
 const styles = theme => ({
