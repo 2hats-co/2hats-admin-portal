@@ -15,7 +15,7 @@ import DisqualifyIcon from '@material-ui/icons/Cancel';
 import Confidence from './Confidence';
 import Reasons from './Reasons';
 
-import { outsideDemographic, outsideIndusty } from '../../constants/emails/templates';
+import { outsideDemographic, outsideIndusty,invalidSubmission } from '../../constants/emails/templates';
 import { updateProperties } from '../../utilities/firestore';
 import { COLLECTIONS } from '../../constants/firestore';
 import { CLOUD_FUNCTIONS,callable } from '../../firebase/functions';
@@ -183,6 +183,15 @@ function ScreeningForm(props) {
                 setShowSend(true);
             }} className={classes.disqualifyButton} color="primary">
                 Industry Mismatch
+            </Button>
+            <Button variant={ disqualifyType === 'invalid' ? 'contained' : 'outlined' }
+            onClick={() => {
+                setTemplate(null); setEmailReady(false);
+                setTimeout(() => { setTemplate(invalidSubmission); }, 100);
+                setDisqualifyType('invalid');
+                setShowSend(true);
+            }} className={classes.disqualifyButton} color="primary">
+                Invalid  Submission
             </Button>
 
             <Tooltip title={`Sends email. ${submission.displayName} is removed from Pending.`}><div className={classes.submitButton}>

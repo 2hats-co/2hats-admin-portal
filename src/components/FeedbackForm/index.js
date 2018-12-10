@@ -27,7 +27,7 @@ import map from 'lodash/map';
 import {firestore} from '../../store'
 
 import { COLLECTIONS } from "../../constants/firestore";
-import {SUBMISSION_FEEDBACK, getFeedbackContent, getFeedbackTitle, feedbackSections} from '../../constants/feedback'
+import {SUBMISSION_FEEDBACK, getFeedbackContent} from '../../constants/feedback'
 import { rejectedWithFeedback, resumeAccepted } from '../../constants/emails/templates';
 import { updateProperties } from '../../utilities/firestore';
 import { useAuthedUser } from '../../hooks/useAuthedUser';
@@ -291,8 +291,6 @@ function FeedbackForm(props){
       </div>
     );
   }
-
-
 
 export default withStyles(styles)(FeedbackForm)
 
