@@ -1,6 +1,14 @@
 import React,{Component} from 'react';
 import withStyles from '@material-ui/core/styles/withStyles';
-import { Grid,FormControl,Select,MenuItem,TextField,InputLabel,Input} from '@material-ui/core';
+
+import Grid from '@material-ui/core/Grid';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
+import TextField from '@material-ui/core/TextField';
+import InputLabel from '@material-ui/core/InputLabel';
+import Input from '@material-ui/core/Input';
+
 import { SketchPicker } from 'react-color'
 
 import IconButton from '@material-ui/core/IconButton';
@@ -42,7 +50,6 @@ const styles = theme => ({
       bottom: '0px',
       left: '0px',
     },
-   
 });
 class TrackerField extends Component {
     constructor(props) {
