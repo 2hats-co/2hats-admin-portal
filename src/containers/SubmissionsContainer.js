@@ -68,7 +68,7 @@ function SumbissionsContainer(props) {
         return <React.Fragment>
             { locationIndicator }
             <Grid container justify="center" alignItems="center" style={{ height: 'calc(100vh - 64px)' }}>
-                <CircularProgress size={50} />
+                <CircularProgress size={64} />
             </Grid>
         </React.Fragment>;
     }
@@ -88,6 +88,7 @@ function SumbissionsContainer(props) {
     let rightPanel;
     switch (submission.outcome) {
         case 'pending':
+        case 'disqualified':
             rightPanel = <ScreeningForm
                             submission={submission}
                             setTemplate={setTemplate}
@@ -120,7 +121,7 @@ function SumbissionsContainer(props) {
                     listType={location.pathname.split('/')[1]}
                     extraPadding={template !== null}
                 />
-                { template && smartLink &&
+                { template &&
                     <TemplateGenerator
                         template={template}
                         recipientUID={submission.UID}

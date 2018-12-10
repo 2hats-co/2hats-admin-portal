@@ -14,11 +14,12 @@ import { SketchPicker } from 'react-color'
 import IconButton from '@material-ui/core/IconButton';
 import RemoveCircleOutlineIcon from '@material-ui/icons/RemoveCircleOutline';
 
-const trackerTypes = ['candidate','link','talentTeam']
+const trackerTypes = ['candidate','link','talentTeam','me']
 const trackerNames = {
     candidate:['signup','signup-3rdParty','signup-password','signup-speedy','submission'],
     link:['DiscussionGroup'],
-    talentTeam:['submissionAccepted','submissionProcessed','submissionRejected','submissionReviewed']
+    talentTeam:['submissionAccepted','submissionProcessed','submissionRejected','submissionReviewed','feedbacked'],
+    me:['feedbacked']
 }
 const styles = theme => ({
     root: {

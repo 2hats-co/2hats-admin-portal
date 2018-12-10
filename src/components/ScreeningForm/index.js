@@ -18,6 +18,7 @@ import Reasons from './Reasons';
 import { outsideDemographic, outsideIndusty } from '../../constants/emails/templates';
 import { updateProperties } from '../../utilities/firestore';
 import { COLLECTIONS } from '../../constants/firestore';
+import { CLOUD_FUNCTIONS,callable } from '../../firebase/functions';
 import { useAuthedUser } from '../../hooks/useAuthedUser';
 
 const styles = theme => ({
@@ -88,7 +89,7 @@ function ScreeningForm(props) {
     const [confidenceLevel, setConfidenceLevel] = useState({ value: '', index: -1 });
     const [reasons, setReasons] = useState([]);
 
-    const [showDisqualify, setShowDisqualify] = useState(false);
+    const [showDisqualify, setShowDisqualify] = useState(submission.outcome === 'disqualified');
     const [showSend, setShowSend] = useState(false);
 
     const [disqualifyType, setDisqualifyType] = useState('');
@@ -112,6 +113,8 @@ function ScreeningForm(props) {
             } ]),
             reasons: outputReasons,
         }
+        callable(CLOUD_FUNCTIONS.tracker,{type:'talentTeam',value:`screened-${confidenceLevel.value}`})
+        callable(CLOUD_FUNCTIONS.tracker,{type:authedUser.UID,value:`screened-${confidenceLevel.value}`})
         updateProperties(COLLECTIONS.submissions, submissionID, properties);
         resetScreeningForm();
         submissionDispatch({ type:'clear' });
@@ -128,6 +131,8 @@ function ScreeningForm(props) {
                 timestamp: new Date(),
             } ]),
         }
+        callable(CLOUD_FUNCTIONS.tracker,{type:'talentTeam',value:`disqualified-${disqualifyType}`})
+        callable(CLOUD_FUNCTIONS.tracker,{type:authedUser.UID,value:`disqualified-${disqualifyType}`})
         updateProperties(COLLECTIONS.submissions, submissionID, properties);
         resetScreeningForm();
         submissionDispatch({ type:'clear' });

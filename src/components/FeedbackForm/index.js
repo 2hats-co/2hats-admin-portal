@@ -1,5 +1,6 @@
 import React, { useReducer, useState,useEffect } from 'react';
-import PropTypes, { element } from 'prop-types';
+import PropTypes from 'prop-types';
+import { CLOUD_FUNCTIONS,callable } from '../../firebase/functions';
 import withStyles from '@material-ui/core/styles/withStyles';
 import {propsIntoObject} from '../../utilities/index'
 import Grid from '@material-ui/core/Grid';
@@ -102,7 +103,8 @@ const feedbackReducer = (state, action) => {
       return({[element.id]:element.content})}else{return({[element.id]:element.value})}})
       return propsIntoObject(feedbackElements)
     case 'update':return({...state,[action.field]:action.value});
-    case 'reset':return {};
+    case 'reset':return ({});
+    default:return({})
   }
 };
 
@@ -150,7 +152,6 @@ function FeedbackForm(props){
     };
 
     const handleSubmit = () => {
-      storeFeedback();
       if (submission.outcome === 'rejected') {
         const smartKey = generateSmartKey(submission.UID,`prevSubmission?${submission.id}`)
         setSmartLink(smartKey)
@@ -160,6 +161,9 @@ function FeedbackForm(props){
       setShowSend(true);
     };
     const sendEmail = () => {
+      callable(CLOUD_FUNCTIONS.tracker,{type:'talentTeam',value:`feedbacked`});
+      callable(CLOUD_FUNCTIONS.tracker,{type:authedUser.UID,value:`feedbacked`});
+      storeFeedback();
       handleSendEmail();
       resetFeedbackForm();
       submissionDispatch({ type:'clear' });
@@ -226,6 +230,7 @@ function FeedbackForm(props){
 
         <div className={classes.additionalCommentsWrapper}>
           <TextField
+            variant="outlined"
             label="Additional Comments"
             placeholder="Type optional additional comments here…"
             multiline fullWidth

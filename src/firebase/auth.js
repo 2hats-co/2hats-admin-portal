@@ -1,9 +1,9 @@
-import { cloudFunction, CLOUD_FUNCTIONS } from "./functions";
+import { callable, CLOUD_FUNCTIONS } from "./functions";
 
 import { auth } from "../store";
 
 export const authAdmin = (r, callback) =>
-  cloudFunction(
+  callable(
     CLOUD_FUNCTIONS.auth,
     { r },
     result => {
