@@ -5,7 +5,7 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-import Search from './Search'
+
 const styles = theme => ({
     root: {
         paddingLeft: theme.spacing.unit * 4,
@@ -45,16 +45,9 @@ function LocationIndicator(props) {
     ) : null;
 
     return(
-        <Grid container justify="space-between">
-            <Grid item xs>
-                <Grid className={classes.root} container alignItems="center">
-                    <Typography variant="title" className={classes.title}>{title}</Typography>
-                    {navItems}
-                </Grid>
-            </Grid>
-            <Grid item>
-                <Search/>
-            </Grid>
+        <Grid className={classes.root} container alignItems="center">
+            <Typography variant="title" className={classes.title}>{title}</Typography>
+            {navItems}
         </Grid>
     );
 }
