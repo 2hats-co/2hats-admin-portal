@@ -38,7 +38,7 @@ class AuthenticationContainer extends React.Component{
                         direction="column"
                         justify="center"
                     >
-                        <CircularProgress size={50} />
+                        <CircularProgress size={64} />
                     </Grid>
                 </LogoInCard>
             );
