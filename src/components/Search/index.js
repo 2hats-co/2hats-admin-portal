@@ -28,6 +28,7 @@ const styles = theme => ({
         borderRadius: 20,
         width: 664,
         margin: '48px auto 0',
+        outline: 'none',
     },
     searchIcon: {
         fontSize: 28,
@@ -64,7 +65,7 @@ const styles = theme => ({
         right: theme.spacing.unit,
     },
     noResults: {
-        paddingLeft: 40,
+        paddingLeft: '40px !important',
         opacity: .54,
     },
 });
@@ -81,7 +82,7 @@ function Search(props) {
 
     const onClose = () => {
         setSlide(false);
-        setTimeout(() => { setShowSearch(false); }, 200);
+        setTimeout(() => { setShowSearch(false); }, 100);
     }
 
     const handleRoute = (hit) => {
@@ -98,7 +99,7 @@ function Search(props) {
 
     return(
     <Modal open={showSearch} onClose={onClose} disableAutoFocus>
-        <Slide in={slide} direction="down" timeout={200}>
+        <Slide in={slide} direction="down" timeout={100}>
             <Paper elevation={24} classes={{ root: classes.paperRoot }}>
                 <InputBase
                     autoFocus
