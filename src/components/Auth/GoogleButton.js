@@ -39,9 +39,9 @@ class GoogleButton extends Component {
       console.log("google auth staging", GOOGLE_CID_STAGING);
     }
   }
-  
+
   handleRouting(route) {
-     this.props.history.replace(route);
+    this.props.history.replace(route);
   }
   handleGoogleAuthFail = error => {
     console.log("google auth fail", error);
