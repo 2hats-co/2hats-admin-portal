@@ -15,7 +15,7 @@ import List from '@material-ui/core/List';
 import ToggleButton from "@material-ui/lab/ToggleButton";
 import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
 import Item from './Item'
-import { CONSTANTS } from '@firebase/util';
+// import { CONSTANTS } from '@firebase/util';
 
 const styles = theme => ({
     paginationBar: {

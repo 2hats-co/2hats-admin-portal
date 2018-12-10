@@ -8,6 +8,13 @@ import Avatar from '@material-ui/core/Avatar';
 import PersonIcon from '@material-ui/icons/Person';
 import Fade from '@material-ui/core/Fade';
 
+import amber from '@material-ui/core/colors/amber';
+import green from '@material-ui/core/colors/green';
+import red from '@material-ui/core/colors/red';
+
+import CheckIcon from '@material-ui/icons/Check';
+import CloseIcon from '@material-ui/icons/Close';
+
 import { useCandidate } from '../../hooks/useCandidate';
 import { getInitials } from '../../utilities';
 
@@ -22,10 +29,25 @@ const styles = theme => ({
     personIcon: {
         fontSize: 32,
     },
+    outcome: {
+        textTransform: 'capitalize',
+    },
+    outcomeIcon: {
+        backgroundColor: '#000',
+        borderRadius: '50%',
+        color: '#fff',
+        fontSize: 20,
+        padding: 2,
+        verticalAlign: 'bottom',
+        marginLeft: theme.spacing.unit,
+        width: 20,
+        height: 20,
+        display: 'inline-block',
+    },
 });
 
 function PersonDetails(props) {
-    const { classes, submission, submissionStatusLabel } = props;
+    const { classes, submission } = props;
 
     const timestamp = moment.unix(submission.createdAt.seconds)
         .format('LLLL');
@@ -44,6 +66,20 @@ function PersonDetails(props) {
     let initials;
     if (submission.displayName) initials = getInitials(submission.displayName);
 
+    let outcomeIcon;
+    switch (submission.outcome) {
+        case 'rejected':
+            outcomeIcon = <CloseIcon className={classes.outcomeIcon} style={{backgroundColor: red[500]}} />;
+            break;
+        case 'accepted':
+            outcomeIcon = <CheckIcon className={classes.outcomeIcon} style={{backgroundColor: green[500]}} />;
+            break;
+        case 'pending':
+        default:
+            outcomeIcon = <div className={classes.outcomeIcon} style={{backgroundColor: amber[500]}} />;
+            break;
+    }
+
     return(
         <Grid container justify="space-between">
             <Grid item xs>
@@ -58,6 +94,12 @@ function PersonDetails(props) {
                         <Typography variant="headline">{submission.displayName}</Typography>
                         <Typography variant="body2">{interests}</Typography>
                         <Typography variant="body1">Submitted on {timestamp}</Typography>
+                    </Grid>
+                    <Grid item>
+                        <Typography variant="subheading" className={classes.outcome}>
+                            {submission.outcome}
+                            {outcomeIcon}
+                        </Typography>
                     </Grid>
                 </Grid>
             </Grid>

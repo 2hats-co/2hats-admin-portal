@@ -1,7 +1,6 @@
 import React from 'react'
 import withStyles from '@material-ui/core/styles/withStyles';
 
-import Typography from '@material-ui/core/Typography';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
@@ -21,7 +20,8 @@ const styles = theme => ({
         borderRadius: '18px 0 0 18px',
 
         '&:hover, &:focus': {
-            backgroundColor: 'rgba(255,255,255,.16)',
+            // backgroundColor: 'rgba(255,255,255,.16)',
+            backgroundColor: 'rgba(0, 0, 0, 0.08)',
         },
     },
     selectedItem: {
@@ -35,6 +35,7 @@ const styles = theme => ({
             top: -20,
             right: -20,
             pointerEvents: 'none',
+            zIndex: 1,
 
             width: 40,
             height: 40,
@@ -49,6 +50,7 @@ const styles = theme => ({
             bottom: -40,
             right: -20,
             pointerEvents: 'none',
+            zIndex: 1,
 
             width: 40,
             height: 40,
