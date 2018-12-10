@@ -2,7 +2,7 @@ import { functions } from "../store";
 export const CLOUD_FUNCTIONS = {
   tracker:'restApiEventTracker',
   stats: "restApiQueryStageAndStatus",
-  auth: "callablesAdminAuthentication"
+  auth: "restApiAuthenticateAdmin"
 };
 
 export const callable = (name, input, success, fail) => {
