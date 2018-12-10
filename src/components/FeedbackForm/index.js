@@ -152,9 +152,6 @@ function FeedbackForm(props){
     };
 
     const handleSubmit = () => {
-      callable(CLOUD_FUNCTIONS.tracker,{type:'talentTeam',value:`feedbacked`})
-      callable(CLOUD_FUNCTIONS.tracker,{type:authedUser.UID,value:`feedbacked`})
-      storeFeedback();
       if (submission.outcome === 'rejected') {
         const smartKey = generateSmartKey(submission.UID,`prevSubmission?${submission.id}`)
         setSmartLink(smartKey)
@@ -164,6 +161,9 @@ function FeedbackForm(props){
       setShowSend(true);
     };
     const sendEmail = () => {
+      callable(CLOUD_FUNCTIONS.tracker,{type:'talentTeam',value:`feedbacked`});
+      callable(CLOUD_FUNCTIONS.tracker,{type:authedUser.UID,value:`feedbacked`});
+      storeFeedback();
       handleSendEmail();
       resetFeedbackForm();
       submissionDispatch({ type:'clear' });
@@ -230,6 +230,7 @@ function FeedbackForm(props){
 
         <div className={classes.additionalCommentsWrapper}>
           <TextField
+            variant="outlined"
             label="Additional Comments"
             placeholder="Type optional additional comments here…"
             multiline fullWidth

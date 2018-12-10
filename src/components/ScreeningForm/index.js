@@ -89,7 +89,7 @@ function ScreeningForm(props) {
     const [confidenceLevel, setConfidenceLevel] = useState({ value: '', index: -1 });
     const [reasons, setReasons] = useState([]);
 
-    const [showDisqualify, setShowDisqualify] = useState(false);
+    const [showDisqualify, setShowDisqualify] = useState(submission.outcome === 'disqualified');
     const [showSend, setShowSend] = useState(false);
 
     const [disqualifyType, setDisqualifyType] = useState('');

@@ -12,7 +12,7 @@ export function useAuthedUser() {
   useEffect(() => {
     if(!currentUser){
     auth.onAuthStateChanged(authUser => {
-     setCurrentUser({uid:authUser.uid,givenName:authUser.displayName.split(' ')[0],isLoading:true,email:authUser.email})
+     setCurrentUser({UID:authUser.uid,givenName:authUser.displayName.split(' ')[0],isLoading:true,email:authUser.email})
       handleGetAuthedUser(authUser.uid)
     });
   }

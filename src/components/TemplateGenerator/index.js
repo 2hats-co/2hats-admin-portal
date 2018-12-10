@@ -57,7 +57,7 @@ function TemplateGenerator(props) {
 
   if (!candidate) return (<Slide in direction="up">
   <Grid container justify="center" alignItems="center" className={classes.root}>
-    <CircularProgress />
+    <CircularProgress size={64} />
   </Grid>
   </Slide>);
   
