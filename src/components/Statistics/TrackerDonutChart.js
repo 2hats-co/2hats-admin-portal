@@ -6,7 +6,8 @@ import ReactEchartsCore from 'echarts-for-react/lib/core';
 import echarts from 'echarts/lib/echarts';
 import 'echarts/lib/chart/pie';
 
-
+import 'echarts/lib/component/title';
+import 'echarts/lib/component/toolbox';
 
 import withAnalytics from './withAnalytics'
 function TrackerDonutChart(props){  

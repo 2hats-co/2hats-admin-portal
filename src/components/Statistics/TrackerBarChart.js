@@ -5,6 +5,7 @@ import echarts from 'echarts/lib/echarts';
 import 'echarts/lib/chart/bar';
 import 'echarts/lib/component/title';
 import 'echarts/lib/component/toolbox';
+import 'echarts/lib/component/tooltip';
 import withAnlytics from './withAnalytics'
 function TrackerBarChart (props){  
 
