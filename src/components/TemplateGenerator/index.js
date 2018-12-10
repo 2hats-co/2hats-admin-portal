@@ -70,7 +70,7 @@ function TemplateGenerator(props) {
     useEffect(() => {
       console.log('authedUser',authedUser)
       console.log('candidate',candidate)
-      if(emailBody ==='' && authedUser&&candidate){
+      if(emailBody ==='' && authedUser.title &&candidate){
         const personalisables = [{firstName:candidate.firstName,
         senderTitle:authedUser.title,
         senderName:`${authedUser.givenName} ${authedUser.familyName}`,
