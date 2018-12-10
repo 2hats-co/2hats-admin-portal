@@ -5,8 +5,8 @@
   "targets": {
     "staging2hats": {
       "hosting": {
-        "staging": [
-          "staging2hatsadmin"
+        "admin": [
+          "admin2hat"
         ]
       }
     }

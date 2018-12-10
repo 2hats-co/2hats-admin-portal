@@ -5,16 +5,23 @@ import { compose } from "redux";
 import { withHandlers, lifecycle } from "recompose";
 import { connect } from "react-redux";
 import { withFirestore } from "../utilities/withFirestore";
-import { Button, Grid } from '@material-ui/core';
+import Grid from '@material-ui/core/Grid';
 import Messaging from '../components/Messaging/index';
 import Toolbar from '../components/Messaging/Toolbar'
-import * as R from 'ramda'
+import prop from 'ramda/es/prop'
+import ascend from 'ramda/es/ascend'
+import sortWith from 'ramda/es/sortWith'
+import isNil from 'ramda/es/isNil'
+import findIndex from 'ramda/es/findIndex'
+import propEq from 'ramda/es/propEq'
+import dropRepeats from 'ramda/es/dropRepeats'
 
-const messageSort = R.sortWith([
-  R.ascend(R.prop('sentAt')),
+
+const messageSort = sortWith([
+  ascend(prop('sentAt')),
 ]);
-const threadSort = R.sortWith([
-  R.ascend(R.prop('lastMessage.sentAt')),
+const threadSort = sortWith([
+  ascend(prop('lastMessage.sentAt')),
 ]);
 class LeadsContainer extends Component {
     constructor(props) {
@@ -62,7 +69,7 @@ class LeadsContainer extends Component {
         if(this.props.messages){
           messages = this.props.messages
         }
-        if(!R.isNil(queuedMessages)){
+        if(!isNil(queuedMessages)){
           console.log('queuedMessages',queuedMessages)
          const formatedMessages = queuedMessages.map(message=> {
             const sentAt = message.createdAt
@@ -86,7 +93,7 @@ class LeadsContainer extends Component {
           })
        let leadHeader = {label:'',path:''}
        if(leadId !==''){
-         const leadIndex = R.findIndex(R.propEq('id',leadId))(leads)
+         const leadIndex = findIndex(propEq('id',leadId))(leads)
 
          const currentLead = leads[leadIndex]
           leadHeader = {label:currentLead.fullName,path:currentLead.profileURL}
@@ -97,10 +104,10 @@ class LeadsContainer extends Component {
           <Toolbar header={leadHeader}/>
           <Grid container direction="row" wrap="nowrap" style={{height: 'calc(100vh - 64px)'}}>
             <Messaging 
-            threads={threadSort(R.dropRepeats(threads))} 
+            threads={threadSort(dropRepeats(threads))} 
             handleSendMessage={this.handleSendMessage} 
             handleThreadSelector={this.handleThreadSelector}
-            messages={messageSort(R.dropRepeats(messages))}
+            messages={messageSort(dropRepeats(messages))}
             handleStarThread={this.handleStarThread}/>
           </Grid>
         </React.Fragment>

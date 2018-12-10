@@ -1,8 +1,8 @@
 import React,{Component} from 'react'
 import TextField from '@material-ui/core/TextField'
-import { Grid } from '@material-ui/core'
+import Grid from '@material-ui/core/Grid'
 import SearchIcon from '@material-ui/icons/Search'
-import {withStyles} from '@material-ui/core/styles'
+import withStyles from '@material-ui/core/styles/withStyles'
 
 import Chip from '@material-ui/core/Chip';
 

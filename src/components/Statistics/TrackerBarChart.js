@@ -1,5 +1,10 @@
 import React from 'react';
-import ReactEcharts from 'echarts-for-react';
+
+import ReactEchartsCore from 'echarts-for-react/lib/core';
+import echarts from 'echarts/lib/echarts';
+import 'echarts/lib/chart/bar';
+import 'echarts/lib/component/title';
+import 'echarts/lib/component/toolbox';
 import withAnlytics from './withAnalytics'
 function TrackerBarChart (props){  
 
@@ -16,7 +21,7 @@ function TrackerBarChart (props){
             }
         })
         })
-           return(<ReactEcharts theme="light" style={{height:'100%'}} 
+           return(<ReactEchartsCore echarts={echarts} theme="light" style={{height:'100%'}} 
            option = {{
             title: {
                 text: title

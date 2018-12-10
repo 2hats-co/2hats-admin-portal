@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import ThreadsList from './ThreadsList'
 import Messages from './Messages'
 import MessageField from './MessageField'
-import { withStyles } from '@material-ui/core/styles';
+import withStyles from '@material-ui/core/styles/withStyles';
 import Grid from '@material-ui/core/Grid';
 
 

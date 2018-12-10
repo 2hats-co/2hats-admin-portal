@@ -1,7 +1,7 @@
 import React,{ Component } from 'react'
-import ReactQuill from 'react-quill';
+//import ReactQuill from 'react-quill';
 
-import { withStyles } from '@material-ui/core/styles';
+import withStyles from '@material-ui/core/styles/withStyles';
 import Grid from '@material-ui/core/Grid';
 
 import Button from '@material-ui/core/Button';
@@ -133,14 +133,14 @@ class MailContainer extends Component {
                         <Grid container className={classes.replyWrapper}>
                             <Avatar className={classes.replyAvatar}><ReplyIcon /></Avatar>
                             <Grid item xs>
-                                <ReactQuill
+                                {/* <ReactQuill
                                     value={this.state.editorHtml}
                                     onChange={this.handleEditorChange}
                                     classes={classes.editor}
                                     modules={this.editorModules}
                                     formats={this.editorFormats}
                                     style={{height:300, marginBottom:42}}
-                                />
+                                /> */}
                             </Grid>
                         </Grid>
                         <Button variant="extendedFab" color="primary" aria-label="Reply"

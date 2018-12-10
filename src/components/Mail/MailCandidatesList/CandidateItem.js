@@ -1,16 +1,16 @@
 import React from 'react';
+
+import withStyles from '@material-ui/core/styles/withStyles';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 
 import IconButton from '@material-ui/core/IconButton';
 import Avatar from '@material-ui/core/Avatar';
 
-import StarIcon from '@material-ui/icons/Star';
 import StarBorderIcon from '@material-ui/icons/StarBorder';
 import PersonIcon from '@material-ui/icons/Person';
 
 import moment from 'moment';
-import { withStyles } from '@material-ui/core';
 
 const styles = theme => ({
     clipBodyText: {

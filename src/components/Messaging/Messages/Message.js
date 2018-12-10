@@ -1,7 +1,7 @@
 import React from 'react';
 
 import moment from 'moment';
-import { withStyles } from '@material-ui/core';
+import withStyles from '@material-ui/core/styles/withStyles';
 import timestamp from 'time-stamp';
 
 const styles = theme => ({  

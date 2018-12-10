@@ -107,7 +107,9 @@ class CandidatesContainer extends Component{
         const {searchString,
             hitsPerPage,
             currentPage,
-            nHits,hits,selectedCandidate} = this.state
+            nHits,hits,
+           // selectedCandidate
+        } = this.state
             
             const resultData = {currentPage,nHits,hitsPerPage}
         return(

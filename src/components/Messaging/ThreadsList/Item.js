@@ -12,7 +12,7 @@ import StarBorderIcon from '@material-ui/icons/StarBorder';
 import PersonIcon from '@material-ui/icons/Person';
 
 import moment from 'moment';
-import { withStyles } from '@material-ui/core';
+import withStyles from '@material-ui/core/styles/withStyles';
 
 const styles = theme => ({
     clipBodyText: {

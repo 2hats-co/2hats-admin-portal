@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import { withStyles } from '@material-ui/core/styles';
+import withStyles from '@material-ui/core/styles/withStyles';
 import { Grid,FormControl,Select,MenuItem,TextField,InputLabel,Input} from '@material-ui/core';
 import { SketchPicker } from 'react-color'
 

@@ -11,11 +11,11 @@ import { compose } from "redux";
 import { withHandlers, lifecycle } from "recompose";
 import { connect } from "react-redux";
 import { withFirestore } from "../utilities/withFirestore";
-import { Button, Grid } from '@material-ui/core';
+import Grid from '@material-ui/core/Grid';
+import Button from '@material-ui/core/Button';
 import ChartBuilder from '../components/Statistics/ChartBuilder';
 import SettingsIcon from '@material-ui/icons/Settings'
 import IconButton from '@material-ui/core/IconButton'
-import * as R from 'ramda'
 import GridLayout from 'react-grid-layout';
 import { WidthProvider } from 'react-grid-layout';
 import '../../node_modules/react-grid-layout/css/styles.css';
@@ -88,7 +88,7 @@ class StatisticsContainer extends Component {
            <Button variant="fab" 
            style={{
             position: 'absolute',
-            top: 70,
+            top: 64 + 16,
             right: 8 * 2,
             zIndex: 99,
            }}

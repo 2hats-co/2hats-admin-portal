@@ -1,6 +1,6 @@
 import React from 'react';
 
-import {withStyles} from '@material-ui/core/styles';
+import withStyles from '@material-ui/core/styles/withStyles';
 
 import PersonDetails from './PersonDetails';
 import SubmissionDetails from './SubmissionDetails';
@@ -17,17 +17,13 @@ function sleep(millis) {
 }
 
 function Submission(props) {
-    const { classes, submission } = props;
-
-    const submissionStatusLabel = ` – ${submission.submissionStatus} by ${submission.operator && submission.operator.displayName && submission.operator.displayName.split(' ')[0]}`
+    const { classes, submission, extraPadding } = props;
 
     return(
         <div className={classes.root}>
-            <PersonDetails
-                submission={ submission }
-                submissionStatusLabel={submissionStatusLabel}
-            />
+            <PersonDetails submission={submission} />
             <SubmissionDetails submission={submission} />
+            { extraPadding && <div style={{height:300}} /> }
         </div>
     );
 }

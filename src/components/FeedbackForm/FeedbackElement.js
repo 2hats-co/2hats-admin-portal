@@ -1,6 +1,8 @@
 import React from 'react';
-import { Grid, Typography, withStyles } from '@material-ui/core';
-import FormGroup from '@material-ui/core/FormGroup';
+
+import withStyles from '@material-ui/core/styles/withStyles';
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Tooltip from '@material-ui/core/Tooltip';
@@ -59,4 +61,4 @@ function FeedbackElement(props) {
         </Grid>
     </Grid>)
 }
-export default withStyles(styles)(FeedbackElement)
+export default withStyles(styles)(FeedbackElement);

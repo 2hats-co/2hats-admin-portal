@@ -1,5 +1,5 @@
 import {globalReplace} from '../index'
-import * as R from 'ramda'
+import join from 'ramda/es/join'
 
 const makeElement = (template,type,replaceables) =>{
   let output = template[type]
@@ -29,8 +29,8 @@ export const makeEmail = (template,bodyElements) =>{
   const body = makeElements(template,bodyElements)
   const footer = makeElements(template,footerElements)
   output = output.replace('{{logo}}',logo)
-  output = output.replace('{{body}}',R.join('', body))
-  output = output.replace('{{footer}}',R.join('', footer))
+  output = output.replace('{{body}}',join('', body))
+  output = output.replace('{{footer}}',join('', footer))
   return output
 }
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import moment from 'moment';
-import { withStyles } from '@material-ui/core/styles';
+import withStyles from '@material-ui/core/styles/withStyles';
 
 // import renderHTML from 'react-render-html';
 
