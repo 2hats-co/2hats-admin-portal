@@ -66,6 +66,7 @@ class GoogleButton extends Component {
           scope="https://www.googleapis.com/auth/gmail.readonly https://www.googleapis.com/auth/gmail.send https://www.googleapis.com/auth/calendar"
           //scope="https://www.googleapis.com/auth/gmail.readonly"
           accessType="offline"
+          responseType="code"
           render={renderProps => (
             <Button
               variant="flat"
