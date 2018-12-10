@@ -7,7 +7,7 @@ import Slide from '@material-ui/core/Slide';
 
 import LogoInCard from '../components/LogoInCard';
 import GoogleButton from '../components/Auth/GoogleButton';
-// import { CLOUD_FUNCTIONS, cloudFunction } from '../firebase/functions';
+// import { CLOUD_FUNCTIONS, callable } from '../firebase/functions';
 
 const styles = theme => ({
     root: {
