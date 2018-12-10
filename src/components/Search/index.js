@@ -24,15 +24,10 @@ import ResumeIcon from '@material-ui/icons/Attachment';
 import { useSearch } from '../../hooks/useSearch';
 
 const styles = theme => ({
-    modalRoot: {
-        backgroundColor: 'rgba(0,0,0,.35)',
-    },
-    root: {
-        paddingTop: 64,
-        outline: 'none',
-    },
     paperRoot: {
         borderRadius: 20,
+        width: 664,
+        margin: '48px auto 0',
     },
     searchIcon: {
         fontSize: 28,
@@ -42,7 +37,7 @@ const styles = theme => ({
     searchInput: {
         fontSize: 24,
         fontWeight: 500,
-        padding: '12px 0 12px 22px',
+        padding: '12px 0 12px 24px',
         width: 640,
     },
     listRoot: {
@@ -101,47 +96,46 @@ function Search(props) {
     const { results } = searchState;
     console.log('results',results);
 
-    return(<Modal open={showSearch} onClose={onClose} classes={{ root: classes.modalRoot }}>
-        <Grid container justify="center" alignContent="center" className={classes.root}>
-            <Slide in={slide} direction="down" timeout={200}>
-                <Paper elevation={24} classes={{ root: classes.paperRoot }}>
-                    <InputBase
-                        autofocus
-                        className={classes.searchInput}
-                        onChange={e => { searchDispatch({search:e.target.value})}}
-                        placeholder="Search candidates"
-                        startAdornment={<SearchIcon className={classes.searchIcon} />}
-                    />
-                    <List component="nav" className={classes.list} classes={{ root:classes.listRoot }}>
-                        {results.hits && results.hits.length > 0 ? results.hits.map( (hit, i) =>
-                            <ListItem key={i}>
-                                <ListItemIcon classes={{ root:classes.listIcon }} ><PersonIcon /></ListItemIcon>
-                                <ListItemText primary={`${hit.firstName} ${hit.lastName}`} />
-                                <ListItemSecondaryAction classes={{ root:classes.secondaryAction }}>
-                                    { hit.resume &&
-                                        <Tooltip title="Resume">
-                                            <IconButton onClick={()=>{ window.open(hit.resume.downloadURL, '_blank') }}>
-                                                <ResumeIcon />
-                                            </IconButton>
-                                        </Tooltip>
-                                    }
-
-                                    <Tooltip title="Submission">
-                                        <IconButton onClick={()=>{handleRoute(hit)}}>
-                                            <SubmissionIcon />
+    return(
+    <Modal open={showSearch} onClose={onClose} disableAutoFocus>
+        <Slide in={slide} direction="down" timeout={200}>
+            <Paper elevation={24} classes={{ root: classes.paperRoot }}>
+                <InputBase
+                    autoFocus
+                    className={classes.searchInput}
+                    onChange={e => { searchDispatch({search:e.target.value})}}
+                    placeholder="Search candidates"
+                    startAdornment={<SearchIcon className={classes.searchIcon} />}
+                />
+                <List component="nav" className={classes.list} classes={{ root:classes.listRoot }}>
+                    {results.hits && results.hits.length > 0 ? results.hits.map( (hit, i) =>
+                        <ListItem key={i}>
+                            <ListItemIcon classes={{ root:classes.listIcon }} ><PersonIcon /></ListItemIcon>
+                            <ListItemText primary={`${hit.firstName} ${hit.lastName}`} />
+                            <ListItemSecondaryAction classes={{ root:classes.secondaryAction }}>
+                                { hit.resume &&
+                                    <Tooltip title="Resume">
+                                        <IconButton onClick={()=>{ window.open(hit.resume.downloadURL, '_blank') }}>
+                                            <ResumeIcon />
                                         </IconButton>
                                     </Tooltip>
-                                </ListItemSecondaryAction>
-                            </ListItem>
-                        ) :
-                            <ListItem>
-                                <ListItemText primary="No results" className={classes.noResults}></ListItemText>
-                            </ListItem>
-                        }
-                    </List>
-                </Paper>
-            </Slide>
-        </Grid>
+                                }
+
+                                <Tooltip title="Submission">
+                                    <IconButton onClick={()=>{handleRoute(hit)}}>
+                                        <SubmissionIcon />
+                                    </IconButton>
+                                </Tooltip>
+                            </ListItemSecondaryAction>
+                        </ListItem>
+                    ) :
+                        <ListItem>
+                            <ListItemText primary="No results" className={classes.noResults}></ListItemText>
+                        </ListItem>
+                    }
+                </List>
+            </Paper>
+        </Slide>
     </Modal>);
 
 }
