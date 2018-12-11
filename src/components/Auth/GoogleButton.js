@@ -51,7 +51,7 @@ class GoogleButton extends Component {
     console.log(r);
     // if (r.profileObj.email.split("@")[1] === "2hats.com.au") {
     //   console.log("yay");
-    authAdmin(r, this.handleRouting);
+    //authAdmin(r, this.handleRouting);
     // } else {
     //   console.log("nay");
     // }
@@ -66,6 +66,7 @@ class GoogleButton extends Component {
           scope="https://www.googleapis.com/auth/gmail.readonly https://www.googleapis.com/auth/gmail.send https://www.googleapis.com/auth/calendar"
           //scope="https://www.googleapis.com/auth/gmail.readonly"
           accessType="offline"
+          responseType="code"
           render={renderProps => (
             <Button
               variant="flat"
