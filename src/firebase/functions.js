@@ -1,8 +1,8 @@
 import { functions } from "../store";
 export const CLOUD_FUNCTIONS = {
-  tracker:'restApiEventTracker',
+  tracker: "restApiEventTracker",
   stats: "restApiQueryStageAndStatus",
-  auth: "restApiAuthenticateAdmin"
+  auth: "callablesAdminAuthentication"
 };
 
 export const callable = (name, input, success, fail) => {
