@@ -92,6 +92,7 @@ function SumbissionsContainer(props) {
             rightPanel = <ScreeningForm
                             submission={submission}
                             setTemplate={setTemplate}
+                            setSmartLink={setSmartLink}
                             submissionDispatch={submissionDispatch}
                             handleSendEmail={handleSendEmail}
                             emailReady={emailReady}

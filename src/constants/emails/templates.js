@@ -437,8 +437,10 @@ export const rejectedWithFeedback ={
     }, {  
       type:'paragraph',
       replaceables:{content:`We’re looking forward to checking out your application!`}
-    },
-    {  
+    },{
+      type:'button',
+      replaceables:{url:'https://portal.2hats.com.au/smartLinks?slKey=#smartLink#',label:'Resubmit'}
+     },{  
       type:'signture',
       replaceables:{greeting:'Kind regards',title:'#senderTitle#',name:'#senderName#',company:'2hats'}
      },

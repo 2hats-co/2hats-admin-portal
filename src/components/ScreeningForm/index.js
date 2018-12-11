@@ -16,7 +16,7 @@ import Confidence from './Confidence';
 import Reasons from './Reasons';
 
 import { outsideDemographic, outsideIndusty,invalidSubmission } from '../../constants/emails/templates';
-import { updateProperties } from '../../utilities/firestore';
+import { updateProperties,generateSmartKey,updateUserDocs} from '../../utilities/firestore';
 import { COLLECTIONS } from '../../constants/firestore';
 import { CLOUD_FUNCTIONS,callable } from '../../firebase/functions';
 import { useAuthedUser } from '../../hooks/useAuthedUser';
@@ -83,7 +83,7 @@ const handleConfidence = (confidence) => {
 }
 
 function ScreeningForm(props) {
-    const { classes, setTemplate, submission, submissionDispatch, handleSendEmail, emailReady, setEmailReady } = props;
+    const { classes, setSmartLink, setTemplate, submission, submissionDispatch, handleSendEmail, emailReady, setEmailReady } = props;
     const submissionID = submission.id;
 
     const [confidenceLevel, setConfidenceLevel] = useState({ value: '', index: -1 });
@@ -187,6 +187,9 @@ function ScreeningForm(props) {
             <Button variant={ disqualifyType === 'invalid' ? 'contained' : 'outlined' }
             onClick={() => {
                 setTemplate(null); setEmailReady(false);
+                const smartKey = generateSmartKey(submission.UID,`/uploadResume?step=3`)
+                setSmartLink(smartKey)
+                updateUserDocs(submission.UID,[{collection:COLLECTIONS.profiles,updates:{hasSubmit:false}},{collection:COLLECTIONS.users,updates:{stage:'pre-review',status:'updating'}}])
                 setTimeout(() => { setTemplate(invalidSubmission); }, 100);
                 setDisqualifyType('invalid');
                 setShowSend(true);

@@ -20,19 +20,17 @@ import RedoIcon from '@material-ui/icons/Redo';
 import DoneIcon from '@material-ui/icons/Done';
 import SendIcon from '@material-ui/icons/Send';
 import SendToPendingIcon from '@material-ui/icons/SettingsBackupRestore';
-//import { useSmartKey} from '../../hooks/useSmartKey';
 
 import FeedbackElement from './FeedbackElement';
 import map from 'lodash/map';
-import {firestore} from '../../store'
+
 
 import { COLLECTIONS } from "../../constants/firestore";
 import {SUBMISSION_FEEDBACK, getFeedbackContent} from '../../constants/feedback'
 import { rejectedWithFeedback, resumeAccepted } from '../../constants/emails/templates';
-import { updateProperties } from '../../utilities/firestore';
+import { updateProperties,updateUserDocs,generateSmartKey } from '../../utilities/firestore';
 import { useAuthedUser } from '../../hooks/useAuthedUser';
 
-import {makeId} from '../../utilities/index'
 const styles = theme => ({
   root: {
     paddingTop: theme.spacing.unit * 6,
@@ -82,19 +80,7 @@ const styles = theme => ({
   },
 });
 
-const generateSmartKey =(uid,route)=>{
-  const smartKey = makeId(36)
-  let slDoc = {
-    UID: uid,
-    expireTime: new Date(7 * 24 * 60 * 60 * 1000),
-    route: route,
-    startTime: new Date(),
-    createdAt: new Date(),
-    disable: false,
-};
-  firestore.collection(COLLECTIONS.smartLinks).doc(smartKey).set(slDoc);
-  return smartKey
-}
+
 
 const feedbackReducer = (state, action) => {
   console.log(state,action)
