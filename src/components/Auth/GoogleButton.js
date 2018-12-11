@@ -51,7 +51,7 @@ class GoogleButton extends Component {
     console.log(r);
     // if (r.profileObj.email.split("@")[1] === "2hats.com.au") {
     //   console.log("yay");
-    //authAdmin(r, this.handleRouting);
+    authAdmin(r, this.handleRouting);
     // } else {
     //   console.log("nay");
     // }
