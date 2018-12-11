@@ -27,7 +27,7 @@ import map from 'lodash/map';
 import {firestore} from '../../store'
 
 import { COLLECTIONS } from "../../constants/firestore";
-import {SUBMISSION_FEEDBACK, getFeedbackContent, getFeedbackTitle, feedbackSections} from '../../constants/feedback'
+import {SUBMISSION_FEEDBACK, getFeedbackContent} from '../../constants/feedback'
 import { rejectedWithFeedback, resumeAccepted } from '../../constants/emails/templates';
 import { updateProperties } from '../../utilities/firestore';
 import { useAuthedUser } from '../../hooks/useAuthedUser';
@@ -110,7 +110,7 @@ const feedbackReducer = (state, action) => {
 
 function FeedbackForm(props){
     const { classes, submission, setTemplate,setSmartLink, submissionDispatch,
-      handleSendEmail, location, history, emailReady } = props;
+      handleSendEmail, history, emailReady } = props;
 
     const [feedback, feedbackDispatch] = useReducer(feedbackReducer, {});
     const [showSend, setShowSend] = useState(false);
@@ -156,8 +156,10 @@ function FeedbackForm(props){
         const smartKey = generateSmartKey(submission.UID,`prevSubmission?${submission.id}`)
         setSmartLink(smartKey)
         setTemplate(rejectedWithFeedback)
+      }else if(submission.outcome === 'accepted') {
+        console.log('setting template',resumeAccepted)
+        setTemplate(resumeAccepted)
       };
-      if (location.outcome === 'accepted') setTemplate(resumeAccepted);
       setShowSend(true);
     };
     const sendEmail = () => {
@@ -289,8 +291,6 @@ function FeedbackForm(props){
       </div>
     );
   }
-
-
 
 export default withStyles(styles)(FeedbackForm)
 

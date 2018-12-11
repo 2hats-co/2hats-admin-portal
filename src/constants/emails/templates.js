@@ -417,3 +417,29 @@ export const rejectedWithFeedback ={
       replaceables:{greeting:'Speak to you soon!',title:'#senderTitle#',name:'#senderName#',company:'2hats'}
      },
   ] }
+
+
+  export const invalidSubmission ={ 
+    index:12,
+    templateName:'invalid Submission',
+    subject:'Unable to Assess Your Application',
+    elements:[
+    {  
+      type:'paragraph',
+      replaceables:{content:`Hi #firstName#,`}
+    },
+    {  
+      type:'paragraph',
+      replaceables:{content:`Thank you for submitting your resume to 2hats. We’re unable to assess your application because we can’t open your resume file.`}
+    }, {  
+      type:'paragraph',
+      replaceables:{content:`Please make sure that your file can be opened and then resubmit your resume in a pdf format via the link below.`}
+    }, {  
+      type:'paragraph',
+      replaceables:{content:`We’re looking forward to checking out your application!`}
+    },
+    {  
+      type:'signture',
+      replaceables:{greeting:'Kind regards',title:'#senderTitle#',name:'#senderName#',company:'2hats'}
+     },
+  ] }
