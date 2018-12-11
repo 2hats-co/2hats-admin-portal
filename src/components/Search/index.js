@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import withStyles from '@material-ui/core/styles/withStyles';
 import { withRouter } from 'react-router-dom';
 
-import Grid from '@material-ui/core/Grid';
+// import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Modal from '@material-ui/core/Modal';
 import InputBase from '@material-ui/core/InputBase';
@@ -29,6 +29,7 @@ const styles = theme => ({
         width: 664,
         margin: '48px auto 0',
         outline: 'none',
+        maxHeight: 'calc(100vh - 96px)',
     },
     searchIcon: {
         fontSize: 28,
@@ -40,22 +41,32 @@ const styles = theme => ({
         fontWeight: 500,
         padding: '12px 0 12px 24px',
         width: 640,
+        position: 'relative',
+
+        '&::after': {
+            content: '""',
+            display: 'block',
+            width: 612,
+            height: 1,
+            backgroundColor: 'rgba(0,0,0,.1)',
+
+            position: 'absolute',
+            left: 28,
+            bottom: 0,
+        },
+    },
+    listWrapper: {
+        maxHeight: 'calc(100vh - 96px - 64px)',
+        overflowY: 'scroll',
     },
     listRoot: {
         borderRadius: '0 0 20px 20px',
         overflow: 'hidden',
     },
-    list: {
-        '&::before': {
-            content: '""',
-            display: 'block',
-            width: 576,
-            height: 1,
-            backgroundColor: 'rgba(0,0,0,.1)',
-            
-            position: 'relative',
-            top: -8,
-            left: 64,
+    listItem: {
+        transition: 'background-color .2s',
+        '&:hover': {
+            backgroundColor: theme.palette.divider,
         },
     },
     listIcon: {
@@ -108,33 +119,35 @@ function Search(props) {
                     placeholder="Search candidates"
                     startAdornment={<SearchIcon className={classes.searchIcon} />}
                 />
-                <List component="nav" className={classes.list} classes={{ root:classes.listRoot }}>
-                    {results.hits && results.hits.length > 0 ? results.hits.map( (hit, i) =>
-                        <ListItem key={i}>
-                            <ListItemIcon classes={{ root:classes.listIcon }} ><PersonIcon /></ListItemIcon>
-                            <ListItemText primary={`${hit.firstName} ${hit.lastName}`} />
-                            <ListItemSecondaryAction classes={{ root:classes.secondaryAction }}>
-                                { hit.resume &&
-                                    <Tooltip title="Resume">
-                                        <IconButton onClick={()=>{ window.open(hit.resume.downloadURL, '_blank') }}>
-                                            <ResumeIcon />
+                <div className={classes.listWrapper}>
+                    <List className={classes.list} classes={{ root:classes.listRoot }}>
+                        {results.hits && results.hits.length > 0 ? results.hits.map( (hit, i) =>
+                            <ListItem key={i} className={classes.listItem}>
+                                <ListItemIcon classes={{ root:classes.listIcon }} ><PersonIcon /></ListItemIcon>
+                                <ListItemText primary={`${hit.firstName} ${hit.lastName}`} />
+                                <ListItemSecondaryAction classes={{ root:classes.secondaryAction }}>
+                                    { hit.resume &&
+                                        <Tooltip title="Resume">
+                                            <IconButton onClick={()=>{ window.open(hit.resume.downloadURL, '_blank') }}>
+                                                <ResumeIcon />
+                                            </IconButton>
+                                        </Tooltip>
+                                    }
+
+                                    <Tooltip title="Submission">
+                                        <IconButton onClick={()=>{handleRoute(hit)}}>
+                                            <SubmissionIcon />
                                         </IconButton>
                                     </Tooltip>
-                                }
-
-                                <Tooltip title="Submission">
-                                    <IconButton onClick={()=>{handleRoute(hit)}}>
-                                        <SubmissionIcon />
-                                    </IconButton>
-                                </Tooltip>
-                            </ListItemSecondaryAction>
-                        </ListItem>
-                    ) :
-                        <ListItem>
-                            <ListItemText primary="No results" className={classes.noResults}></ListItemText>
-                        </ListItem>
-                    }
-                </List>
+                                </ListItemSecondaryAction>
+                            </ListItem>
+                        ) :
+                            <ListItem>
+                                <ListItemText primary="No results" className={classes.noResults}></ListItemText>
+                            </ListItem>
+                        }
+                    </List>
+                </div>
             </Paper>
         </Slide>
     </Modal>);

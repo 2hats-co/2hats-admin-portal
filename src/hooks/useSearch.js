@@ -9,7 +9,7 @@ const searchReducer = (prevState, state) => {
 const updateQuery = async(index,search,filters,searchDispatch) =>{
   searchDispatch({prevSearch:search,prevFilters:filters})
   const results = await index.search(search,{
-    "hitsPerPage":5
+    "hitsPerPage": 10
   })
   searchDispatch({results})
 }
