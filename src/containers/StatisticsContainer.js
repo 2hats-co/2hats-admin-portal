@@ -12,7 +12,7 @@ import { withHandlers, lifecycle } from "recompose";
 import { connect } from "react-redux";
 import { withFirestore } from "../utilities/withFirestore";
 import Grid from '@material-ui/core/Grid';
-import Button from '@material-ui/core/Button';
+import Fab from '@material-ui/core/Fab';
 import ChartBuilder from '../components/Statistics/ChartBuilder';
 import SettingsIcon from '@material-ui/icons/Settings'
 import IconButton from '@material-ui/core/IconButton'
@@ -85,7 +85,7 @@ class StatisticsContainer extends Component {
       const charts = this.props.chartsConfig
       if(charts){
         return (<div style={{boxShadow:'0 -1px 0 #ddd'}}>
-           <Button variant="fab" 
+           <Fab
            style={{
             position: 'absolute',
             top: 64 + 16,
@@ -96,7 +96,7 @@ class StatisticsContainer extends Component {
            onClick={this.handleSaveLayout} 
            color='primary'>
               <SaveIcon/>
-            </Button>
+            </Fab>
           <ChartBuilder chart={this.state.chart}/>
           <TimeBar format={format} changeHandler={this.handleChange}/>
           <Grid container style={{width:'100%', marginTop:55, height:'calc(100vh - 64px)', overflowX:'hidden', verflowY:'auto'}}>
