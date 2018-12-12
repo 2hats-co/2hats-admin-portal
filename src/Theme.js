@@ -32,7 +32,9 @@ const Theme = createMuiTheme({
         },
     },
     shape: {
+        borderRadius: 10,
         roundBorderRadius: 20,
+        smallBorderRadius: 4,
     },
     overrides: {
         MuiToggleButton: {

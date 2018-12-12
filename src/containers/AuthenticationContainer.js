@@ -3,7 +3,6 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import Slide from '@material-ui/core/Slide';
 
 import LogoInCard from '../components/LogoInCard';
 import GoogleButton from '../components/Auth/GoogleButton';
@@ -44,25 +43,23 @@ class AuthenticationContainer extends React.Component{
             );
         } else {
             return(
-                <Slide in direction="up">
-                    <LogoInCard width={350} height={260}>
-                        <Grid
-                            container
-                            className={classes.root}
-                            alignItems="center"
-                            direction="column"
-                            justify="space-between"
-                        >
-                            <Typography variant='title'>Admin Portal</Typography>
-                            <GoogleButton
-                                id="google-button"
-                                action="Sign in"
-                                onClick={this.handleGoogleButton}
-                            />
-                            <Typography variant='caption'>Use your 2hats email</Typography>
-                        </Grid>
-                    </LogoInCard>
-                </Slide>
+                <LogoInCard width={350} height={260}>
+                    <Grid
+                        container
+                        className={classes.root}
+                        alignItems="center"
+                        direction="column"
+                        justify="space-between"
+                    >
+                        <Typography variant='title'>Admin Portal</Typography>
+                        <GoogleButton
+                            id="google-button"
+                            action="Sign in"
+                            onClick={this.handleGoogleButton}
+                        />
+                        <Typography variant='caption'>Use your 2hats email</Typography>
+                    </Grid>
+                </LogoInCard>
             );
         }
     }

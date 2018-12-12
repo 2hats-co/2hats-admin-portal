@@ -4,10 +4,11 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import Paper from '@material-ui/core/Paper';
 import DarkLogo from '../assets/logo/DarkText.png';
 import LinearProgress from '@material-ui/core/LinearProgress';
+import Slide from '@material-ui/core/Slide';
 
-const styles = () => ({
+const styles = theme => ({
   root:{
-    backgroundColor: '#fff',
+    backgroundColor: theme.palette.primary.main,
     display: 'table',
     position: 'absolute',
     height: '100%',
@@ -60,6 +61,7 @@ function LogoInCard(props) {
   return (
     <div className={classes.root}>
       <div className={classes.middle}>
+      <Slide in direction="up">
       <Paper className={classes.paper} 
               style={{width:width,
                       height:height}} 
@@ -73,6 +75,7 @@ function LogoInCard(props) {
                 
         {props.children}
       </Paper>
+      </Slide>
       </div>
     </div>
   );
