@@ -29,7 +29,7 @@ const styles = theme => ({
         backgroundColor: theme.palette.primary.main,
         borderRadius: 6,
         display: 'inline-block',
-        marginLeft: theme.spacing.unit,
+        marginRight: theme.spacing.unit,
     },
     clipBodyText: {
         maxHeight: 40,
@@ -57,10 +57,10 @@ function CandidateItem(props){
                         </Typography>
                     </Grid>
                     <Grid item>
+                        {isUnread && <div className={classes.unreadIndicator} />}
                         <Typography variant="body1" className={classes.timestamp}>
                             {moment(data.date.seconds*1000).fromNow()}
                         </Typography>
-                        {isUnread && <div className={classes.unreadIndicator} />}
                     </Grid>
                 </Grid>
                 }

@@ -2,41 +2,32 @@ import React, { useState } from 'react';
 
 import withStyles from '@material-ui/core/styles/withStyles';
 import Grid from '@material-ui/core/Grid';
+import Fade from '@material-ui/core/Fade';
 import Typography from '@material-ui/core/Typography';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
+import IconButton from '@material-ui/core/IconButton';
 
 import ForumIcon from '@material-ui/icons/ForumOutlined';
+import LinkIcon from '@material-ui/icons/Link';
+import StarIcon from '@material-ui/icons/Star';
+import StarOutlineIcon from '@material-ui/icons/StarBorder';
 
 import ThreadsList from './ThreadsList';
 import Messages from './Messages';
 import Composer from './Composer';
 
 const styles = theme => ({
-    mailItems: {
-        height: '100vh',
-        marginTop: -64,
-        overflowY: 'scroll',
-        padding: 0,
-        paddingBottom: 128,
-        background: '#fff',
-        borderLeft: `1px solid ${theme.palette.divider}`,
-    },
-    messageField: {
-        backgroundColor: '#fff',
-        boxShadow: `0 -1px 0 ${theme.palette.divider}`,
-        width:'calc(100% - 485px)',
-        position: 'fixed',
-        bottom: 0,
-        right: 0,
-        padding: `${theme.spacing.unit * 2}px 0`,
-    },
     messagesContainer: {
         height: '100vh',
         marginTop: -64,
 
         background: theme.palette.background.paper,
         borderLeft: `1px solid ${theme.palette.divider}`,
+    },
+    leadHeader: {
+        padding: `${theme.spacing.unit}px ${theme.spacing.unit*1.5}px ${theme.spacing.unit}px ${theme.spacing.unit*3}px`,
+        borderBottom: `1px solid ${theme.palette.divider}`,
     },
     composerContainer: {
         borderTop: `1px solid ${theme.palette.divider}`,
@@ -59,13 +50,13 @@ const styles = theme => ({
 });
 
 function Messaging(props) {
-    const {threads, handleThreadSelector, messages, classes, handleSendMessage} = props 
+    const {threads, handleThreadSelector, messages, classes, leadHeader} = props;
 
     const [composerType, setComposerType] = useState('email');
 
     const composer = <Composer composerType={composerType} />;
 
-    return(
+    return(<Fade in>
     <Grid container direction='row' style={{height: 'calc(100vh - 64px)'}}>
         <Grid item style={{width: 320,height: 'calc(100vh - 64px)'}}>
             <ThreadsList
@@ -77,7 +68,23 @@ function Messaging(props) {
         <Grid item xs className={classes.messagesContainer}>
             { messages && messages.length > 0 ?
             <Grid container direction="column" wrap="nowrap" style={{ height:'100vh' }}>
-                <Grid item xs style={{ overflowY:'scroll' }}><Messages messages={messages} /></Grid>
+
+                <Grid item className={classes.leadHeader}>
+                    <Grid container justify="space-between" alignItems="center">
+                        <Grid item>
+                            <Typography variant="title">{ leadHeader.label }</Typography>
+                        </Grid>
+                        <Grid item>
+                            <IconButton onClick={() => { window.open(leadHeader.path, '_blank') }}><LinkIcon /></IconButton>
+                            <IconButton><StarOutlineIcon /></IconButton>
+                        </Grid>
+                    </Grid>
+                </Grid>
+
+                <Grid item xs style={{ overflowY:'scroll' }}>
+                    <Messages messages={messages} />
+                </Grid>
+
                 <Grid item className={classes.composerContainer}>
                     <Tabs
                         classes={{root:classes.tabRoot}}
@@ -103,7 +110,7 @@ function Messaging(props) {
             }
         </Grid>
     </Grid>
-    );
+    </Fade>);
 }
 
 export default withStyles(styles)(Messaging);

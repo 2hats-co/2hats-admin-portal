@@ -94,9 +94,8 @@ class LeadsContainer extends Component {
                 let isStarred = lead.thread.isStarred;
                 return({fullName, body, date, id, isUnread, isStarred});
             });
-            
-            let leadHeader = {label:'',path:''};
 
+            let leadHeader = {label:'',path:''};
             if (leadId !=='') {
                 const leadIndex = findIndex(propEq('id',leadId))(leads);
                 const currentLead = leads[leadIndex];
@@ -105,20 +104,24 @@ class LeadsContainer extends Component {
             return (
             <React.Fragment>
                 <LocationIndicator title="Leads" />
-                <Messaging 
+                <Messaging
                     threads={threadSort(dropRepeats(threads))} 
                     handleSendMessage={this.handleSendMessage} 
                     handleThreadSelector={this.handleThreadSelector}
                     messages={messageSort(dropRepeats(messages))}
                     handleStarThread={this.handleStarThread}
+                    leadHeader={leadHeader}
                 />
             </React.Fragment>
             );
         }
         else {
-            return(<Grid container justify="center" alignItems="center" style={{height:'100vh'}}>
-                <CircularProgress size={64} />
-            </Grid>);
+            return(<React.Fragment>
+              <LocationIndicator title="Leads" />
+              <Grid container justify="center" alignItems="center" style={{height:'calc(100vh - 64px)'}}>
+                  <CircularProgress size={64} />
+              </Grid>
+            </React.Fragment>);
         }
     }
 

@@ -1,5 +1,6 @@
 import React,{Component} from 'react';
 import withStyles from '@material-ui/core/styles/withStyles';
+import Slide from '@material-ui/core/Slide';
 
 import Message from './Message'
 
@@ -24,7 +25,7 @@ class Messages extends Component{
     render () {
         const {classes, messages} = this.props;
 
-        return(
+        return(<Slide in direction="down">
         <div className={classes.root}>
             { messages.map((data, i) => (
                 <Message key={data.id} data={data}
@@ -36,7 +37,7 @@ class Messages extends Component{
                 ref={(el) => { this.messagesEnd = el; }}>
             </div>
         </div>
-        )
+        </Slide>)
     }
 }
 export default withStyles(styles)(Messages);

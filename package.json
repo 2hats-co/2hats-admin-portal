@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@date-io/moment": "^0.0.2",
     "@material-ui/core": "^3.6.2",
     "@material-ui/icons": "^3.0.1",
     "@material-ui/lab": "^3.0.0-alpha.15",
@@ -38,6 +39,7 @@
     "html-webpack-plugin": "2.29.0",
     "jest": "20.0.4",
     "lodash": "^4.17.11",
+    "material-ui-pickers": "^2.0.4",
     "moment": "^2.22.2",
     "object-assign": "4.1.1",
     "postcss-flexbugs-fixes": "3.2.0",

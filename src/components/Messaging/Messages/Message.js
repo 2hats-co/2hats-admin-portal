@@ -54,7 +54,7 @@ const styles = theme => ({
     body: {
         display: 'inline-block',
         maxWidth: 500,
-        borderRadius: theme.shape.borderRadius,
+        borderRadius: theme.shape.smallBorderRadius,
         padding: '10px 16px',
         margin: `${theme.spacing.unit / 2}px 0 0`,
     },
