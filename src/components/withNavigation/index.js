@@ -127,7 +127,7 @@ export const withNavigation = (WrappedComponent) => {
                 <Slide in direction="right">
                     <Grid item className={classes.leftNav}>
                         <Grid container style={{height:'100vh'}} justify="center" alignContent="space-between">
-                            <Grid item style={{height:64}}>
+                            <Grid item>
                                 <img alt="2hats logo" src={logo} className={classes.logo} />
                                 <Tooltip title="Search candidates" placement="right">
                                     <IconButton

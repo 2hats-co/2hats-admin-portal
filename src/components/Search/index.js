@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import withStyles from '@material-ui/core/styles/withStyles';
 import { withRouter } from 'react-router-dom';
 
-import Grid from '@material-ui/core/Grid';
+// import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Modal from '@material-ui/core/Modal';
 import InputBase from '@material-ui/core/InputBase';
@@ -24,15 +24,12 @@ import ResumeIcon from '@material-ui/icons/Attachment';
 import { useSearch } from '../../hooks/useSearch';
 
 const styles = theme => ({
-    modalRoot: {
-        backgroundColor: 'rgba(0,0,0,.35)',
-    },
-    root: {
-        paddingTop: 64,
-        outline: 'none',
-    },
     paperRoot: {
         borderRadius: 20,
+        width: 664,
+        margin: '48px auto 0',
+        outline: 'none',
+        maxHeight: 'calc(100vh - 96px)',
     },
     searchIcon: {
         fontSize: 28,
@@ -42,24 +39,34 @@ const styles = theme => ({
     searchInput: {
         fontSize: 24,
         fontWeight: 500,
-        padding: '12px 0 12px 22px',
+        padding: '12px 0 12px 24px',
         width: 640,
+        position: 'relative',
+
+        '&::after': {
+            content: '""',
+            display: 'block',
+            width: 612,
+            height: 1,
+            backgroundColor: 'rgba(0,0,0,.1)',
+
+            position: 'absolute',
+            left: 28,
+            bottom: 0,
+        },
+    },
+    listWrapper: {
+        maxHeight: 'calc(100vh - 96px - 64px)',
+        overflowY: 'scroll',
     },
     listRoot: {
         borderRadius: '0 0 20px 20px',
         overflow: 'hidden',
     },
-    list: {
-        '&::before': {
-            content: '""',
-            display: 'block',
-            width: 576,
-            height: 1,
-            backgroundColor: 'rgba(0,0,0,.1)',
-            
-            position: 'relative',
-            top: -8,
-            left: 64,
+    listItem: {
+        transition: 'background-color .2s',
+        '&:hover': {
+            backgroundColor: theme.palette.divider,
         },
     },
     listIcon: {
@@ -69,7 +76,7 @@ const styles = theme => ({
         right: theme.spacing.unit,
     },
     noResults: {
-        paddingLeft: 40,
+        paddingLeft: '40px !important',
         opacity: .54,
     },
 });
@@ -86,7 +93,7 @@ function Search(props) {
 
     const onClose = () => {
         setSlide(false);
-        setTimeout(() => { setShowSearch(false); }, 200);
+        setTimeout(() => { setShowSearch(false); }, 100);
     }
 
     const handleRoute = (hit) => {
@@ -101,20 +108,21 @@ function Search(props) {
     const { results } = searchState;
     console.log('results',results);
 
-    return(<Modal open={showSearch} onClose={onClose} classes={{ root: classes.modalRoot }}>
-        <Grid container justify="center" alignContent="center" className={classes.root}>
-            <Slide in={slide} direction="down" timeout={200}>
-                <Paper elevation={24} classes={{ root: classes.paperRoot }}>
-                    <InputBase
-                        autofocus
-                        className={classes.searchInput}
-                        onChange={e => { searchDispatch({search:e.target.value})}}
-                        placeholder="Search candidates"
-                        startAdornment={<SearchIcon className={classes.searchIcon} />}
-                    />
-                    <List component="nav" className={classes.list} classes={{ root:classes.listRoot }}>
+    return(
+    <Modal open={showSearch} onClose={onClose} disableAutoFocus>
+        <Slide in={slide} direction="down" timeout={100}>
+            <Paper elevation={24} classes={{ root: classes.paperRoot }}>
+                <InputBase
+                    autoFocus
+                    className={classes.searchInput}
+                    onChange={e => { searchDispatch({search:e.target.value})}}
+                    placeholder="Search candidates"
+                    startAdornment={<SearchIcon className={classes.searchIcon} />}
+                />
+                <div className={classes.listWrapper}>
+                    <List className={classes.list} classes={{ root:classes.listRoot }}>
                         {results.hits && results.hits.length > 0 ? results.hits.map( (hit, i) =>
-                            <ListItem key={i}>
+                            <ListItem key={i} className={classes.listItem}>
                                 <ListItemIcon classes={{ root:classes.listIcon }} ><PersonIcon /></ListItemIcon>
                                 <ListItemText primary={`${hit.firstName} ${hit.lastName}`} />
                                 <ListItemSecondaryAction classes={{ root:classes.secondaryAction }}>
@@ -139,9 +147,9 @@ function Search(props) {
                             </ListItem>
                         }
                     </List>
-                </Paper>
-            </Slide>
-        </Grid>
+                </div>
+            </Paper>
+        </Slide>
     </Modal>);
 
 }

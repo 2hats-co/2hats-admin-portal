@@ -1,21 +1,25 @@
 import React, { Component } from 'react';
 import { withNavigation } from '../components/withNavigation';
-import { COLLECTIONS} from "../constants/firestore";
+import { COLLECTIONS } from "../constants/firestore";
 import { compose } from "redux";
 import { withHandlers, lifecycle } from "recompose";
 import { connect } from "react-redux";
 import { withFirestore } from "../utilities/withFirestore";
-import Grid from '@material-ui/core/Grid';
-import Messaging from '../components/Messaging/index';
-import Toolbar from '../components/Messaging/Toolbar'
-import prop from 'ramda/es/prop'
-import ascend from 'ramda/es/ascend'
-import sortWith from 'ramda/es/sortWith'
-import isNil from 'ramda/es/isNil'
-import findIndex from 'ramda/es/findIndex'
-import propEq from 'ramda/es/propEq'
-import dropRepeats from 'ramda/es/dropRepeats'
 
+import Grid from '@material-ui/core/Grid';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Fade from '@material-ui/core/Fade';
+
+import LocationIndicator from '../components/LocationIndicator';
+import Messaging from '../components/Messaging/index';
+
+import prop from 'ramda/es/prop';
+import ascend from 'ramda/es/ascend';
+import sortWith from 'ramda/es/sortWith';
+import isNil from 'ramda/es/isNil';
+import findIndex from 'ramda/es/findIndex';
+import propEq from 'ramda/es/propEq';
+import dropRepeats from 'ramda/es/dropRepeats';
 
 const messageSort = sortWith([
   ascend(prop('sentAt')),
@@ -62,60 +66,60 @@ class LeadsContainer extends Component {
         this.props.sendMessage(this.state.leadId,lead[0].thread.id,content)
     }
     render() { 
-        const leads = this.props.leads
-        const {leadId} = this.state
-        const queuedMessages =  this.props.queuedMessage
-        let messages = []
-        if(this.props.messages){
-          messages = this.props.messages
+        const { leads, queuedMessages } = this.props;
+        const { leadId } = this.state;
+
+        let messages = [];
+        if (this.props.messages) messages = this.props.messages;
+
+        if (!isNil(queuedMessages)) {
+            console.log('queuedMessages',queuedMessages);
+            const formatedMessages = queuedMessages.map(message => {
+                const sentAt = message.createdAt;
+                const isIncoming = false;
+                return ({ body:message.body, sentAt, isIncoming });
+            });
+            messages = [...this.props.messages, ...formatedMessages];
+        } else if (this.props.messages) {
+          messages = this.props.messages;
         }
-        if(!isNil(queuedMessages)){
-          console.log('queuedMessages',queuedMessages)
-         const formatedMessages = queuedMessages.map(message=> {
-            const sentAt = message.createdAt
-            const isIncoming = false
-          return ({body:message.body,sentAt,isIncoming})
-         })
-         messages = [...this.props.messages,...formatedMessages]
-        }else if(this.props.messages){
-          messages = this.props.messages
-        }
-        if(leads){
-          const threads = leads.map(lead=>{
-            let fullName = lead.fullName
-            let id = lead.id
-            let body = lead.lastMessage.body
-            let date = lead.lastMessage.sentAt
-            let isUnread = lead.thread.isUnread
-            let isStarred = lead.thread.isStarred
 
-            return({fullName,body,date,id,isUnread,isStarred})
-          })
-       let leadHeader = {label:'',path:''}
-       if(leadId !==''){
-         const leadIndex = findIndex(propEq('id',leadId))(leads)
+        if (leads) {
+            const threads = leads.map(lead => {
+                let fullName = lead.fullName;
+                let id = lead.id;
+                let body = lead.lastMessage.body;
+                let date = lead.lastMessage.sentAt;
+                let isUnread = lead.thread.isUnread;
+                let isStarred = lead.thread.isStarred;
+                return({fullName, body, date, id, isUnread, isStarred});
+            });
+            
+            let leadHeader = {label:'',path:''};
 
-         const currentLead = leads[leadIndex]
-          leadHeader = {label:currentLead.fullName,path:currentLead.profileURL}
-
-       }
-        return (
-        <React.Fragment>
-          <Toolbar header={leadHeader}/>
-          <Grid container direction="row" wrap="nowrap" style={{height: 'calc(100vh - 64px)'}}>
-            <Messaging 
-            threads={threadSort(dropRepeats(threads))} 
-            handleSendMessage={this.handleSendMessage} 
-            handleThreadSelector={this.handleThreadSelector}
-            messages={messageSort(dropRepeats(messages))}
-            handleStarThread={this.handleStarThread}/>
-          </Grid>
-        </React.Fragment>
-
-        )}
-            else{
-                return(<div/>)
+            if (leadId !=='') {
+                const leadIndex = findIndex(propEq('id',leadId))(leads);
+                const currentLead = leads[leadIndex];
+                leadHeader = {label:currentLead.fullName, path:currentLead.profileURL};
             }
+            return (
+            <React.Fragment>
+                <LocationIndicator title="Leads" />
+                <Messaging 
+                    threads={threadSort(dropRepeats(threads))} 
+                    handleSendMessage={this.handleSendMessage} 
+                    handleThreadSelector={this.handleThreadSelector}
+                    messages={messageSort(dropRepeats(messages))}
+                    handleStarThread={this.handleStarThread}
+                />
+            </React.Fragment>
+            );
+        }
+        else {
+            return(<Grid container justify="center" alignItems="center" style={{height:'100vh'}}>
+                <CircularProgress size={64} />
+            </Grid>);
+        }
     }
 
 }
@@ -127,7 +131,7 @@ const enhance = compose(
             where:['hasResponded','==',true],
              storeAs:'linkedinClients',
              orderBy:['lastMessage.sentAt', 'desc'],
-             limit:  60
+             limit:  20
           }
             props.firestore.setListener(leadsListenerSettings)
           },

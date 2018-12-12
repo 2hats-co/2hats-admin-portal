@@ -16,7 +16,7 @@ import withAuthentication from './utilities/Session/withAuthentication';
 //import TemplateGenerator from './components/TemplateGenerator'
 
 //containers
-const loadingCard = (<Grid container alignItems="center" justify="center" style={{height:'100%',position:'absolute',top:0,left:0}}><CircularProgress color="primary" size={60}/></Grid>)
+const loadingCard = (<Grid container alignItems="center" justify="center" style={{height:'100%',position:'absolute',top:0,left:0}}><CircularProgress size={64}/></Grid>)
 
 const StatisticsContainer = Loadable({
     loader: () => import('./containers/StatisticsContainer'),

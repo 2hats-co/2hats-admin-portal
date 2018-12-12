@@ -8,7 +8,8 @@ const Theme = createMuiTheme({
         primary: {
             main: primaryColor,
             dark: primaryColor,
-            light: 'rgba(241, 90, 41, .2)',
+            darkText: 'hsl(15, 100%, 30%)',
+            light: 'hsl(15, 88%, 95%)',
         },
         secondary: {
             main: primaryColor,
@@ -23,8 +24,15 @@ const Theme = createMuiTheme({
             fontWeight: 500,
         },
         title:{
-            textTransform: 'capitalize'
-        }
+            textTransform: 'capitalize',
+        },
+        button: {
+            textTransform: 'none',
+            fontWeight: 700,
+        },
+    },
+    shape: {
+        roundBorderRadius: 20,
     },
     overrides: {
         MuiToggleButton: {
@@ -45,23 +53,30 @@ const Theme = createMuiTheme({
             },
         },
         MuiButton: {
-            label: {
-                textTransform: 'none',
-                fontWeight: 700,
+            '& svg': {
+                marginRight: 8,
             },
-            extendedFab: {
+        },
+        MuiFab: {
+            extended: {
                 '& svg': {
                     marginRight: 8,
-                }
+                },
             }
         },
         MuiTooltip: {
             tooltip: {
                 backgroundColor: 'rgba(0,0,0,.75)',
-                fontSize: 14,
+                fontSize: 12,
             },
             popper: {
                 opacity: 1,
+            },
+        },
+        MuiTab: {
+            root: {
+                minWidth: '64px !important',
+                fontSize: '.875rem !important',
             },
         },
     },

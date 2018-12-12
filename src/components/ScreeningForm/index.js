@@ -4,6 +4,7 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
+import Fab from '@material-ui/core/Fab';
 import Tooltip from '@material-ui/core/Tooltip';
 
 import BackIcon from '@material-ui/icons/ArrowBack';
@@ -198,13 +199,13 @@ function ScreeningForm(props) {
             </Button>
 
             <Tooltip title={`Sends email. ${submission.displayName} is removed from Pending.`}><div className={classes.submitButton}>
-                <Button
+                <Fab
                     disabled={!(showSend && emailReady)}
-                    variant="extendedFab" color="primary" className={classes.submitButton}
+                    variant="extended" color="primary" className={classes.submitButton}
                     onClick={ () => { handleSendEmail(); disqualifySubmission(); } }
                 >
                     <SendIcon className={classes.icon} /> Send Email
-                </Button>
+                </Fab>
             </div></Tooltip>
         </Grid>
     );
@@ -236,13 +237,13 @@ function ScreeningForm(props) {
                 <br />No email will be sent.
             </React.Fragment>
         }><div className={classes.submitButton}>
-            <Button
+            <Fab
                 disabled={reasons.filter(x => x.checked).length === 0}
-                variant="extendedFab" color="primary" className={classes.submitButton}
+                variant="extended" color="primary" className={classes.submitButton}
                 onClick={updateSubmission}
             >
                 <DoneIcon className={classes.icon} />Submit
-            </Button>
+            </Fab>
         </div></Tooltip>
     </Grid>);
 }

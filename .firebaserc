@@ -6,7 +6,7 @@
     "staging2hats": {
       "hosting": {
         "admin": [
-          "admin2hat"
+          "staging2hatsadmin"
         ]
       }
     }

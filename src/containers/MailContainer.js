@@ -4,7 +4,7 @@ import React,{ Component } from 'react'
 import withStyles from '@material-ui/core/styles/withStyles';
 import Grid from '@material-ui/core/Grid';
 
-import Button from '@material-ui/core/Button';
+import Fab from '@material-ui/core/Fab';
 import Avatar from '@material-ui/core/Avatar';
 import ReplyIcon from '@material-ui/icons/Reply';
 import SendIcon from '@material-ui/icons/Send';
@@ -143,15 +143,15 @@ class MailContainer extends Component {
                                 /> */}
                             </Grid>
                         </Grid>
-                        <Button variant="extendedFab" color="primary" aria-label="Reply"
+                        <Fab variant="extended" color="primary" aria-label="Reply"
                             className={classes.replyButton}
-                        > <SendIcon /> Send </Button>
+                        > <SendIcon /> Send </Fab>
                     </React.Fragment>
                 :
-                    <Button variant="extendedFab" color="primary" aria-label="Reply"
+                    <Fab variant="extended" color="primary" aria-label="Reply"
                         className={classes.replyButton}
                         onClick={() => { this.setState({ showReplyComposer: true }) }}
-                    > <ReplyIcon /> Reply </Button>
+                    > <ReplyIcon /> Reply </Fab>
                 }
             </Grid>
         </Grid>

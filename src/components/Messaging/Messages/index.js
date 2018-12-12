@@ -1,42 +1,41 @@
 import React,{Component} from 'react';
 import withStyles from '@material-ui/core/styles/withStyles';
 
-import Grid from '@material-ui/core/Grid';
 import Message from './Message'
 
 const styles = theme => ({
-   root:{
-     //  height:'calc(100vh - 120px)',
-       maxWidth:'100%'
-       
-   }
+    root: {
+        padding: theme.spacing.unit * 2,
+    },
+    messageContainer: {
+        width: '100%',
+    },
 });
-class Messages extends Component{      
-      componentDidUpdate(prevProps) {
-          if(!prevProps.data){
+
+class Messages extends Component{
+    componentDidUpdate(prevProps) {
+        if (!prevProps.data) {
             this.messagesEnd.scrollIntoView();
-          }else{
+        } else {
             this.messagesEnd.scrollIntoView({ behavior: "smooth" });
-          }
-      }
-    render(){
+        }
+    }
+
+    render () {
         const {classes, messages} = this.props;
+
         return(
-            <Grid container
-            className={classes.root}
-            direction="row"
-            justify="flex-end"
-            alignItems="center">
+        <div className={classes.root}>
             { messages.map((data, i) => (
-                <Grid key={i} item align={data.isIncoming? 'left':'right'} style={{width:'100%'}}>
-                <Message data={data} key={data.id} />
-                </Grid>
-                ))
-             }
-               <div style={{ float:"left", clear: "both" }}
-             ref={(el) => { this.messagesEnd = el; }}>
+                <Message key={data.id} data={data}
+                    firstOfType={i > 0 ? messages[i-1].isIncoming !== data.isIncoming : true}
+                    lastOfType={i < messages.length - 1 ? messages[i+1].isIncoming !== data.isIncoming : true}
+                />
+            ))}
+            <div style={{ float:"left", clear: "both" }}
+                ref={(el) => { this.messagesEnd = el; }}>
+            </div>
         </div>
-        </Grid>
         )
     }
 }

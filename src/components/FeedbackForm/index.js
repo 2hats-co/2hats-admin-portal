@@ -6,6 +6,7 @@ import {propsIntoObject} from '../../utilities/index'
 import Grid from '@material-ui/core/Grid';
 import List from '@material-ui/core/List';
 import Button from '@material-ui/core/Button';
+import Fab from '@material-ui/core/Fab';
 import Tooltip from '@material-ui/core/Tooltip';
 
 import Dialog from '@material-ui/core/Dialog';
@@ -229,21 +230,21 @@ function FeedbackForm(props){
 
 
         { showSend ?
-          <Button variant="extendedFab" color="primary" 
+          <Fab variant="extended" color="primary" 
             disabled={ showSend && !emailReady }
             className={classes.submitButton}
             onClick={sendEmail}
           >
             <SendIcon /> Send Email and Submit Feedback
-          </Button>
+          </Fab>
         :
           <Tooltip title="Preview email to be sent. No feedback is submitted yet and can still be edited after clicking this.">
-            <Button variant="extendedFab" color="primary" 
+            <Fab variant="extended" color="primary" 
               className={classes.submitButton}
               onClick={handleSubmit}
             >
               <DoneIcon /> Ready to Submit
-            </Button>
+            </Fab>
           </Tooltip>
         }
 

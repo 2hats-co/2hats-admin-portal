@@ -5,6 +5,7 @@ import { withHandlers } from "recompose";
 import { withFirestore } from "../../../utilities/withFirestore";
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
+import Fab from '@material-ui/core/Fab';
 import IconButton from '@material-ui/core/IconButton';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
@@ -143,9 +144,9 @@ class ChartBuilder extends Component {
         
         return (
           <div>
-            <Button variant="fab" className={classes.addButton} onClick={this.handleClickOpen} color='primary'>
+            <Fab className={classes.addButton} onClick={this.handleClickOpen} color='primary'>
               <AddIcon/>
-            </Button>
+            </Fab>
             <Dialog className={classes.root}
               open={this.state.open}
               onClose={this.handleClose}
