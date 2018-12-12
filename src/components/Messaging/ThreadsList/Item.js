@@ -1,98 +1,76 @@
 import React from 'react';
 
+import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 
-import IconButton from '@material-ui/core/IconButton';
-import Avatar from '@material-ui/core/Avatar';
-
-import StarIcon from '@material-ui/icons/Star';
-import StarBorderIcon from '@material-ui/icons/StarBorder';
-import PersonIcon from '@material-ui/icons/Person';
-
 import moment from 'moment';
+import { momentLocales } from '../../../constants/momentLocales';
 import withStyles from '@material-ui/core/styles/withStyles';
 
 const styles = theme => ({
-    clipBodyText: {
-        whiteSpace: 'nowrap',
-        overflow: 'hidden',
-        textOverflow: 'ellipsis',
+    selectedItem: {
+        backgroundColor: `${theme.palette.primary.light} !important`,
+        color: `${theme.palette.primary.darkText} !important`,
     },
-    rightText: {
-        textAlign: 'right',
-        padding: 0,
-        minWidth: 70,
+    listItemTextRoot: {
+        paddingRight: 0,
     },
-    iconWrapper: {
-        height: 24,
-    },
-    iconButton: {
-        width: 24,
-        height: 24,
+    timestamp: {
+        color: theme.palette.text.secondary,
+        display: 'inline-block',
         position: 'relative',
-        right: -4,
-    },
-    starIcon: {
-        fontSize: 18,
+        top: -1,
     },
     unreadIndicator: {
         width: 12,
         height: 12,
         backgroundColor: theme.palette.primary.main,
         borderRadius: 6,
-        marginRight: theme.spacing.unit,
         display: 'inline-block',
+        marginLeft: theme.spacing.unit,
+    },
+    clipBodyText: {
+        maxHeight: 40,
+        overflow: 'hidden',
     },
 });
 
 function CandidateItem(props){
     const { data, classes, selected, isUnread } = props;
-    moment.updateLocale('en', {
-        relativeTime : {
-            future: 'in %s',
-            past:   '%s',
-            s  : 'just now',
-            ss : '%d s ago',
-            m:  '1 min ago',
-            mm: '%d min ago',
-            h:  '1 h ago',
-            hh: '%d h ago',
-            d:  '1 d ago',
-            dd: '%d d ago',
-            M:  '1 M ago',
-            MM: '%d M ago',
-            y:  '1 y ago',
-            yy: '%d y ago'
-        }
-    });
+    moment.updateLocale('en', momentLocales);
     return(
    
-        <ListItem onClick={props.onClick} 
-        key={data.id} button    selected={selected}
+        <ListItem key={data.id}
+            onClick={props.onClick} 
+            button
+            selected={selected}
+            classes={{ selected:classes.selectedItem }}
         >
-            <Avatar><PersonIcon /></Avatar>
             <ListItemText
-                primary={<React.Fragment>
-                    {isUnread && <div className={classes.unreadIndicator} />}
-                    <Typography variant="subheading" style={{display:'inline-block'}}>
-                        {data.fullName}
-                    </Typography>
-                </React.Fragment>}
-                secondary={data.body}
-                classes={{secondary: classes.clipBodyText}}
-            />
-            <ListItemText
-                primary={<IconButton className={classes.iconButton} onClick={()=>{
-                    props.handleStarThread(!props.isStarred)
-                }}>{
-                    props.isStarred ? <StarIcon className={classes.starIcon} /> :
-                    <StarBorderIcon className={classes.starIcon} />
-                }</IconButton>}
-                secondary={moment(data.date.seconds*1000).fromNow()}
-                className={classes.rightText}
-                classes={{primary: classes.iconWrapper}}
+                primary={
+                <Grid container alignItems="flex-end">
+                    <Grid item xs>
+                        <Typography variant="subheading" style={{display:'inline-block'}}>
+                            {data.fullName}
+                        </Typography>
+                    </Grid>
+                    <Grid item>
+                        <Typography variant="body1" className={classes.timestamp}>
+                            {moment(data.date.seconds*1000).fromNow()}
+                        </Typography>
+                        {isUnread && <div className={classes.unreadIndicator} />}
+                    </Grid>
+                </Grid>
+                }
+
+                secondary={data.body.substr(0, 100)}
+
+                classes={{
+                    root: classes.listItemTextRoot,
+                    secondary: classes.clipBodyText,
+                }}
             />
         </ListItem>
     );
