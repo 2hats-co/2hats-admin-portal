@@ -5,6 +5,8 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
 
 const styles = theme => ({
     root: {
@@ -13,7 +15,7 @@ const styles = theme => ({
     },
     title: {
         lineHeight: '64px',
-        fontWeight: 'bold',
+        fontWeight: 600,
         marginRight: theme.spacing.unit * 2,
     },
     routeButton: {
@@ -25,29 +27,40 @@ const styles = theme => ({
         textTransform: 'capitalize',
         fontSize: 20,
         fontWeight: 500,
-        lineHeight: '64px',
-    }
+    },
+    tabWrapper: {
+        height: 64,
+    },
 });
 
 function LocationIndicator(props) {
     const { classes, location, subRoutes, title, history } = props;
 
     const navItems = subRoutes && location && history ? subRoutes.map((x, i) =>
-        <Button
+        <Tab
             key={i}
-            color={location.pathname === x ? 'primary' : null}
-            classes={{ root: classes.routeButton, label: classes.routeHeaderText }}
-            onClick={() => { history.push(x); }}
-            size="large"
-        >
-            {x.split('/')[1]}
-        </Button>
+            classes={{
+                root: classes.routeButton,
+                label: classes.routeHeaderText,
+            }}
+            value={x}
+            label={x.split('/')[1]}
+        />
     ) : null;
 
     return(
         <Grid className={classes.root} container alignItems="center">
             <Typography variant="title" className={classes.title}>{title}</Typography>
-            {navItems}
+            {navItems && navItems.length > 0 &&
+                <Tabs
+                    value={location.pathname}
+                    onChange={(e, val) => { history.push(val) }}
+                    indicatorColor="primary"
+                    textColor="primary"
+                >
+                    {navItems}
+                </Tabs>
+            }
         </Grid>
     );
 }
