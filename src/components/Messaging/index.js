@@ -6,14 +6,11 @@ import Fade from '@material-ui/core/Fade';
 import Typography from '@material-ui/core/Typography';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-import IconButton from '@material-ui/core/IconButton';
 
 import ForumIcon from '@material-ui/icons/ForumOutlined';
-import LinkIcon from '@material-ui/icons/Link';
-import StarIcon from '@material-ui/icons/Star';
-import StarOutlineIcon from '@material-ui/icons/StarBorder';
 
 import ThreadsList from './ThreadsList';
+import MessagingHeader from './MessagingHeader';
 import Messages from './Messages';
 import Composer from './Composer';
 
@@ -24,10 +21,6 @@ const styles = theme => ({
 
         background: theme.palette.background.paper,
         borderLeft: `1px solid ${theme.palette.divider}`,
-    },
-    leadHeader: {
-        padding: `${theme.spacing.unit}px ${theme.spacing.unit*1.5}px ${theme.spacing.unit}px ${theme.spacing.unit*3}px`,
-        borderBottom: `1px solid ${theme.palette.divider}`,
     },
     composerContainer: {
         borderTop: `1px solid ${theme.palette.divider}`,
@@ -42,6 +35,8 @@ const styles = theme => ({
         height: '100vh',
         color: theme.palette.text.secondary,
         textAlign: 'center',
+        cursor: 'default',
+        userSelect: 'none',
         '& svg': {
             fontSize: 48,
             color: theme.palette.text.disabled,
@@ -49,12 +44,227 @@ const styles = theme => ({
     },
 });
 
+const DUMMY_MESSAGES = [
+    {
+      "id": "o9ekBMcXq8ARDfl5hJB4",
+      "body": "Keen for a coffee next week?",
+      "createdAt": {
+        "seconds": 1544400744,
+        "nanoseconds": 176000000
+      },
+      "isIncoming": true,
+      "sentAt": {
+        "seconds": 1543976041,
+        "nanoseconds": 0
+      },
+      "type": "linkedin",
+    },
+    {
+      "id": "fPxfgLyuAb4g746e6iGW",
+      "body": "Not yet - let's do next week, say Thursday morning :)",
+      "createdAt": {
+        "seconds": 1544400744,
+        "nanoseconds": 177000000
+      },
+      "isIncoming": false,
+      "sentAt": {
+        "seconds": 1543979400,
+        "nanoseconds": 0
+      },
+      "type": "linkedin",
+    },
+    {
+      "id": "G5G3WCTJdPjNIweMtccg",
+      "body": "Sounds good. What is your email. Will send you a diary invite",
+      "createdAt": {
+        "seconds": 1544400744,
+        "nanoseconds": 176000000
+      },
+      "isIncoming": true,
+      "sentAt": {
+        "seconds": 1543980660,
+        "nanoseconds": 0
+      },
+      "type": "linkedin",
+    },
+    {
+      "id": "bOeUoaEmMPVMCFz25ttV",
+      "body": "Also where is your office near. We are at Circular Quay",
+      "createdAt": {
+        "seconds": 1544400744,
+        "nanoseconds": 178000000
+      },
+      "isIncoming": true,
+      "sentAt": {
+        "seconds": 1543980661,
+        "nanoseconds": 0
+      },
+      "type": "linkedin",
+    },
+    {
+      "id": "kfRpwHxRUHWGd3sVrnWL",
+      "body": "sure, it's gloria@2hats.com.au. We are based right next to Central station - Would love to show your around our space (we're based in Academy Xi's old office) :)",
+      "createdAt": {
+        "seconds": 1544400744,
+        "nanoseconds": 176000000
+      },
+      "isIncoming": false,
+      "sentAt": {
+        "seconds": 1543983780,
+        "nanoseconds": 0
+      },
+      "type": "linkedin",
+    },
+    {
+      "id": "EWHC3W2isHvImrb1GTeO",
+      "body": "No problems! Shall we say 9am",
+      "createdAt": {
+        "seconds": 1544400744,
+        "nanoseconds": 177000000
+      },
+      "isIncoming": true,
+      "sentAt": {
+        "seconds": 1543984680,
+        "nanoseconds": 0
+      },
+      "type": "linkedin",
+    },
+    {
+      "id": "AkwdZ72AUBDnwzc9yJ2V",
+      "body": "Oh wait - can we do 1030?",
+      "createdAt": {
+        "seconds": 1544400744,
+        "nanoseconds": 177000000
+      },
+      "isIncoming": true,
+      "sentAt": {
+        "seconds": 1543984920,
+        "nanoseconds": 0
+      },
+      "type": "linkedin",
+    },
+    {
+      "id": "kd1f2PwpLZSr407KjpTF",
+      "body": "I have a client meeting at 9",
+      "createdAt": {
+        "seconds": 1544400744,
+        "nanoseconds": 178000000
+      },
+      "isIncoming": true,
+      "sentAt": {
+        "seconds": 1543984921,
+        "nanoseconds": 0
+      },
+      "type": "linkedin",
+    },
+    {
+        "id": "kfRpwHxRUHWGd3sVrnWX",
+        "body": "these are messages from me",
+        "createdAt": {
+          "seconds": 1544654106,
+          "nanoseconds": 176000000
+        },
+        "isIncoming": false,
+        "sentAt": {
+          "seconds": 1544654106,
+          "nanoseconds": 0
+        },
+        "type": "linkedin",
+    },
+    {
+        "id": "kfRpwHxRUHWGd3sVrnWXd",
+        "body": "these are messages from me",
+        "createdAt": {
+          "seconds": 1544654107,
+          "nanoseconds": 176000000
+        },
+        "isIncoming": false,
+        "sentAt": {
+          "seconds": 1544654107,
+          "nanoseconds": 0
+        },
+        "type": "linkedin",
+    },
+    {
+        "id": "kfRpwHxRUHWGd3sVrnWdjflk",
+        "body": "Baby, can't you see  I'm calling A guy like you should wear a warning It's dangerous I'm falling There's no escape I can't wait I need a hit Baby, give me it You're dangerous I'm loving it Too high Can't come down Losin' my head Spinnin' 'round and 'round Do you feel me now?",
+        "createdAt": {
+          "seconds": 1544654206,
+          "nanoseconds": 176000000
+        },
+        "isIncoming": false,
+        "sentAt": {
+          "seconds": 1544654206,
+          "nanoseconds": 0
+        },
+        "type": "note",
+    },
+    {
+        "id": "kfRpwHxRUHWGd3sVrnWs",
+        "body": `<h1>Toxic</h1><h2>Britney Spears</h2><iframe width="560" height="315" src="https://www.youtube.com/embed/LOZuxwVk7TU" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`,
+        "createdAt": {
+          "seconds": 1544654209,
+          "nanoseconds": 176000000
+        },
+        "isIncoming": false,
+        "sentAt": {
+          "seconds": 1544654209,
+          "nanoseconds": 0
+        },
+        "type": "activity",
+    },
+    {
+        "id": "kfRpwHxRUHWGd3sVrnWasfd",
+        "subject": "VERY IMPORTEN MESSAGE",
+        "body": "<h1>Toxic</h1><h2>Britney Spears</h2><p>Baby, can't you see I'm calling A guy like you should wear a warning</p><p>It's dangerous I'm falling There's no escape I can't wait I need a hit Baby, give me it You're dangerous I'm loving it Too high Can't come down Losin' my head Spinnin' 'round and 'round Do you feel me now?</p>",
+        "createdAt": {
+          "seconds": 1544654208,
+          "nanoseconds": 176000000
+        },
+        "isIncoming": false,
+        "sentAt": {
+          "seconds": 1544654208,
+          "nanoseconds": 0
+        },
+        "type": "email",
+    },
+    {
+        "id": "kfRpwHxRUHWGd3sVrnWasfd2",
+        "subject": "VERY IMPORTEN MESSAGE2",
+        "body": "<h1>Toxic</h1><h2>Britney Spears</h2><p>Baby, can't you see I'm calling A guy like you should wear a warning</p><p>It's dangerous I'm falling There's no escape I can't wait I need a hit Baby, give me it You're dangerous I'm loving it Too high Can't come down Losin' my head Spinnin' 'round and 'round Do you feel me now?</p>",
+        "createdAt": {
+          "seconds": 1544654209,
+          "nanoseconds": 176000000
+        },
+        "isIncoming": false,
+        "sentAt": {
+          "seconds": 1544654209,
+          "nanoseconds": 0
+        },
+        "type": "email",
+    },
+    {
+        "id": "kfRpwHxRUHWGd3sVrnWasfdd",
+        "subject": "VERY IMPORTEN MESSAGE",
+        "body": "<h1>Toxic</h1><h2>Britney Spears</h2><p>Baby, can't you see I'm calling A guy like you should wear a warning</p><p>It's dangerous I'm falling There's no escape I can't wait I need a hit Baby, give me it You're dangerous I'm loving it Too high Can't come down Losin' my head Spinnin' 'round and 'round Do you feel me now?</p>",
+        "createdAt": {
+          "seconds": 1544654218,
+          "nanoseconds": 176000000
+        },
+        "isIncoming": true,
+        "sentAt": {
+          "seconds": 1544615428,
+          "nanoseconds": 0
+        },
+        "type": "email",
+    },
+  ];
+
 function Messaging(props) {
-    const {threads, handleThreadSelector, messages, classes, leadHeader} = props;
+    const {threads, handleThreadSelector, messagesFromProps, classes, leadHeader} = props;
 
     const [composerType, setComposerType] = useState('email');
-
-    const composer = <Composer composerType={composerType} />;
+    const messages = DUMMY_MESSAGES;
 
     return(<Fade in>
     <Grid container direction='row' style={{height: 'calc(100vh - 64px)'}}>
@@ -69,17 +279,7 @@ function Messaging(props) {
             { messages && messages.length > 0 ?
             <Grid container direction="column" wrap="nowrap" style={{ height:'100vh' }}>
 
-                <Grid item className={classes.leadHeader}>
-                    <Grid container justify="space-between" alignItems="center">
-                        <Grid item>
-                            <Typography variant="title">{ leadHeader.label }</Typography>
-                        </Grid>
-                        <Grid item>
-                            <IconButton onClick={() => { window.open(leadHeader.path, '_blank') }}><LinkIcon /></IconButton>
-                            <IconButton><StarOutlineIcon /></IconButton>
-                        </Grid>
-                    </Grid>
-                </Grid>
+                { leadHeader.label && <MessagingHeader leadHeader={leadHeader} /> }
 
                 <Grid item xs style={{ overflowY:'scroll' }}>
                     <Messages messages={messages} />
@@ -97,7 +297,7 @@ function Messaging(props) {
                         <Tab value="linkedin" label="LinkedIn" classes={{root:classes.tabRoot, labelContainer:classes.tabLabelContainer}} />
                         <Tab value="note" label="Note" classes={{root:classes.tabRoot, labelContainer:classes.tabLabelContainer}} />
                     </Tabs>
-                    { composer }
+                    <Composer composerType={composerType} />
                 </Grid>
             </Grid>
             :
