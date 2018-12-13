@@ -178,7 +178,7 @@ export const withNavigation = (WrappedComponent) => {
                 </Fade>
             </Grid>
 
-            <Search showSearch={showSearch} setShowSearch={setShowSearch} />
+            { showSearch && <Search showSearch={showSearch} setShowSearch={setShowSearch} /> }
 
         </React.Fragment>);
     }

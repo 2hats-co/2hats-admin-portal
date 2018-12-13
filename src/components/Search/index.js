@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import withStyles from '@material-ui/core/styles/withStyles';
 import { withRouter } from 'react-router-dom';
+import InfiniteScroll from 'react-infinite-scroller';
 
 // import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
@@ -8,6 +9,7 @@ import Modal from '@material-ui/core/Modal';
 import InputBase from '@material-ui/core/InputBase';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
+import LinearProgress from '@material-ui/core/LinearProgress';
 import Slide from '@material-ui/core/Slide';
 
 import List from '@material-ui/core/List';
@@ -25,11 +27,12 @@ import { useSearch } from '../../hooks/useSearch';
 
 const styles = theme => ({
     paperRoot: {
-        borderRadius: 20,
+        borderRadius: theme.shape.roundBorderRadius,
         width: 664,
         margin: '48px auto 0',
         outline: 'none',
         maxHeight: 'calc(100vh - 96px)',
+        overflow: 'hidden',
     },
     searchIcon: {
         fontSize: 28,
@@ -60,7 +63,7 @@ const styles = theme => ({
         overflowY: 'scroll',
     },
     listRoot: {
-        borderRadius: '0 0 20px 20px',
+        // borderRadius: '0 0 20px 20px',
         overflow: 'hidden',
     },
     listItem: {
@@ -79,24 +82,37 @@ const styles = theme => ({
         paddingLeft: '40px !important',
         opacity: .54,
     },
+    listLoader: {
+        margin: `0 auto ${theme.spacing.unit * 2}px`,
+        width: 620,
+    },
 });
-
 
 function Search(props) {
     const { history, classes, showSearch, setShowSearch } = props;
 
-    const [slide, setSlide] = useState(true);
+    const [slideIn, setSlideIn] = useState(true);
+    const [hasMore, setHasMore] = useState(true);
     const [searchState, searchDispatch] = useSearch();
     const { results } = searchState;
+
     useEffect(() => {
-        setSlide(showSearch);
-        searchDispatch({type:'more'})
-    }, [showSearch]);
+        setHasMore(results.hitsPerPage < results.nbHits);
+        console.log('update hasMore', hasMore);
+    }, [results.hitsPerPage]);
+
+    const loadMore = (num) => {
+        if (hasMore) {
+            console.log('Scrolled to bottom. Loading more… (hasMore false)');
+            setHasMore(false);
+            searchDispatch({type: 'more'});
+        }
+    };
 
     const onClose = () => {
-        setSlide(false);
+        setSlideIn(false);
         setTimeout(() => { setShowSearch(false); }, 100);
-    }
+    };
 
     const handleRoute = (hit) => {
         const {stage, status, objectID} = hit;
@@ -106,48 +122,63 @@ function Search(props) {
         }
     };
 
-  
-    console.log('results',results);
+    console.log('results (re-render)', results);
+
+    let resultItems = [];
+    if (results.hits && results.hits.length > 0) {
+        resultItems = results.hits.map( (hit, i) =>
+        <ListItem key={i} className={classes.listItem}>
+            <ListItemIcon classes={{ root:classes.listIcon }} ><PersonIcon /></ListItemIcon>
+            <ListItemText primary={`${hit.firstName} ${hit.lastName}`} />
+            <ListItemSecondaryAction classes={{ root:classes.secondaryAction }}>
+                { hit.resume &&
+                    <Tooltip title="Resume">
+                        <IconButton onClick={()=>{ window.open(hit.resume.downloadURL, '_blank') }}>
+                            <ResumeIcon />
+                        </IconButton>
+                    </Tooltip>
+                }
+
+                <Tooltip title="Submission">
+                    <IconButton onClick={()=>{handleRoute(hit)}}>
+                        <SubmissionIcon />
+                    </IconButton>
+                </Tooltip>
+            </ListItemSecondaryAction>
+        </ListItem>
+        );
+    }
   
     return(
     <Modal open={showSearch} onClose={onClose} disableAutoFocus>
-        <Slide in={slide} direction="down" timeout={100}>
+        <Slide in={slideIn} direction="down">
             <Paper elevation={24} classes={{ root: classes.paperRoot }}>
                 <InputBase
                     autoFocus
                     className={classes.searchInput}
-                    onChange={e => { searchDispatch({search:e.target.value})}}
+                    onChange={e => { searchDispatch({search:e.target.value}); setHasMore(true) }}
                     placeholder="Search candidates"
                     startAdornment={<SearchIcon className={classes.searchIcon} />}
                 />
                 <div className={classes.listWrapper}>
-                    <List className={classes.list} classes={{ root:classes.listRoot }}>
-                        {results.hits && results.hits.length > 0 ? results.hits.map( (hit, i) =>
-                            <ListItem key={i} className={classes.listItem}>
-                                <ListItemIcon classes={{ root:classes.listIcon }} ><PersonIcon /></ListItemIcon>
-                                <ListItemText primary={`${hit.firstName} ${hit.lastName}`} />
-                                <ListItemSecondaryAction classes={{ root:classes.secondaryAction }}>
-                                    { hit.resume &&
-                                        <Tooltip title="Resume">
-                                            <IconButton onClick={()=>{ window.open(hit.resume.downloadURL, '_blank') }}>
-                                                <ResumeIcon />
-                                            </IconButton>
-                                        </Tooltip>
-                                    }
-
-                                    <Tooltip title="Submission">
-                                        <IconButton onClick={()=>{handleRoute(hit)}}>
-                                            <SubmissionIcon />
-                                        </IconButton>
-                                    </Tooltip>
-                                </ListItemSecondaryAction>
-                            </ListItem>
-                        ) :
-                            <ListItem>
-                                <ListItemText primary="No results" className={classes.noResults}></ListItemText>
-                            </ListItem>
-                        }
-                    </List>
+                    <InfiniteScroll
+                        pageStart={0}
+                        loadMore={loadMore}
+                        hasMore={hasMore}
+                        loader={<LinearProgress key="listLoader" className={classes.listLoader} />}
+                        useWindow={false}
+                        threshold={1}
+                    >
+                        <List className={classes.list} classes={{ root:classes.listRoot }}>
+                            {resultItems.length > 0 ? 
+                                resultItems
+                            :
+                                <ListItem>
+                                    <ListItemText primary="No results" className={classes.noResults}></ListItemText>
+                                </ListItem>
+                            }
+                        </List>
+                    </InfiniteScroll>
                 </div>
             </Paper>
         </Slide>
