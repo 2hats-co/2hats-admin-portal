@@ -1,10 +1,8 @@
-import { combineReducers } from 'redux';
-import sessionReducer from './session';
-import userReducer from './user';
-import { firestoreReducer as firestore } from 'redux-firestore'
+import { combineReducers } from "redux";
+import userReducer from "./user";
+import { firestoreReducer as firestore } from "redux-firestore";
 const rootReducer = combineReducers({
   firestore,
-  sessionState: sessionReducer,
-  userState: userReducer,
+  userState: userReducer
 });
 export default rootReducer;
