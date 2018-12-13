@@ -3,7 +3,7 @@ import createMuiTheme from '@material-ui/core/styles/createMuiTheme';
 const primaryColor = '#f15a29';
 const darkText = 'hsl(15, 90%, 40%)';
 const lightPrimary = 'hsl(15, 88%, 95%)';
-const borderRadius = 4;
+const borderRadius = 10;
 
 const Theme = createMuiTheme({
     palette: {
@@ -34,26 +34,34 @@ const Theme = createMuiTheme({
         },
     },
     shape: {
-        borderRadius: 10,
+        borderRadius,
         roundBorderRadius: 20,
         smallBorderRadius: 4,
     },
     overrides: {
+        MuiToggleButtonGroup: {
+            root: {
+                boxShadow: 'none !important',
+            },
+        },
         MuiToggleButton: {
             root: {
                 borderRadius: `${borderRadius}px !important`,
                 flex: 1,
-                color: primaryColor,
-                transition: 'background-color .2s',
+                transition: 'background-color .2s, color .2s',
             },
             label: {
                 color: 'rgba(0,0,0,.87)',
-                textTransform: 'none',
                 position: 'relative',
                 zIndex: 99,
             },
             selected: {
                 color: primaryColor,
+                '& > span': { color: primaryColor },
+                '&::after': {
+                    backgroundColor: lightPrimary,
+                    opacity: .8,
+                },
             },
         },
         MuiButton: {
@@ -106,7 +114,7 @@ const Theme = createMuiTheme({
         MuiAvatar: {
             colorDefault: {
                 backgroundColor: lightPrimary,
-                color: darkText,
+                color: primaryColor,
             },
         },
     },

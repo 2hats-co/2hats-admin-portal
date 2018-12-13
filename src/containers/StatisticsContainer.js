@@ -22,11 +22,16 @@ import '../../node_modules/react-grid-layout/css/styles.css';
 import '../../node_modules/react-resizable/css/styles.css';
 import SaveIcon from '@material-ui/icons/Save';
 
+import LocationIndicator from '../components/LocationIndicator';
+import moment from 'moment';
+
 const ResponsiveGridLayout = WidthProvider(GridLayout);
 class StatisticsContainer extends Component {
     constructor(props) {
-        super(props);
+      super(props);
       this.state = { 
+        from: moment().subtract(2, 'weeks'),
+        to: moment(),
         range: {
           start: 1540897200,
           end: 1541714400,
@@ -98,8 +103,9 @@ class StatisticsContainer extends Component {
               <SaveIcon/>
             </Fab>
           <ChartBuilder chart={this.state.chart}/>
-          <TimeBar format={format} changeHandler={this.handleChange}/>
-          <Grid container style={{width:'100%', marginTop:55, height:'calc(100vh - 64px)', overflowX:'hidden', verflowY:'auto'}}>
+          <LocationIndicator title="Statistics" showBorder />
+          <TimeBar format={format} changeHandler={this.handleChange} fromDate={this.state.from} toDate={this.state.to} />
+          <Grid container style={{width:'100%', height:'calc(100vh - 64px)', overflowX:'hidden', verflowY:'auto'}}>
             <ResponsiveGridLayout style={{width:'100%'}} className="layout" 
             onLayoutChange={(layout) =>
               this.onLayoutChange(layout)

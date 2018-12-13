@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
+import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
 
 import AddSubscriberIcon from '@material-ui/icons/GroupAdd';
@@ -31,9 +32,19 @@ function MessagingHeader(props) {
                 <Typography variant="title">{ leadHeader.label }</Typography>
             </Grid>
             <Grid item>
-                <IconButton onClick={() => { setShowSubscriberDialog(true) }}><AddSubscriberIcon /></IconButton>
-                <IconButton onClick={() => { window.open(leadHeader.path, '_blank') }}><LinkIcon /></IconButton>
-                <IconButton><StarOutlineIcon /></IconButton>
+                <Tooltip title="Add Subscribers">
+                    <IconButton onClick={() => { setShowSubscriberDialog(true) }}>
+                        <AddSubscriberIcon />
+                    </IconButton>
+                </Tooltip>
+                <Tooltip title="Open Link in New Tab">
+                    <IconButton onClick={() => { window.open(leadHeader.path, '_blank') }}>
+                        <LinkIcon />
+                    </IconButton>
+                </Tooltip>
+                <Tooltip title="Star">
+                    <IconButton><StarOutlineIcon /></IconButton>
+                </Tooltip>
             </Grid>
         </Grid>
     </Grid>

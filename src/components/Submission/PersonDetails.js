@@ -23,8 +23,6 @@ const styles = theme => ({
         width: 56,
         height: 56,
         marginRight: 16,
-        backgroundColor: theme.palette.primary.light,
-        color: theme.palette.primary.main,
     },
     personIcon: {
         fontSize: 32,

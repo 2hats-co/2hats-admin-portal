@@ -22,6 +22,7 @@ const styles = theme => ({
         padding: '0 24px 8px',
     },
     clearFilterButton: {
+        padding: 0,
         marginRight: theme.spacing.unit * 2,
         width: 36,
         height: 36,

@@ -24,16 +24,16 @@ const trackerNames = {
 const styles = theme => ({
     root: {
     },
-    formControl:{
-        minWidth :80
+    deleteButton: {
+      marginLeft: theme.spacing.unit / 4,
+    },
+    formControl: {
+        minWidth: 80,
     },
     swatchWrapper: {
-      paddingBottom: 16,
+      marginLeft: -theme.spacing.unit * 1.5,
     },
     swatch: {
-      margin: '0 8px -6px 0',
-      display: 'inline-block',
-      cursor: 'pointer',
       background: '#fff',
       width:20,
       height:20,
@@ -87,19 +87,20 @@ class TrackerField extends Component {
         const {classes,handleDelete} = this.props
         const{showColourPicker,colour,trackerType,id,trackerName,label} =this.state
         return (
-        <Grid container alignItems="baseline" className={classes.root} spacing="8">
+        <Grid container alignItems="flex-end" className={classes.root} spacing="8">
           <Grid item>
-            <IconButton aria-label="Delete" className={classes.button} onClick={()=>{handleDelete(id)}}>
+            <IconButton aria-label="Delete" className={classes.deleteButton} onClick={()=>{handleDelete(id)}}>
               <RemoveCircleOutlineIcon fontSize="small" />
             </IconButton>
           </Grid>
 
           <Grid item className={classes.swatchWrapper}>
-            <div
-              className={ classes.swatch }
-              style={{background:colour}}
-              onClick={this.toggleColourPicker}
-            />
+            <IconButton onClick={this.toggleColourPicker}>
+              <div
+                className={ classes.swatch }
+                style={{background:colour}}
+              />
+            </IconButton>
             { showColourPicker ? <div className={ classes.popover }>
               <div className={ classes.cover } onClick={ this.toggleColourPicker }/>
               <SketchPicker color={colour} onChange={ this.handleChange } />

@@ -26,16 +26,14 @@ const styles = theme => ({
         minWidth: 480,
     },
     block: {
-        '& + &': { marginTop: theme.spacing.unit * 4 },
+        marginTop: theme.spacing.unit * 3,
+        '&:first-of-type': { marginTop: theme.spacing.unit / 2 },
     },
     dateTimePicker: {
         marginRight: theme.spacing.unit,
     },
     sliderWrapper: {
         marginRight: theme.spacing.unit * 3,
-    },
-    slider: {
-
     },
 });
 
@@ -44,6 +42,7 @@ function EventDialog(props) {
 
     const [data, setData] = useState({
         summary: '',
+        description: '',
         location: '66-68 Devonshire St, Surry Hills NSW 2010',
         start: {
             dateTime: moment(), // needs to be converted to ISO string on output
@@ -74,10 +73,23 @@ function EventDialog(props) {
                 <div className={classes.block}>
                     <TextField
                         label="Title"
+                        variant="outlined"
                         autoFocus
                         fullWidth
                         value={data.summary}
                         onChange={e => { updateData('summary', e.target.value) }}
+                        className={classes.titleField}
+                    />
+                </div>
+
+                <div className={classes.block}>
+                    <TextField
+                        label="Description"
+                        variant="outlined"
+                        multiline rows={3}
+                        fullWidth
+                        value={data.description}
+                        onChange={e => { updateData('description', e.target.value) }}
                         className={classes.titleField}
                     />
                 </div>
@@ -95,6 +107,8 @@ function EventDialog(props) {
                             format="D/MM/YYYY hh:mm a"
                             showTodayButton
                             className={classes.dateTimePicker}
+                            variant="outlined"
+                            fullWidth
                         />
                     </MuiPickersUtilsProvider>
                 </div>
@@ -120,7 +134,7 @@ function EventDialog(props) {
                 <div className={classes.block}>
                     <TextField
                         label="Location"
-                        autoFocus
+                        variant="outlined"
                         fullWidth
                         value={data.location}
                         onChange={e => { updateData('location', e.target.value) }}

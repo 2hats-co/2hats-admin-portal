@@ -35,7 +35,7 @@ const styles = theme => ({
 });
 
 function LocationIndicator(props) {
-    const { classes, location, subRoutes, title, history } = props;
+    const { classes, location, subRoutes, title, history, showBorder } = props;
 
     const navItems = subRoutes && location && history ? subRoutes.map((x, i) =>
         <Tab
@@ -50,7 +50,7 @@ function LocationIndicator(props) {
     ) : null;
 
     return(
-        <Grid className={classes.root} container alignItems="center">
+        <Grid className={classes.root} container alignItems="center" style={showBorder && { boxShadow:'0 1px 0 rgba(0,0,0,.12)' }}>
             <Typography variant="title" className={classes.title}>{title}</Typography>
             {navItems && navItems.length > 0 &&
                 <Tabs

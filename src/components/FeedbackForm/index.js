@@ -222,7 +222,7 @@ function FeedbackForm(props){
             variant="outlined"
             label="Additional Comments"
             placeholder="Type optional additional comments here…"
-            multiline fullWidth
+            multiline fullWidth rows={3}
             className={classes.additionalComments}
             inputProps={{ id:'additionalCommentsTextarea' }}
           />
