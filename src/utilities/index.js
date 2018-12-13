@@ -21,12 +21,17 @@ export function makeId(chars) {
     for (var i = 0; i < chars; i++)
       text += possible.charAt(Math.floor(Math.random() * possible.length));
     return text;
-  }
+}
 
-export const propsIntoObject = (props) =>{return props.reduce(((r, c) => Object.assign(r, c)), {})}
+export const propsIntoObject = (props) => props.reduce(( (r, c) => Object.assign(r, c) ), {})
 
 export const getInitials = (displayName) => {
     let initials = displayName.match(/\b\w/g) || [];
     initials = ((initials.shift() || '') + (initials.pop() || '')).toUpperCase();
     return initials;
+}
+
+export const removeHtmlTags = (text) => {
+    const htmlTags = /(<([^>]+)>)/ig;
+    return text.replace(htmlTags, '');
 }

@@ -13,8 +13,7 @@ const styles = theme => ({
         fontWeight: 700,
     },
     chip: {
-        marginRight: 4,
-        marginBottom: 4,
+        marginBottom: theme.spacing.unit,
     },
     iframe: {
         width: '100%',

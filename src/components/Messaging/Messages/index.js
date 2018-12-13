@@ -29,8 +29,14 @@ class Messages extends Component{
         <div className={classes.root}>
             { messages.map((data, i) => (
                 <Message key={data.id} data={data}
-                    firstOfType={i > 0 ? messages[i-1].isIncoming !== data.isIncoming : true}
-                    lastOfType={i < messages.length - 1 ? messages[i+1].isIncoming !== data.isIncoming : true}
+                    firstOfType={i > 0 ?
+                        messages[i-1].isIncoming !== data.isIncoming || messages[i-1].type !== data.type
+                        : true
+                    }
+                    lastOfType={i < messages.length - 1 ?
+                        messages[i+1].isIncoming !== data.isIncoming || messages[i+1].type !== data.type
+                        : true
+                    }
                 />
             ))}
             <div style={{ float:"left", clear: "both" }}

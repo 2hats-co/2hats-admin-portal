@@ -2,11 +2,17 @@ import React, { useState } from 'react';
 
 import withStyles from '@material-ui/core/styles/withStyles';
 import InputBase from '@material-ui/core/InputBase';
+import Chip from '@material-ui/core/Chip';
+
+import FileIcon from '@material-ui/icons/Attachment';
+import EventIcon from '@material-ui/icons/EventOutlined';
+import ReminderIcon from '@material-ui/icons/NotificationsOutlined';
 
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.bubble.css';
 
 import ComposerActions from './ComposerActions';
+import {removeHtmlTags} from '../../../utilities';
 
 const styles = theme => ({
     root: {
@@ -38,11 +44,27 @@ const styles = theme => ({
             },
         },
     },
+    chipWrapper: {
+        marginLeft: -theme.spacing.unit,
+    },
+    chipIcon: {
+        marginLeft: theme.spacing.unit,
+    },
 });
 
-function removeHtmlTags(text) {
-    const htmlTags = /(<([^>]+)>)/ig;
-    return text.replace(htmlTags, '');
+const DUMMY_EVENTS = [
+    { type: 'reminder', label: '12/12/2018 3:48 pm' },
+    { type: 'file', label: 'resume.pdf', link: 'google.com' },
+    { type: 'event', label: 'Meeting at 12/12/2018 3:48 pm' },
+];
+
+const getChipIcon = (type) => {
+    switch (type) {
+        case 'reminder': return <ReminderIcon />;
+        case 'file':     return <FileIcon />;
+        case 'event':    return <EventIcon />;
+        default: return null;
+    }
 }
 
 function Composer(props) {
@@ -50,6 +72,7 @@ function Composer(props) {
 
     const [messageText, setMessageText] = useState('');
     const [messageHtml, setMessageHtml] = useState('');
+    const [attachments, setAttachments] = useState(DUMMY_EVENTS);
 
     return (
     <div className={classes.root}
@@ -78,6 +101,22 @@ function Composer(props) {
                 placeholder={`Type your ${ composerType === 'linkedin' ? 'message' : 'note' } here…`}
             />
         }
+
+        <div className={classes.chipWrapper}>
+            { attachments.map((x, i) => 
+                <Chip
+                    key={i}
+                    label={x.label}
+                    icon={getChipIcon(x.type)}
+                    onDelete={() => {
+                        const newAttachments = attachments;
+                        newAttachments.splice(i, 1);
+                        setAttachments(newAttachments);
+                    }}
+                    classes={{ icon: classes.chipIcon }}
+                />
+            ) }
+        </div>
 
         <ComposerActions
             classes={classes}

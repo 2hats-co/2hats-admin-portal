@@ -10,25 +10,27 @@ import DoneIcon from '@material-ui/icons/Done';
 import AtIcon from '@material-ui/icons/AlternateEmail';
 import EmojiIcon from '@material-ui/icons/InsertEmoticon';
 import GifIcon from '@material-ui/icons/Gif';
-import AttachmentIcon from '@material-ui/icons/Attachment';
+import FileIcon from '@material-ui/icons/Attachment';
 import ImageIcon from '@material-ui/icons/ImageOutlined';
-import CalendarIcon from '@material-ui/icons/EventOutlined';
+import EventIcon from '@material-ui/icons/EventOutlined';
 import ReminderIcon from '@material-ui/icons/NotificationsOutlined';
 
-import CalendarDialog from './CalendarDialog';
+import EventDialog from './EventDialog';
+import ReminderDialog from './ReminderDialog';
 
-const emojiButton =      (handleClick) => <Tooltip title="Emoji" key="emoji"><IconButton onClick={handleClick}><EmojiIcon /></IconButton></Tooltip>
-const gifButton =        (handleClick) => <Tooltip title="GIF" key="gif"><IconButton onClick={handleClick} style={{padding:6}}><GifIcon style={{fontSize:36}} /></IconButton></Tooltip>
-const imageButton =      (handleClick) => <Tooltip title="Image" key="image"><IconButton onClick={handleClick}><ImageIcon /></IconButton></Tooltip>
-const attachmentButton = (handleClick) => <Tooltip title="Attachment" key="attachment"><IconButton onClick={handleClick}><AttachmentIcon /></IconButton></Tooltip>
-const calendarButton =   (handleClick) => <Tooltip title="Calendar Event" key="calendar"><IconButton onClick={handleClick}><CalendarIcon /></IconButton></Tooltip>
-const reminderButton =   (handleClick) => <Tooltip title="Reminder" key="reminder"><IconButton onClick={handleClick}><ReminderIcon /></IconButton></Tooltip>
-const atButton =         (handleClick) => <Tooltip title="At" key="at"><IconButton onClick={handleClick}><AtIcon /></IconButton></Tooltip>
+const emojiButton =    (handleClick) => <Tooltip title="Emoji" key="emoji"><IconButton onClick={handleClick}><EmojiIcon /></IconButton></Tooltip>
+const gifButton =      (handleClick) => <Tooltip title="GIF" key="gif"><IconButton onClick={handleClick} style={{padding:6}}><GifIcon style={{fontSize:36}} /></IconButton></Tooltip>
+const imageButton =    (handleClick) => <Tooltip title="Image" key="image"><IconButton onClick={handleClick}><ImageIcon /></IconButton></Tooltip>
+const fileButton =     (handleClick) => <Tooltip title="File" key="file"><IconButton onClick={handleClick}><FileIcon /></IconButton></Tooltip>
+const eventButton =    (handleClick) => <Tooltip title="Event" key="event"><IconButton onClick={handleClick}><EventIcon /></IconButton></Tooltip>
+const reminderButton = (handleClick) => <Tooltip title="Reminder" key="reminder"><IconButton onClick={handleClick}><ReminderIcon /></IconButton></Tooltip>
+const atButton =       (handleClick) => <Tooltip title="At" key="at"><IconButton onClick={handleClick}><AtIcon /></IconButton></Tooltip>
 
 const ComposerActions = React.memo((props) => {
     const { composerType } = props;
 
-    const [showCalendarDialog, setShowCalendarDialog] = useState(false);
+    const [showEventDialog, setShowEventDialog] = useState(false);
+    const [showReminderDialog, setShowReminderDialog] = useState(false);
 
     let fabContent;
     switch (composerType) {
@@ -53,8 +55,8 @@ const ComposerActions = React.memo((props) => {
                 emojiButton(),
                 imageButton(),
                 gifButton(),
-                attachmentButton(),
-                calendarButton(() => { setShowCalendarDialog(true) }),
+                fileButton(),
+                eventButton(() => { setShowEventDialog(true) }),
             ];
             break;
         case 'linkedin':
@@ -65,8 +67,8 @@ const ComposerActions = React.memo((props) => {
                 emojiButton(),
                 imageButton(),
                 gifButton(),
-                attachmentButton(),
-                reminderButton(),
+                fileButton(),
+                reminderButton(() => { setShowReminderDialog(true) }),
                 atButton(),
             ];
             break;
@@ -76,7 +78,7 @@ const ComposerActions = React.memo((props) => {
     return (<React.Fragment>
         <Grid item>
             <Grid container justify="space-between">
-                <Grid item>
+                <Grid item style={{ marginLeft: -12 }}>
                     { actionButtons }
                 </Grid>
                 <Grid item>
@@ -85,7 +87,8 @@ const ComposerActions = React.memo((props) => {
             </Grid>
         </Grid>
 
-        <CalendarDialog showCalendarDialog={showCalendarDialog} setShowCalendarDialog={setShowCalendarDialog} />
+        <EventDialog showDialog={showEventDialog} setShowDialog={setShowEventDialog} />
+        <ReminderDialog showDialog={showReminderDialog} setShowDialog={setShowReminderDialog} />
 
     </React.Fragment>);
 });

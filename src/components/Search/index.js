@@ -86,9 +86,11 @@ function Search(props) {
     const { history, classes, showSearch, setShowSearch } = props;
 
     const [slide, setSlide] = useState(true);
-
+    const [searchState, searchDispatch] = useSearch();
+    const { results } = searchState;
     useEffect(() => {
         setSlide(showSearch);
+        searchDispatch({type:'more'})
     }, [showSearch]);
 
     const onClose = () => {
@@ -104,10 +106,9 @@ function Search(props) {
         }
     };
 
-    const [searchState, searchDispatch] = useSearch();
-    const { results } = searchState;
+  
     console.log('results',results);
-
+  
     return(
     <Modal open={showSearch} onClose={onClose} disableAutoFocus>
         <Slide in={slide} direction="down" timeout={100}>
