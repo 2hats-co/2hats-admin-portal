@@ -10,122 +10,67 @@ import Grid from '@material-ui/core/Grid';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Fade from '@material-ui/core/Fade';
 
-import LocationIndicator from '../components/LocationIndicator';
-import Messaging from '../components/Messaging/index';
-
-import prop from 'ramda/es/prop';
-import ascend from 'ramda/es/ascend';
-import sortWith from 'ramda/es/sortWith';
-import isNil from 'ramda/es/isNil';
-import findIndex from 'ramda/es/findIndex';
-import propEq from 'ramda/es/propEq';
-import dropRepeats from 'ramda/es/dropRepeats';
-
-const messageSort = sortWith([
-  ascend(prop('sentAt')),
-]);
-const threadSort = sortWith([
-  ascend(prop('lastMessage.sentAt')),
-]);
-class LeadsContainer extends Component {
-    constructor(props) {
-        super(props);
-        this.state ={
-          leadId:'',
-        }
-    }
-    
-    handleStarThread = (isStarred)=>{
-      this.props.starThread(this.state.leadId, isStarred);
-    }
-    handleThreadSelector = (leadId) =>{
-      this.props.readThread(leadId);
-      this.setState({leadId})
-        const linkedInMessagesListenerSettings = {
-        collection:COLLECTIONS.linkedinClients,
-        doc:leadId,
-        subcollections: [{collection: COLLECTIONS.messages}],
-        storeAs:'linkedinThreadMessages',
-        orderBy:['sentAt', 'asc']}
-        this.props.firestore.setListener(linkedInMessagesListenerSettings)
-
-        const queuedMessagesListenerSettings = {
-          collection:COLLECTIONS.linkedinMessageQueue,
-          where:[
-           ['leadId','==',leadId],
-           ['hasSynced','==',false]
-         ],
-          storeAs:'queuedMessages',
-        //  orderBy:['createdAt', 'asc']
-        }
-          this.props.firestore.setListener(queuedMessagesListenerSettings)
-    }
-    handleSendMessage = (content)=>{
-        const lead = this.props.leads.filter(x=>x.id === this.state.leadId) 
-        console.log(this.state.leadId,lead[0].thread.id,content)
-        this.props.sendMessage(this.state.leadId,lead[0].thread.id,content)
-    }
-    render() { 
-        const { leads, queuedMessages } = this.props;
-        const { leadId } = this.state;
-
-        let messages = [];
-        if (this.props.messages) messages = this.props.messages;
-
-        if (!isNil(queuedMessages)) {
-            console.log('queuedMessages',queuedMessages);
-            const formatedMessages = queuedMessages.map(message => {
-                const sentAt = message.createdAt;
-                const isIncoming = false;
-                return ({ body:message.body, sentAt, isIncoming });
-            });
-            messages = [...this.props.messages, ...formatedMessages];
-        } else if (this.props.messages) {
-          messages = this.props.messages;
-        }
-
-        if (leads) {
-            const threads = leads.map(lead => {
-                let fullName = lead.fullName;
-                let id = lead.id;
-                let body = lead.lastMessage.body;
-                let date = lead.lastMessage.sentAt;
-                let isUnread = lead.thread.isUnread;
-                let isStarred = lead.thread.isStarred;
-                return({fullName, body, date, id, isUnread, isStarred});
-            });
-
-            let leadHeader = {label:'',path:''};
-            if (leadId !=='') {
-                const leadIndex = findIndex(propEq('id',leadId))(leads);
-                const currentLead = leads[leadIndex];
-                leadHeader = {label:currentLead.fullName, path:currentLead.profileURL};
-            }
-            return (
-            <React.Fragment>
-                <LocationIndicator title="Leads" />
-                <Messaging
-                    threads={threadSort(dropRepeats(threads))} 
-                    handleSendMessage={this.handleSendMessage} 
-                    handleThreadSelector={this.handleThreadSelector}
-                    messages={messageSort(dropRepeats(messages))}
-                    handleStarThread={this.handleStarThread}
-                    leadHeader={leadHeader}
+function ConversationContainer(props) {
+    return(<Fade in>
+        <Grid container direction='row' style={{height: 'calc(100vh - 64px)'}}>
+            <Grid item style={{width: 320,height: 'calc(100vh - 64px)'}}>
+                <ThreadsList
+                    threads={threads}
+                    handleThreadSelector={handleThreadSelector}
+                    handleStarThread={props.handleStarThread}
                 />
-            </React.Fragment>
-            );
-        }
-        else {
-            return(<React.Fragment>
-              <LocationIndicator title="Leads" />
-              <Grid container justify="center" alignItems="center" style={{height:'calc(100vh - 64px)'}}>
-                  <CircularProgress size={64} />
-              </Grid>
-            </React.Fragment>);
-        }
+            </Grid>
+            <Grid item xs className={classes.messagesContainer}>
+                { messages && messages.length > 0 ?
+                <Grid container direction="column" wrap="nowrap" style={{ height:'100vh' }}>
+    
+                    <Grid item className={classes.leadHeader}>
+                        <Grid container justify="space-between" alignItems="center">
+                            <Grid item>
+                                <Typography variant="title">{ leadHeader.label }</Typography>
+                            </Grid>
+                            <Grid item>
+                                <IconButton onClick={() => { window.open(leadHeader.path, '_blank') }}><LinkIcon /></IconButton>
+                                <IconButton><StarOutlineIcon /></IconButton>
+                            </Grid>
+                        </Grid>
+                    </Grid>
+    
+                    <Grid item xs style={{ overflowY:'scroll' }}>
+                        <Messages messages={messages} />
+                    </Grid>
+    
+                    <Grid item className={classes.composerContainer}>
+                        <Tabs
+                            classes={{root:classes.tabRoot}}
+                            value={composerType}
+                            onChange={(e, val) => { setComposerType(val); }}
+                            indicatorColor="primary"
+                            textColor="primary"
+                        >
+                            <Tab value="email" label="Email" classes={{root:classes.tabRoot, labelContainer:classes.tabLabelContainer}} />
+                            <Tab value="linkedin" label="LinkedIn" classes={{root:classes.tabRoot, labelContainer:classes.tabLabelContainer}} />
+                            <Tab value="note" label="Note" classes={{root:classes.tabRoot, labelContainer:classes.tabLabelContainer}} />
+                        </Tabs>
+                        { composer }
+                    </Grid>
+                </Grid>
+                :
+                <Grid container justify="center" alignItems="center" className={classes.noOpenMsg}>
+                    <Grid item>
+                        <ForumIcon />
+                        <Typography variant="subheading" color="textSecondary">No open conversations</Typography>
+                    </Grid>
+                </Grid>
+                }
+            </Grid>
+        </Grid>
+        </Fade>);
+        
+        
     }
 
-}
 
-  export default withNavigation(compose(LeadsContainer))
+
+  export default withNavigation(compose(ConversationContainer))
   
