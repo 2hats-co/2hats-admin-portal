@@ -126,7 +126,7 @@ function Search(props) {
 
     let resultItems = [];
     if (results.hits && results.hits.length > 0) {
-        resultItems = results.hits.map( (hit, i) =>
+        const resultItemsToRender = results.hits.map( (hit, i) =>
         <ListItem key={i} className={classes.listItem}>
             <ListItemIcon classes={{ root:classes.listIcon }} ><PersonIcon /></ListItemIcon>
             <ListItemText primary={`${hit.firstName} ${hit.lastName}`} />
@@ -147,6 +147,7 @@ function Search(props) {
             </ListItemSecondaryAction>
         </ListItem>
         );
+        resultItems = useMemo(() => { console.log('update result items'); return resultItemsToRender }, [results.nbHits, results.hitsPerPage]);
     }
   
     return(

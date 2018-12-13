@@ -12,6 +12,7 @@ import List from '@material-ui/core/List';
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import Item from './Item'
+import {useConversations} from '../../../hooks/useConversations'
 // import { CONSTANTS } from '@firebase/util';
 
 const styles = theme => ({
@@ -20,21 +21,22 @@ const styles = theme => ({
     },
 });
 
-function ConversationsList(){
+function ConversationsList(props){
     const [selectedConversation,setSelectedConversation] = useState(null)
-    const [conversations,conversationsDispatch] = useConversations()
+    const [conversationsState,conversationsDispatch] = useConversations()
 
-    console.log(conversations)
+    console.log(conversationsState)
 
     // handleCandidateFilter = (event, value) => {
     //     conversationsDispatch({ filter: value });
     // }
+    const {classes} = props
         return( <Grid container direction="column" style={{height: 'calc(100vh - 64px)'}}>
         <Grid item>
             <Tabs
                 className={classes.tabs}
-                value={candidateFilter}
-                onChange={this.handleCandidateFilter}
+               value={'all'}
+                //onChange={this.handleCandidateFilter}
                 indicatorColor="primary"
                 textColor="primary"
                 fullWidth
@@ -48,7 +50,7 @@ function ConversationsList(){
 
         <Grid item xs style={{overflowY: 'scroll'}}>
             <List disablePadding>
-                {conversations.map((x) =>
+                {conversationsState.conversations &&conversationsState.conversations.map((x) =>
                     <Item
                         onClick={()=>{setSelectedConversation(x.id)}}
                         data={x}
@@ -63,5 +65,5 @@ function ConversationsList(){
 
     </Grid>);
     }
-}
-export default withStyles(styles)(ThreadsList);
+
+export default withStyles(styles)(ConversationsList);

@@ -41,7 +41,7 @@ const AuthenticationContainer = Loadable({
 
 const ConversationsContainer = Loadable({
     // loader: () => import('./containers/ConversationsContainer'),
-    loader: () => import('./containers/LeadsContainer'),
+    loader: () => import('./containers/ConversationsContainer'),
     loading() {
       return loadingCard
     }

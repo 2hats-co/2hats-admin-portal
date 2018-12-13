@@ -1,7 +1,7 @@
 import {firestore} from '../store'
 import {COLLECTIONS} from '../constants/firestore'
 import { useEffect, useReducer } from 'react';
-
+import * as R from 'ramda'
 const generateFilters = () => {
     let filters = [];
    
@@ -10,7 +10,7 @@ const generateFilters = () => {
 
 const getConversations = (filters,conversationDispatch) =>{
     //updates prev values
-    conversationDispatch()
+    conversationDispatch({prevFilters:filters})
     let query = firestore.collection(COLLECTIONS.conversations);
     filters.forEach((filter)=>{
         query = query.where(filter.field,filter.operator,filter.value)
@@ -37,11 +37,12 @@ const conversationsReducer = (prevState, newProps) => {
 
 export function useConversations() {
     const [conversationsState, conversationsDispatch] = useReducer(conversationsReducer,
-        {conversations:null,prevFilters:null});
+        {conversations:null,prevFilters:null,filters:[]});
     useEffect(() => {
-        const {conversations} = conversationsState
-        if(!conversations){
+        const {prevFilters,filters} = conversationsState
+        if(!R.equals(prevFilters,filters)){
             const filters = generateFilters()
+            console.log('wow')
             getConversations(filters,conversationsDispatch)
         }
         return () => {firestore.collection(COLLECTIONS.conversations).onSnapshot(() => {});};
