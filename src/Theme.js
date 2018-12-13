@@ -1,6 +1,8 @@
 import createMuiTheme from '@material-ui/core/styles/createMuiTheme';
 
 const primaryColor = '#f15a29';
+const darkText = 'hsl(15, 90%, 40%)';
+const lightPrimary = 'hsl(15, 88%, 95%)';
 const borderRadius = 4;
 
 const Theme = createMuiTheme({
@@ -8,8 +10,8 @@ const Theme = createMuiTheme({
         primary: {
             main: primaryColor,
             dark: primaryColor,
-            darkText: 'hsl(15, 100%, 30%)',
-            light: 'hsl(15, 88%, 95%)',
+            darkText: darkText,
+            light: lightPrimary,
         },
         secondary: {
             main: primaryColor,
@@ -79,6 +81,32 @@ const Theme = createMuiTheme({
             root: {
                 minWidth: '64px !important',
                 fontSize: '.875rem !important',
+            },
+        },
+        MuiChip: {
+            root: {
+                '& + &': { marginLeft: 8 }
+            },
+            colorPrimary: {
+                color: darkText,
+                backgroundColor: lightPrimary,
+                '&:focus': {
+                    backgroundColor: primaryColor,
+                    color: '#fff'
+                },
+            },
+            iconColorPrimary: {
+                opacity: .87,
+            },
+            deleteIconColorPrimary: {
+                color: `inherit !important`,
+                opacity: .87,
+            },
+        },
+        MuiAvatar: {
+            colorDefault: {
+                backgroundColor: lightPrimary,
+                color: darkText,
             },
         },
     },

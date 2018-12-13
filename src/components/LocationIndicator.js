@@ -17,6 +17,7 @@ const styles = theme => ({
         lineHeight: '64px',
         fontWeight: 600,
         marginRight: theme.spacing.unit * 2,
+        userSelect: 'none',
     },
     routeButton: {
         paddingTop: 0,

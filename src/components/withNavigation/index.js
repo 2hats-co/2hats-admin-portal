@@ -6,6 +6,7 @@ import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
 import Avatar from '@material-ui/core/Avatar';
 import Tooltip from '@material-ui/core/Tooltip';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import Slide from '@material-ui/core/Slide';
 import Fade from '@material-ui/core/Fade';
 
@@ -17,6 +18,7 @@ import MailIcon from '@material-ui/icons/Mail';
 import StatisticsIcon from '@material-ui/icons/InsertChart';
 // import CalendarIcon from '@material-ui/icons/CalendarToday';
 import LeadsIcon from '@material-ui/icons/BusinessCenter';
+import NotificationIcon from '@material-ui/icons/Notifications';
 
 import {ROUTES} from '../../constants/routes';
 
@@ -32,10 +34,13 @@ import { withFirestore } from "../../utilities/withFirestore";
 const styles = theme => ({
     leftNav: {
         backgroundColor: theme.palette.primary.main,
+        color: theme.palette.common.white,
         width: 64,
         height: '100vh',
         position: 'relative',
         zIndex: 999,
+        overflowY: 'auto',
+        overflowX: 'hidden',
     },
     logo: {
         width: 40,
@@ -44,22 +49,25 @@ const styles = theme => ({
         padding: '15px 0',
         display: 'block',
         userDrag: 'none',
+        userSelect: 'none',
         borderBottom: '1px solid rgba(0,0,0,.12)',
     },
     searchButton: {
-        color: '#fff',
+        color: 'rgba(255,255,255,.87)',
         marginTop: theme.spacing.unit,
+    },
+    notificationButton: {
+        color: 'rgba(255,255,255,.87)',
+        display: 'none',
     },
     avatar: {
         backgroundColor: 'rgba(255,255,255,.87)',
         color: theme.palette.primary.main,
         fontWeight: 500,
+        margin: theme.spacing.unit * 1.5,
     },
-    avatarTooltipHeading: {
-        fontWeight: 'bold',
-        '&:not(:first-of-type)': {
-            marginTop: theme.spacing.unit,
-        },
+    avatarSpinner: {
+        margin: theme.spacing.unit * 1.5,
     },
 });
 
@@ -128,7 +136,15 @@ export const withNavigation = (WrappedComponent) => {
                     <Grid item className={classes.leftNav}>
                         <Grid container style={{height:'100vh'}} justify="center" alignContent="space-between">
                             <Grid item>
-                                <img alt="2hats logo" src={logo} className={classes.logo} />
+                                <Tooltip
+                                    title={<React.Fragment>
+                                        <b>Build {metadata.hash}</b>
+                                        <div>{new Date(metadata.date).toLocaleString()}</div>
+                                    </React.Fragment>}
+                                    placement="right"
+                                >
+                                    <img alt="2hats logo" src={logo} className={classes.logo} />
+                                </Tooltip>
                                 <Tooltip title="Search candidates" placement="right">
                                     <IconButton
                                         className={classes.searchButton}
@@ -138,7 +154,7 @@ export const withNavigation = (WrappedComponent) => {
                                     </IconButton>
                                 </Tooltip>
                             </Grid>
-                            <Grid item style={{marginBottom:48}}>
+                            <Grid item>
                                 <NavigationItems
                                     goTo={goTo}
                                     currentLocation={path}
@@ -146,24 +162,26 @@ export const withNavigation = (WrappedComponent) => {
                                     navigationRoutes={navigationRoutes}
                                 />
                             </Grid>
-                            <Grid item style={{height:64,padding:12}}>
-                                { initials && displayName && uid &&
-                                <Slide in direction="right">
+                            <Grid item style={{ textAlign:'center' }}>
+                                <Tooltip title="Notifications" placement="right">
+                                    <IconButton className={classes.notificationButton}>
+                                        <NotificationIcon />
+                                    </IconButton>
+                                </Tooltip>
+                                { initials && displayName && uid ?
+                                <Fade in direction="right">
                                     <Tooltip
                                         title={<React.Fragment>
-                                            <div className={classes.avatarTooltipHeading}>Signed in as</div>
-                                            <div>{displayName}</div>
+                                            <b>{displayName}</b>
                                             <div>{uid}</div>
-
-                                            <div className={classes.avatarTooltipHeading}>Build {metadata.hash}</div>
-                                            <div>{new Date(metadata.date).toLocaleString()}</div>
                                         </React.Fragment>}
-                                        placement="top-start"
+                                        placement="right"
                                         leaveDelay={5000}
                                     >
                                         <Avatar className={classes.avatar}>{initials ? initials : null}</Avatar>
                                     </Tooltip>
-                                </Slide>}
+                                </Fade>
+                                : <CircularProgress color="inherit" className={classes.avatarSpinner} />}
                             </Grid>
                         </Grid>
                     </Grid>
