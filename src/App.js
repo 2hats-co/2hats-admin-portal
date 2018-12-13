@@ -6,7 +6,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 //routing
 import {
     BrowserRouter as Router,
-    Route,
+    Route, Switch,
 } from 'react-router-dom';
 import Theme from './Theme';
 import {ROUTES} from './constants/routes'
@@ -73,18 +73,19 @@ function App() {
             <MuiThemeProvider theme={Theme}>
                 <Router>
                     <div className="app"> 
-                        <Route exact path={ROUTES.auth} component={() => <AuthenticationContainer/>} />
-                        <Route exact path={ROUTES.stats} component={() => <StatisticsContainer/>} />
-                        <Route exact path={ROUTES.candidates} component={() => <CandidatesContainer/>} />
-                        <Route exact path={ROUTES.subjects} component={() => <SubjectsContainer/>} />
-                        <Route exact path={ROUTES.leads} component={() => <LeadsContainer/>} />
-                        <Route exact path={ROUTES.submissions} component={() => <SubmissionsContainer />} />
-                        <Route exact path={ROUTES.pending} component={() => <SubmissionsContainer />} />
-                        <Route exact path={ROUTES.rejected} component={() => <SubmissionsContainer />} />
-                        <Route exact path={ROUTES.accepted} component={() => <SubmissionsContainer />} />
-                        <Route exact path={ROUTES.mail} component={() => <MailContainer/>} />
-                        <Route exact path={'/'} component={() => <Landing/>} /> 
-                    </div> 
+                        <Switch>
+                            <Route exact path={ROUTES.auth} component={() => <AuthenticationContainer/>} />
+                            <Route exact path={ROUTES.stats} component={() => <StatisticsContainer/>} />
+                            <Route exact path={ROUTES.subjects} component={() => <SubjectsContainer/>} />
+                            <Route exact path={ROUTES.leads} component={() => <LeadsContainer/>} />
+                            <Route exact path={ROUTES.submissions} component={() => <SubmissionsContainer />} />
+                            <Route exact path={ROUTES.pending} component={() => <SubmissionsContainer />} />
+                            <Route exact path={ROUTES.rejected} component={() => <SubmissionsContainer />} />
+                            <Route exact path={ROUTES.accepted} component={() => <SubmissionsContainer />} />
+                            <Route exact path={'/'} component={() => <Landing/>} /> 
+                            <Route component={() => <div>404</div>} />
+                        </Switch>
+                    </div>
                 </Router>
             </MuiThemeProvider>
         );

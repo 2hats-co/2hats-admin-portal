@@ -11,12 +11,9 @@ import Slide from '@material-ui/core/Slide';
 import Fade from '@material-ui/core/Fade';
 
 import SearchIcon from '@material-ui/icons/Search';
-import PeopleIcon from '@material-ui/icons/People';
 import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
 import DescriptionIcon from '@material-ui/icons/Description';
-import MailIcon from '@material-ui/icons/Mail';
 import StatisticsIcon from '@material-ui/icons/InsertChart';
-// import CalendarIcon from '@material-ui/icons/CalendarToday';
 import LeadsIcon from '@material-ui/icons/BusinessCenter';
 import NotificationIcon from '@material-ui/icons/Notifications';
 
@@ -73,21 +70,9 @@ const styles = theme => ({
 
 const navigationRoutes = [
     {
-        label: 'Candidates',
-        icon: <PeopleIcon />,
-        route: ROUTES.candidates,
-    }, {
-    //     label: 'Calendar',
-    //     icon: <CalendarIcon />,
-    //     route: ROUTES.calendar,
-    // }, {
         label: 'Statistics',
         icon: <StatisticsIcon />,
         route: ROUTES.stats,
-    }, {
-        label: 'Mail',
-        icon: <MailIcon />,
-        route: ROUTES.mail,
     }, {
         label: 'Submissions',
         icon: <DescriptionIcon />,
