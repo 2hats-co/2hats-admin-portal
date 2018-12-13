@@ -25,12 +25,6 @@ const StatisticsContainer = Loadable({
     }
 });
 
-const CandidatesContainer = Loadable({
-    loader: () => import('./containers/CandidatesContainer'),
-    loading() {
-      return loadingCard
-    }
-});
 const SubjectsContainer = Loadable({
     loader: () => import('./containers/SubjectsContainer'),
     loading() {
@@ -45,15 +39,16 @@ const AuthenticationContainer = Loadable({
     }
 });
 
-const LeadsContainer = Loadable({
+const ConversationsContainer = Loadable({
+    // loader: () => import('./containers/ConversationsContainer'),
     loader: () => import('./containers/LeadsContainer'),
     loading() {
       return loadingCard
     }
 });
 
-const MailContainer = Loadable({
-    loader: () => import('./containers/MailContainer'),
+const LeadsContainer = Loadable({
+    loader: () => import('./containers/LeadsContainer'),
     loading() {
       return loadingCard
     }
@@ -77,6 +72,7 @@ function App() {
                             <Route exact path={ROUTES.auth} component={() => <AuthenticationContainer/>} />
                             <Route exact path={ROUTES.stats} component={() => <StatisticsContainer/>} />
                             <Route exact path={ROUTES.subjects} component={() => <SubjectsContainer/>} />
+                            <Route exact path={ROUTES.conversations} component={() => <ConversationsContainer/>} />
                             <Route exact path={ROUTES.leads} component={() => <LeadsContainer/>} />
                             <Route exact path={ROUTES.submissions} component={() => <SubmissionsContainer />} />
                             <Route exact path={ROUTES.pending} component={() => <SubmissionsContainer />} />

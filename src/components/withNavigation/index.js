@@ -14,6 +14,7 @@ import SearchIcon from '@material-ui/icons/Search';
 import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
 import DescriptionIcon from '@material-ui/icons/Description';
 import StatisticsIcon from '@material-ui/icons/InsertChart';
+import ConversationsIcon from '@material-ui/icons/Forum';
 import LeadsIcon from '@material-ui/icons/BusinessCenter';
 import NotificationIcon from '@material-ui/icons/Notifications';
 
@@ -78,6 +79,10 @@ const navigationRoutes = [
         icon: <DescriptionIcon />,
         route: ROUTES.pending,
         subRoutes: [ROUTES.pending, ROUTES.rejected, ROUTES.accepted],
+    }, {
+        label: 'Conversations',
+        icon: <ConversationsIcon />,
+        route: ROUTES.conversations,
     }, {
         label: 'Leads',
         icon: <LeadsIcon />,
