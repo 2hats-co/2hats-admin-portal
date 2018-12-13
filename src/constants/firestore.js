@@ -13,5 +13,6 @@ export const COLLECTIONS = {
     admins:'admins',
     linkedinClients:'linkedinClients',
     linkedinMessageQueue:'linkedinMessageQueue',
-    communications:'communications'
+    communications:'communications',
+    conversations:'conversations',
 }
