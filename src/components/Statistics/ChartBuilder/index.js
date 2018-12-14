@@ -95,7 +95,7 @@ class ChartBuilder extends Component {
       };
       handleAdd = () => {
         const {title,trackers,chartWidth,chartType} = this.state
-        this.props.addChart({title,trackers,width:chartWidth,type:chartType})
+        this.props.addChart({title,trackers,layout:{x:0,y:0,w:3,h:4},type:chartType})
         this.handleClose()
       };
       handleChartTypePicker = (e,v) =>{
