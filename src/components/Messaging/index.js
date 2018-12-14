@@ -49,6 +49,48 @@ const DUMMY_MESSAGES = [
       "id": "o9ekBMcXq8ARDfl5hJB4",
       "body": "Keen for a coffee next week?",
       "createdAt": {
+        "seconds": 1544400544,
+        "nanoseconds": 176000000
+      },
+      "isIncoming": true,
+      "sentAt": {
+        "seconds": 1544400544,
+        "nanoseconds": 0
+      },
+      "type": "linkedin",
+    },
+    {
+      "id": "o9ekBMcXq8ARDfl5hJB4",
+      "body": "Keen for a coffee next week?",
+      "createdAt": {
+        "seconds": 1544400545,
+        "nanoseconds": 176000000
+      },
+      "isIncoming": true,
+      "sentAt": {
+        "seconds": 1544400545,
+        "nanoseconds": 0
+      },
+      "type": "linkedin",
+    },
+    {
+      "id": "o9ekBMcXq8ARDfl5hJB4",
+      "body": "Keen for a coffee next week?",
+      "createdAt": {
+        "seconds": 1544400744,
+        "nanoseconds": 176000000
+      },
+      "isIncoming": true,
+      "sentAt": {
+        "seconds": 1543976041,
+        "nanoseconds": 0
+      },
+      "type": "linkedin",
+    },
+    {
+      "id": "o9ekBMcXq8ARDfl5hJB4",
+      "body": "Keen for a coffee next week?",
+      "createdAt": {
         "seconds": 1544400744,
         "nanoseconds": 176000000
       },
@@ -242,6 +284,7 @@ const DUMMY_MESSAGES = [
           "nanoseconds": 0
         },
         "type": "email",
+        "sentBy": "Profasia Caming",
     },
     {
         "id": "kfRpwHxRUHWGd3sVrnWasfdd",

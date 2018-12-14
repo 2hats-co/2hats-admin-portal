@@ -6,7 +6,10 @@ import Typography from '@material-ui/core/Typography';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
+import Avatar from '@material-ui/core/Avatar';
+import Tooltip from '@material-ui/core/Tooltip';
 
+import PersonIcon from '@material-ui/icons/Person';
 import MailIcon from '@material-ui/icons/Mail';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
@@ -14,17 +17,19 @@ import moment from 'moment';
 import { momentLocales } from '../../../constants/momentLocales';
 // import timestamp from 'time-stamp';
 
+import { getInitials } from '../../../utilities';
+
 const styles = theme => ({
     root: {
         '& p': { textAlign: 'left' },
     },
     linkedin: {
-        '& > span': { display: 'none' },
+        '& .msg-caption': { display: 'none' },
     },
     incomingMessage: {
         textAlign: 'left',
 
-        '& > div': {
+        '& .msg-body': {
             backgroundColor: theme.palette.grey[200],
             borderTopRightRadius: theme.shape.roundBorderRadius,
             borderBottomRightRadius: theme.shape.roundBorderRadius,
@@ -33,28 +38,33 @@ const styles = theme => ({
     yourMessage: {
         textAlign: 'right',
 
-        '& > div': {
+        '& .msg-body': {
             backgroundColor: theme.palette.primary.light,
             borderTopLeftRadius: theme.shape.roundBorderRadius,
             borderBottomLeftRadius: theme.shape.roundBorderRadius,
+            marginRight: theme.spacing.unit * 6,
         },
         '& p': { color: theme.palette.primary.darkText },
+        '& .msg-caption': { marginRight: theme.spacing.unit * 8 },
     },
 
     firstOfIncoming: {
-        '& > div': { borderTopLeftRadius: theme.shape.roundBorderRadius },
+        '& .msg-body': { borderTopLeftRadius: theme.shape.roundBorderRadius },
     },
     lastOfIncoming: {
-        '& > div': { borderBottomLeftRadius: theme.shape.roundBorderRadius },
-        '& > span': { display: 'block' },
+        '& .msg-body': { borderBottomLeftRadius: theme.shape.roundBorderRadius },
+        '& .msg-caption': { display: 'block' },
     },
 
     firstOfYour: {
-        '& > div': { borderTopRightRadius: theme.shape.roundBorderRadius },
+        '& .msg-body': { borderTopRightRadius: theme.shape.roundBorderRadius },
     },
     lastOfYour: {
-        '& > div': { borderBottomRightRadius: theme.shape.roundBorderRadius },
-        '& > span': { display: 'block' },
+        '& .msg-body': {
+            borderBottomRightRadius: theme.shape.roundBorderRadius,
+            marginRight: theme.spacing.unit,
+        },
+        '& .msg-caption': { display: 'block' },
     },
 
     body: {
@@ -72,10 +82,14 @@ const styles = theme => ({
         display: 'inline !important',
         '&::before': { content: '" • "' },
     },
+    avatar: {
+        display: 'inline-flex',
+        verticalAlign: 'bottom',
+    },
 
     note: {
         textAlign: 'center',
-        '& > div': {
+        '& .msg-body': {
             border: `1px solid ${ theme.palette.primary.darkText }`,
             borderRadius: `${theme.shape.roundBorderRadius}px !important`,
             backgroundColor: theme.palette.background.paper,
@@ -83,7 +97,7 @@ const styles = theme => ({
     },
 
     email: {
-        '& > div': {
+        '& .msg-body': {
             borderRadius: `${theme.shape.roundBorderRadius}px !important`,
             padding: theme.spacing.unit,
             maxWidth: 800,
@@ -107,7 +121,7 @@ const styles = theme => ({
 
     activity: {
         textAlign: 'center',
-        '& > div': {
+        '& .msg-body': {
             border: `1px solid ${ theme.palette.divider }`,
             borderRadius: `${theme.shape.roundBorderRadius}px !important`,
             backgroundColor: theme.palette.background.paper,
@@ -160,9 +174,18 @@ function Message(props) {
         data.type === 'activity' && classes.activity,
     )}>
 
-        <div className={classes.body}>{bodyContent}</div>
+        <div className={classNames(classes.body, 'msg-body')}>{bodyContent}</div>
+        {!isIncoming && lastOfType && (data.sentBy ?
+            <Tooltip title={data.sentBy}>
+                <Avatar className={classes.avatar}>
+                    { getInitials(data.sentBy) }
+                </Avatar>
+            </Tooltip>
+        :
+            <Avatar className={classes.avatar}><PersonIcon /></Avatar>)
+        }
 
-        <Typography variant="caption" className={classes.caption}>
+        <Typography variant="caption" className={classNames(classes.caption, 'msg-caption')}>
             {timeLabel}
             {data.type && <span className={classes.typeLabel}>{data.type.replace('linkedin', 'LinkedIn')}</span> }
         </Typography>

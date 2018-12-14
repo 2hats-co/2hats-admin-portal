@@ -13,6 +13,12 @@ const styles = theme => ({
     },
 });
 
+const isSameType = (a, b) => (
+    a.isIncoming === b.isIncoming ||
+    a.type === b.type ||
+    a.sentBy === b.sentBy
+);
+
 class Messages extends Component{
     componentDidUpdate(prevProps) {
         if (!prevProps.data) {
@@ -29,14 +35,8 @@ class Messages extends Component{
         <div className={classes.root}>
             { messages.map((data, i) => (
                 <Message key={data.id} data={data}
-                    firstOfType={i > 0 ?
-                        messages[i-1].isIncoming !== data.isIncoming || messages[i-1].type !== data.type
-                        : true
-                    }
-                    lastOfType={i < messages.length - 1 ?
-                        messages[i+1].isIncoming !== data.isIncoming || messages[i+1].type !== data.type
-                        : true
-                    }
+                    firstOfType={i > 0 ? isSameType(messages[i-1], data) : true}
+                    lastOfType={i < messages.length - 1 ? isSameType(messages[i+1], data) : true}
                 />
             ))}
             <div style={{ float:"left", clear: "both" }}
