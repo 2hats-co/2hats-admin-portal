@@ -1,12 +1,12 @@
 {
   "projects": {
-    "default": "staging2hats"
+    "default": "production2hats"
   },
   "targets": {
-    "staging2hats": {
+    "production2hats": {
       "hosting": {
         "admin": [
-          "staging2hatsadmin"
+          "admin2hat"
         ]
       }
     }
