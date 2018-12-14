@@ -8,7 +8,7 @@ import Slide from '@material-ui/core/Slide';
 
 const styles = theme => ({
   root:{
-    backgroundColor: theme.palette.primary.main,
+    backgroundColor: '#fff',// 
     display: 'table',
     position: 'absolute',
     height: '100%',
