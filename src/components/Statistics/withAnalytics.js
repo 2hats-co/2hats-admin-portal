@@ -62,7 +62,7 @@ function withAnalytics(WrappedComponent) {
                 title={this.props.title}
                 />;
             } else {
-                return ( < div / > )
+                return ( <div/> )
             }
 
         }

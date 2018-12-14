@@ -6,14 +6,13 @@ import {
 } from '../../store';
 
 const secondsInHour = 3600
-const firstMonth = 2324
 const getTrackerDocs = (tracker, range) => {
   //TODO:read only relavent month docs
   return new Promise(function (fulfilled, rejected) {
     const trackerCollection = firestore.collection("eventTrackers")
     const trackerRef = trackerCollection.doc(tracker.type).collection(tracker.name);
     let docsData = []
-    let query = trackerRef.get()
+     trackerRef.get()
       .then(snapshot => {
         snapshot.forEach((doc, index) => {
           let data = doc.data()

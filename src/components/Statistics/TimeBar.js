@@ -1,10 +1,10 @@
-import React,{Component} from 'react'
+import React,{useState,useEffect} from 'react'
 import PropTypes from "prop-types";
 import withStyles from '@material-ui/core/styles/withStyles';
 import Grid from "@material-ui/core/Grid";
 import ToggleButton from "@material-ui/lab/ToggleButton";
 import ToggleButtonGroup from "@material-ui/lab/ToggleButtonGroup";
-import TextField from '@material-ui/core/TextField';
+
 
 import LeftIcon from '@material-ui/icons/KeyboardArrowLeft';
 import RightIcon from '@material-ui/icons/KeyboardArrowRight';
@@ -45,62 +45,73 @@ const styles = theme => ({
     textTransform: 'capitalize',
   },
 });
-const DATE_FORMAT = 'YYYY-MM-DD'
-class TimeBar extends Component {
-    constructor(){
-        super()
-        this.handleRangeChange = this.handleRangeChange.bind(this)
-    }
-    state = {
-        dateRange:'week'
-        
-      };
-      componentDidMount(){
-       this.handleRangeChange({target:{textContent:'past week'}})
-      }
-      handleRangeChange(e){
-        const {changeHandler} = this.props
-        let text = e.target.textContent.split(' ')
-        const rangeType = text[text.length-1]
-        this.setState({dateRange:rangeType})
-        switch (rangeType) {
-            case 'week':
-            changeHandler('range',{start:moment().startOf('day').subtract(1, 'weeks').unix(),end:moment().startOf('hour').unix()})
-            break;
-            case 'month':
-            changeHandler('range',{start:moment().startOf('day').subtract(1, 'months').unix(),end:moment().startOf('hour').unix()})
-            break;
-            default:
-            changeHandler('range',{start:moment().startOf('day').subtract(2, 'weeks').unix(),end:moment().startOf('hour').unix()})
-                break;
-        }
+function TimeBar(props) {
+  const { classes, format, changeHandler} = props;
 
-    }
+  const [range,setRange] = useState({type:'custom'})
+  const [start,setStart] = useState(moment().startOf('day').subtract(2, 'weeks'))
+  const [end,setEnd] = useState(moment().startOf('hour'))
+
+  useEffect(()=>{
+    changeHandler('range',{start:start.unix(),end:end.unix()})
+  },[start,end])
+  
+  
+  useEffect(()=>{
+    switch (range.type) {
+              case 'week':
+              changeHandler('range',{start:moment().startOf('day').subtract(1, 'weeks').unix(),end:moment().startOf('hour').unix()})
+              break;
+              case 'month':
+              changeHandler('range',{start:moment().startOf('day').subtract(1, 'months').unix(),end:moment().startOf('hour').unix()})
+              break;
+              default:
+              changeHandler('range',{start:start.unix(),end:end.unix()})
+                  break;
+          }
+
+  },[range])
+     
+    //   handleRangeChange(e){
+    //     const {changeHandler} = this.props
+    //     let text = e.target.textContent.split(' ')
+    //     const rangeType = text[text.length-1]
+    //     this.setState({dateRange:rangeType})
+    //     switch (rangeType) {
+    //         case 'week':
+    //         changeHandler('range',{start:moment().startOf('day').subtract(1, 'weeks').unix(),end:moment().startOf('hour').unix()})
+    //         break;
+    //         case 'month':
+    //         changeHandler('range',{start:moment().startOf('day').subtract(1, 'months').unix(),end:moment().startOf('hour').unix()})
+    //         break;
+    //         default:
+    //         changeHandler('range',{start:moment().startOf('day').subtract(2, 'weeks').unix(),end:moment().startOf('hour').unix()})
+    //             break;
+    //     }
+
+    // }
+        
     
-      render() {
-        const { classes, format, changeHandler, fromDate, toDate } = this.props;
-        const {dateRange} =this.state
         
         return (
           <Grid container className={classes.root}>
             <Grid item>
               <div className={classes.toggleContainer}>
                 <ToggleButtonGroup
-                  value={dateRange}
+                  value={range.type}
                   exclusive
-                  onChange={this.handleRangeChange}
+                  onChange={(e,v)=>{setRange({type:v})}}
                 >
                   <ToggleButton classes={{label:classes.toggleButtonLabel}} value="week">Past week</ToggleButton>
                   <ToggleButton classes={{label:classes.toggleButtonLabel}} value="month">past month</ToggleButton>
                   <ToggleButton classes={{label:classes.toggleButtonLabel}} value="custom">custom</ToggleButton>
                 </ToggleButtonGroup>
-                {dateRange === 'custom' && <form className={classes.form} noValidate>
+                {range.type === 'custom' && <form className={classes.form} noValidate>
                   <MuiPickersUtilsProvider utils={MomentUtils}>
                       <DatePicker
                           label="From"
-                          value={fromDate}
-                          onChange={dt => { changeHandler('from', dt.format(DATE_FORMAT)) }}
-                          format="DD/MM/YYYY"
+                          value={start}
+                          onChange={dt => { setStart(dt)  }}
                           leftArrowIcon={<LeftIcon />}
                           rightArrowIcon={<RightIcon />}
                           showTodayButton
@@ -110,9 +121,8 @@ class TimeBar extends Component {
                   <MuiPickersUtilsProvider utils={MomentUtils}>
                       <DatePicker
                           label="To"
-                          value={toDate}
-                          onChange={dt => { changeHandler('to', dt.format(DATE_FORMAT)) }}
-                          format="DD/MM/YYYY"
+                          value={end}
+                          onChange={dt => { setEnd(dt) }}
                           leftArrowIcon={<LeftIcon />}
                           rightArrowIcon={<RightIcon />}
                           showTodayButton
@@ -141,7 +151,7 @@ class TimeBar extends Component {
           </Grid>
         );
       }
-    }
+    
     
     TimeBar.propTypes = {
       classes: PropTypes.object.isRequired
