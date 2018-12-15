@@ -93,7 +93,7 @@ const Theme = createMuiTheme({
         },
         MuiChip: {
             root: {
-                '& + &': { marginLeft: 8 }
+                '&:not(:last-of-type)': { marginRight: 8 }
             },
             colorPrimary: {
                 color: darkText,

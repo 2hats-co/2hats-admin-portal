@@ -12,8 +12,9 @@ export function useCandidate(uid) {
   }
 
   useEffect(() => {
-    if (!candidate) handleGetCandidate(uid);
-  },[candidate]);
+    console.log('useCandidate ', uid);
+    handleGetCandidate(uid);
+  }, [uid]);
   
   return candidate;
 }

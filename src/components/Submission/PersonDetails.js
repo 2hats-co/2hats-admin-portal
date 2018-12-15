@@ -11,9 +11,11 @@ import Fade from '@material-ui/core/Fade';
 import amber from '@material-ui/core/colors/amber';
 import green from '@material-ui/core/colors/green';
 import red from '@material-ui/core/colors/red';
+import grey from '@material-ui/core/colors/grey';
 
 import CheckIcon from '@material-ui/icons/Check';
 import CloseIcon from '@material-ui/icons/Close';
+import PendingIcon from '@material-ui/icons/Schedule';
 
 import { useCandidate } from '../../hooks/useCandidate';
 import { getInitials } from '../../utilities';
@@ -29,6 +31,7 @@ const styles = theme => ({
     },
     outcome: {
         textTransform: 'capitalize',
+        textAlign: 'right',
     },
     outcomeIcon: {
         backgroundColor: '#000',
@@ -41,6 +44,9 @@ const styles = theme => ({
         width: 20,
         height: 20,
         display: 'inline-block',
+    },
+    uid: {
+        marginTop: theme.spacing.unit,
     },
 });
 
@@ -66,6 +72,7 @@ function PersonDetails(props) {
 
     let outcomeIcon;
     switch (submission.outcome) {
+        case 'disqualified':
         case 'rejected':
             outcomeIcon = <CloseIcon className={classes.outcomeIcon} style={{backgroundColor: red[500]}} />;
             break;
@@ -73,8 +80,10 @@ function PersonDetails(props) {
             outcomeIcon = <CheckIcon className={classes.outcomeIcon} style={{backgroundColor: green[500]}} />;
             break;
         case 'pending':
+            outcomeIcon = <PendingIcon className={classes.outcomeIcon} style={{backgroundColor: amber[500]}} />;
+            break;
         default:
-            outcomeIcon = <div className={classes.outcomeIcon} style={{backgroundColor: amber[500]}} />;
+            outcomeIcon = <div className={classes.outcomeIcon} style={{backgroundColor: grey[500]}} />;
             break;
     }
 
@@ -97,6 +106,9 @@ function PersonDetails(props) {
                         <Typography variant="subheading" className={classes.outcome}>
                             {submission.outcome}
                             {outcomeIcon}
+                        </Typography>
+                        <Typography variant="caption" className={classes.uid}>
+                            {submission.UID}
                         </Typography>
                     </Grid>
                 </Grid>
