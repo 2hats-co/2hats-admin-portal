@@ -48,11 +48,11 @@ const styles = theme => ({
         display: 'block',
         userDrag: 'none',
         userSelect: 'none',
-        borderBottom: '1px solid rgba(0,0,0,.12)',
+        // borderBottom: '1px solid rgba(0,0,0,.12)',
     },
     searchButton: {
         color: 'rgba(255,255,255,.87)',
-        marginTop: theme.spacing.unit,
+        // marginTop: theme.spacing.unit,
     },
     notificationButton: {
         color: 'rgba(255,255,255,.87)',

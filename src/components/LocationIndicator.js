@@ -10,7 +10,7 @@ import Tab from '@material-ui/core/Tab';
 
 const styles = theme => ({
     root: {
-        paddingLeft: theme.spacing.unit * 4,
+        paddingLeft: theme.spacing.unit * 3,
         height: 64,
     },
     title: {

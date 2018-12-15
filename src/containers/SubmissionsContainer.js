@@ -23,7 +23,7 @@ const styles = theme => ({
         height: '100%',
         overflowY: 'scroll',
         boxSizing: 'border-box',
-        padding: 40,
+        padding: theme.spacing.unit * 5,
         background: '#fff',
         // boxShadow: '0 0 10px rgba(0,0,0,.1), 0 30px 60px -15px rgba(0,0,0,.125), 0 60px 80px -20px rgba(0,0,0,.1), 0 50px 100px -30px rgba(0,0,0,.15), 0 40px 120px -5px rgba(0,0,0,.15)',
         boxShadow: theme.shadows[16],
@@ -59,11 +59,12 @@ function SumbissionsContainer(props) {
 
     const [showSnackbar, setShowSnackbar] = useState(false);
 
-    const locationIndicator = <Grid container direction='row'><LocationIndicator
-                                title="Submissions"
-                                subRoutes={['/pending', '/rejected', '/accepted']}
-                            /> 
-                            </Grid>;
+    const locationIndicator = <div style={{ paddingLeft: 40 - 24 }}>
+        <LocationIndicator
+            title="Submissions"
+            subRoutes={['/pending', '/rejected', '/accepted']}
+        />
+    </div>;
 
     if (!submission) {
         return <React.Fragment>
