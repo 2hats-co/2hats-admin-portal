@@ -49,12 +49,12 @@ const DUMMY_MESSAGES = [
       "id": "o9ekBMcXq8ARDfl5hJB4",
       "body": "Keen for a coffee next week?",
       "createdAt": {
-        "seconds": 1544400544,
+        "seconds": 1444300544,
         "nanoseconds": 176000000
       },
       "isIncoming": true,
       "sentAt": {
-        "seconds": 1544400544,
+        "seconds": 1444300544,
         "nanoseconds": 0
       },
       "type": "linkedin",
@@ -63,12 +63,12 @@ const DUMMY_MESSAGES = [
       "id": "o9ekBMcXq8ARDfl5hJB4",
       "body": "Keen for a coffee next week?",
       "createdAt": {
-        "seconds": 1544400545,
+        "seconds": 1544300545,
         "nanoseconds": 176000000
       },
       "isIncoming": true,
       "sentAt": {
-        "seconds": 1544400545,
+        "seconds": 1444300545,
         "nanoseconds": 0
       },
       "type": "linkedin",
@@ -199,6 +199,51 @@ const DUMMY_MESSAGES = [
       },
       "type": "linkedin",
     },
+    {
+      "id": "kfRpwHxRUHWGd3sVrnWXa",
+      "body": "these are messages from me",
+      "createdAt": {
+        "seconds": 1544654106,
+        "nanoseconds": 176000000
+      },
+      "isIncoming": false,
+      "sentAt": {
+        "seconds": 1544654106,
+        "nanoseconds": 0
+      },
+      "type": "linkedin",
+      "sentBy": "Profasia Caming",
+  },
+  {
+    "id": "kfRpwHxRUHWGd3sVrnWXb",
+    "body": "these are messages from me",
+    "createdAt": {
+      "seconds": 1544654106,
+      "nanoseconds": 176000000
+    },
+    "isIncoming": false,
+    "sentAt": {
+      "seconds": 1544654106,
+      "nanoseconds": 0
+    },
+    "type": "linkedin",
+    "sentBy": "Profasia Caming",
+},
+{
+  "id": "kfRpwHxRUHWGd3sVrnWXbx",
+  "body": "these are messages from me too",
+  "createdAt": {
+    "seconds": 1544654106,
+    "nanoseconds": 176000000
+  },
+  "isIncoming": false,
+  "sentAt": {
+    "seconds": 1544654106,
+    "nanoseconds": 0
+  },
+  "type": "linkedin",
+  "sentBy": "Lindsay Lohan",
+},
     {
         "id": "kfRpwHxRUHWGd3sVrnWX",
         "body": "these are messages from me",

@@ -15,7 +15,6 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 import moment from 'moment';
 import { momentLocales } from '../../../constants/momentLocales';
-// import timestamp from 'time-stamp';
 
 import { getInitials } from '../../../utilities';
 

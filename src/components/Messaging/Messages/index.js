@@ -2,7 +2,9 @@ import React,{Component} from 'react';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Slide from '@material-ui/core/Slide';
 
-import Message from './Message'
+import moment from 'moment';
+
+import Message from './Message';
 
 const styles = theme => ({
     root: {
@@ -14,9 +16,10 @@ const styles = theme => ({
 });
 
 const isSameType = (a, b) => (
-    a.isIncoming === b.isIncoming ||
-    a.type === b.type ||
-    a.sentBy === b.sentBy
+    a.isIncoming === b.isIncoming &&
+    a.type === b.type &&
+    a.sentBy === b.sentBy &&
+    moment(a.sentAt.seconds * 1000).fromNow() === moment(b.sentAt.seconds * 1000).fromNow()
 );
 
 class Messages extends Component{
@@ -35,8 +38,8 @@ class Messages extends Component{
         <div className={classes.root}>
             { messages.map((data, i) => (
                 <Message key={data.id} data={data}
-                    firstOfType={i > 0 ? isSameType(messages[i-1], data) : true}
-                    lastOfType={i < messages.length - 1 ? isSameType(messages[i+1], data) : true}
+                    firstOfType={i > 0 ? !isSameType(messages[i-1], data) : true}
+                    lastOfType={i < messages.length - 1 ? !isSameType(messages[i+1], data) : true}
                 />
             ))}
             <div style={{ float:"left", clear: "both" }}
