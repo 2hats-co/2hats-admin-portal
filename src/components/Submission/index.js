@@ -1,26 +1,17 @@
 import React from 'react';
 
-import withStyles from '@material-ui/core/styles/withStyles';
-
 import PersonDetails from './PersonDetails';
 import SubmissionDetails from './SubmissionDetails';
-
-
-const styles = theme => ({
-    root: {
-        height: '100%',
-    },
-});
 
 function sleep(millis) {
     return new Promise(resolve => setTimeout(resolve, millis));
 }
 
 function Submission(props) {
-    const { classes, submission, extraPadding } = props;
+    const { submission, extraPadding } = props;
 
     return(
-        <div className={classes.root}>
+        <div>
             <PersonDetails submission={submission} />
             <SubmissionDetails submission={submission} />
             { extraPadding && <div style={{height:300}} /> }
@@ -28,4 +19,4 @@ function Submission(props) {
     );
 }
 
-export default withStyles(styles)(Submission);
+export default Submission;
