@@ -5,7 +5,7 @@ const searchReducer = (prevState, action) => {
 
     switch (action.type) {
         case 'more':
-            console.log('useSearch MORE ',prevState.limit);
+            // console.log('useSearch MORE ',prevState.limit);
             return ({...prevState,limit:prevState.limit+10});
         default:
             return ({...prevState,...action});
@@ -28,10 +28,10 @@ export function useSearch() {
     useEffect(() => {
         const {search, prevSearch,filters,limit,prevLimit, prevFilters} = searchState
         if (search !== prevSearch || filters !== prevFilters) {
-            console.log('update query and reset limit', 20);
+            // console.log('update query and reset limit', 20);
             updateQuery(index, search, filters, 20, searchDispatch);
         } else if (prevLimit !== limit) {
-            console.log('update query with new limit', limit);
+            // console.log('update query with new limit', limit);
             updateQuery(index, search, filters, limit, searchDispatch);
         }
         return () => {};

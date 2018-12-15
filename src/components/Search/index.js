@@ -98,12 +98,12 @@ function Search(props) {
 
     useEffect(() => {
         setHasMore(results.hitsPerPage < results.nbHits);
-        console.log('update hasMore', hasMore);
+        // console.log('update hasMore', hasMore);
     }, [results.hitsPerPage]);
 
     const loadMore = (num) => {
         if (hasMore) {
-            console.log('Scrolled to bottom. Loading more… (hasMore false)');
+            // console.log('Scrolled to bottom. Loading more… (hasMore false)');
             setHasMore(false);
             searchDispatch({type: 'more'});
         }
@@ -116,13 +116,13 @@ function Search(props) {
 
     const handleRoute = (hit) => {
         const {stage, status, objectID} = hit;
-        console.log(stage, status, objectID);
+        // console.log(stage, status, objectID);
         if (status !=='pre-review' || status !=='incomplete' || status !=='complete') {
             history.push(`/submissions?uid=${objectID}`);
         }
     };
 
-    console.log('results (re-render)', results);
+    // console.log('results (re-render)', results);
 
     let resultItems = [];
     if (results.hits && results.hits.length > 0) {
@@ -147,7 +147,7 @@ function Search(props) {
             </ListItemSecondaryAction>
         </ListItem>
         );
-        resultItems = useMemo(() => { console.log('update result items'); return resultItemsToRender }, [results.nbHits, results.hitsPerPage]);
+        resultItems = useMemo(() => resultItemsToRender, [results.nbHits, results.hitsPerPage]);
     }
   
     return(
