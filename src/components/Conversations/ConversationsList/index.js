@@ -44,6 +44,7 @@ function ConversationsList(props){
     //     conversationsDispatch({ filter: value });
     // }
     const {classes,setSelectedConversation,selectedConversation} = props
+    
         return( <Grid container direction="column" style={{height: 'calc(100vh - 64px)'}}>
         <Grid item>
             <Tabs

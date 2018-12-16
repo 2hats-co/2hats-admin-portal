@@ -297,11 +297,10 @@ const DUMMY_MESSAGES = [
           
           const [messagesState,messagesDispatch] = useMessages(conversation.id)
           useEffect(()=>{
-            console.log('change conversation',conversation)
             messagesDispatch({conversationId:conversation.id})
           },[conversation])
           const {messages} = messagesState
-          console.log('messages',messages)
+          if(messagesState.loading)return(<p>loadin</p>)
           return(<Slide in direction="down">
           <div className={classes.root}>
                { messages && messages.reverse().map((data, i) => (

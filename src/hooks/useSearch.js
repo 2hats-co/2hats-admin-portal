@@ -14,11 +14,11 @@ const searchReducer = (prevState, action) => {
 }
 
 const updateQuery = async(index,search,filters,limit,searchDispatch) =>{
-  searchDispatch({prevSearch:search,prevFilters:filters,prevLimit:limit,limit})
+  searchDispatch({prevSearch:search,prevFilters:filters,prevLimit:limit,limit,loading:true})
   const results = await index.search(search,{
     "hitsPerPage": limit
   })
-  searchDispatch({results})
+  searchDispatch({results,loading:false})
 }
 
 export function useSearch() {

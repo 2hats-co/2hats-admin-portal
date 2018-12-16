@@ -10,7 +10,7 @@ const generateFilters = () => {
 
 const getConversations = (filters,limit,conversationDispatch) =>{
     //updates prev values
-    conversationDispatch({prevFilters:filters,prevLimit:limit})
+    conversationDispatch({prevFilters:filters,prevLimit:limit,loading:true})
     let query = firestore.collection(COLLECTIONS.conversations);
     filters.forEach((filter)=>{
         query = query.where(filter.field,filter.operator,filter.value)
@@ -26,7 +26,7 @@ const getConversations = (filters,limit,conversationDispatch) =>{
                return({...data,id})
            }
            )
-        conversationDispatch({conversations})
+        conversationDispatch({conversations,loading:false})
         }
     });
 } 

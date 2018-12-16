@@ -9,8 +9,7 @@ const generateFilters = () => {
 }
 
 const getMessages = (conversationId,filters,limit,conversationDispatch) =>{
-   console.log('conversationId',conversationId)
-    conversationDispatch({prevFilters:filters,prevLimit:limit,prevConversationId:conversationId})
+    conversationDispatch({prevFilters:filters,prevLimit:limit,prevConversationId:conversationId,loading:true})
     let query = firestore.collection(COLLECTIONS.conversations).doc(conversationId).collection('messages');
     filters.forEach((filter)=>{
         query = query.where(filter.field,filter.operator,filter.value)
@@ -26,7 +25,7 @@ const getMessages = (conversationId,filters,limit,conversationDispatch) =>{
                return({...data,id})
            }
            )
-        conversationDispatch({messages})
+        conversationDispatch({messages,loading:false})
         }
     });
 } 

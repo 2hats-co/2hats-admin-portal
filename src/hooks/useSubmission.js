@@ -19,7 +19,7 @@ const generateFilters = (route,uid) => {
 
 const getSubmissions = (filters,skipOffset,uid,submissionDispatch) =>{
     //updates prev values
-  submissionDispatch({prevSkipOffset:skipOffset,prevUid:uid})
+  submissionDispatch({prevSkipOffset:skipOffset,prevUid:uid,loading:true})
     let query = firestore.collection(COLLECTIONS.submissions);
     filters.forEach((filter)=>{
         query = query.where(filter.field,filter.operator,filter.value)
@@ -33,7 +33,7 @@ const getSubmissions = (filters,skipOffset,uid,submissionDispatch) =>{
             id: snapshot.docs[snapshot.docs.length - 1].id,
             ...snapshot.docs[snapshot.docs.length - 1].data()
         }
-        submissionDispatch({submission})
+        submissionDispatch({submission,loading:false})
         }
     });
 } 
