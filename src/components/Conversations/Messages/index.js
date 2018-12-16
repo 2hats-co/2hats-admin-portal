@@ -1,6 +1,6 @@
 
 
-import React,{Component} from 'react';
+import React,{useEffect} from 'react';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Slide from '@material-ui/core/Slide';
 
@@ -8,7 +8,7 @@ import moment from 'moment';
   
 import Message from './Message';
   
-
+import {useMessages} from '../../../hooks/useMessages'
 const DUMMY_MESSAGES = [
     {
       "id": "o9ekBMcXq8ARDfl5hJB4",
@@ -283,32 +283,40 @@ const DUMMY_MESSAGES = [
       moment(a.sentAt.seconds * 1000).fromNow() === moment(b.sentAt.seconds * 1000).fromNow()
   );
   
-  class Messages extends Component{
-      componentDidUpdate(prevProps) {
-          if (!prevProps.data) {
-              this.messagesEnd.scrollIntoView();
-          } else {
-              this.messagesEnd.scrollIntoView({ behavior: "smooth" });
-          }
-      }
-  
-      render () {
-          const {classes} = this.props;
-          const messages = DUMMY_MESSAGES
+  function Messages(props){
+      // componentDidUpdate(prevProps) {
+      //     if (!prevProps.data) {
+      //         this.messagesEnd.scrollIntoView();
+      //     } else {
+      //         this.messagesEnd.scrollIntoView({ behavior: "smooth" });
+      //     }
+      // }
+
+
+          const {classes,conversation} = props;
+          
+          const [messagesState,messagesDispatch] = useMessages(conversation.id)
+          useEffect(()=>{
+            console.log('change conversation',conversation)
+            messagesDispatch({conversationId:conversation.id})
+          },[conversation])
+          const {messages} = messagesState
+          console.log('messages',messages)
           return(<Slide in direction="down">
           <div className={classes.root}>
-              { messages.map((data, i) => (
+               { messages && messages.map((data, i) => (
                   <Message key={data.id} data={data}
                       firstOfType={i > 0 ? !isSameType(messages[i-1], data) : true}
                       lastOfType={i < messages.length - 1 ? !isSameType(messages[i+1], data) : true}
                   />
               ))}
               <div style={{ float:"left", clear: "both" }}
-                  ref={(el) => { this.messagesEnd = el; }}>
+                 // ref={(el) => { this.messagesEnd = el; }}
+                  >
               </div>
           </div>
           </Slide>)
       }
-  }
+  
   export default withStyles(styles)(Messages);
   
