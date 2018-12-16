@@ -7,8 +7,6 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 
-import TextField from '@material-ui/core/TextField';
-
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
@@ -20,9 +18,12 @@ import RemoveIcon from '@material-ui/icons/Close';
 
 import Button from '@material-ui/core/Button';
 
-import { getInitials } from '../../../utilities';
-import {AdminsConsumer} from '../../../contexts/AdminsContext'
+import IntegrationReactSelect from '../../IntegrationReactSelect';
 
+import { getInitials } from '../../../utilities';
+import { AdminsConsumer } from '../../../contexts/AdminsContext';
+import { updateProperties } from '../../../utilities/firestore';
+import { COLLECTIONS } from '../../../constants/firestore';
 
 const styles = theme => ({
     root: {
@@ -36,33 +37,33 @@ const styles = theme => ({
     },
 });
 
-const DUMMY_SUBSCRIBERS = [
-    { displayName: 'Gloria Li', title: 'Co-Founder' },
-    { displayName: 'Kelvin Li', title: 'Co-Founder' },
-    { displayName: 'Athena Cheung', title: 'Content Writer' },
-    { displayName: 'Shelley Wang', title: 'Graphic Designer' },
-];
-
 function ManageSubscribersDialog(props) {
-    const { classes, showDialog,subscribersUIDs, setShowDialog } = props;
-    
-    const [subscribers, setSubscribers] = useState(DUMMY_SUBSCRIBERS);
+    const { classes, showDialog, conversation, setShowDialog } = props;
+    const subscribersUIDs = conversation.subscribedAdmins;
+    console.log(conversation);
 
     const handleClose = () => { setShowDialog(false) };
 
-    const handleAddSubscriber = (e) => {
-        if (e.key === 'Enter') {
-            subscribers.push({ displayName: e.target.value });
-            setSubscribers(subscribers);
-            e.target.value = '';
-        }
-    }
+    const handleAddSubscriber = (data) => {
+        console.log('added', data);
+        const newSubscribers = subscribersUIDs;
 
-    const handleRemoveSubscriber = (i) => {
-        const newSubscribers = subscribers;
-        newSubscribers.splice(i, 1);
-        setSubscribers(newSubscribers);
+        if (data.value) {
+            newSubscribers.push(data.value);
+            updateProperties(COLLECTIONS.conversations, conversation.id, { subscribedAdmins: newSubscribers });
+        }
     };
+
+    const handleRemoveSubscriber = (UID) => {
+        const newSubscribers = subscribersUIDs;
+        const index = newSubscribers.indexOf(UID);
+
+        if (index > -1) {
+            newSubscribers.splice(index, 1);
+            updateProperties(COLLECTIONS.conversations, conversation.id, { subscribedAdmins: newSubscribers });
+        }
+    };
+
     return (
         <Dialog
             open={showDialog}
@@ -72,43 +73,48 @@ function ManageSubscribersDialog(props) {
             <DialogTitle>Add Subscribers</DialogTitle>
 
             <DialogContent>
-                <TextField
+
+            <AdminsConsumer>
+            { context => {
+                const subscribedAdmins = context.filter(x => subscribersUIDs.includes(x.UID));
+                const notSubscribedAdmins = context.filter(x => !subscribersUIDs.includes(x.UID))
+                    .map(x => ({label: `${x.givenName} ${x.familyName}`, value: x.UID}));
+
+                console.log('subscribedAdmins', subscribedAdmins)
+                console.log('subscribersUIDs', subscribersUIDs)
+                return(<React.Fragment>
+                <IntegrationReactSelect
                     placeholder="Type a name…"
-                    fullWidth
-                    dense
+                    label={null}
                     autoFocus
-                    onKeyPress={handleAddSubscriber}
+                    changeHandler={handleAddSubscriber}
+                    suggestions={notSubscribedAdmins}
                 />
-    <AdminsConsumer>
-        {context =>{
-        const subscriberAdmins = context.filter(x=> subscribersUIDs.includes(x.UID))
-        console.log('context',subscriberAdmins)
-        console.log('subscribersUIDs',subscribersUIDs)
-         return(<List>
-                
-                { subscribers.map((x, i) => (
-                    <ListItem key={i} disableGutters>
-                        <ListItemAvatar>
-                            <Avatar>
-                                { getInitials(x.displayName) }
-                            </Avatar>
-                        </ListItemAvatar>
-                        <ListItemText
-                            primary={x.displayName}
-                            secondary={x.title}
-                        />
-                        <ListItemSecondaryAction>
-                            <IconButton onClick={() => {handleRemoveSubscriber(i)}} className={classes.iconButton}>
-                                <RemoveIcon />
-                            </IconButton>
-                        </ListItemSecondaryAction>
-                    </ListItem>
-                )) }
-                </List>)}
-            }
-    </AdminsConsumer>
-                
-               
+
+                <List>
+                    { subscribedAdmins.map((x, i) => (
+                        <ListItem key={i} disableGutters>
+                            <ListItemAvatar>
+                                { x.photoURL ?
+                                    <Avatar src={x.photoURL} /> :
+                                    <Avatar>{ getInitials(`${x.givenName} ${x.familyName}`) }</Avatar>
+                                }
+                            </ListItemAvatar>
+                            <ListItemText
+                                primary={`${x.givenName} ${x.familyName}`}
+                                secondary={x.title}
+                            />
+                            <ListItemSecondaryAction>
+                                <IconButton onClick={() => {handleRemoveSubscriber(x.UID)}} className={classes.iconButton}>
+                                    <RemoveIcon />
+                                </IconButton>
+                            </ListItemSecondaryAction>
+                        </ListItem>
+                    )) }
+                </List>
+                </React.Fragment>
+            )} }
+            </AdminsConsumer>
 
             </DialogContent>
 

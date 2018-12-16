@@ -304,7 +304,7 @@ const DUMMY_MESSAGES = [
           console.log('messages',messages)
           return(<Slide in direction="down">
           <div className={classes.root}>
-               { messages && messages.map((data, i) => (
+               { messages && messages.reverse().map((data, i) => (
                   <Message key={data.id} data={data}
                       firstOfType={i > 0 ? !isSameType(messages[i-1], data) : true}
                       lastOfType={i < messages.length - 1 ? !isSameType(messages[i+1], data) : true}
@@ -319,4 +319,3 @@ const DUMMY_MESSAGES = [
       }
   
   export default withStyles(styles)(Messages);
-  

@@ -49,7 +49,7 @@ function ConversationHeader(props) {
         </Grid>
     </Grid>
 
-    <ManageSubscribersDialog subscribersUIDs={conversation.subscribedAdmins} showDialog={showSubscriberDialog} setShowDialog={setShowSubscriberDialog} />
+    <ManageSubscribersDialog conversation={conversation} showDialog={showSubscriberDialog} setShowDialog={setShowSubscriberDialog} />
 
     </React.Fragment>);
 }
