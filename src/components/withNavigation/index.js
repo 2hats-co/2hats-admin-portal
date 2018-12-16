@@ -28,7 +28,8 @@ import { getInitials } from '../../utilities';
 import metadata from '../../metadata.json';
 
 import { withFirestore } from "../../utilities/withFirestore";
-
+import { useAdmins } from '../../hooks/useAdmins';
+import {AdminsProvider} from '../../contexts/AdminsContext'
 const styles = theme => ({
     leftNav: {
         backgroundColor: theme.palette.primary.main,
@@ -94,12 +95,13 @@ const navigationRoutes = [
     },
 ];
 
+
 export const withNavigation = (WrappedComponent) => {
     function WithNavigation(props) {
         const { history, classes, displayName, uid, location } = props;
 
         const [ showSearch, setShowSearch ] = useState(false);
-
+        const admins = useAdmins()
         const goTo = (route) => {
             history.push(route);
         }
@@ -121,7 +123,8 @@ export const withNavigation = (WrappedComponent) => {
         if (displayName) initials = getInitials(displayName);
 
         return(<React.Fragment>
-            <Grid container wrap="nowrap">
+             <AdminsProvider value={admins}>
+             <Grid container wrap="nowrap">
                 <Slide in direction="right">
                     <Grid item className={classes.leftNav}>
                         <Grid container style={{height:'100vh'}} justify="center" alignContent="space-between">
@@ -184,7 +187,7 @@ export const withNavigation = (WrappedComponent) => {
             </Grid>
 
             { showSearch && <Search showSearch={showSearch} setShowSearch={setShowSearch} /> }
-
+             </AdminsProvider>
         </React.Fragment>);
     }
 
