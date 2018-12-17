@@ -2,6 +2,7 @@ import React,{useState,useEffect} from 'react';
 import withStyles from '@material-ui/core/styles/withStyles';
 
 import Grid from '@material-ui/core/Grid';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import LinearProgress from '@material-ui/core/LinearProgress';
 
 import MailIcon from '@material-ui/icons/Mail';
@@ -37,6 +38,12 @@ function ConversationsList(props){
         }
     };
 
+    if (conversationsState.loading) return (
+        <Grid container style={{ height:'100%' }} justify="center" alignItems="center">
+          <CircularProgress size={64} />
+        </Grid>
+      );
+
 
 
 
@@ -64,28 +71,28 @@ function ConversationsList(props){
 
         <Grid item xs style={{overflowY: 'scroll'}}>
 
-        <InfiniteScroll
-                        pageStart={0}
-                      loadMore={loadMore}
-                       hasMore={hasMore}
-                        loader={<LinearProgress key="listLoader" className={classes.listLoader} />}
-                        useWindow={false}
-                        threshold={1}
-                    >
-                        <List disablePadding>
-                {conversationsState.conversations &&conversationsState.conversations.map((x) =>
-                    <Item
-                        onClick={()=>{setSelectedConversation(x)}}
-                        data={x}
-                        key={x.id}
-                        selected={x.id === selectedConversation.id}
-                        //isUnread={x.isUnread}
-                       // isStarred={x.isStarred}
-                    />)
-                }
-            </List>
-                    </InfiniteScroll>
-            
+            <InfiniteScroll
+                pageStart={0}
+                loadMore={loadMore}
+                hasMore={hasMore}
+                loader={<LinearProgress key="listLoader" className={classes.listLoader} />}
+                useWindow={false}
+                threshold={1}
+            >
+                <List disablePadding>
+                    {conversationsState.conversations &&conversationsState.conversations.map((x) =>
+                        <Item
+                            onClick={()=>{setSelectedConversation(x)}}
+                            data={x}
+                            key={x.id}
+                            selected={x.id === selectedConversation.id}
+                            //isUnread={x.isUnread}
+                        // isStarred={x.isStarred}
+                        />)
+                    }
+                </List>
+            </InfiniteScroll>
+
         </Grid>
 
     </Grid>);

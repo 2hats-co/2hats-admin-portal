@@ -33,13 +33,13 @@ const styles = theme => ({
         padding: theme.spacing.unit * 1.5,
         borderRadius: '50%',
         minWidth: 'auto',
-        marginRight: -theme.spacing.unit * 2,
+        marginRight: -10,
     },
 });
 
 function ManageSubscribersDialog(props) {
     const { classes, showDialog, conversation, setShowDialog } = props;
-    const subscribersUIDs = conversation.subscribedAdmins;
+    const [subscribersUIDs, setSubscribersUIDs] = useState(conversation.subscribedAdmins);
     console.log(conversation);
 
     const handleClose = () => { setShowDialog(false) };
@@ -51,16 +51,18 @@ function ManageSubscribersDialog(props) {
         if (data.value) {
             newSubscribers.push(data.value);
             updateProperties(COLLECTIONS.conversations, conversation.id, { subscribedAdmins: newSubscribers });
+            setSubscribersUIDs(newSubscribers);
         }
     };
 
     const handleRemoveSubscriber = (UID) => {
         const newSubscribers = subscribersUIDs;
-        const index = newSubscribers.indexOf(UID);
+        const index = subscribersUIDs.indexOf(UID);
 
         if (index > -1) {
             newSubscribers.splice(index, 1);
             updateProperties(COLLECTIONS.conversations, conversation.id, { subscribedAdmins: newSubscribers });
+            setSubscribersUIDs(newSubscribers);
         }
     };
 
@@ -70,7 +72,7 @@ function ManageSubscribersDialog(props) {
             onClose={handleClose}
             classes={{ paper: classes.root }}
         >
-            <DialogTitle>Add Subscribers</DialogTitle>
+            <DialogTitle>Manage Subscribers</DialogTitle>
 
             <DialogContent>
 
@@ -84,8 +86,7 @@ function ManageSubscribersDialog(props) {
                 console.log('subscribersUIDs', subscribersUIDs)
                 return(<React.Fragment>
                 <IntegrationReactSelect
-                    placeholder="Type a name…"
-                    label={null}
+                    placeholder="Add Subscriber"
                     autoFocus
                     changeHandler={handleAddSubscriber}
                     suggestions={notSubscribedAdmins}

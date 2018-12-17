@@ -10,7 +10,7 @@ const generateFilters = () => {
 
 const getConversations = (filters,limit,conversationDispatch) =>{
     //updates prev values
-    conversationDispatch({prevFilters:filters,prevLimit:limit,loading:true})
+    conversationDispatch({prevFilters:filters,prevLimit:limit})
     let query = firestore.collection(COLLECTIONS.conversations);
     filters.forEach((filter)=>{
         query = query.where(filter.field,filter.operator,filter.value)
@@ -45,7 +45,7 @@ const conversationsReducer = (prevState, newProps) => {
 
 export function useConversations() {
     const [conversationsState, conversationsDispatch] = useReducer(conversationsReducer,
-        {conversations:null,prevFilters:null,filters:[],prevLimit:0,limit:5});
+        {conversations:null,prevFilters:null,filters:[],prevLimit:0,limit:5,loading:true});
     useEffect(() => {
         const {prevFilters,filters,prevLimit,limit} = conversationsState
         if(!R.equals(prevFilters,filters) || prevLimit !== limit){

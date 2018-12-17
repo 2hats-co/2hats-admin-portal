@@ -32,7 +32,7 @@ function ConversationHeader(props) {
                 <Typography variant="title">{conversation.displayName}</Typography>
             </Grid>
             <Grid item>
-                <Tooltip title="Add Subscribers">
+                <Tooltip title="Manage Subscribers">
                     <IconButton onClick={() => { setShowSubscriberDialog(true) }}>
                         <AddSubscriberIcon />
                     </IconButton>
