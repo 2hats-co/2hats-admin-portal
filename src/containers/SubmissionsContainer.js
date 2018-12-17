@@ -15,7 +15,8 @@ import Submission from '../components/Submission';
 import ScreeningForm from '../components/ScreeningForm';
 import FeedbackForm from '../components/FeedbackForm';
 import TemplateGenerator from '../components/TemplateGenerator';
-import {sendEmail} from '../utilities/email/send'
+import {sendEmail} from '../utilities/email/send';
+import { ROUTES } from '../constants/routes';
 
 // import Search from '../components/Search'
 const styles = theme => ({
@@ -62,7 +63,7 @@ function SumbissionsContainer(props) {
     const locationIndicator = <div style={{ paddingLeft: 40 - 24 }}>
         <LocationIndicator
             title="Submissions"
-            subRoutes={['/pending', '/rejected', '/accepted']}
+            subRoutes={[ROUTES.pending, ROUTES.rejected, ROUTES.accepted]}
         />
     </div>;
 
