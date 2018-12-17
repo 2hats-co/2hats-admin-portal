@@ -22,9 +22,9 @@ import { ROUTES } from '../constants/routes';
 const styles = theme => ({
     card: {
         height: '100%',
-        overflowY: 'scroll',
         boxSizing: 'border-box',
-        padding: theme.spacing.unit * 5,
+        overflow: 'hidden',
+        // padding: theme.spacing.unit * 5,
         background: '#fff',
         // boxShadow: '0 0 10px rgba(0,0,0,.1), 0 30px 60px -15px rgba(0,0,0,.125), 0 60px 80px -20px rgba(0,0,0,.1), 0 50px 100px -30px rgba(0,0,0,.15), 0 40px 120px -5px rgba(0,0,0,.15)',
         boxShadow: theme.shadows[16],
@@ -120,22 +120,27 @@ function SumbissionsContainer(props) {
         { locationIndicator }
         <Grid container style={{ height: 'calc(100vh - 64px)' }}>
             <Grid item xs className={classes.card}>
-                <Submission
-                    submission={submission}
-                    listType={location.pathname.split('/')[1]}
-                    extraPadding={template !== null}
-                />
-                { template &&
-                    <TemplateGenerator
-                        template={template}
-                        recipientUID={submission.UID}
-                        smartLink={smartLink}
-                        setEmail= {setEmail}
-                        setEmailReady={setEmailReady}
-                    />
-                }
+                <Grid container direction="column" style={{ height:'100%' }}>
+                    <Grid item xs={template ? 7 : 12} style={{ overflowY:'auto', padding:40, maxWidth:'none' }}>
+                        <Submission
+                            submission={submission}
+                            listType={location.pathname.split('/')[1]}
+                        />
+                    </Grid>
+                    <Grid item xs={template ? 4 : 0} style={{ maxWidth:'none' }}>
+                    { template &&
+                        <TemplateGenerator
+                            template={template}
+                            recipientUID={submission.UID}
+                            smartLink={smartLink}
+                            setEmail= {setEmail}
+                            setEmailReady={setEmailReady}
+                        />
+                    }
+                    </Grid>
+                </Grid>
             </Grid>
-            <Grid item style={{width:400, overflowY:'scroll'}}>
+            <Grid item style={{width:400, overflowY:'auto'}}>
                 { rightPanel }
             </Grid>
         </Grid>

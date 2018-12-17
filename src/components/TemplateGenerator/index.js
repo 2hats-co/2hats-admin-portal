@@ -15,15 +15,15 @@ import { useCandidate } from '../../hooks/useCandidate';
 
 const styles = theme => ({
   root: {
-    position: 'absolute',
-    left: 64,
-    bottom: 0,
-    zIndex: 2,
+    // position: 'absolute',
+    // left: 64,
+    // bottom: 0,
+    // zIndex: 2,
 
     backgroundColor: '#fff',
-    width: 'calc(100vw - 64px - 400px)',
+    // width: 'calc(100vw - 64px - 400px)',
     height: 300,
-    overflowY: 'scroll',
+    overflowY: 'auto',
     borderTop: '1px solid #ddd'
   }
 })
