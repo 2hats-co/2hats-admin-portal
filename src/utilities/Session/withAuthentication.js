@@ -33,19 +33,19 @@ const withAuthentication = (Component) => {
             />
         );
         else if (!authedUser && !loading) return <AuthenticationContainer/>;
-        // else return(
-        // <Grid container justify="center" alignItems="center" style={{ height:'100vh', backgroundColor:'#fff' }}>
-        //     <CircularProgress size={64} />
-        // </Grid>
-        // );
-        else return (
-            <div style={{display:'flex', justifyContent:'center', alignItems:'center', height:'100vh', backgroundImage:`url('./thatsallfolks.jpg')`, backgroundSize:'cover', backgroundPosition:'center'}}>
-                <div style={{position:'relative'}}>
-                    <img src="./loading.gif" style={{borderRadius:'50%', width:'33vw', height:'33vw', marginLeft:'10px', marginTop:'-4px'}} />
-                    <img src="./thatsallfolks-text.svg" style={{position:'absolute', top:'calc(50% - 6vw)', left:'-7vw', width:'48vw'}} />
-                </div>
-            </div>
+        else return(
+        <Grid container justify="center" alignItems="center" style={{ height:'100vh', backgroundColor:'#fff' }}>
+            <CircularProgress size={64} />
+        </Grid>
         );
+        // else return (
+        //     <div style={{display:'flex', justifyContent:'center', alignItems:'center', height:'100vh', backgroundImage:`url('./thatsallfolks.jpg')`, backgroundSize:'cover', backgroundPosition:'center'}}>
+        //         <div style={{position:'relative'}}>
+        //             <img src="./loading.gif" style={{borderRadius:'50%', width:'33vw', height:'33vw', marginLeft:'10px', marginTop:'-4px'}} />
+        //             <img src="./thatsallfolks-text.svg" style={{position:'absolute', top:'calc(50% - 6vw)', left:'-7vw', width:'48vw'}} />
+        //         </div>
+        //     </div>
+        // );
     }
 
     return WithAuthentication
