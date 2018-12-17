@@ -29,6 +29,7 @@ import { getInitials } from '../../utilities';
 import metadata from '../../metadata.json';
 
 import { useAdmins } from '../../hooks/useAdmins';
+import { useAuthedUser } from '../../hooks/useAuthedUser';
 import {AdminsProvider} from '../../contexts/AdminsContext'
 const styles = theme => ({
     leftNav: {
@@ -104,9 +105,19 @@ const navigationRoutes = [
 export const withNavigation = (WrappedComponent) => {
     function WithNavigation(props) {
         const { history, classes, displayName, uid, location } = props;
-
+        
         const [ showSearch, setShowSearch ] = useState(false);
-        const admins = useAdmins()
+        const currentUser = useAuthedUser()
+        let admins = useAdmins()
+        if (admins){
+            admins = admins.map(admin=>{if(
+                admin.UID === uid){
+                return {...admin,currentUser:true}
+            }else{
+                return {...admin,currentUser:false}
+            }})
+        }
+       
         const goTo = (route) => {
             history.push(route);
         }
@@ -166,17 +177,17 @@ export const withNavigation = (WrappedComponent) => {
                                         <NotificationIcon />
                                     </IconButton>
                                 </Tooltip>
-                                { initials && displayName && uid ?
+                                { currentUser && displayName && uid ?
                                 <Fade in direction="right">
                                     <Tooltip
                                         title={<React.Fragment>
                                             <b>{displayName}</b>
-                                            <div>{uid}</div>
+                                            <div>{currentUser.UID}</div>
                                         </React.Fragment>}
                                         placement="right"
                                         leaveDelay={5000}
                                     >
-                                        <Avatar className={classes.avatar}>{initials ? initials : null}</Avatar>
+                                        <Avatar src={currentUser.avatarURL} className={classes.avatar}>{initials ? initials : null}</Avatar>
                                     </Tooltip>
                                 </Fade>
                                 : <CircularProgress color="inherit" className={classes.avatarSpinner} />}

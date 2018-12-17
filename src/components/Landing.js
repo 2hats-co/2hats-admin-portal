@@ -8,13 +8,12 @@ import { useAuthedUser } from '../hooks/useAuthedUser';
 
 function Landing(props){
   const currentUser = useAuthedUser()
+  console.log('currentUser',currentUser)
   useEffect(()=>{
     if (currentUser && !currentUser.isLoading) {
-      console.log(currentUser)
         if(currentUser.defaultRoute) props.history.push(currentUser.defaultRoute);
         else props.history.push(ROUTES.stats);
         }
-    console.log(currentUser)
   },[currentUser])
     if (currentUser) {
       const { givenName } = currentUser;
