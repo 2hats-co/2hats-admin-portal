@@ -66,7 +66,7 @@ function SumbissionsContainer(props) {
         />
     </div>;
 
-    if (!submission) {
+    if (submissionState.loading) {
         return <React.Fragment>
             { locationIndicator }
             <Grid container justify="center" alignItems="center" style={{ height: 'calc(100vh - 64px)' }}>
