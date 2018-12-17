@@ -34,14 +34,5 @@ export async function getSubmission(submissionID,callback){
         }).catch(function(error) {
             console.log("Error getting document:", error);
         });
-    
-
 }
 
-export async function acceptSubmission(submissionID,callback){
-    let submissionRef = submissionsCollection.doc(submissionID)
-   /*
-   WARNING: IT SEND OUT EMAILs
-    submissionRef.update({isAccepted:true}).then((e)=>{callback(e)})
-    */
-}
