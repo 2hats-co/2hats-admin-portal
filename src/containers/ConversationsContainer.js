@@ -51,7 +51,7 @@ function ConversationContainer(props) {
     const [selectedConversation,setSelectedConversation] = useState({id:null})
     return(<Fade in>
         <Grid container direction='row' style={{height: 'calc(100vh - 64px)'}}>
-        <LocationIndicator title="Leads" />
+        <LocationIndicator title="Conversations" />
             <Grid item style={{width: 320,height: 'calc(100vh - 64px)'}}>
                 <ConversationsList selectedConversation ={selectedConversation} 
                 setSelectedConversation = {setSelectedConversation}/>

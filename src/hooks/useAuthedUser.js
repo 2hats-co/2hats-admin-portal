@@ -7,7 +7,7 @@ export function useAuthedUser() {
   const handleGetAuthedUser = async(uid) => { 
     const user = await firestore.collection(COLLECTIONS.admins).doc(uid).get()
     const currentUser = assoc('UID',user.id,user.data())
-    setCurrentUser(currentUser)    
+    setCurrentUser({...currentUser,isLoading:false})    
   }
   useEffect(() => {
     if(!currentUser){

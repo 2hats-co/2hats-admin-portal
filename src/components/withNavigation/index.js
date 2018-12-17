@@ -27,7 +27,6 @@ import Search from '../Search';
 import { getInitials } from '../../utilities';
 import metadata from '../../metadata.json';
 
-import { withFirestore } from "../../utilities/withFirestore";
 import { useAdmins } from '../../hooks/useAdmins';
 import {AdminsProvider} from '../../contexts/AdminsContext'
 const styles = theme => ({
@@ -189,7 +188,7 @@ export const withNavigation = (WrappedComponent) => {
             { showSearch && <Search showSearch={showSearch} setShowSearch={setShowSearch} /> }
              </AdminsProvider>
         </React.Fragment>);
-    }
+    }   
 
-    return withAuthentication(withRouter(withFirestore(withStyles(styles)(WithNavigation))));
+    return withAuthentication(withRouter(withStyles(styles)(WithNavigation)));
 }

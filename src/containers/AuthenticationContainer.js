@@ -25,8 +25,8 @@ class AuthenticationContainer extends React.Component{
         this.setState({ loading: true });
     }
     render(){
-        const {classes} = this.props;
-
+        const {classes,uid} = this.props;
+        console.log('uid',uid)
         if (this.state.loading) {
             return(
                 <LogoInCard width={350} height={260}>
