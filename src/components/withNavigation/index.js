@@ -108,15 +108,8 @@ export const withNavigation = (WrappedComponent) => {
         
         const [ showSearch, setShowSearch ] = useState(false);
         const currentUser = useAuthedUser()
-        let admins = useAdmins()
-        if (admins){
-            admins = admins.map(admin=>{if(
-                admin.UID === uid){
-                return {...admin,currentUser:true}
-            }else{
-                return {...admin,currentUser:false}
-            }})
-        }
+        let [admins] = useAdmins(uid)
+
        
         const goTo = (route) => {
             history.push(route);
@@ -137,7 +130,7 @@ export const withNavigation = (WrappedComponent) => {
 
         let initials;
         if (displayName) initials = getInitials(displayName);
-
+        console.log('admins',admins)
         return(<React.Fragment>
              <AdminsProvider value={admins}>
              <Grid container wrap="nowrap">

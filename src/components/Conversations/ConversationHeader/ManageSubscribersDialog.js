@@ -40,12 +40,10 @@ const styles = theme => ({
 function ManageSubscribersDialog(props) {
     const { classes, showDialog, conversation, setShowDialog } = props;
     const [subscribersUIDs, setSubscribersUIDs] = useState(conversation.subscribedAdmins);
-    console.log(conversation);
 
     const handleClose = () => { setShowDialog(false) };
 
     const handleAddSubscriber = (data) => {
-        console.log('added', data);
         const newSubscribers = subscribersUIDs;
 
         if (data.value) {
@@ -81,9 +79,6 @@ function ManageSubscribersDialog(props) {
                 const subscribedAdmins = context.filter(x => subscribersUIDs.includes(x.UID));
                 const notSubscribedAdmins = context.filter(x => !subscribersUIDs.includes(x.UID))
                     .map(x => ({label: `${x.givenName} ${x.familyName}`, value: x.UID}));
-
-                console.log('subscribedAdmins', subscribedAdmins)
-                console.log('subscribersUIDs', subscribersUIDs)
                 return(<React.Fragment>
                 <IntegrationReactSelect
                     placeholder="Add Subscriber"

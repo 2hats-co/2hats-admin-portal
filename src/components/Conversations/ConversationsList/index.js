@@ -24,8 +24,10 @@ const styles = theme => ({
 });
 
 function ConversationsList(props){
+    const {classes,setSelectedConversation,selectedConversation,uid} = props
+
     const [filter,setFilter] = useState('all')
-    const [conversationsState,conversationsDispatch] = useConversations()
+    const [conversationsState,conversationsDispatch] = useConversations(uid)
     //TODO :abstract into useConversations
     const [hasMore, setHasMore] = useState(true);
     useEffect(() => {
@@ -50,7 +52,7 @@ function ConversationsList(props){
     // handleCandidateFilter = (event, value) => {
     //     conversationsDispatch({ filter: value });
     // }
-    const {classes,setSelectedConversation,selectedConversation} = props
+
     
         return( <Grid container direction="column" style={{height: 'calc(100vh - 64px)'}}>
         <Grid item>

@@ -46,14 +46,14 @@ const styles = theme => ({
     },
 });
 function ConversationsContainer(props) {
-    const {classes} = props
+    const {classes,uid} = props
     const [composerType, setComposerType] = useState('email');
     const [selectedConversation,setSelectedConversation] = useState({id:null})
     return(<Fade in>
         <Grid container direction='row' style={{height: 'calc(100vh - 64px)'}}>
         <LocationIndicator title="Conversations" />
             <Grid item style={{width: 320,height: 'calc(100vh - 64px)'}}>
-                <ConversationsList selectedConversation ={selectedConversation} 
+                <ConversationsList uid={uid} selectedConversation ={selectedConversation} 
                 setSelectedConversation = {setSelectedConversation}/>
             </Grid>
             <Grid item xs className={classes.messagesContainer}>

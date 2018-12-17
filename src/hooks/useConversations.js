@@ -12,6 +12,7 @@ const getConversations = (filters,limit,conversationDispatch) =>{
     //updates prev values
     conversationDispatch({prevFilters:filters,prevLimit:limit})
     let query = firestore.collection(COLLECTIONS.conversations);
+    console.log(filters)
     filters.forEach((filter)=>{
         query = query.where(filter.field,filter.operator,filter.value)
     });
@@ -43,13 +44,13 @@ const conversationsReducer = (prevState, newProps) => {
     }
 }
 
-export function useConversations() {
+export function useConversations(uid) {
+   
     const [conversationsState, conversationsDispatch] = useReducer(conversationsReducer,
-        {conversations:null,prevFilters:null,filters:[],prevLimit:0,limit:5,loading:true});
+        {conversations:null,prevFilters:null,filters:[{field:'subscribedAdmins',operator:'array-contains',value:uid}],prevLimit:0,limit:5,loading:true});
     useEffect(() => {
         const {prevFilters,filters,prevLimit,limit} = conversationsState
         if(!R.equals(prevFilters,filters) || prevLimit !== limit){
-            const filters = generateFilters()
             getConversations(filters,limit,conversationsDispatch)
         }
         return () => {firestore.collection(COLLECTIONS.conversations).onSnapshot(() => {});};
