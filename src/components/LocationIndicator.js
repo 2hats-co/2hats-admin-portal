@@ -44,13 +44,13 @@ function LocationIndicator(props) {
                 root: classes.routeButton,
                 label: classes.routeHeaderText,
             }}
-            value={x}
-            label={x.split('/')[1]}
+            value={x.value ? x.value : x}
+            label={x.label ? x.label : x.split('/')[1]}
         />
     ) : null;
 
     return(
-        <Grid className={classes.root} container alignItems="center" style={showBorder && { boxShadow:'0 1px 0 rgba(0,0,0,.12)' }}>
+        <Grid className={classes.root} container alignItems="center" style={showBorder && { boxShadow:'0 -1px 0 rgba(0,0,0,.12) inset' }}>
             <Typography variant="title" className={classes.title}>{title}</Typography>
             {navItems && navItems.length > 0 &&
                 <Tabs

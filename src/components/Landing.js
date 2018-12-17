@@ -1,7 +1,8 @@
 import React,{useEffect} from "react";
 import { withRouter } from "react-router-dom";
 import { ROUTES } from "../constants/routes";
-import AuthenticationContainer from "../containers/AuthenticationContainer";
+import withAuthentication from '../utilities/Session/withAuthentication';
+
 import LoadingCard from "../components/LoadingCard";
 import { useAuthedUser } from '../hooks/useAuthedUser';
 
@@ -9,6 +10,7 @@ function Landing(props){
   const currentUser = useAuthedUser()
   useEffect(()=>{
     if (currentUser && !currentUser.isLoading) {
+      console.log(currentUser)
         if(currentUser.defaultRoute) props.history.push(currentUser.defaultRoute);
         else props.history.push(ROUTES.stats);
         }
@@ -23,8 +25,8 @@ function Landing(props){
           height={260}
         />
       );
-    } else {
-      return <AuthenticationContainer />;
-    }
+    }else{
+      return <p></p>
+    } 
   }
-export default withRouter(Landing);
+export default withRouter(withAuthentication(Landing));

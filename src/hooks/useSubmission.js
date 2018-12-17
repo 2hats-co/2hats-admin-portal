@@ -28,12 +28,14 @@ const getSubmissions = (filters,skipOffset,uid,submissionDispatch) =>{
     .orderBy('createdAt','asc')
     .limit(skipOffset+1)
     .onSnapshot(snapshot => {
-       if(snapshot.docs.length > 0){
-        const submission = {
-            id: snapshot.docs[snapshot.docs.length - 1].id,
-            ...snapshot.docs[snapshot.docs.length - 1].data()
-        }
-        submissionDispatch({submission})
+        if (snapshot.docs.length > 0) {
+            const submission = {
+                id: snapshot.docs[snapshot.docs.length - 1].id,
+                ...snapshot.docs[snapshot.docs.length - 1].data()
+            }
+            submissionDispatch({submission,loading:false})
+        } else {
+            submissionDispatch({submission:{ complete:true }, loading:false})
         }
     });
 } 
@@ -48,7 +50,7 @@ const submissionReducer = (prevState, newProps) => {
 
 export function useSubmission(route) {
     const [submissionState, submissionDispatch] = useReducer(submissionReducer,
-        {submission: null, skipOffset: 0, prevSkipOffset: null, uid:'',prevUid:null});
+        {submission: null, skipOffset: 0, prevSkipOffset: null, uid:'',prevUid:null,loading:true});
     useEffect(() => {
         const {uid,prevUid,prevSkipOffset,skipOffset} = submissionState
         if(uid !== prevUid ||skipOffset!==prevSkipOffset){

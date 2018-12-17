@@ -24,6 +24,7 @@ import SubmissionIcon from '@material-ui/icons/DescriptionOutlined';
 import ResumeIcon from '@material-ui/icons/Attachment';
 
 import { useSearch } from '../../hooks/useSearch';
+import { ROUTES } from '../../constants/routes';
 
 const styles = theme => ({
     paperRoot: {
@@ -118,7 +119,7 @@ function Search(props) {
         const {stage, status, objectID} = hit;
         // console.log(stage, status, objectID);
         if (status !=='pre-review' || status !=='incomplete' || status !=='complete') {
-            history.push(`/submissions?uid=${objectID}`);
+            history.push(`${ROUTES.submissions}?uid=${objectID}`);
         }
     };
 

@@ -20,45 +20,37 @@ const loadingCard = (<Grid container alignItems="center" justify="center" style=
 
 const StatisticsContainer = Loadable({
     loader: () => import('./containers/StatisticsContainer'),
-    loading() {
-      return loadingCard
-    }
+    loading() { return loadingCard }
 });
 
 const SubjectsContainer = Loadable({
     loader: () => import('./containers/SubjectsContainer'),
-    loading() {
-      return loadingCard
-    }
+    loading() { return loadingCard }
 });
 
 const AuthenticationContainer = Loadable({
     loader: () => import('./containers/AuthenticationContainer'),
-    loading() {
-      return loadingCard
-    }
+    loading() { return loadingCard }
 });
 
 const ConversationsContainer = Loadable({
-    // loader: () => import('./containers/ConversationsContainer'),
     loader: () => import('./containers/ConversationsContainer'),
-    loading() {
-      return loadingCard
-    }
+    loading() { return loadingCard }
 });
 
 const LeadsContainer = Loadable({
     loader: () => import('./containers/LeadsContainer'),
-    loading() {
-      return loadingCard
-    }
+    loading() { return loadingCard }
 });
 
 const SubmissionsContainer = Loadable({
     loader: () => import('./containers/SubmissionsContainer'),
-    loading() {
-      return loadingCard
-    }
+    loading() { return loadingCard }
+});
+
+const MarketingContainer = Loadable({
+    loader: () => import('./containers/MarketingContainer'),
+    loading() { return loadingCard }
 });
 
 
@@ -75,6 +67,8 @@ function App() {
                             <Route exact path={ROUTES.conversations} component={() => <ConversationsContainer/>} />
                             <Route exact path={ROUTES.leads} component={() => <LeadsContainer/>} />
                             <Route exact path={ROUTES.submissions} component={() => <SubmissionsContainer />} />
+                            <Route exact path={ROUTES.marketingLeadGeneration} component={() => <MarketingContainer />} />
+                            <Route exact path={ROUTES.marketingEmail} component={() => <MarketingContainer />} />
                             <Route exact path={ROUTES.pending} component={() => <SubmissionsContainer />} />
                             <Route exact path={ROUTES.rejected} component={() => <SubmissionsContainer />} />
                             <Route exact path={ROUTES.accepted} component={() => <SubmissionsContainer />} />
@@ -88,4 +82,4 @@ function App() {
     }
 
 
-export default withAuthentication(App);
+export default App

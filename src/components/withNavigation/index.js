@@ -16,6 +16,7 @@ import DescriptionIcon from '@material-ui/icons/Description';
 import StatisticsIcon from '@material-ui/icons/InsertChart';
 import ConversationsIcon from '@material-ui/icons/Forum';
 import LeadsIcon from '@material-ui/icons/BusinessCenter';
+import MarketingIcon from '@material-ui/icons/RecordVoiceOver';
 import NotificationIcon from '@material-ui/icons/Notifications';
 
 import {ROUTES} from '../../constants/routes';
@@ -27,8 +28,8 @@ import Search from '../Search';
 import { getInitials } from '../../utilities';
 import metadata from '../../metadata.json';
 
-import { withFirestore } from "../../utilities/withFirestore";
-
+import { useAdmins } from '../../hooks/useAdmins';
+import {AdminsProvider} from '../../contexts/AdminsContext'
 const styles = theme => ({
     leftNav: {
         backgroundColor: theme.palette.primary.main,
@@ -78,7 +79,7 @@ const navigationRoutes = [
         label: 'Submissions',
         icon: <DescriptionIcon />,
         route: ROUTES.pending,
-        subRoutes: [ROUTES.pending, ROUTES.rejected, ROUTES.accepted],
+        subRoutes: [ROUTES.submissions, ROUTES.pending, ROUTES.rejected, ROUTES.accepted],
     }, {
         label: 'Conversations',
         icon: <ConversationsIcon />,
@@ -91,15 +92,21 @@ const navigationRoutes = [
         label: 'Subjects',
         icon: <SupervisorAccountIcon />,
         route: ROUTES.subjects,
+    }, {
+        label: 'Marketing',
+        icon: <MarketingIcon />,
+        route: ROUTES.marketingLeadGeneration,
+        subRoutes: [ROUTES.marketingLeadGeneration, ROUTES.marketingEmail],
     },
 ];
+
 
 export const withNavigation = (WrappedComponent) => {
     function WithNavigation(props) {
         const { history, classes, displayName, uid, location } = props;
 
         const [ showSearch, setShowSearch ] = useState(false);
-
+        const admins = useAdmins()
         const goTo = (route) => {
             history.push(route);
         }
@@ -121,7 +128,8 @@ export const withNavigation = (WrappedComponent) => {
         if (displayName) initials = getInitials(displayName);
 
         return(<React.Fragment>
-            <Grid container wrap="nowrap">
+             <AdminsProvider value={admins}>
+             <Grid container wrap="nowrap">
                 <Slide in direction="right">
                     <Grid item className={classes.leftNav}>
                         <Grid container style={{height:'100vh'}} justify="center" alignContent="space-between">
@@ -184,9 +192,9 @@ export const withNavigation = (WrappedComponent) => {
             </Grid>
 
             { showSearch && <Search showSearch={showSearch} setShowSearch={setShowSearch} /> }
-
+             </AdminsProvider>
         </React.Fragment>);
-    }
+    }   
 
-    return withAuthentication(withRouter(withFirestore(withStyles(styles)(WithNavigation))));
+    return withAuthentication(withRouter(withStyles(styles)(WithNavigation)));
 }

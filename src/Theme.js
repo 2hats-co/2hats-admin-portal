@@ -112,6 +112,9 @@ const Theme = createMuiTheme({
             },
         },
         MuiAvatar: {
+            img: {
+                backgroundColor: lightPrimary,
+            },
             colorDefault: {
                 backgroundColor: lightPrimary,
                 color: primaryColor,

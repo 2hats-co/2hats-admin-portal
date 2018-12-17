@@ -59,14 +59,14 @@ function CandidateItem(props){
                     <Grid item>
                         {isUnread && <div className={classes.unreadIndicator} />}
                         <Typography variant="body1" className={classes.timestamp}>
-                            {//moment(data.date.seconds*1000).fromNow()
+                            {moment(data.lastMessage.sentAt.seconds*1000).fromNow()
                             }
                         </Typography>
                     </Grid>
                 </Grid>
                 }
 
-               // secondary={data.body.substr(0, 100)}
+                secondary={data.lastMessage.body.substr(0, 100)}
 
                 classes={{
                     root: classes.listItemTextRoot,

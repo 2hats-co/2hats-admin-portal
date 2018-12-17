@@ -8,16 +8,16 @@ const generateFilters = () => {
    return filters
 }
 
-const getConversations = (filters,conversationDispatch) =>{
+const getConversations = (filters,limit,conversationDispatch) =>{
     //updates prev values
-    conversationDispatch({prevFilters:filters})
+    conversationDispatch({prevFilters:filters,prevLimit:limit})
     let query = firestore.collection(COLLECTIONS.conversations);
     filters.forEach((filter)=>{
         query = query.where(filter.field,filter.operator,filter.value)
     });
     query
-    .orderBy('createdAt','asc')
-    .limit(20)
+    .orderBy('lastMessage.sentAt','desc')
+    .limit(limit)
     .onSnapshot(snapshot => {
        if(snapshot.docs.length > 0){
            const conversations = snapshot.docs.map((doc)=> {
@@ -26,24 +26,31 @@ const getConversations = (filters,conversationDispatch) =>{
                return({...data,id})
            }
            )
-        conversationDispatch({conversations})
+        conversationDispatch({conversations,loading:false})
         }
     });
 } 
 
 const conversationsReducer = (prevState, newProps) => {
-    return({...prevState,...newProps})
+    if(newProps.type){
+        switch (newProps.type) {
+            case 'more': return({...prevState,limit:prevState.limit+10})      
+            default:
+                break;
+        }
+    }else{
+        return({...prevState,...newProps})
+    }
 }
 
 export function useConversations() {
     const [conversationsState, conversationsDispatch] = useReducer(conversationsReducer,
-        {conversations:null,prevFilters:null,filters:[]});
+        {conversations:null,prevFilters:null,filters:[],prevLimit:0,limit:5,loading:true});
     useEffect(() => {
-        const {prevFilters,filters} = conversationsState
-        if(!R.equals(prevFilters,filters)){
+        const {prevFilters,filters,prevLimit,limit} = conversationsState
+        if(!R.equals(prevFilters,filters) || prevLimit !== limit){
             const filters = generateFilters()
-            console.log('wow')
-            getConversations(filters,conversationsDispatch)
+            getConversations(filters,limit,conversationsDispatch)
         }
         return () => {firestore.collection(COLLECTIONS.conversations).onSnapshot(() => {});};
     },[conversationsState]);
