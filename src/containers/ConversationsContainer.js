@@ -3,7 +3,7 @@ import { withNavigation } from '../components/withNavigation';
 import withStyles from '@material-ui/core/styles/withStyles';
 
 import Typography from '@material-ui/core/Typography';
-import ForumIcon from '@material-ui/icons/ForumOutlined';
+import ForumIcon from '@material-ui/icons/Forum';
 import LocationIndicator from '../components/LocationIndicator';
 
 import Grid from '@material-ui/core/Grid';
@@ -45,7 +45,7 @@ const styles = theme => ({
         },
     },
 });
-function ConversationContainer(props) {
+function ConversationsContainer(props) {
     const {classes} = props
     const [composerType, setComposerType] = useState('email');
     const [selectedConversation,setSelectedConversation] = useState({id:null})
@@ -96,4 +96,4 @@ function ConversationContainer(props) {
 
 
 
-  export default withNavigation(withStyles(styles)(ConversationContainer))
+  export default withNavigation(withStyles(styles)(ConversationsContainer))

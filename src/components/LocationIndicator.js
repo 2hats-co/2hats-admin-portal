@@ -44,8 +44,8 @@ function LocationIndicator(props) {
                 root: classes.routeButton,
                 label: classes.routeHeaderText,
             }}
-            value={x}
-            label={x.split('/')[1]}
+            value={x.value ? x.value : x}
+            label={x.label ? x.label : x.split('/')[1]}
         />
     ) : null;
 

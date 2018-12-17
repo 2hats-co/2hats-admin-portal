@@ -16,6 +16,7 @@ import DescriptionIcon from '@material-ui/icons/Description';
 import StatisticsIcon from '@material-ui/icons/InsertChart';
 import ConversationsIcon from '@material-ui/icons/Forum';
 import LeadsIcon from '@material-ui/icons/BusinessCenter';
+import MarketingIcon from '@material-ui/icons/RecordVoiceOver';
 import NotificationIcon from '@material-ui/icons/Notifications';
 
 import {ROUTES} from '../../constants/routes';
@@ -78,7 +79,7 @@ const navigationRoutes = [
         label: 'Submissions',
         icon: <DescriptionIcon />,
         route: ROUTES.pending,
-        subRoutes: [ROUTES.pending, ROUTES.rejected, ROUTES.accepted],
+        subRoutes: [ROUTES.submissions, ROUTES.pending, ROUTES.rejected, ROUTES.accepted],
     }, {
         label: 'Conversations',
         icon: <ConversationsIcon />,
@@ -91,6 +92,11 @@ const navigationRoutes = [
         label: 'Subjects',
         icon: <SupervisorAccountIcon />,
         route: ROUTES.subjects,
+    }, {
+        label: 'Marketing',
+        icon: <MarketingIcon />,
+        route: ROUTES.marketingLeadGeneration,
+        subRoutes: [ROUTES.marketingLeadGeneration, ROUTES.marketingEmail],
     },
 ];
 
