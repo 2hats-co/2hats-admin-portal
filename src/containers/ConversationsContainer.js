@@ -45,7 +45,7 @@ const styles = theme => ({
         },
     },
 });
-function ConversationContainer(props) {
+function ConversationsContainer(props) {
     const {classes} = props
     const [composerType, setComposerType] = useState('email');
     const [selectedConversation,setSelectedConversation] = useState({id:null})
@@ -96,4 +96,4 @@ function ConversationContainer(props) {
 
 
 
-  export default withNavigation(withStyles(styles)(ConversationContainer))
+  export default withNavigation(withStyles(styles)(ConversationsContainer))
