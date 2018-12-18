@@ -3,6 +3,7 @@ import TrackerLineChart from '../components/Statistics/TrackerLineChart'
 import TrackerBarChart from '../components/Statistics/TrackerBarChart'
 import TrackerDonutChart from '../components/Statistics/TrackerDonutChart'
 import TrackerNumber from '../components/Statistics/TrackerNumber'
+import QueryNumber from '../components/Statistics/QueryNumber'
 import TrackerPercentage from '../components/Statistics/TrackerPercentage'
 import { withNavigation } from '../components/withNavigation';
 import TimeBar from '../components/Statistics/TimeBar';
@@ -21,7 +22,6 @@ import { WidthProvider } from 'react-grid-layout';
 import '../../node_modules/react-grid-layout/css/styles.css';
 import '../../node_modules/react-resizable/css/styles.css';
 import SaveIcon from '@material-ui/icons/Save';
-
 import LocationIndicator from '../components/LocationIndicator';
 import moment from 'moment';
 
@@ -58,7 +58,12 @@ class StatisticsContainer extends Component {
         this.setState({layout})
       }
     }
+
+   
     componentDidMount(){
+
+      
+      
       const {chartsConfig} = this.props
       if(chartsConfig){
         const layout = chartsConfig.map((chart,i)=>({i:chart.id,x:chart.layout.x||i,
@@ -86,6 +91,7 @@ class StatisticsContainer extends Component {
 
     }
     render() { 
+      console.log('props of stats',this.props)
       const {range,format} = this.state
       const charts = this.props.chartsConfig
       if(charts){
@@ -128,6 +134,9 @@ class StatisticsContainer extends Component {
                     break;
                   case 'percentage':
                     chartElement = (<TrackerPercentage title={chart.title} key={chart.id} trackers={chart.trackers} range={range} format={format}/>)
+                    break;
+                  case 'queryNumber':
+                    chartElement = (<QueryNumber title={chart.title} query={chart.query} colour={chart.colour}/>)
                     break;
                   default:
                     chartElement = (<TrackerLineChart title={chart.title} key={chart.id} trackers={chart.trackers} range={range} format={format}/>)

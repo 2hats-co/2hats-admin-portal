@@ -70,29 +70,7 @@ function TimeBar(props) {
                   break;
           }
 
-  },[range])
-     
-    //   handleRangeChange(e){
-    //     const {changeHandler} = this.props
-    //     let text = e.target.textContent.split(' ')
-    //     const rangeType = text[text.length-1]
-    //     this.setState({dateRange:rangeType})
-    //     switch (rangeType) {
-    //         case 'week':
-    //         changeHandler('range',{start:moment().startOf('day').subtract(1, 'weeks').unix(),end:moment().startOf('hour').unix()})
-    //         break;
-    //         case 'month':
-    //         changeHandler('range',{start:moment().startOf('day').subtract(1, 'months').unix(),end:moment().startOf('hour').unix()})
-    //         break;
-    //         default:
-    //         changeHandler('range',{start:moment().startOf('day').subtract(2, 'weeks').unix(),end:moment().startOf('hour').unix()})
-    //             break;
-    //     }
-
-    // }
-        
-    
-        
+  },[range])    
         return (
           <Grid container className={classes.root}>
             <Grid item>
@@ -151,10 +129,8 @@ function TimeBar(props) {
           </Grid>
         );
       }
+TimeBar.propTypes = {
+  classes: PropTypes.object.isRequired
+};
     
-    
-    TimeBar.propTypes = {
-      classes: PropTypes.object.isRequired
-    };
-    
-    export default withStyles(styles)(TimeBar);
+export default withStyles(styles)(TimeBar);

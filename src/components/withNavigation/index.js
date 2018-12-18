@@ -109,12 +109,9 @@ export const withNavigation = (WrappedComponent) => {
         const [ showSearch, setShowSearch ] = useState(false);
         const currentUser = useAuthedUser()
         let [admins] = useAdmins(uid)
-
-       
         const goTo = (route) => {
             history.push(route);
         }
-
         const path = location.pathname;
 
         let index = 0;
