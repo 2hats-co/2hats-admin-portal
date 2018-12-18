@@ -65,6 +65,9 @@ function TimeBar(props) {
               case 'month':
               changeHandler('range',{start:moment().startOf('day').subtract(1, 'months').unix(),end:moment().startOf('hour').unix()})
               break;
+              case 'quarter':
+              changeHandler('range',{start:moment().startOf('day').subtract(3, 'months').unix(),end:moment().startOf('hour').unix()})
+              break;
               default:
               changeHandler('range',{start:start.unix(),end:end.unix()})
                   break;
@@ -82,6 +85,7 @@ function TimeBar(props) {
                 >
                   <ToggleButton classes={{label:classes.toggleButtonLabel}} value="week">Past week</ToggleButton>
                   <ToggleButton classes={{label:classes.toggleButtonLabel}} value="month">past month</ToggleButton>
+                  <ToggleButton classes={{label:classes.toggleButtonLabel}} value="quarter">past quarter</ToggleButton>
                   <ToggleButton classes={{label:classes.toggleButtonLabel}} value="custom">custom</ToggleButton>
                 </ToggleButtonGroup>
                 {range.type === 'custom' && <form className={classes.form} noValidate>
