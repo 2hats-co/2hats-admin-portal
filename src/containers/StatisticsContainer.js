@@ -12,11 +12,17 @@ import { compose } from "redux";
 import { withHandlers, lifecycle } from "recompose";
 import { connect } from "react-redux";
 import { withFirestore } from "../utilities/withFirestore";
+
+import withStyles from '@material-ui/core/styles/withStyles';
 import Grid from '@material-ui/core/Grid';
 import Fab from '@material-ui/core/Fab';
+import Slide from '@material-ui/core/Slide';
+import CircularProgress from '@material-ui/core/CircularProgress';
+
 import ChartBuilder from '../components/Statistics/ChartBuilder';
-import SettingsIcon from '@material-ui/icons/Settings'
+import EditIcon from '@material-ui/icons/Edit'
 import IconButton from '@material-ui/core/IconButton'
+
 import GridLayout from 'react-grid-layout';
 import { WidthProvider } from 'react-grid-layout';
 import '../../node_modules/react-grid-layout/css/styles.css';
@@ -24,6 +30,55 @@ import '../../node_modules/react-resizable/css/styles.css';
 import SaveIcon from '@material-ui/icons/Save';
 import LocationIndicator from '../components/LocationIndicator';
 import moment from 'moment';
+
+const styles = theme => ({
+  root: {
+    backgroundColor: theme.palette.background.default,
+    height: '100vh',
+  },
+  grid: {
+    width: '100%',
+    height: 'calc(100vh - 64px)',
+    overflowX: 'hidden',
+    overflowY: 'auto',
+  },
+  saveButton: {
+    position: 'absolute',
+    top: 64 + 16,
+    right: 8 * 2,
+    zIndex: 99,
+  },
+  layout: {
+    '& .react-grid-placeholder': {
+      backgroundColor: `${theme.palette.primary.main} !important`,
+      borderRadius: theme.shape.borderRadius,
+    },
+  },
+  card: {
+    background: theme.palette.background.paper,
+    borderRadius: theme.shape.borderRadius,
+    boxShadow: theme.shadows[1],
+    // border: `1px solid ${theme.palette.divider}`,
+    // padding: theme.spacing.unit,
+    overflow: 'hidden',
+    transition: 'border-radius .2s',
+
+    '& .edit-chart-button': {
+      opacity: 0,
+      transition: 'opacity .2s',
+      position: 'absolute',
+      top: 0,
+      right: 0,
+      zIndex: 98,
+    },
+    '&:hover .edit-chart-button': { opacity: 1 },
+
+    '& .react-resizable-handle': { opacity: 0 },
+    '&:hover .react-resizable-handle': { opacity: 1 },
+
+    '&:hover': { borderBottomRightRadius: 0 },
+  },
+});
 
 const ResponsiveGridLayout = WidthProvider(GridLayout);
 class StatisticsContainer extends Component {
@@ -59,11 +114,7 @@ class StatisticsContainer extends Component {
       }
     }
 
-   
     componentDidMount(){
-
-      
-      
       const {chartsConfig} = this.props
       if(chartsConfig){
         const layout = chartsConfig.map((chart,i)=>({i:chart.id,x:chart.layout.x||i,
@@ -74,8 +125,7 @@ class StatisticsContainer extends Component {
       }
     }
     onLayoutChange=(layout)=> {
-    this.setState({layout})
-
+      this.setState({layout})
     }
     
     handleSaveLayout=()=>{
@@ -92,31 +142,33 @@ class StatisticsContainer extends Component {
     }
     render() { 
       console.log('props of stats',this.props)
-      const {range,format} = this.state
+      const {range,format} = this.state;
+      const {classes} = this.props;
       const charts = this.props.chartsConfig
       if(charts){
-        return (<div style={{boxShadow:'0 -1px 0 #ddd'}}>
-           <Fab
-           style={{
-            position: 'absolute',
-            top: 64 + 16,
-            right: 8 * 2,
-            zIndex: 99,
-           }}
-           //className={classes.saveButton} 
-           onClick={this.handleSaveLayout} 
-           color='primary'>
-              <SaveIcon/>
-            </Fab>
+        return (
+        <div className={classes.root}>
+          <Fab
+          className={classes.saveButton} 
+          onClick={this.handleSaveLayout}
+          color='primary'>
+            <SaveIcon/>
+          </Fab>
+
           <ChartBuilder chart={this.state.chart}/>
-          <LocationIndicator title="Statistics" showBorder />
-          <TimeBar format={format} changeHandler={this.handleChange} fromDate={this.state.from} toDate={this.state.to} />
-          <Grid container style={{width:'100%', height:'calc(100vh - 64px)', overflowX:'hidden', verflowY:'auto'}}>
-            <ResponsiveGridLayout style={{width:'100%'}} className="layout" 
-            onLayoutChange={(layout) =>
-              this.onLayoutChange(layout)
-            }
-            layout={this.state.layout} cols={12} rowHeight={40} width={1200}>
+
+          <Slide in direction="down"><React.Fragment>
+            <LocationIndicator title="Statistics" showBorder />
+            <TimeBar format={format} changeHandler={this.handleChange} fromDate={this.state.from} toDate={this.state.to} />
+          </React.Fragment></Slide>
+
+          <Grid container className={classes.grid}>
+            <ResponsiveGridLayout style={{width:'100%'}} className={classes.layout} 
+              onLayoutChange={(layout) =>
+                this.onLayoutChange(layout)
+              }
+              layout={this.state.layout} cols={8} rowHeight={120} width={1200}
+            >
               {charts.map(chart => {
                 let chartElement;
                 switch (chart.type) {
@@ -143,11 +195,12 @@ class StatisticsContainer extends Component {
                     break;
                 }
                 return(
-                  <Grid key={chart.id} item xs>
+                  <Grid key={chart.id} item className={classes.card}>
                     <IconButton aria-label="Configure" //className={classes.button}
-                      onClick={()=>{this.handleChange('chart',chart)}}
+                      onClick={() => { this.handleChange('chart',chart) }}
+                      className="edit-chart-button"
                     >
-                      <SettingsIcon />
+                      <EditIcon />
                     </IconButton>
                     {chartElement}
                   </Grid>
@@ -156,7 +209,13 @@ class StatisticsContainer extends Component {
             </ResponsiveGridLayout>
           </Grid>
         </div>)
-        } else { return(<div/>) }
+        } else {
+          return(
+            <Grid container className={classes.root} justify="center" alignItems="center">
+              <CircularProgress size={64} />
+            </Grid>
+          )
+        }
     }
 }
 const enhance = compose(
@@ -200,6 +259,6 @@ const enhance = compose(
 
   export default withNavigation(enhance(
       compose(  
-            StatisticsContainer
+            withStyles(styles)(StatisticsContainer)
       )
   ));

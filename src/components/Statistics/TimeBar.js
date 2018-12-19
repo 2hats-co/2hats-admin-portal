@@ -33,7 +33,7 @@ const styles = theme => ({
     background: '#fff',
     padding: '0 16px',
 
-    '&:first-of-type': { borderRight: `1px solid ${theme.palette.divider}` },
+    '& + &': { borderLeft: `1px solid ${theme.palette.divider}` },
   },
   form: {
     marginLeft: 20,
@@ -76,8 +76,7 @@ function TimeBar(props) {
   },[range])    
         return (
           <Grid container className={classes.root}>
-            <Grid item>
-              <div className={classes.toggleContainer}>
+            <Grid item className={classes.toggleContainer}>
                 <ToggleButtonGroup
                   value={range.type}
                   exclusive
@@ -112,10 +111,8 @@ function TimeBar(props) {
                       />
                   </MuiPickersUtilsProvider>
                 </form>}
-              </div>
            </Grid>
-            <Grid item>
-              <div className={classes.toggleContainer}>
+            <Grid item className={classes.toggleContainer}>
                 <ToggleButtonGroup
                   value={format.stepSize}
                   exclusive
@@ -128,7 +125,6 @@ function TimeBar(props) {
                   <ToggleButton classes={{label:classes.toggleButtonLabel}} value={{stepSize:24*7,
         label:'Do MMM'}} selected={format.stepSize === 24*7}>weekly</ToggleButton>
                 </ToggleButtonGroup>
-              </div>
             </Grid>
           </Grid>
         );

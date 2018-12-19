@@ -16,15 +16,16 @@ const Theme = createMuiTheme({
         secondary: {
             main: primaryColor,
         },
+        background: {
+            default: '#f5f5f5',
+        },
     },
     typography: {
         fontFamily: '"Helvetica Neue", Roboto, Arial, sans-serif',
-        headline: {
-            fontWeight: 500,
-        },
-        subheading: {
-            fontWeight: 500,
-        },
+        display2: { fontWeight: 500 },
+        display1: { fontWeight: 500 },
+        headline: { fontWeight: 500 },
+        subheading: { fontWeight: 500 },
         title:{
             textTransform: 'capitalize',
         },
