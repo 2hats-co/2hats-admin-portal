@@ -13,7 +13,7 @@ import 'react-quill/dist/quill.bubble.css';
 
 import ComposerActions from './ComposerActions';
 import {removeHtmlTags} from '../../../utilities';
-
+import {sendEmail} from '../../../utilities/email/gmail'
 const styles = theme => ({
     root: {
         backgroundColor: theme.palette.background.paper,
@@ -68,12 +68,25 @@ const getChipIcon = (type) => {
 }
 
 function Composer(props) {
-    const { classes, theme, composerType } = props;
-
+    const { classes, theme, conversation, composerType } = props;
+    console.log('conversation',conversation)
     const [messageText, setMessageText] = useState('');
     const [messageHtml, setMessageHtml] = useState('');
     const [attachments, setAttachments] = useState(DUMMY_EVENTS);
+    const handleSendEmail = ()=>{
+        const email = {subject:'test',body:messageHtml}
+        const recipient = {email:'shams.mosowi@gmail.com'}
+        const sender = {email:'shams@2hats.com.au'}
+        sendEmail(conversation.id,{recipient,email,sender})
+        console.log('sending email',messageHtml)
+    }
+    const handleAddNote = ()=>{
+        console.log('adding note',messageText)
 
+    }
+    const handleSendLinkedin = ()=>{
+        console.log('sending linkedin',messageText)
+    }
     return (
     <div className={classes.root}
         style={{backgroundColor: composerType === 'note' ? theme.palette.primary.light : theme.palette.background.paper}}
@@ -119,6 +132,7 @@ function Composer(props) {
         </div>
 
         <ComposerActions
+            actions = {{email:handleSendEmail,note:handleAddNote,linkedin:handleSendLinkedin}}
             classes={classes}
             composerType={composerType}
         />

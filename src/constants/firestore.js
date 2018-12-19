@@ -15,4 +15,5 @@ export const COLLECTIONS = {
     linkedinMessageQueue:'linkedinMessageQueue',
     communications:'communications',
     conversations:'conversations',
+    gmailOutbox:'gmailOutbox'
 }

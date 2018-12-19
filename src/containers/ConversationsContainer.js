@@ -7,7 +7,6 @@ import ForumIcon from '@material-ui/icons/Forum';
 import LocationIndicator from '../components/LocationIndicator';
 
 import Grid from '@material-ui/core/Grid';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import Fade from '@material-ui/core/Fade';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
@@ -79,21 +78,15 @@ function ConversationsContainer(props) {
             <Tab value="linkedin" label="LinkedIn" classes={{root:classes.tabRoot, labelContainer:classes.tabLabelContainer}} />
             <Tab value="note" label="Note" classes={{root:classes.tabRoot, labelContainer:classes.tabLabelContainer}} />
         </Tabs>
-        <Composer composerType={composerType} />
+        <Composer conversation={selectedConversation} composerType={composerType} />
     </Grid>
 </Grid> : <Grid container justify="center" alignItems="center" className={classes.noOpenMsg}>
 <Grid item>
     <ForumIcon />
     <Typography variant="subheading" color="textSecondary">No open conversations</Typography>
 </Grid>
-</Grid>}
-            </Grid> 
+</Grid>} </Grid> 
         </Grid>
         </Fade>);
-        
-        
-    }
-
-
-
+}
   export default withNavigation(withStyles(styles)(ConversationsContainer))

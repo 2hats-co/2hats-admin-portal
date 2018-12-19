@@ -27,7 +27,7 @@ const reminderButton = (handleClick) => <Tooltip title="Reminder" key="reminder"
 const atButton =       (handleClick) => <Tooltip title="At" key="at"><IconButton onClick={handleClick}><AtIcon /></IconButton></Tooltip>
 
 const ComposerActions = React.memo((props) => {
-    const { composerType } = props;
+    const { composerType,actions } = props;
 
     const [showEventDialog, setShowEventDialog] = useState(false);
     const [showReminderDialog, setShowReminderDialog] = useState(false);
@@ -82,7 +82,7 @@ const ComposerActions = React.memo((props) => {
                     { actionButtons }
                 </Grid>
                 <Grid item>
-                    <Fab variant="extended" color="primary"> { fabContent } </Fab>
+                    <Fab variant="extended" onClick={actions[composerType]} color="primary"> { fabContent } </Fab>
                 </Grid>
             </Grid>
         </Grid>
