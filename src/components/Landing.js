@@ -19,8 +19,8 @@ function Landing(props){
       const { givenName } = currentUser;
       return (
         <LoadingCard
-          message={`${givenName} you're appreciated 🤗`}
-          width={350}
+          message={`Howdy, ${givenName} 🤠! Routing you now… Yee haw!`}
+          width={480}
           height={260}
         />
       );

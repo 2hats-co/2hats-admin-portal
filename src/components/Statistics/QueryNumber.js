@@ -12,6 +12,7 @@ const styles = theme => ({
     root: {
         height: '100%',
         padding: theme.spacing.unit * 2,
+        textAlign: 'center',
 
         '& *': { color: 'inherit' },
 

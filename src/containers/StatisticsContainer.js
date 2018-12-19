@@ -114,11 +114,7 @@ class StatisticsContainer extends Component {
       }
     }
 
-   
     componentDidMount(){
-
-      
-      
       const {chartsConfig} = this.props
       if(chartsConfig){
         const layout = chartsConfig.map((chart,i)=>({i:chart.id,x:chart.layout.x||i,
@@ -129,8 +125,7 @@ class StatisticsContainer extends Component {
       }
     }
     onLayoutChange=(layout)=> {
-    this.setState({layout})
-
+      this.setState({layout})
     }
     
     handleSaveLayout=()=>{
