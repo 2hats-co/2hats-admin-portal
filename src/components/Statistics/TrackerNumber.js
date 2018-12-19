@@ -19,7 +19,7 @@ const styles = theme => ({
 function TrackerNumber(props) {
     const {classes, theme, title, trackers} = props;
     return trackers.map((x, i) =>
-        <Grid container
+        <Grid container key={i}
             className={classes.root}
             justify="center" alignItems="center"
             style={{backgroundColor:x.colour,color:theme.palette.getContrastText(x.colour)}}

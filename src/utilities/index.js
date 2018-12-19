@@ -44,3 +44,5 @@ export const hexToRgb = (hex) => {
         b: parseInt(result[3], 16)
     } : null;
 }
+
+export const getRandomId = () => Math.random().toString(36).substring(7);

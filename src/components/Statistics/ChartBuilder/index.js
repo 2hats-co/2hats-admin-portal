@@ -42,7 +42,7 @@ const styles = theme => ({
   addButton:{
     position: 'absolute',
     bottom: theme.spacing.unit * 2,
-    right: theme.spacing.unit * 2,
+    right: theme.spacing.unit * 8,
     zIndex: 99,
   }
 });
@@ -144,7 +144,7 @@ class ChartBuilder extends Component {
         
         return (
           <div>
-            <Fab className={classes.addButton} onClick={this.handleClickOpen} color='primary'>
+            <Fab className={classes.addButton} onClick={this.handleClickOpen}>
               <AddIcon/>
             </Fab>
             <Dialog className={classes.root}

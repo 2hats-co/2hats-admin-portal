@@ -66,9 +66,9 @@ const Theme = createMuiTheme({
             },
         },
         MuiButton: {
-            '& svg': {
-                marginRight: 8,
-            },
+            label: {
+                '& svg': { marginRight: 8 }
+            }
         },
         MuiFab: {
             extended: {

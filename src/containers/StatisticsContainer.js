@@ -1,13 +1,8 @@
 import React, { Component } from 'react';
-import TrackerLineChart from '../components/Statistics/TrackerLineChart'
-import TrackerBarChart from '../components/Statistics/TrackerBarChart'
-import TrackerDonutChart from '../components/Statistics/TrackerDonutChart'
-import TrackerNumber from '../components/Statistics/TrackerNumber'
-import QueryNumber from '../components/Statistics/QueryNumber'
-import TrackerPercentage from '../components/Statistics/TrackerPercentage'
+
 import { withNavigation } from '../components/withNavigation';
 import TimeBar from '../components/Statistics/TimeBar';
-import { COLLECTIONS} from "../constants/firestore";
+import { COLLECTIONS } from "../constants/firestore";
 import { compose } from "redux";
 import { withHandlers, lifecycle } from "recompose";
 import { connect } from "react-redux";
@@ -20,15 +15,26 @@ import Slide from '@material-ui/core/Slide';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 import ChartBuilder from '../components/Statistics/ChartBuilder';
-import EditIcon from '@material-ui/icons/Edit'
-import IconButton from '@material-ui/core/IconButton'
+import ChartEditor from '../components/Statistics/ChartEditor';
+import EditIcon from '@material-ui/icons/Edit';
+import IconButton from '@material-ui/core/IconButton';
+import AddIcon from '@material-ui/icons/Add';
+
+import TrackerLineChart from '../components/Statistics/TrackerLineChart'
+import TrackerBarChart from '../components/Statistics/TrackerBarChart'
+import TrackerDonutChart from '../components/Statistics/TrackerDonutChart'
+import TrackerNumber from '../components/Statistics/TrackerNumber'
+import QueryNumber from '../components/Statistics/QueryNumber'
+import TrackerPercentage from '../components/Statistics/TrackerPercentage'
 
 import GridLayout from 'react-grid-layout';
 import { WidthProvider } from 'react-grid-layout';
 import '../../node_modules/react-grid-layout/css/styles.css';
 import '../../node_modules/react-resizable/css/styles.css';
+
 import SaveIcon from '@material-ui/icons/Save';
 import LocationIndicator from '../components/LocationIndicator';
+import { momentLocales } from '../constants/momentLocales';
 import moment from 'moment';
 
 const styles = theme => ({
@@ -78,6 +84,12 @@ const styles = theme => ({
 
     '&:hover': { borderBottomRightRadius: 0 },
   },
+  addButton: {
+    position: 'absolute',
+    bottom: theme.spacing.unit * 2,
+    right: theme.spacing.unit * 2,
+    zIndex: 99,
+  },
 });
 
 const ResponsiveGridLayout = WidthProvider(GridLayout);
@@ -96,7 +108,9 @@ class StatisticsContainer extends Component {
           label: 'Do MMM',
         },
         layout: [],
+        showDialog: true,
      }
+     moment.updateLocale('en', momentLocales);
     }
     handleChange=(name, value)=> {
         console.log(name, value)
@@ -138,8 +152,12 @@ class StatisticsContainer extends Component {
       charts.forEach((chart)=>{
        this.props.updateChart(chart.chartId,{layout:chart.config}) 
       })
-
     }
+
+    setShowDialog = (val) => {
+      this.setState({ showDialog: val });
+    }
+
     render() { 
       console.log('props of stats',this.props)
       const {range,format} = this.state;
@@ -156,6 +174,19 @@ class StatisticsContainer extends Component {
           </Fab>
 
           <ChartBuilder chart={this.state.chart}/>
+          <ChartEditor
+            uid={this.state.uid}
+            showDialog={this.state.showDialog}
+            setShowDialog={this.setShowDialog}
+          />
+
+          <Fab
+            className={classes.addButton}
+            color="primary"
+              onClick={() => { this.setShowDialog(true) }}
+          >
+              <AddIcon/>
+          </Fab>
 
           <Slide in direction="down"><React.Fragment>
             <LocationIndicator title="Statistics" showBorder />
@@ -167,7 +198,7 @@ class StatisticsContainer extends Component {
               onLayoutChange={(layout) =>
                 this.onLayoutChange(layout)
               }
-              layout={this.state.layout} cols={8} rowHeight={120} width={1200}
+              layout={this.state.layout} cols={12} rowHeight={120} width={1200}
             >
               {charts.map(chart => {
                 let chartElement;
