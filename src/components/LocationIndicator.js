@@ -1,17 +1,22 @@
 import React from 'react';
 import { withRouter } from 'react-router-dom';
-import withStyles from '@material-ui/core/styles/withStyles';
+import classNames from 'classnames';
 
+import withStyles from '@material-ui/core/styles/withStyles';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
+// import Button from '@material-ui/core/Button';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 
 const styles = theme => ({
     root: {
+        backgroundColor: theme.palette.background.paper,
         paddingLeft: theme.spacing.unit * 3,
         height: 64,
+    },
+    showBorder: {
+        boxShadow: `0 -1px 0 ${theme.palette.divider} inset`,
     },
     title: {
         lineHeight: '64px',
@@ -50,7 +55,9 @@ function LocationIndicator(props) {
     ) : null;
 
     return(
-        <Grid className={classes.root} container alignItems="center" style={showBorder && { boxShadow:'0 -1px 0 rgba(0,0,0,.12) inset' }}>
+        <Grid container alignItems="center"
+            className={showBorder ? classNames(classes.root, classes.showBorder) : classes.root}
+        >
             <Typography variant="title" className={classes.title}>{title}</Typography>
             {navItems && navItems.length > 0 &&
                 <Tabs

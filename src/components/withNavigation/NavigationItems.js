@@ -1,6 +1,7 @@
 import React from 'react'
-import withStyles from '@material-ui/core/styles/withStyles';
+import classNames from 'classnames';
 
+import withStyles from '@material-ui/core/styles/withStyles';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
@@ -27,11 +28,11 @@ const styles = theme => ({
         },
     },
     selectedItem: {
-        backgroundColor: '#fff !important',
+        backgroundColor: `${theme.palette.background.paper} !important`,
         '& svg': {
             color: theme.palette.primary.main,
         },
-        '&:before': {
+        '&::before': {
             content: '""',
             position: 'absolute',
             top: -20,
@@ -44,9 +45,9 @@ const styles = theme => ({
             backgroundSize: '50% 50%',
             backgroundRepeat: 'no-repeat',
             backgroundImage:
-                `radial-gradient(circle at 0 0, rgba(0,0,0,0) 20px, #fff 20.75px)`,
+                `radial-gradient(circle at 0 0, rgba(0,0,0,0) 20px, ${theme.palette.background.paper} 20.75px)`,
         },
-        '&:after': {
+        '&::after': {
             content: '""',
             position: 'absolute',
             bottom: -40,
@@ -59,7 +60,18 @@ const styles = theme => ({
             backgroundSize: '50% 50%',
             backgroundRepeat: 'no-repeat',
             backgroundImage:
-                `radial-gradient(circle at 0 100%, rgba(0,0,0,0) 20px, #fff 20.75px)`,
+                `radial-gradient(circle at 0 100%, rgba(0,0,0,0) 20px, ${theme.palette.background.paper} 20.75px)`,
+        },
+    },
+    selectedItemAltBG: {
+        backgroundColor: `${theme.palette.background.default} !important`,
+        '&::before': {
+            backgroundImage:
+                `radial-gradient(circle at 0 0, rgba(0,0,0,0) 20px, ${theme.palette.background.default} 20.75px)`,
+        },
+        '&::after': {
+            backgroundImage:
+                `radial-gradient(circle at 0 100%, rgba(0,0,0,0) 20px, ${theme.palette.background.default} 20.75px)`,
         },
     },
     icon: {
@@ -81,7 +93,10 @@ function NavigationItems(props){
                         onClick={()=>{ goTo(x.route) }}
                         className={classes.item}
                         selected={ selectedIndex === i }
-                        classes={{selected: classes.selectedItem}}
+                        classes={{selected: x.label === 'Statistics' ?
+                            classNames(classes.selectedItem, classes.selectedItemAltBG)
+                            : classes.selectedItem
+                        }}
                     >
                         <ListItemIcon className={classes.icon}>{x.icon}</ListItemIcon>
                     </ListItem>
