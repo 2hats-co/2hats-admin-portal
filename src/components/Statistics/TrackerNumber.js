@@ -17,7 +17,7 @@ const styles = theme => ({
 });
 
 function TrackerNumber(props) {
-    const {classes, theme, title, trackers} = props;
+    const {classes, theme, trackers} = props;
     return trackers.map((x, i) =>
         <Grid container key={i}
             className={classes.root}
