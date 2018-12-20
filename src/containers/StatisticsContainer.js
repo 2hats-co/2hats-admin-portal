@@ -28,6 +28,8 @@ import '../../node_modules/react-resizable/css/styles.css';
 
 import SaveIcon from '@material-ui/icons/Save';
 import LocationIndicator from '../components/LocationIndicator';
+import moment from 'moment'
+import { momentLocales } from '../constants/momentLocales';
 
 const styles = theme => ({
   root: {
@@ -90,6 +92,7 @@ const styles = theme => ({
 
 const ResponsiveGridLayout = WidthProvider(GridLayout);
 function StatisticsContainer(props) {
+  moment.updateLocale('en', momentLocales);
   /*
     constructor(props) {
       super(props);
@@ -225,17 +228,17 @@ function StatisticsContainer(props) {
                   case 'line':
                     chartElement = (<TrackerLineChart title={chart.title} key={chart.id} trackers={chart.trackers} range={range} format={format}/>)
                     break;
-                  case 'donut':
-                    chartElement = (<TrackerDonutChart title={chart.title} key={chart.id} trackers={chart.trackers} range={range} format={format}/>)
-                    break;
                   case 'bar':
                     chartElement = (<TrackerBarChart title={chart.title} key={chart.id} trackers={chart.trackers} range={range} format={format}/>)
                     break; 
+                  case 'donut':
+                    chartElement = (<TrackerDonutChart title={chart.title} key={chart.id} trackers={chart.trackers} queries={chart.queries} range={range} format={format}/>)
+                    break;
                   case 'number':
-                    chartElement = (<TrackerNumber title={chart.title} key={chart.id} trackers={chart.trackers} range={range} format={format}/>)
+                    chartElement = (<TrackerNumber title={chart.title} key={chart.id} trackers={chart.trackers}  queries={chart.queries} range={range} format={format}/>)
                     break;
                   case 'percentage':
-                    chartElement = (<TrackerPercentage title={chart.title} key={chart.id} trackers={chart.trackers} range={range} format={format}/>)
+                    chartElement = (<TrackerPercentage title={chart.title} key={chart.id} trackers={chart.trackers} queries={chart.queries} range={range} format={format}/>)
                     break;
                   case 'queryNumber':
                     chartElement = (<QueryNumber title={chart.title} query={chart.query} colour={chart.colour}/>)

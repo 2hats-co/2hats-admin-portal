@@ -27,10 +27,11 @@ const styles = theme => ({
 
 function TrackerPercentage(props) {
     const { classes, theme, title, trackers } = props;
-
+    console.log('%%,,%%',trackers)
+    if(trackers.length < 2) return <p>loadin %</p>
     const colour = trackers[0].colour;
-
     let percentage = 0;
+
     if (trackers[0].sum<trackers[1].sum) {
         percentage = Math.round((trackers[0].sum/trackers[1].sum)*100);
     } else {

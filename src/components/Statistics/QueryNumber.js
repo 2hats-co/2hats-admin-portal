@@ -7,9 +7,6 @@ import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 import {CLOUD_FUNCTIONS,callable} from '../../firebase/functions';
-
-import { momentLocales } from '../../constants/momentLocales';
-
 const styles = theme => ({
     root: {
         height: '100%',
@@ -30,8 +27,6 @@ const styles = theme => ({
 function QueryNumber(props) {
         const { classes, theme, title, query, colour } = props;
         const [result, setResult] = useState(null);
-        moment.updateLocale('en', momentLocales);
-
         useEffect(() => {
             if (!result) {
                 callable(
