@@ -1,22 +1,50 @@
 import React from 'react';
 import { withNavigation } from '../components/withNavigation';
-import withStyles from '@material-ui/core/styles/withStyles';
 
+import withStyles from '@material-ui/core/styles/withStyles';
+import Typography from '@material-ui/core/Typography';
 import Fade from '@material-ui/core/Fade';
 
 import LocationIndicator from '../components/LocationIndicator';
 import CampaignEditor from '../components/Marketing/CampaignEditor';
+import CampaignCard from '../components/Marketing/CampaignCard';
 import TemplateEditor from '../components/Marketing/TemplateEditor';
 
 import { ROUTES } from '../constants/routes';
 
+import moment from 'moment';
+import { momentLocales } from '../constants/momentLocales';
+
 const styles = theme => ({
+    root: {
+        backgroundColor: theme.palette.background.default,
+        minHeight: '100vh',
+        overflow: 'auto',
+    },
 });
+
+const DUMMY_CAMPAIGNS = [
+    { name:'Cupcake', live:false, author:'Robo-Shubham', createdAt:1318781876406, messages:Math.floor(Math.random()*100), replies:Math.floor(Math.random()*100) },
+    { name:'Doughnut', live:false, author:'Robo-Shubham', createdAt:1544223714511, messages:Math.floor(Math.random()*100), replies:Math.floor(Math.random()*100) },
+    { name:'Eclair', live:false, author:'Robo-Shubham', createdAt:1544226714511, messages:Math.floor(Math.random()*100), replies:Math.floor(Math.random()*100) },
+    { name:'Froyo', live:false, author:'Robo-Shubham', createdAt:1544223714511, messages:Math.floor(Math.random()*100), replies:Math.floor(Math.random()*100) },
+    { name:'Gingerbread', live:false, author:'Robo-Shubham', createdAt:1544222714511, messages:Math.floor(Math.random()*100), replies:Math.floor(Math.random()*100) },
+    { name:'Honeycomb', live:false, author:'Robo-Shubham', createdAt:1544228714511, messages:Math.floor(Math.random()*100), replies:Math.floor(Math.random()*100) },
+    { name:'Ice Cream Sandwich', live:false, author:'Robo-Shubham', createdAt:1544223714511, messages:Math.floor(Math.random()*100), replies:Math.floor(Math.random()*100) },
+    { name:'Jelly Bean', live:false, author:'Robo-Shubham', createdAt:1544126714511, messages:Math.floor(Math.random()*100), replies:Math.floor(Math.random()*100) },
+    { name:'KitKat', live:false, author:'Robo-Shubham', createdAt:1544226714511, messages:Math.floor(Math.random()*100), replies:Math.floor(Math.random()*100) },
+    { name:'Lollipop', live:false, author:'Robo-Shubham', createdAt:1543226714511, messages:Math.floor(Math.random()*100), replies:Math.floor(Math.random()*100) },
+    { name:'Marshmallow', live:false, author:'Robo-Shubham', createdAt:1544226714511, messages:Math.floor(Math.random()*100), replies:Math.floor(Math.random()*100) },
+    { name:'Nougat', live:false, author:'Robo-Shubham', createdAt:1544226714511, messages:Math.floor(Math.random()*100), replies:Math.floor(Math.random()*100) },
+    { name:'Oreo', live:false, author:'Robo-Shubham', createdAt:1544226714511, messages:Math.floor(Math.random()*100), replies:Math.floor(Math.random()*100) },
+]
 
 function MarketingContainer(props) {
     const { classes, location } = props;
 
-    return (<Fade in><React.Fragment>
+    moment.updateLocale('en', momentLocales);
+
+    return (<Fade in><div className={classes.root}>
         <LocationIndicator title="Marketing" showBorder
             subRoutes={[
                 { label:'Lead Generation', value:ROUTES.marketingLeadGeneration },
@@ -24,10 +52,14 @@ function MarketingContainer(props) {
             ]}
         />
         { location.pathname === '/marketingLeadGeneration' ?
-            <CampaignEditor action="Edit" />
+            <React.Fragment>
+                <Typography variant="title">Campaigns</Typography>
+                { DUMMY_CAMPAIGNS.map((x, i) => <CampaignCard data={x} key={i} />)}
+                <CampaignEditor action="Edit" />
+            </React.Fragment>
             : <TemplateEditor />
         }
-    </React.Fragment></Fade>);
+    </div></Fade>);
 }
 
 export default withNavigation(withStyles(styles)(MarketingContainer));
