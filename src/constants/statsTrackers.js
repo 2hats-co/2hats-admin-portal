@@ -15,9 +15,9 @@ export const trackers = {
 
     feedbacked: { type:'me', name:'feedbacked', label:'Feedbacked by you', itemType:'tracker' },
 
-    toBeFeedbacked: { label:'to be feedbacked', query:{ filters: [{ property: 'outcome', operation: '==', value: 'rejected' }, { property: 'feedbacked', operation: '==', value: false }], collection:'submissions' }, itemType:'query' },
-    toBeInvited: { label:'to be invited', query:{ filters: [{ property: 'outcome', operation: '==', value: 'accepted' }, { property: 'feedbacked', operation: '==', value: false }], collection:'submissions' }, itemType:'query' },
-    toBeScreened: { label:'to be screened', query:{ filters: [{ property: 'outcome', operation: '==', value: 'pending' }], collection:'submissions' }, itemType:'query' },
+    toBeFeedbacked: { label:'to be feedbacked', filters: [{ property: 'outcome', operation: '==', value: 'rejected' }, { property: 'feedbacked', operation: '==', value: false }], collection:'submissions', itemType:'query' },
+    toBeInvited: { label:'to be invited', filters: [{ property: 'outcome', operation: '==', value: 'accepted' }, { property: 'feedbacked', operation: '==', value: false }], collection:'submissions', itemType:'query' },
+    toBeScreened: { label:'to be screened', filters: [{ property: 'outcome', operation: '==', value: 'pending' }], collection:'submissions', itemType:'query' },
 }
 
 export const trackersList = Object.keys(trackers)

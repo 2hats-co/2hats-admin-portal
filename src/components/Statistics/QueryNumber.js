@@ -33,6 +33,7 @@ function QueryNumber(props) {
             if (!result) {
                 callable(
                     CLOUD_FUNCTIONS.stats,
+                  //  { filters:queries[0].filters, collection:queries[0].collection},
                     { filters:query.filters, collection:"submissions" },
                     o => setResult(o),
                     e => console.log("fail", e)

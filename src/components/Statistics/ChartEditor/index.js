@@ -20,6 +20,7 @@ import AddCircleIcon from '@material-ui/icons/AddCircleOutline';
 
 import ChartItem from './ChartItem';
 import { getRandomId } from '../../../utilities';
+import { trackers } from '../../../constants/statsTrackers';
 
 const styles = theme => ({
     dialogRoot: {
@@ -52,28 +53,60 @@ function ChartEditor(props) {
         disableAddItemButton = true;
     } else if (chart.type === 'percentage' && chart.items.length >= 2) {
         disableAddItemButton = true;
-    } else if (chart.items.length > 0 && !chart.items[chart.items.length - 1].preset) {
-        disableAddItemButton = true;
+    } else if (chart.items.length > 0) {
+        const lastItem = chart.items[chart.items.length - 1];
+        if (!lastItem.preset || !lastItem.colour)
+            disableAddItemButton = true;
     }
 
-    const handleDone = () => {
-        // firestore.collection('admins').doc(uid).collection('charts').add(chart);
-        setShowDialog(false);
-    }
+    const handleChangeChartType = (e, val) => {
+        let newItems;
+        if (chart.items.length > 0) {
+            switch (val) {
+                case 'percentage': newItems = chart.items.slice(0, 2);  break;
+                case 'number':     newItems = chart.items.slice(0, 1);  break;
+                default:           newItems = chart.items;              break;
+            }
+        } else {
+            newItems = [{ id: getRandomId() }];
+        }
 
-    console.log('chart', chart);
+        setChart({ ...chart, type: val, items: newItems });
+    };
+
+    const handleAddItem = () => {
+        setChart({ ...chart, items: [...chart.items, { id: getRandomId() }] });
+    };
 
     const handleChangeItem = (index, colour, preset) => {
         const newItems = chart.items;
         newItems[index] = { ...newItems[index], colour, preset };
         setChart({ ...chart, items: newItems });
-    }
+    };
 
     const handleDeleteItem = (index) => {
         const newItems = chart.items;
         newItems.splice(index, 1);
         setChart({ ...chart, items: newItems });
-    }
+    };
+
+    const handleDone = () => {
+        const output = Object.assign({}, chart);
+
+        const transformedItems = output.items.map(x => ({...trackers[x.preset], colour:x.colour, id:x.id}));
+
+        const trackerItems = transformedItems.filter(x => x.itemType === 'tracker');
+        const queryItems = transformedItems.filter(x => x.itemType === 'query');
+
+        if (trackerItems.length > 0) output.trackers = trackerItems;
+        if (queryItems.length > 0) output.queries = queryItems;
+
+        delete output.items;
+
+        console.log('added chart to firestore:', output);
+        firestore.collection('admins').doc(uid).collection('charts').add(output);
+        setShowDialog(false);
+    };
 
     return(
     <Dialog
@@ -91,7 +124,7 @@ function ChartEditor(props) {
                 className={classes.chartTypeButtons}
                 exclusive
                 value={chart.type}
-                onChange={(e, val) => { setChart({ ...chart, type: val, items: [{ id: getRandomId() }] }) }}
+                onChange={handleChangeChartType}
             >
                 <ToggleButton value="bar"><BarIcon/></ToggleButton>
                 <ToggleButton value="line"><LineIcon/></ToggleButton>
@@ -113,20 +146,19 @@ function ChartEditor(props) {
                 <Button
                     className={classes.addItemButton}
                     color="primary"
-                    onClick={() => { setChart({ ...chart, items: [...chart.items, { id: getRandomId() }] }) }}
+                    onClick={handleAddItem}
                     disabled={disableAddItemButton}
                 >
                     <AddCircleIcon /> Add Item
                 </Button>
-                { chart.items.map((x, i) => {
-                    console.log(i, x)
-                    return <ChartItem
+                { chart.items.map((x, i) =>
+                    <ChartItem
                         key={x.id} index={i}
                         chartType={chart.type}
                         handleChangeItem={handleChangeItem}
                         handleDeleteItem={handleDeleteItem}
                     />
-                })}
+                )}
             </React.Fragment>}
         </DialogContent>
 

@@ -28,8 +28,8 @@ function TrackerLineChart(props){
             lineStyle: { width: 3 },
             areaStyle: {
                 color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                    { offset: 0, color: `rgba(${hexToRgb(x.colour).r}, ${hexToRgb(x.colour).g}, ${hexToRgb(x.colour).b}, .25)` },
-                    { offset: 1, color: `rgba(${hexToRgb(x.colour).r}, ${hexToRgb(x.colour).g}, ${hexToRgb(x.colour).b}, 0)` }
+                    { offset: 0, color: x.colour.replace('rgb', 'rgba').replace(')', '.25)') },
+                    { offset: 1, color: x.colour.replace('rgb', 'rgba').replace(')', '0)') }
                 ])
             },
             symbolSize: 8,

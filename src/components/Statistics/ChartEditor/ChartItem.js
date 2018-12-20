@@ -5,6 +5,7 @@ import Grid from '@material-ui/core/Grid';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 
 import { SketchPicker } from 'react-color';
+import { randomColor } from 'randomcolor';
 
 import IconButton from '@material-ui/core/IconButton';
 import RemoveCircleOutlineIcon from '@material-ui/icons/RemoveCircleOutline';
@@ -32,7 +33,7 @@ const styles = theme => ({
       boxShadow: '0 0 1px 0 rgba(0,0,0,.5) inset',
     },
     popover: {
-      position: 'absolute',
+      position: 'fixed',
       zIndex: '2',
     },
     cover: {
@@ -48,7 +49,7 @@ function ChartItem(props) {
     const { classes, chartType, index, handleChangeItem, handleDeleteItem } = props;
 
     const [showColourPicker, setShowColourPicker] = useState(false);
-    const [colour, setColour] = useState('');
+    const [colour, setColour] = useState(randomColor({ luminosity: 'bright', format: 'rgb' }));
     const [preset, setPreset] = useState('');
 
     let suggestions;

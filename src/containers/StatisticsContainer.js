@@ -175,7 +175,7 @@ class StatisticsContainer extends Component {
 
           <ChartBuilder chart={this.state.chart}/>
           <ChartEditor
-            uid={this.state.uid}
+            uid={this.props.uid}
             showDialog={this.state.showDialog}
             setShowDialog={this.setShowDialog}
           />
