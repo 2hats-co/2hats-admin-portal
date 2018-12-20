@@ -26,10 +26,12 @@ import { WidthProvider } from 'react-grid-layout';
 import '../../node_modules/react-grid-layout/css/styles.css';
 import '../../node_modules/react-resizable/css/styles.css';
 
-import SaveIcon from '@material-ui/icons/Save';
+import {firestore} from '../store'
+
 import LocationIndicator from '../components/LocationIndicator';
 import moment from 'moment'
 import { momentLocales } from '../constants/momentLocales';
+import { COLLECTIONS } from '../constants/firestore';
 
 const styles = theme => ({
   root: {
@@ -92,28 +94,15 @@ const styles = theme => ({
 
 const ResponsiveGridLayout = WidthProvider(GridLayout);
 function StatisticsContainer(props) {
-  moment.updateLocale('en', momentLocales);
- 
-    /*
-    handleSaveLayout=()=>{
-      const {layout} = this.state
-      const charts = layout.map((chart)=>{
-      const chartId = chart.i
-       const config = {x:chart.x,y:chart.y,w:chart.w,h:chart.h}
-        return ({chartId,config})
-      })
-      charts.forEach((chart)=>{
-       this.props.updateChart(chart.chartId,{layout:chart.config}) 
-      })
-    }
-    */
-  
-    
-      
+  moment.updateLocale('en', momentLocales); 
       const { classes, theme, uid } = props;
       const charts = useCharts(uid)
       const [layout,setLayout] = useState([])
+      const [layoutShouldUpdate,setLayoutShouldUpdate] = useState(false)
+      const [layoutLastUpdate,setLayoutLastUpdate] = useState(new Date().getTime())
+      
       const [showDialog, setShowDialog] = useState(false)
+      const [chartToEdit, setChartToEdit] = useState(null);
       const [range,setRange] = useState({
          start: moment().startOf('day').subtract(2, 'weeks').unix(),
         end: moment().startOf('hour').unix(),
@@ -124,8 +113,26 @@ function StatisticsContainer(props) {
           label: 'DD/MM',
         })
 
-      const [chartToEdit, setChartToEdit] = useState(null);
-      
+      const handleSaveLayout=()=>{
+        const now = new Date().getTime()
+        const millsSinceLastUpdate = now - layoutLastUpdate
+        console.log(millsSinceLastUpdate)
+        if(layoutShouldUpdate && millsSinceLastUpdate > 2000){
+          setLayoutLastUpdate(now)
+          console.log('updating')
+          layout.forEach((chartLayout)=>{
+            let newLayout = {...chartLayout}
+            delete newLayout.i
+           firestore.collection(COLLECTIONS.admins).doc(uid).collection(COLLECTIONS.charts).doc(chartLayout.i).update({layout:newLayout}) 
+          })
+        }
+        
+      }
+      useEffect(()=>{
+        handleSaveLayout()
+       // console.log('moved',layout)
+      },[layout])
+
       useEffect(()=>{
         console.log('charts',charts)
        if(charts){
@@ -170,7 +177,13 @@ function StatisticsContainer(props) {
 
           <Grid container className={classes.grid}>
             <ResponsiveGridLayout style={{width:'100%'}} className={classes.layout} 
-            //  onLayoutChange={(layout) =>this.onLayoutChange(layout)}
+            onLayoutChange={(layouts) =>{
+              const newLayouts = layouts.map(layout=>({i:layout.i,x:layout.x,y:layout.y,w:layout.w,h:layout.h}))
+              setLayout(newLayouts)
+              setLayoutShouldUpdate(true)
+            }
+               // this.onLayoutChange(layout)
+              }
               layout={layout}
               cols={12} rowHeight={120} width={1200}
             >
