@@ -61,9 +61,8 @@ function TimeBar(props) {
   },[start,end])
   
   useEffect(()=>{
-    console.log('stepSize',stepSize)
     switch (stepSize) {
-      case '1':console.log('format',{stepSize:1,label:'ha ddd'})
+      case '1':
       changeHandler('format',{stepSize:1,label:'ha ddd'})
         break;
       case '24':changeHandler('format',{stepSize:24,
