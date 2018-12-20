@@ -8,6 +8,7 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
 import Button from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton';
 import TextField from '@material-ui/core/TextField';
 
 import ToggleButton from '@material-ui/lab/ToggleButton';
@@ -17,6 +18,7 @@ import BarIcon from '@material-ui/icons/BarChart';
 import LineIcon from '@material-ui/icons/Timeline';
 
 import AddCircleIcon from '@material-ui/icons/AddCircleOutline';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 import ChartItem from './ChartItem';
 import { getRandomId } from '../../../utilities';
@@ -27,6 +29,12 @@ const styles = theme => ({
         minWidth: 480,
         height: 600,
         maxWidth: 'none',
+        position: 'relative',
+    },
+    deleteButton: {
+        position: 'absolute',
+        top: theme.spacing.unit * 1.25,
+        right: theme.spacing.unit * 1.25,
     },
     chartTypeButtons: {
         display: 'flex',
@@ -92,6 +100,11 @@ function ChartEditor(props) {
         const lastItem = chart.items[chart.items.length - 1];
         if (!lastItem.preset || !lastItem.colour)
             disableAddItemButton = true;
+    }
+
+    const handleDelete = () => {
+        firestore.collection('admins').doc(uid).collection('charts').doc(chart.id).delete();
+        handleClose();
     }
 
     const handleChangeChartType = (e, val) => {
@@ -168,8 +181,14 @@ function ChartEditor(props) {
         onClose={handleClose}
     >
         <DialogTitle>
-            { chartToEdit ? `Edit ${chartToEdit.title}` : 'New chart' }
+            { chartToEdit ? `Edit ${chartToEdit.title ? chartToEdit.title : 'chart'}` : 'New chart' }
         </DialogTitle>
+
+        { chartToEdit &&
+            <IconButton className={classes.deleteButton} onClick={handleDelete}>
+                <DeleteIcon />
+            </IconButton>
+        }
 
         <DialogContent>
             <Typography variant="caption">Type</Typography>
