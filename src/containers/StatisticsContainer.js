@@ -68,11 +68,15 @@ const styles = theme => ({
       top: 0,
       right: 0,
       zIndex: 98,
+      color: 'inherit',
     },
-    '&:hover .edit-chart-button': { opacity: 1 },
+    '&:hover .edit-chart-button': { opacity: .67 },
 
-    '& .react-resizable-handle': { opacity: 0 },
-    '&:hover .react-resizable-handle': { opacity: 1 },
+    '& .react-resizable-handle': {
+      opacity: 0,
+      '&::after': { borderColor: 'inherit !important' },
+    },
+    '&:hover .react-resizable-handle': { opacity: .67 },
 
     '&:hover': { borderBottomRightRadius: 0 },
   },
@@ -153,7 +157,7 @@ function StatisticsContainer(props) {
   }
     
       
-      const {classes,uid} = props;
+      const { classes, theme, uid } = props;
       const charts = useCharts(uid)
       const [layout,setLayout] = useState([])
       const [showDialog, setShowDialog] = useState(false)
@@ -241,7 +245,13 @@ function StatisticsContainer(props) {
                     break;
                 }
                 return(
-                  <Grid key={chart.id} item className={classes.card}>
+                  <Grid item
+                    key={chart.id}
+                    className={classes.card}
+                    style={chart.type === 'number' || chart.type === 'percentage' || chart.type === 'queryNumber' ?
+                      { color: theme.palette.getContrastText(chart.trackers && chart.trackers[0].colour || chart.queries && chart.queries[0].colour || chart.colour) }
+                    : null}
+                  >
                     <IconButton aria-label="Configure" //className={classes.button}
                       onClick={() => { setChartToEdit(chart); setShowDialog(true) }}
                       className="edit-chart-button"
@@ -265,4 +275,4 @@ function StatisticsContainer(props) {
 }
 
 
-export default withNavigation(withStyles(styles)(StatisticsContainer));
+export default withNavigation(withStyles(styles, { withTheme:true })(StatisticsContainer));
