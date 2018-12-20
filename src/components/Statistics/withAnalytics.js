@@ -13,7 +13,6 @@ function withAnalytics(WrappedComponent) {
     // ...and returns another component...
     return function WithAnalytics(props){
         const { queries, trackers, range, format } = props
-        console.log('new',range, format)
         const queriesToLoad =( queries ? queries.length : 0)
         const tackersToLoad = ( trackers ? trackers.length : 0)
         const [isLoading,setIsLoading] = useState(true)
