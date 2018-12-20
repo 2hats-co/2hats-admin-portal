@@ -93,51 +93,8 @@ const styles = theme => ({
 const ResponsiveGridLayout = WidthProvider(GridLayout);
 function StatisticsContainer(props) {
   moment.updateLocale('en', momentLocales);
-  /*
-    constructor(props) {
-      super(props);
-      this.state = { 
-        from: moment().subtract(2, 'weeks'),
-        to: moment(),
-        range: {
-          start: 1540897200,
-          end: 1541714400,
-        },
-        format: {
-          stepSize: 24,
-          label: 'Do MMM',
-        },
-        layout: [],
-        showDialog: true,
-     }
-     moment.updateLocale('en', momentLocales);
-    }
-    
-    componentDidUpdate(prevProps){
-      const {chartsConfig} = this.props
-      if(!prevProps.chartsConfig && chartsConfig !== prevProps.chartsConfig){
-        const layout = chartsConfig.map((chart,i)=>({i:chart.id,x:chart.layout.x||i,
-          y:chart.layout.y||0,
-          w:chart.layout.w,
-          h:chart.layout.h||7}))
-        this.setState({layout})
-      }
-    }
-
-    componentDidMount(){
-      const {chartsConfig} = this.props
-      if(chartsConfig){
-        const layout = chartsConfig.map((chart,i)=>({i:chart.id,x:chart.layout.x||i,
-          y:chart.layout.y||0,
-          w:chart.layout.w,
-          h:chart.layout.h||7}))
-        this.setState({layout})
-      }
-    }
-    onLayoutChange=(layout)=> {
-      this.setState({layout})
-    }
-    
+ 
+    /*
     handleSaveLayout=()=>{
       const {layout} = this.state
       const charts = layout.map((chart)=>{
@@ -149,15 +106,8 @@ function StatisticsContainer(props) {
        this.props.updateChart(chart.chartId,{layout:chart.config}) 
       })
     }
-
-    setShowDialog = (val) => {
-      this.setState({ showDialog: val });
-    }
     */
-   const handleChange =(name, value)=> {
-    console.log(name, value)
-    //this.setState({[name]:value })
-  }
+  
     
       
       const { classes, theme, uid } = props;
@@ -211,7 +161,7 @@ function StatisticsContainer(props) {
 
           <Slide in direction="down"><React.Fragment>
             <LocationIndicator title="Statistics" showBorder />
-            <TimeBar format={format} changeHandler={handleChange}
+            <TimeBar format={format}
              range={range} 
              setFormat ={setFormat}
              setRange={setRange} />
