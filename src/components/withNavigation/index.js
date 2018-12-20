@@ -85,15 +85,18 @@ const navigationRoutes = [
         label: 'Conversations',
         icon: <ConversationsIcon />,
         route: ROUTES.conversations,
+        incomplete: true,
     }, {
         label: 'Subjects',
         icon: <SupervisorAccountIcon />,
         route: ROUTES.subjects,
+        incomplete: true,
     }, {
         label: 'Marketing',
         icon: <MarketingIcon />,
         route: ROUTES.marketingLeadGeneration,
         subRoutes: [ROUTES.marketingLeadGeneration, ROUTES.marketingEmail],
+        incomplete: true,
     },
 ];
 
