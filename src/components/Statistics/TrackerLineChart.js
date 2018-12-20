@@ -33,7 +33,7 @@ function TrackerLineChart(props){
                     { offset: 1, color: x.colour.replace('rgb', 'rgba').replace(')', ', 0)') }
                 ])
             },
-            symbolSize: 8,
+            showSymbol: false,
         })
     });
 

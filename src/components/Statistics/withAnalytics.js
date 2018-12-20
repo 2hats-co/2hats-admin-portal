@@ -12,7 +12,8 @@ import { idealTextColor } from '../../utilities';
 function withAnalytics(WrappedComponent) {
     // ...and returns another component...
     return function WithAnalytics(props){
-        const { queries, trackers, range, format, title } = props
+        const { queries, trackers, range, format } = props
+        console.log('new',range, format)
         const queriesToLoad =( queries ? queries.length : 0)
         const tackersToLoad = ( trackers ? trackers.length : 0)
         const [isLoading,setIsLoading] = useState(true)
@@ -21,13 +22,11 @@ function withAnalytics(WrappedComponent) {
         const updateData = (dataToAdd) =>{
             loadedData = loadedData.concat(dataToAdd)
             if(loadedData.length === (queriesToLoad+tackersToLoad)){
-                // console.log('finished',loadedData)
                 setData(loadedData)
                 setIsLoading(false)
             }
-            // console.log('data',data)
         }
-        useEffect(() => {
+        const loadQueries =(queries) =>{
             if (queries) {
                 queries.forEach(query=>
                     {callable(
@@ -41,8 +40,9 @@ function withAnalytics(WrappedComponent) {
                     }
                     )
             }
-        }, [queries]);
-        useEffect(()=>{
+        }
+
+        const loadTrackers = (trackers) =>{
             if(trackers){
                 const trackerPromises = trackers.map(async (x) => {
                     let trackerData = await getTrackerLineData(x, range, format)
@@ -57,8 +57,18 @@ function withAnalytics(WrappedComponent) {
             
                 })
             }
+        }
+        useEffect(() => {
+            loadQueries(queries)
+        }, [queries]);
+        useEffect(()=>{
+            loadTrackers(trackers)
         },[trackers]);
-
+        useEffect(()=>{
+            setIsLoading(true)
+            loadQueries(queries)
+            loadTrackers(trackers)
+        },[range,format])
         const mainColor = trackers && trackers.length > 0 && trackers[0].colour || queries && queries.length > 0 && queries[0].colour;
 
         if (isLoading) return (

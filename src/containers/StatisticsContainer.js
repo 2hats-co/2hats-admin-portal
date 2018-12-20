@@ -165,13 +165,13 @@ function StatisticsContainer(props) {
       const [layout,setLayout] = useState([])
       const [showDialog, setShowDialog] = useState(false)
       const [range,setRange] = useState({
-        start: 1540897200,
-        end: 1541714400,
+         start: moment().startOf('day').subtract(2, 'weeks').unix(),
+        end: moment().startOf('hour').unix(),
       })
       const [format,setFormat] = useState(
         {
           stepSize: 24,
-          label: 'Do MMM',
+          label: 'DD/MM',
         })
 
       const [chartToEdit, setChartToEdit] = useState(null);
@@ -212,8 +212,10 @@ function StatisticsContainer(props) {
           <Slide in direction="down"><React.Fragment>
             <LocationIndicator title="Statistics" showBorder />
             <TimeBar format={format} changeHandler={handleChange}
-             fromDate={1540897200} 
-             toDate={1541714400} />
+             range={range} 
+             setFormat ={setFormat}
+             setRange={setRange} />
+             
           </React.Fragment></Slide>
 
           <Grid container className={classes.grid}>

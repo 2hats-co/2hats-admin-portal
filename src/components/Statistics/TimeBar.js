@@ -49,67 +49,62 @@ const styles = theme => ({
   },
 });
 function TimeBar(props) {
-  const { classes, format, changeHandler} = props;
+  const { classes, setFormat,setRange} = props;
   const windowSize = useWindowSize();
-  const [range,setRange] = useState({type:'custom'})
-  const [stepSize,setStepSize] = useState(24)
+  const [rangeType,setRangeType] = useState('custom')
+  const [stepSize,setStepSize] = useState('24')
   const [start,setStart] = useState(moment().startOf('day').subtract(2, 'weeks'))
   const [end,setEnd] = useState(moment().startOf('hour'))
 
   useEffect(()=>{
-    changeHandler('range',{start:start.unix(),end:end.unix()})
+    setRange({start:start.unix(),end:end.unix()})
   },[start,end])
   
   useEffect(()=>{
     switch (stepSize) {
-      case '1':
-      changeHandler('format',{stepSize:1,label:'ha ddd'})
+      case '1':setFormat({stepSize:1,label:'ha ddd'})
         break;
-      case '24':changeHandler('format',{stepSize:24,
-          label:'Do MM'})
+      case '24':setFormat({stepSize:24,label:'DD/MM'})
           break;
-      case '168':changeHandler('format',{stepSize:24*7,
-            label:'Do MM'})
+      case '168':setFormat({stepSize:24*7,label:'DD/MM'})
             break;
-    
-      default:console.log('defualt',stepSize)
+      default:
         break;
     }
-  
   },[stepSize])
   
   useEffect(()=>{
-    switch (range.type) {
+    switch (rangeType) {
               case 'week':
-              changeHandler('range',{start:moment().startOf('day').subtract(1, 'weeks').unix(),end:moment().startOf('hour').unix()})
+              setRange({start:moment().startOf('day').subtract(1, 'weeks').unix(),end:moment().startOf('hour').unix()})
               break;
               case 'month':
-              changeHandler('range',{start:moment().startOf('day').subtract(1, 'months').unix(),end:moment().startOf('hour').unix()})
+              setRange({start:moment().startOf('day').subtract(1, 'months').unix(),end:moment().startOf('hour').unix()})
               break;
               case 'quarter':
-              changeHandler('range',{start:moment().startOf('day').subtract(3, 'months').unix(),end:moment().startOf('hour').unix()})
+              setRange({start:moment().startOf('day').subtract(3, 'months').unix(),end:moment().startOf('hour').unix()})
               break;
               default:
-              changeHandler('range',{start:start.unix(),end:end.unix()})
+              setRange({start:start.unix(),end:end.unix()})
                   break;
           }
 
-  },[range])    
+  },[rangeType])    
         return (
           <Grid container className={classes.root}>
             <Grid item className={classes.toggleContainer}>
             {windowSize.isMobile ?  <NativeSelect
-            value={range.type} onChange={(e)=>{
-              setRange({type:e.target.value})}}
+            value={rangeType} onChange={(e)=>{
+              setRangeType(e.target.value)}}
             input={<OutlinedInput name="Range" id="range-native-label-placeholder" />}
           >
             <option value="week">Past week</option>
             <option value="month">past month</option>
             <option value="quarter">past quarter</option>
           </NativeSelect>: <React.Fragment> <ToggleButtonGroup
-                  value={range.type}
+                  value={rangeType}
                   exclusive
-                  onChange={(e,v)=>{setRange({type:v})}}
+                  onChange={(e,v)=>{setRangeType(v)}}
                 >
                   <ToggleButton classes={{label:classes.toggleButtonLabel}} value="week">Past week</ToggleButton>
                   <ToggleButton classes={{label:classes.toggleButtonLabel}} value="month">past month</ToggleButton>
@@ -117,7 +112,7 @@ function TimeBar(props) {
                   <ToggleButton classes={{label:classes.toggleButtonLabel}} value="custom">custom</ToggleButton>
                 </ToggleButtonGroup>
                 
-                {range.type === 'custom' && <form className={classes.form} noValidate>
+                {rangeType === 'custom' && <form className={classes.form} noValidate>
                   <MuiPickersUtilsProvider utils={MomentUtils}>
                       <DatePicker
                           label="From"
@@ -155,16 +150,13 @@ function TimeBar(props) {
             <option value={24*7}>weekly</option>
           </NativeSelect>:
                 <ToggleButtonGroup
-                  value={format.stepSize}
+                  value={stepSize}
                   exclusive
-                  onChange={(t,v)=>changeHandler('format',v)}
+                  onChange={(t,v)=>setStepSize(v)}
                 >
-                  <ToggleButton classes={{label:classes.toggleButtonLabel}} value={{stepSize:1,
-        label:'ha ddd'}} selected={format.stepSize === 1}>hourly</ToggleButton>
-                  <ToggleButton classes={{label:classes.toggleButtonLabel}} value={{stepSize:24,
-        label:'Do MMM'}} selected={format.stepSize === 24}>daily</ToggleButton>
-                  <ToggleButton classes={{label:classes.toggleButtonLabel}} value={{stepSize:24*7,
-        label:'Do MMM'}} selected={format.stepSize === 24*7}>weekly</ToggleButton>
+                  <ToggleButton classes={{label:classes.toggleButtonLabel}} value="1">hourly</ToggleButton>
+                  <ToggleButton classes={{label:classes.toggleButtonLabel}} value='24'>daily</ToggleButton>
+                  <ToggleButton classes={{label:classes.toggleButtonLabel}} value='168'>weekly</ToggleButton>
                 </ToggleButtonGroup>}
             </Grid>
           </Grid>
