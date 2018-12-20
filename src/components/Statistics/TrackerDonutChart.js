@@ -29,12 +29,20 @@ function TrackerDonutChart(props){
                     fontWeight: 500,
                 },
             },
+            grid: {
+                left: theme.spacing.unit * 2,
+                right: theme.spacing.unit * 2,
+                bottom: theme.spacing.unit * 8,
+                containLabel: true,
+            },
             tooltip: {
                 trigger: 'item',
                 formatter: "<b>{b}</b> <br/>{c} ({d}%)"
             },
             legend: {
-                show: 'true',
+                show: true,
+                left: 'center',
+                bottom: theme.spacing.unit * 2,
             },
             color: trackers.map(x=>x.colour),
             series: [
@@ -43,23 +51,7 @@ function TrackerDonutChart(props){
                     type:'pie',
                     radius: ['50%', '70%'],
                     avoidLabelOverlap: false,
-                    label: {
-                        normal: {
-                            show: true,
-                            position: 'inside',
-                            textBorderWidth: 2,
-                            textBorderColor: '#000',
-                            textStyle: { fontSize: 16 },
-                        },
-                        emphasis: {
-                            show: true,
-                            textStyle: {
-                                fontSize: 20,
-                                fontFamily: 'Helvetica Neue',
-                                fontWeight: '500',
-                            }
-                        }
-                    },
+                    label: { show: false },
                     labelLine: { normal: { show: false } },
                     data: trackers.map(x => ({ name:x.label, value:x.sum }))
                 }

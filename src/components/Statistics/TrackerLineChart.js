@@ -29,8 +29,8 @@ function TrackerLineChart(props){
             lineStyle: { width: 3 },
             areaStyle: {
                 color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-                    { offset: 0, color: x.colour.replace('rgb', 'rgba').replace(')', '.25)') },
-                    { offset: 1, color: x.colour.replace('rgb', 'rgba').replace(')', '0)') }
+                    { offset: 0, color: x.colour.replace('rgb', 'rgba').replace(')', ', .5)') },
+                    { offset: 1, color: x.colour.replace('rgb', 'rgba').replace(')', ', 0)') }
                 ])
             },
             symbolSize: 8,
@@ -53,7 +53,7 @@ function TrackerLineChart(props){
                 title: {
                     text: title,
                     top: theme.spacing.unit * 2,
-                    left: theme.spacing.unit * 2,
+                    left: 'center',
                     textStyle: {
                         fontFamily: 'Helvetica Neue',
                         fontSize: 20,
