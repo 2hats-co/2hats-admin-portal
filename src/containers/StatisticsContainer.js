@@ -78,6 +78,7 @@ const styles = theme => ({
 
     '& .react-resizable-handle': {
       opacity: 0,
+      zIndex: 12,
       '&::after': { borderColor: 'inherit !important' },
     },
     '&:hover .react-resizable-handle': { opacity: .67 },
@@ -203,7 +204,7 @@ function StatisticsContainer(props) {
                     chartElement = (<TrackerNumber title={chart.title} key={chart.id} trackers={chart.trackers}  queries={chart.queries} range={range} format={format}/>)
                     break;
                   case 'percentage':
-                    chartElement = (<TrackerPercentage title={chart.title} key={chart.id} trackers={chart.trackers} queries={chart.queries} range={range} format={format}/>)
+                    chartElement = (<TrackerPercentage title={chart.title} key={chart.id} trackers={chart.trackers} queries={chart.queries} range={range} format={format} width={chart.layout.w} />)
                     break;
                   case 'queryNumber':
                     chartElement = (<QueryNumber title={chart.title} query={chart.query} colour={chart.colour}/>)

@@ -13,8 +13,9 @@ const styles = theme => ({
     },
     container: {
         width: '100%',
+        height: '100%',
         // padding: theme.spacing.unit * 2,
-        paddingBottom: '100%',
+        // paddingBottom: '100%',
         position: 'relative',
     },
     circularProgress: {
@@ -24,7 +25,7 @@ const styles = theme => ({
         left: 0,
         color: 'inherit',
 
-        padding: theme.spacing.unit,
+        padding: theme.spacing.unit * 2,
         boxSizing: 'border-box',
     },
     circularProgressSvg: {
@@ -56,7 +57,8 @@ const styles = theme => ({
 });
 
 function TrackerPercentage(props) {
-    const { classes, theme, title, trackers } = props;
+    const { classes, theme, title, trackers, width } = props;
+    console.log('width', width)
     if(trackers.length < 2) return <p>loadin %</p>
     const colour = trackers[0].colour;
     let percentage = 0;
@@ -75,12 +77,12 @@ function TrackerPercentage(props) {
                 color: theme.palette.getContrastText(colour)
             }}
         >
-            <Grid item className={classes.container}>
+            {width > 1 && <Grid item className={classes.container}>
                 <CircularProgress
                     className={classes.circularProgress}
                     classes={{ svg:classes.circularProgressSvg, circle:classes.circularProgressCircle }}
                     variant="static" value={percentage} size="100%" thickness={3} />
-            </Grid>
+            </Grid>}
         </Grid>
 
         <Grid container className={classes.textContainer} justify="center" alignItems="center">
