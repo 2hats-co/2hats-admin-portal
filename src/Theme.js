@@ -26,9 +26,7 @@ const Theme = createMuiTheme({
         display1: { fontWeight: 500 },
         headline: { fontWeight: 500 },
         subheading: { fontWeight: 500 },
-        title:{
-            textTransform: 'capitalize',
-        },
+        title:{ textTransform: 'none' },
         button: {
             textTransform: 'none',
             fontWeight: 700,

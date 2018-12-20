@@ -11,7 +11,7 @@ import IconButton from '@material-ui/core/IconButton';
 import RemoveCircleOutlineIcon from '@material-ui/icons/RemoveCircleOutline';
 
 import IntegrationReactSelect from '../../IntegrationReactSelect';
-import { trackersList } from '../../../constants/statsTrackers';
+import { trackers, trackersList } from '../../../constants/statsTrackers';
 
 const styles = theme => ({
     root: {
@@ -46,11 +46,11 @@ const styles = theme => ({
 });
 
 function ChartItem(props) {
-    const { classes, chartType, index, handleChangeItem, handleDeleteItem } = props;
+    const { classes, chartType, index, chartItem, handleChangeItem, handleDeleteItem } = props;
 
     const [showColourPicker, setShowColourPicker] = useState(false);
-    const [colour, setColour] = useState(randomColor({ format: 'rgb' }));
-    const [preset, setPreset] = useState('');
+    const [colour, setColour] = useState(chartItem.colour ? chartItem.colour : randomColor({ format: 'rgb' }));
+    const [preset, setPreset] = useState(chartItem.preset ? { value:chartItem.preset, label:trackers[chartItem.preset].label } : '');
 
     let suggestions;
     if (chartType === 'bar' || chartType === 'line') {
@@ -61,7 +61,7 @@ function ChartItem(props) {
     }
 
     useEffect(() => {
-        handleChangeItem(index, colour, preset);
+        handleChangeItem(index, colour, preset.value);
     }, [colour, preset]);
 
     return (
@@ -80,7 +80,7 @@ function ChartItem(props) {
                 //<ClickAwayListener onClick={() => { setShowColourPicker(false) }}>
                     <div className={ classes.popover }>
                         <div className={ classes.cover } onClick={() => { setShowColourPicker(!showColourPicker) }}/>
-                        <SketchPicker color={colour} onChange={(val) => { setColour(val.hex) }} />
+                        <SketchPicker color={colour} onChange={(val) => { setColour(`rgb(${val.rgb.r}, ${val.rgb.g}, ${val.rgb.b})`) }} />
                     </div>
                 //</ClickAwayListener>
             : null }
@@ -90,7 +90,8 @@ function ChartItem(props) {
             <IntegrationReactSelect
                 placeholder="Select item…"
                 suggestions={suggestions}
-                changeHandler={(data) => { setPreset(data.value) }}
+                changeHandler={(data) => { setPreset(data) }}
+                value={preset}
             />
         </Grid>
     </Grid>

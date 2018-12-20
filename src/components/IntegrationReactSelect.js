@@ -167,7 +167,7 @@ const components = {
 };
 
 function IntegrationReactSelect(props) {
-    const { classes, theme, placeholder, label, autoFocus, changeHandler, suggestions } = props;
+    const { classes, theme, placeholder, label, autoFocus, changeHandler, suggestions, value } = props;
 
     const selectStyles = {
       input: base => ({
@@ -194,6 +194,7 @@ function IntegrationReactSelect(props) {
               InputLabelProps: { shrink: true },
               autoFocus
             }}
+            value={value}
           />
         </NoSsr>
       </div>
