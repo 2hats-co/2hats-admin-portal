@@ -55,16 +55,33 @@ const getDefaultLayout = (chartType) => {
         default:
             return { x:0, y:0, w:2, h:1 };
     }
+};
+
+const getChartToEdit = (chartToEdit) => {
+    const output = Object.assign({}, chartToEdit);
+
+    let trackers = [];
+    let queries = [];
+    if (chartToEdit.trackers) {
+        trackers = chartToEdit.trackers.map(x => ({ id:x.id, colour:x.colour, preset:x.presetName }));
+        delete output.trackers;
+    }
+    if (chartToEdit.queries) {
+        queries = chartToEdit.queries.map(x => ({ id:x.id, colour:x.colour, preset:x.presetName }));
+        delete output.queries;
+    }
+
+    return { ...output, items: [...trackers, ...queries] };
 }
 
 function ChartEditor(props) {
-    const { classes, showDialog, setShowDialog, uid, chartToEdit } = props;
+    const { classes, showDialog, setShowDialog, uid, chartToEdit, setChartToEdit } = props;
 
-    const [chart, setChart] = useState({
-        type: '',
-        title: '',
-        items: [],
-    });
+    const [chart, setChart] = useState({ type: '', title: '', items: [] });
+
+    useEffect(() => {
+        if (chartToEdit) setChart(getChartToEdit(chartToEdit))
+    }, [chartToEdit]);
 
     let disableAddItemButton = false;
     if (chart.type === 'number') {
@@ -109,7 +126,7 @@ function ChartEditor(props) {
     };
 
     const handleDone = () => {
-        const output = Object.assign({ layout: getDefaultLayout(chart.type) }, chart);
+        const output = Object.assign({}, chart);
 
         const transformedItems = output.items.map(x => ({...trackers[x.preset], colour:x.colour, id:x.id}));
 
@@ -119,18 +136,36 @@ function ChartEditor(props) {
         if (trackerItems.length > 0) output.trackers = trackerItems;
         if (queryItems.length > 0) output.queries = queryItems;
 
+        if (!output.layout) output.layout = getDefaultLayout(chart.type);
+
         delete output.items;
 
-        console.log('added chart to firestore:', output);
-        firestore.collection('admins').doc(uid).collection('charts').add(output);
-        setShowDialog(false);
+        // update chart
+        if (output.id) {
+            console.log('updating chart in firestore:', output);
+            const chartId = output.id;
+            delete output.id;
+            firestore.collection('admins').doc(uid).collection('charts').doc(chartId).update(output);
+        } else {
+            // new chart
+            console.log('adding chart to firestore:', output);
+            firestore.collection('admins').doc(uid).collection('charts').add(output);
+        }
+
+        handleClose();
     };
+
+    const handleClose = () => {
+        setShowDialog(false);
+        setChartToEdit(null);
+        setChart({ type: '', title: '', items: [] });
+    }
 
     return(
     <Dialog
         classes={{ paper: classes.dialogRoot }}
         open={showDialog}
-        onClose={() => { setShowDialog(false) }}
+        onClose={handleClose}
     >
         <DialogTitle>
             { chartToEdit ? `Edit ${chartToEdit.title}` : 'New chart' }
@@ -173,6 +208,7 @@ function ChartEditor(props) {
                     <ChartItem
                         key={x.id} index={i}
                         chartType={chart.type}
+                        chartItem={x}
                         handleChangeItem={handleChangeItem}
                         handleDeleteItem={handleDeleteItem}
                     />
@@ -183,7 +219,7 @@ function ChartEditor(props) {
         <DialogActions>
             <Button
                 color="primary"
-                onClick={() => { setShowDialog(false) }}
+                onClick={handleClose}
             >
                 Cancel
             </Button>
@@ -199,5 +235,3 @@ function ChartEditor(props) {
 }
 
 export default withStyles(styles)(ChartEditor);
-// firestore.collection('admins').doc(uid).collection('charts').add(chart)
-// firestore.collection('admins').doc(uid).collection('charts').doc(chartid).update(chart)

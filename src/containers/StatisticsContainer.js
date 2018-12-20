@@ -169,6 +169,8 @@ function StatisticsContainer(props) {
           stepSize: 24,
           label: 'Do MMM',
         })
+
+      const [chartToEdit, setChartToEdit] = useState(null);
       
       useEffect(()=>{
         console.log('charts',charts)
@@ -191,6 +193,8 @@ function StatisticsContainer(props) {
             uid={uid}
             showDialog={showDialog}
             setShowDialog={setShowDialog}
+            chartToEdit={chartToEdit}
+            setChartToEdit={setChartToEdit}
           />
 
           <Fab
@@ -242,7 +246,7 @@ function StatisticsContainer(props) {
                 return(
                   <Grid key={chart.id} item className={classes.card}>
                     <IconButton aria-label="Configure" //className={classes.button}
-                      onClick={() => { handleChange('chart',chart) }}
+                      onClick={() => { setChartToEdit(chart); setShowDialog(true) }}
                       className="edit-chart-button"
                     >
                       <EditIcon />
