@@ -8,11 +8,11 @@ import IconButton from '@material-ui/core/IconButton';
 
 import AddSubscriberIcon from '@material-ui/icons/GroupAdd';
 import LinkIcon from '@material-ui/icons/Link';
-import StarIcon from '@material-ui/icons/Star';
+import BackIcon from '@material-ui/icons/ArrowBack';
 import StarOutlineIcon from '@material-ui/icons/StarBorder';
 
 import ManageSubscribersDialog from './ManageSubscribersDialog';
-
+import {useWindowSize} from '../../../hooks/useWindowSize'
 const styles = theme => ({
     root: {
         padding: `${theme.spacing.unit}px ${theme.spacing.unit*1.5}px ${theme.spacing.unit}px ${theme.spacing.unit*3}px`,
@@ -21,13 +21,18 @@ const styles = theme => ({
 });
 
 function ConversationHeader(props) {
-    const { classes,conversation } = props;
+    const windowSize = useWindowSize();
+    console.log('windowSize',windowSize.isMobile)
+    const { classes,conversation,closeConversation } = props;
     console.log('conversation',conversation)
     const [showSubscriberDialog, setShowSubscriberDialog] = useState(false);
 
     return (<React.Fragment>
     <Grid item className={classes.root}>
         <Grid container justify="space-between" alignItems="center">
+            {windowSize.isMobile && <Grid item>
+            <IconButton onClick={closeConversation}><BackIcon /></IconButton>
+            </Grid>}
             <Grid item>
                 <Typography variant="title">{conversation.displayName}</Typography>
             </Grid>

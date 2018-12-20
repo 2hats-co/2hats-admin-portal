@@ -7,7 +7,6 @@ import ForumIcon from '@material-ui/icons/Forum';
 import LocationIndicator from '../components/LocationIndicator';
 
 import Grid from '@material-ui/core/Grid';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import Fade from '@material-ui/core/Fade';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
@@ -15,11 +14,11 @@ import ConversationsList from '../components/Conversations/ConversationsList';
 import ConversationHeader from '../components/Conversations/ConversationHeader';
 import Messages from '../components/Conversations/Messages';
 import Composer from '../components/Conversations/Composer'
-
+import {useWindowSize} from '../hooks/useWindowSize'
 const styles = theme => ({
     messagesContainer: {
         height: '100vh',
-        marginTop: -64,
+       // marginTop: -64,
 
         background: theme.palette.background.paper,
         borderLeft: `1px solid ${theme.palette.divider}`,
@@ -47,21 +46,27 @@ const styles = theme => ({
 });
 function ConversationsContainer(props) {
     const {classes,uid} = props
+    const windowSize = useWindowSize();
     const [composerType, setComposerType] = useState('email');
     const [selectedConversation,setSelectedConversation] = useState({id:null})
-    return(<Fade in>
+    const openedConversationOnMobile = (windowSize.isMobile && selectedConversation.id )
+    const handleCloseConversation = () =>{
+        setSelectedConversation({id:null})
+    }
+        return(<Fade in>
         <Grid container direction='row' style={{height: 'calc(100vh - 64px)'}}>
+        {!openedConversationOnMobile &&
+        <React.Fragment>
         <LocationIndicator title="Conversations" />
-            <Grid item style={{width: 320,height: 'calc(100vh - 64px)'}}>
+            <Grid item style={{width: windowSize.isMobile ?'100%' :320,height: 'calc(100vh - 64px)'}}>
                 <ConversationsList uid={uid} selectedConversation ={selectedConversation} 
                 setSelectedConversation = {setSelectedConversation}/>
             </Grid>
-            <Grid item xs className={classes.messagesContainer}>
-              
-               
+            </React.Fragment>}
+            <Grid item xs className={classes.messagesContainer} style={{marginTop: windowSize.isMobile? 0:'-64px'}}>
                 {selectedConversation.id !== null ?
                  <Grid container direction="column" wrap="nowrap" style={{ height:'100vh' }}>
-                 <ConversationHeader conversation = {selectedConversation} /> 
+                 <ConversationHeader closeConversation={handleCloseConversation} conversation = {selectedConversation} /> 
     
     <Grid item xs style={{ overflowY:'scroll' }}>
           <Messages  conversation = {selectedConversation}/> 
@@ -79,21 +84,15 @@ function ConversationsContainer(props) {
             <Tab value="linkedin" label="LinkedIn" classes={{root:classes.tabRoot, labelContainer:classes.tabLabelContainer}} />
             <Tab value="note" label="Note" classes={{root:classes.tabRoot, labelContainer:classes.tabLabelContainer}} />
         </Tabs>
-        <Composer composerType={composerType} />
+        <Composer conversation={selectedConversation} composerType={composerType} />
     </Grid>
 </Grid> : <Grid container justify="center" alignItems="center" className={classes.noOpenMsg}>
 <Grid item>
     <ForumIcon />
     <Typography variant="subheading" color="textSecondary">No open conversations</Typography>
 </Grid>
-</Grid>}
-            </Grid> 
+</Grid>} </Grid> 
         </Grid>
         </Fade>);
-        
-        
-    }
-
-
-
+}
   export default withNavigation(withStyles(styles)(ConversationsContainer))

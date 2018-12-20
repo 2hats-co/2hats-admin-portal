@@ -13,6 +13,9 @@ import { MuiPickersUtilsProvider } from 'material-ui-pickers';
 import MomentUtils from '@date-io/moment';
 import { DatePicker } from 'material-ui-pickers';
 import moment from 'moment';
+import NativeSelect from '@material-ui/core/NativeSelect';
+import OutlinedInput from '@material-ui/core/OutlinedInput';
+import {useWindowSize} from '../../hooks/useWindowSize'
 
 const styles = theme => ({
   root: {
@@ -47,8 +50,9 @@ const styles = theme => ({
 });
 function TimeBar(props) {
   const { classes, format, changeHandler} = props;
-
+  const windowSize = useWindowSize();
   const [range,setRange] = useState({type:'custom'})
+  const [stepSize,setStepSize] = useState(24)
   const [start,setStart] = useState(moment().startOf('day').subtract(2, 'weeks'))
   const [end,setEnd] = useState(moment().startOf('hour'))
 
@@ -56,6 +60,23 @@ function TimeBar(props) {
     changeHandler('range',{start:start.unix(),end:end.unix()})
   },[start,end])
   
+  useEffect(()=>{
+    switch (stepSize) {
+      case '1':
+      changeHandler('format',{stepSize:1,label:'ha ddd'})
+        break;
+      case '24':changeHandler('format',{stepSize:24,
+          label:'Do MM'})
+          break;
+      case '168':changeHandler('format',{stepSize:24*7,
+            label:'Do MM'})
+            break;
+    
+      default:console.log('defualt',stepSize)
+        break;
+    }
+  
+  },[stepSize])
   
   useEffect(()=>{
     switch (range.type) {
@@ -77,7 +98,15 @@ function TimeBar(props) {
         return (
           <Grid container className={classes.root}>
             <Grid item className={classes.toggleContainer}>
-                <ToggleButtonGroup
+            {windowSize.isMobile ?  <NativeSelect
+            value={range.type} onChange={(e)=>{
+              setRange({type:e.target.value})}}
+            input={<OutlinedInput name="Range" id="range-native-label-placeholder" />}
+          >
+            <option value="week">Past week</option>
+            <option value="month">past month</option>
+            <option value="quarter">past quarter</option>
+          </NativeSelect>: <React.Fragment> <ToggleButtonGroup
                   value={range.type}
                   exclusive
                   onChange={(e,v)=>{setRange({type:v})}}
@@ -87,6 +116,7 @@ function TimeBar(props) {
                   <ToggleButton classes={{label:classes.toggleButtonLabel}} value="quarter">past quarter</ToggleButton>
                   <ToggleButton classes={{label:classes.toggleButtonLabel}} value="custom">custom</ToggleButton>
                 </ToggleButtonGroup>
+                
                 {range.type === 'custom' && <form className={classes.form} noValidate>
                   <MuiPickersUtilsProvider utils={MomentUtils}>
                       <DatePicker
@@ -110,9 +140,20 @@ function TimeBar(props) {
                           className={classes.datePicker}
                       />
                   </MuiPickersUtilsProvider>
-                </form>}
+                </form>}</React.Fragment> }
            </Grid>
             <Grid item className={classes.toggleContainer}>
+            {windowSize.isMobile ?  <NativeSelect
+            value={stepSize} 
+            onChange={(e,v)=>
+              setStepSize(e.target.value)
+            }
+            input={<OutlinedInput name="format" id="format-label-placeholder" />}
+          >
+            <option value={1}>hourly</option>
+            <option value={24}>daily</option>
+            <option value={24*7}>weekly</option>
+          </NativeSelect>:
                 <ToggleButtonGroup
                   value={format.stepSize}
                   exclusive
@@ -124,7 +165,7 @@ function TimeBar(props) {
         label:'Do MMM'}} selected={format.stepSize === 24}>daily</ToggleButton>
                   <ToggleButton classes={{label:classes.toggleButtonLabel}} value={{stepSize:24*7,
         label:'Do MMM'}} selected={format.stepSize === 24*7}>weekly</ToggleButton>
-                </ToggleButtonGroup>
+                </ToggleButtonGroup>}
             </Grid>
           </Grid>
         );

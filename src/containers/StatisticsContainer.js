@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React, { Component } from 'react';
 
 import { withNavigation } from '../components/withNavigation';
@@ -7,6 +8,18 @@ import { compose } from "redux";
 import { withHandlers, lifecycle } from "recompose";
 import { connect } from "react-redux";
 import { withFirestore } from "../utilities/withFirestore";
+=======
+import React, { useEffect,useState } from 'react';
+import TrackerLineChart from '../components/Statistics/TrackerLineChart'
+import TrackerBarChart from '../components/Statistics/TrackerBarChart'
+import TrackerDonutChart from '../components/Statistics/TrackerDonutChart'
+import TrackerNumber from '../components/Statistics/TrackerNumber'
+import QueryNumber from '../components/Statistics/QueryNumber'
+import TrackerPercentage from '../components/Statistics/TrackerPercentage'
+import { withNavigation } from '../components/withNavigation';
+import TimeBar from '../components/Statistics/TimeBar';
+import  useCharts from "../hooks/useCharts";
+>>>>>>> production
 
 import withStyles from '@material-ui/core/styles/withStyles';
 import Grid from '@material-ui/core/Grid';
@@ -93,7 +106,8 @@ const styles = theme => ({
 });
 
 const ResponsiveGridLayout = WidthProvider(GridLayout);
-class StatisticsContainer extends Component {
+function StatisticsContainer(props) {
+  /*
     constructor(props) {
       super(props);
       this.state = { 
@@ -112,11 +126,7 @@ class StatisticsContainer extends Component {
      }
      moment.updateLocale('en', momentLocales);
     }
-    handleChange=(name, value)=> {
-        console.log(name, value)
-        this.setState({
-            [name]:value })
-    }
+    
     componentDidUpdate(prevProps){
       const {chartsConfig} = this.props
       if(!prevProps.chartsConfig && chartsConfig !== prevProps.chartsConfig){
@@ -157,21 +167,43 @@ class StatisticsContainer extends Component {
     setShowDialog = (val) => {
       this.setState({ showDialog: val });
     }
-
-    render() { 
-      console.log('props of stats',this.props)
-      const {range,format} = this.state;
-      const {classes} = this.props;
-      const charts = this.props.chartsConfig
+    */
+   const handleChange =(name, value)=> {
+    console.log(name, value)
+    //this.setState({[name]:value })
+  }
+    
+      
+      const {classes,uid} = props;
+      const charts = useCharts(uid)
+      const [layout,setLayout] = useState([])
+      const [range,setRange] = useState({
+        start: 1540897200,
+        end: 1541714400,
+      })
+      const [format,setFormat] = useState(
+        {
+          stepSize: 24,
+          label: 'Do MMM',
+        })
+      
+      useEffect(()=>{
+        console.log('charts',charts)
+       if(charts){
+         const layout = charts.map((chart)=>({i:chart.id,x:chart.layout.x,
+          y:chart.layout.y,
+          w:chart.layout.w,
+          h:chart.layout.h}))
+          console.log('layout',layout)
+        setLayout(layout)
+        }
+      },[charts])
+       
+  
       if(charts){
         return (
         <div className={classes.root}>
-          <Fab
-          className={classes.saveButton} 
-          onClick={this.handleSaveLayout}
-          color='primary'>
-            <SaveIcon/>
-          </Fab>
+          
 
           <ChartBuilder chart={this.state.chart}/>
           <ChartEditor
@@ -190,15 +222,16 @@ class StatisticsContainer extends Component {
 
           <Slide in direction="down"><React.Fragment>
             <LocationIndicator title="Statistics" showBorder />
-            <TimeBar format={format} changeHandler={this.handleChange} fromDate={this.state.from} toDate={this.state.to} />
+            <TimeBar format={format} changeHandler={handleChange}
+             fromDate={1540897200} 
+             toDate={1541714400} />
           </React.Fragment></Slide>
 
           <Grid container className={classes.grid}>
             <ResponsiveGridLayout style={{width:'100%'}} className={classes.layout} 
-              onLayoutChange={(layout) =>
-                this.onLayoutChange(layout)
-              }
-              layout={this.state.layout} cols={12} rowHeight={120} width={1200}
+            //  onLayoutChange={(layout) =>this.onLayoutChange(layout)}
+              layout={layout}
+              cols={12} rowHeight={120} width={1200}
             >
               {charts.map(chart => {
                 let chartElement;
@@ -228,7 +261,7 @@ class StatisticsContainer extends Component {
                 return(
                   <Grid key={chart.id} item className={classes.card}>
                     <IconButton aria-label="Configure" //className={classes.button}
-                      onClick={() => { this.handleChange('chart',chart) }}
+                      onClick={() => { handleChange('chart',chart) }}
                       className="edit-chart-button"
                     >
                       <EditIcon />
@@ -247,49 +280,7 @@ class StatisticsContainer extends Component {
             </Grid>
           )
         }
-    }
 }
-const enhance = compose(
-    // add redux store (from react context) as a prop
-    withFirestore,
-    // Handler functions as props
-    withHandlers({
-      loadData: props => () =>{
-          if(props.uid){
-            const chartsConfigListenerSettings = {collection:COLLECTIONS.admins,
-              doc:props.uid,
-              subcollections: [{collection: COLLECTIONS.charts}],
-             storeAs:'chartsConfig'
-          }
-            props.firestore.setListener(chartsConfigListenerSettings)}
-          },
-      updateChart: props => (chartId,config) =>{
-          props.firestore.update(
-        { collection: COLLECTIONS.admins, doc: props.uid ,
-          subcollections:[{collection:COLLECTIONS.charts,doc:chartId}]},
-          {...config}
-          )
-        }
-    }),
-    // Run functionality on component lifecycle
-    lifecycle({
-      // Load data when component mounts
-      componentDidMount(){
-        this.props.loadData()
-      },
-      componentDidUpdate(prevProps){
-        if(!prevProps.uid&&this.props.uid){
-          this.props.loadData()
-        }
-      }
-    }),
-    connect(({ firestore }) => ({
-      chartsConfig: firestore.ordered.chartsConfig // document data by id
-    }))
-  );
 
-  export default withNavigation(enhance(
-      compose(  
-            withStyles(styles)(StatisticsContainer)
-      )
-  ));
+
+export default withNavigation(withStyles(styles)(StatisticsContainer));

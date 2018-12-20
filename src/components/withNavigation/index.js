@@ -86,10 +86,6 @@ const navigationRoutes = [
         icon: <ConversationsIcon />,
         route: ROUTES.conversations,
     }, {
-        label: 'Leads',
-        icon: <LeadsIcon />,
-        route: ROUTES.leads,
-    }, {
         label: 'Subjects',
         icon: <SupervisorAccountIcon />,
         route: ROUTES.subjects,

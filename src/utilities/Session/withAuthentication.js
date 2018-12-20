@@ -5,7 +5,6 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 
 import { auth } from '../../store';
 import AuthenticationContainer from "../../containers/AuthenticationContainer";
-//import { useAuthedUser } from '../../hooks/useAuthedUser';
 
 const withAuthentication = (Component) => {
    
@@ -17,12 +16,12 @@ const withAuthentication = (Component) => {
             if (!authedUser && loading) {
                 auth.onAuthStateChanged(authUser => {
                     if (authUser) {
-                        setAuthedUser(authUser);
-                        setLoading(false);
-                    } else {
-                        setAuthedUser(null);
-                        setLoading(false);
-                    }
+                         setAuthedUser(authUser);
+                         setLoading(false);
+                     } else {
+                         setAuthedUser(null);
+                         setLoading(false);
+                     }
                 });
             }
         }, [auth]);
