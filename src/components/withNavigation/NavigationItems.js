@@ -93,10 +93,11 @@ function NavigationItems(props){
                         onClick={()=>{ goTo(x.route) }}
                         className={classes.item}
                         selected={ selectedIndex === i }
-                        classes={{selected: x.label === 'Statistics' ?
+                        classes={{selected: x.label === 'Statistics' || x.label === 'Marketing' ?
                             classNames(classes.selectedItem, classes.selectedItemAltBG)
                             : classes.selectedItem
                         }}
+                        style={x.incomplete && window.location.hostname !== 'localhost' ? { display:'none' } : {}}
                     >
                         <ListItemIcon className={classes.icon}>{x.icon}</ListItemIcon>
                     </ListItem>
