@@ -252,7 +252,7 @@ function StatisticsContainer(props) {
                     key={chart.id}
                     className={classes.card}
                     style={chart.type === 'number' || chart.type === 'percentage' || chart.type === 'queryNumber' ?
-                      { color: theme.palette.getContrastText(chart.trackers && chart.trackers[0].colour || chart.queries && chart.queries[0].colour || chart.colour) }
+                      { color: theme.palette.getContrastText(chart.trackers && chart.trackers.length > 0 && chart.trackers[0].colour || chart.queries && chart.queries.length > 0 && chart.queries[0].colour || chart.colour) }
                     : null}
                   >
                     <IconButton aria-label="Configure" //className={classes.button}

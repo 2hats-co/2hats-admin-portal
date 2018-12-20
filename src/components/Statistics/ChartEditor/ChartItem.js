@@ -4,7 +4,7 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import Grid from '@material-ui/core/Grid';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 
-import { SketchPicker } from 'react-color';
+import { ChromePicker } from 'react-color';
 import { randomColor } from 'randomcolor';
 
 import IconButton from '@material-ui/core/IconButton';
@@ -80,7 +80,7 @@ function ChartItem(props) {
                 //<ClickAwayListener onClick={() => { setShowColourPicker(false) }}>
                     <div className={ classes.popover }>
                         <div className={ classes.cover } onClick={() => { setShowColourPicker(!showColourPicker) }}/>
-                        <SketchPicker color={colour} onChange={(val) => { setColour(`rgb(${val.rgb.r}, ${val.rgb.g}, ${val.rgb.b})`) }} />
+                        <ChromePicker color={colour} onChange={(val) => { setColour(`rgb(${val.rgb.r}, ${val.rgb.g}, ${val.rgb.b})`) }} />
                     </div>
                 //</ClickAwayListener>
             : null }

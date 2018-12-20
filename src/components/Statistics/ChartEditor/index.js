@@ -139,7 +139,7 @@ function ChartEditor(props) {
     };
 
     const handleDone = () => {
-        const output = Object.assign({}, chart);
+        const output = Object.assign({ trackers:[], queries:[] }, chart);
 
         const transformedItems = output.items.map(x => ({...trackers[x.preset], colour:x.colour, id:x.id}));
 

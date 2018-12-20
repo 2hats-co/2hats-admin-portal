@@ -46,3 +46,13 @@ export const hexToRgb = (hex) => {
 }
 
 export const getRandomId = () => Math.random().toString(36).substring(7);
+
+export const idealTextColor = (rgbColor) => {
+    const splitColor = rgbColor.replace('rgb(','').replace(')','').split(',');
+    const components = { R:splitColor[0], G:splitColor[1], B:splitColor[2] };
+
+    const nThreshold = 105;
+    const bgDelta = (components.R * 0.299) + (components.G * 0.587) + (components.B * 0.114);
+
+    return ((255 - bgDelta) < nThreshold) ? "#000000" : "#ffffff";   
+}

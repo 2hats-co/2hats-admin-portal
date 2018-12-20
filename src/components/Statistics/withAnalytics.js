@@ -1,20 +1,18 @@
-import React, {useEffect, useState} from 'react';
-import {getTrackerLineData} from '../../utilities/analytics/index'
+import React, { useEffect, useState } from 'react';
 
-import {CLOUD_FUNCTIONS,callable} from '../../firebase/functions';
+import Grid from '@material-ui/core/Grid';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
-import flatten from 'ramda/es/flatten'
+import { getTrackerLineData } from '../../utilities/analytics/index'
+
+import { CLOUD_FUNCTIONS, callable } from '../../firebase/functions';
+import { idealTextColor } from '../../utilities';
+
 // This function takes a component...
-
 function withAnalytics(WrappedComponent) {
     // ...and returns another component...
     return function WithAnalytics(props){
-        const {
-            queries,
-            trackers,
-            range,
-            format,title
-        } = props
+        const { queries, trackers, range, format, title } = props
         const queriesToLoad =( queries ? queries.length : 0)
         const tackersToLoad = ( trackers ? trackers.length : 0)
         const [isLoading,setIsLoading] = useState(true)
@@ -23,20 +21,18 @@ function withAnalytics(WrappedComponent) {
         const updateData = (dataToAdd) =>{
             loadedData = loadedData.concat(dataToAdd)
             if(loadedData.length === (queriesToLoad+tackersToLoad)){
-                console.log('finished',loadedData)
+                // console.log('finished',loadedData)
                 setData(loadedData)
                 setIsLoading(false)
             }
-            console.log('data',data)
+            // console.log('data',data)
         }
         useEffect(() => {
             if (queries) {
                 queries.forEach(query=>
-                    {
-                        callable(
+                    {callable(
                             CLOUD_FUNCTIONS.stats,
-                           { filters:queries[0].filters, collection:queries[0].collection},
-                          //  { filters:query.filters, collection:"submissions" },
+                             { filters:query.filters, collection:query.collection },
                             o => {
                                 updateData([{...query, sum:o.data.value,data:[]}])
                                 },
@@ -61,10 +57,19 @@ function withAnalytics(WrappedComponent) {
             
                 })
             }
-        },[trackers])
+        },[trackers]);
 
-            if (isLoading)return (<p>loadin</p>)
-            else return <WrappedComponent trackers = {data} title={props.title}/>;  
-        }
+        const mainColor = trackers && trackers.length > 0 && trackers[0].colour || queries && queries.length > 0 && queries[0].colour;
+
+        if (isLoading) return (
+            <Grid container justify="center" alignItems="center" style={{
+                height: '100%',
+                backgroundColor: mainColor,
+            }}>
+                <CircularProgress style={{ color: idealTextColor(mainColor) }} />
+            </Grid>
+        );
+        else return <WrappedComponent trackers={data} title={props.title}/>;
+    }
 };
-export default withAnalytics
+export default withAnalytics;

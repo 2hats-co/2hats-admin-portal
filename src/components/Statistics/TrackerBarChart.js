@@ -22,7 +22,7 @@ function TrackerBarChart(props) {
             itemStyle: {
                 color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
                     { offset: 1, color: x.colour.replace('rgb', 'rgba').replace(')', ', 1)') },
-                    { offset: 0, color: x.colour.replace('rgb', 'rgba').replace(')', ', .67)') }
+                    { offset: 0, color: x.colour.replace('rgb', 'rgba').replace(')', ', .8)') }
                 ])
             },
             data,
