@@ -43,7 +43,10 @@ function QueryNumber(props) {
         <Grid container
             className={classes.root}
             justify="center" alignItems="center"
-            style={{backgroundColor:colour,color:theme.palette.getContrastText(colour)}}
+            style={{
+                backgroundImage: `linear-gradient(to bottom right, ${colour.replace('rgb','rgba').replace(')',', 1)')} 0%, ${colour.replace('rgb','rgba').replace(')',', .67)')} 100%)`,
+                color: theme.palette.getContrastText(colour)
+            }}
         >
             <Grid item>
                 <Typography variant="display2">{result.data.value}</Typography>

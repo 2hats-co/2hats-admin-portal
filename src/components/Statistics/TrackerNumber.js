@@ -22,7 +22,10 @@ function TrackerNumber(props) {
         <Grid container key={i}
             className={classes.root}
             justify="center" alignItems="center"
-            style={{backgroundColor:x.colour,color:theme.palette.getContrastText(x.colour)}}
+            style={{
+                backgroundImage: `linear-gradient(to bottom right, ${x.colour.replace('rgb','rgba').replace(')',', 1)')} 0%, ${x.colour.replace('rgb','rgba').replace(')',', .67)')} 100%)`,
+                color: theme.palette.getContrastText(x.colour)
+            }}
         >
             <Grid item>
                 <Typography variant="display2">{x.sum}</Typography>
