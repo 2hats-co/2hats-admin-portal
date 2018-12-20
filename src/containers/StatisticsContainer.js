@@ -1,25 +1,7 @@
-<<<<<<< HEAD
-import React, { Component } from 'react';
-
-import { withNavigation } from '../components/withNavigation';
-import TimeBar from '../components/Statistics/TimeBar';
-import { COLLECTIONS } from "../constants/firestore";
-import { compose } from "redux";
-import { withHandlers, lifecycle } from "recompose";
-import { connect } from "react-redux";
-import { withFirestore } from "../utilities/withFirestore";
-=======
 import React, { useEffect,useState } from 'react';
-import TrackerLineChart from '../components/Statistics/TrackerLineChart'
-import TrackerBarChart from '../components/Statistics/TrackerBarChart'
-import TrackerDonutChart from '../components/Statistics/TrackerDonutChart'
-import TrackerNumber from '../components/Statistics/TrackerNumber'
-import QueryNumber from '../components/Statistics/QueryNumber'
-import TrackerPercentage from '../components/Statistics/TrackerPercentage'
 import { withNavigation } from '../components/withNavigation';
 import TimeBar from '../components/Statistics/TimeBar';
 import  useCharts from "../hooks/useCharts";
->>>>>>> production
 
 import withStyles from '@material-ui/core/styles/withStyles';
 import Grid from '@material-ui/core/Grid';
@@ -47,8 +29,6 @@ import '../../node_modules/react-resizable/css/styles.css';
 
 import SaveIcon from '@material-ui/icons/Save';
 import LocationIndicator from '../components/LocationIndicator';
-import { momentLocales } from '../constants/momentLocales';
-import moment from 'moment';
 
 const styles = theme => ({
   root: {
@@ -177,6 +157,7 @@ function StatisticsContainer(props) {
       const {classes,uid} = props;
       const charts = useCharts(uid)
       const [layout,setLayout] = useState([])
+      const [showDialog, setShowDialog] = useState(false)
       const [range,setRange] = useState({
         start: 1540897200,
         end: 1541714400,
@@ -203,19 +184,17 @@ function StatisticsContainer(props) {
       if(charts){
         return (
         <div className={classes.root}>
-          
 
-          <ChartBuilder chart={this.state.chart}/>
           <ChartEditor
-            uid={this.props.uid}
-            showDialog={this.state.showDialog}
-            setShowDialog={this.setShowDialog}
+            uid={uid}
+            showDialog={showDialog}
+            setShowDialog={setShowDialog}
           />
 
           <Fab
             className={classes.addButton}
             color="primary"
-              onClick={() => { this.setShowDialog(true) }}
+              onClick={() => { setShowDialog(true) }}
           >
               <AddIcon/>
           </Fab>

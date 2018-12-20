@@ -1,6 +1,7 @@
 import React from 'react';
 
 import withStyles from '@material-ui/core/styles/withStyles';
+import Grid from '@material-ui/core/Grid';
 import Chip from '@material-ui/core/Chip';
 
 import ReactEchartsCore from 'echarts-for-react/lib/core';
@@ -38,65 +39,67 @@ function TrackerLineChart(props){
 
     const sums = trackers.map((x, i) =>
         <Chip key={i}
-            label={`${x.label} (Total: ${x.sum})`}
-            style={{ backgroundColor: x.colour, color: theme.palette.getContrastText(x.colour) }}
+            label={<React.Fragment><b>{x.label}</b>: {x.sum}</React.Fragment>}
+            style={{ backgroundColor: x.colour, color: theme.palette.getContrastText(x.colour), marginBottom: theme.spacing.unit }}
         />
     );
 
-    return <React.Fragment>
-    <ReactEchartsCore
-        echarts={echarts}
-        theme="light" style={{height:'100%'}}
-        option={{
-            title: {
-                text: title,
-                top: theme.spacing.unit * 2,
-                left: theme.spacing.unit * 2,
-                textStyle: {
-                    fontFamily: 'Helvetica Neue',
-                    fontSize: 20,
-                    fontWeight: 500,
+    return <Grid container direction="column" wrap="nowrap" alignItems="center" style={{ height:'100%' }}>
+    <Grid item xs style={{width:'100%'}}>
+        <ReactEchartsCore
+            echarts={echarts}
+            theme="light" style={{height:'100%'}}
+            option={{
+                title: {
+                    text: title,
+                    top: theme.spacing.unit * 2,
+                    left: theme.spacing.unit * 2,
+                    textStyle: {
+                        fontFamily: 'Helvetica Neue',
+                        fontSize: 20,
+                        fontWeight: 500,
+                    },
                 },
-            },
-            color: trackers.map(x => x.colour),
-            grid: {
-                left: theme.spacing.unit * 3,
-                right: theme.spacing.unit * 3,
-                bottom: theme.spacing.unit * 3,
-                containLabel: true,
-            },
+                color: trackers.map(x => x.colour),
+                grid: {
+                    left: theme.spacing.unit * 3,
+                    right: theme.spacing.unit * 3,
+                    bottom: theme.spacing.unit * 3,
+                    containLabel: true,
+                },
 
-            tooltip: { trigger: 'axis' },
+                tooltip: { trigger: 'axis' },
 
-            xAxis: {
-                data: xAxis,
-                type: 'category',
-                axisLabel: {
-                    fontSize: 14,
-                    color: theme.palette.text.primary,
+                xAxis: {
+                    data: xAxis,
+                    type: 'category',
+                    axisLabel: {
+                        fontSize: 14,
+                        color: theme.palette.text.primary,
+                    },
+                    axisLine: {
+                        lineStyle: { color: 'rgba(0,0,0,.2)' },
+                    },
                 },
-                axisLine: {
-                    lineStyle: { color: 'rgba(0,0,0,.2)' },
+                yAxis: {
+                    type: 'value',
+                    splitLine: { show: false },
+                    axisLabel: {
+                        fontSize: 14,
+                        color: theme.palette.text.primary,
+                    },
+                    axisLine: {
+                        lineStyle: { color: 'rgba(0,0,0,.2)' },
+                    },
                 },
-            },
-            yAxis: {
-                type: 'value',
-                splitLine: { show: false },
-                axisLabel: {
-                    fontSize: 14,
-                    color: theme.palette.text.primary,
-                },
-                axisLine: {
-                    lineStyle: { color: 'rgba(0,0,0,.2)' },
-                },
-            },
-            series: seriesData,
-            legend: { show: false },
-        }}
-    />
-    <div style={{ position:'absolute', top:theme.spacing.unit*2, right:theme.spacing.unit*6 }}>
+                series: seriesData,
+                legend: { show: false },
+            }}
+        />
+    </Grid>
+    <Grid item style={{ padding: theme.spacing.unit * 2, paddingTop: 0, paddingBottom: theme.spacing.unit, textAlign: 'center' }}>
         { sums }
-    </div>
-    </React.Fragment>;
+    </Grid>
+    </Grid>;
 }
 export default withAnalytics(withStyles(null, {withTheme:true})(TrackerLineChart));

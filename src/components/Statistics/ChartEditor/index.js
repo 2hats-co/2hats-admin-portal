@@ -39,6 +39,24 @@ const styles = theme => ({
     },
 });
 
+const getDefaultLayout = (chartType) => {
+    switch (chartType) {
+        case 'line':
+        case 'bar':
+            return { x:0, y:0, w:6, h:3 };
+
+        case 'donut':
+            return { x:0, y:0, w:4, h:3 };
+
+        case 'percentage':
+            return { x:0, y:0, w:2, h:2 };
+
+        case 'number':
+        default:
+            return { x:0, y:0, w:2, h:1 };
+    }
+}
+
 function ChartEditor(props) {
     const { classes, showDialog, setShowDialog, uid, chartToEdit } = props;
 
@@ -91,7 +109,7 @@ function ChartEditor(props) {
     };
 
     const handleDone = () => {
-        const output = Object.assign({}, chart);
+        const output = Object.assign({ layout: getDefaultLayout(chart.type) }, chart);
 
         const transformedItems = output.items.map(x => ({...trackers[x.preset], colour:x.colour, id:x.id}));
 

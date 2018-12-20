@@ -8,10 +8,14 @@ export const trackers = {
     discussionGroup: { type:'link', name:'DiscussionGroup', label:'Discussion Group links', itemType:'tracker' },
 
     submissionAccepted: { type:'talentTeam', name:'submissionAccepted', label:'Accepted submissions', itemType:'tracker' },
-    submissionProcessed: { type:'talentTeam', name:'submissionProcessed', label:'Processed submissions', itemType:'tracker' },
+    // submissionProcessed: { type:'talentTeam', name:'submissionProcessed', label:'Processed submissions', itemType:'tracker' },
     submissionRejected: { type:'talentTeam', name:'submissionRejected', label:'Rejected submissions', itemType:'tracker' },
-    submissionReviewed: { type:'talentTeam', name:'submissionReviewed', label:'Reviewed submissions', itemType:'tracker' },
-    submissionFeedbacked: { type:'talentTeam', name:'feedbacked', label:'Feedbacked submissions', itemType:'tracker' },
+    // submissionReviewed: { type:'talentTeam', name:'submissionReviewed', label:'Reviewed submissions', itemType:'tracker' },
+    // submissionFeedbacked: { type:'talentTeam', name:'feedbacked', label:'Feedbacked submissions', itemType:'tracker' },
+    assessmentAccepted: { type:'talentTeam', name:'assessmentAccepted', label:'Accepted assements', itemType:'tracker' },
+    assessmentRejected: { type:'talentTeam', name:'assessmentRejected', label:'Rejected assements', itemType:'tracker' },
+    interviewAccepted: { type:'talentTeam', name:'interviewAccepted', label:'Accepted interviews', itemType:'tracker' },
+    interviewRejected: { type:'talentTeam', name:'interviewRejected', label:'Rejected interviews', itemType:'tracker' },
 
     feedbacked: { type:'me', name:'feedbacked', label:'Feedbacked by you', itemType:'tracker' },
 

@@ -7,6 +7,7 @@ import ReactEchartsCore from 'echarts-for-react/lib/core';
 import echarts from 'echarts/lib/echarts';
 import 'echarts/lib/chart/pie';
 import 'echarts/lib/component/title';
+import 'echarts/lib/component/legend';
 import 'echarts/lib/component/toolbox';
 
 import withAnalytics from './withAnalytics'
@@ -33,7 +34,7 @@ function TrackerDonutChart(props){
                 formatter: "<b>{b}</b> <br/>{c} ({d}%)"
             },
             legend: {
-                show: 'false',
+                show: 'true',
             },
             color: trackers.map(x=>x.colour),
             series: [
@@ -45,6 +46,9 @@ function TrackerDonutChart(props){
                     label: {
                         normal: {
                             show: true,
+                            position: 'inside',
+                            textBorderWidth: 2,
+                            textBorderColor: '#000',
                             textStyle: { fontSize: 16 },
                         },
                         emphasis: {

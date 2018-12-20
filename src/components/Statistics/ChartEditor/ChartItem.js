@@ -49,7 +49,7 @@ function ChartItem(props) {
     const { classes, chartType, index, handleChangeItem, handleDeleteItem } = props;
 
     const [showColourPicker, setShowColourPicker] = useState(false);
-    const [colour, setColour] = useState(randomColor({ luminosity: 'bright', format: 'rgb' }));
+    const [colour, setColour] = useState(randomColor({ format: 'rgb' }));
     const [preset, setPreset] = useState('');
 
     let suggestions;
