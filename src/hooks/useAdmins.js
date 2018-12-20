@@ -20,6 +20,7 @@ export function useAdmins(uid) {
     if(!admins&&uid){
       handleGetAdmins(uid)
   }
+  return () => {firestore.collection(COLLECTIONS.admins).onSnapshot(() => {});};
 },[admins]);
   return [admins, setAdmins];
 }
