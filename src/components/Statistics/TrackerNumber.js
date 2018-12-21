@@ -10,14 +10,18 @@ const styles = theme => ({
     root: {
         height: '100%',
         padding: theme.spacing.unit * 2,
+        paddingTop: theme.spacing.unit * 1.5,
         textAlign: 'center',
 
-        '& *': { color: 'inherit' },
+        '& *': {
+            color: 'inherit',
+            lineHeight: 1.1,
+        },
     },
 });
 
 function TrackerNumber(props) {
-    const {classes, theme, trackers} = props;
+    const {classes, theme, trackers, layout} = props;
     return trackers.map((x, i) =>
         <Grid container key={i}
             className={classes.root}
@@ -28,8 +32,12 @@ function TrackerNumber(props) {
             }}
         >
             <Grid item>
-                <Typography variant="display2">{x.sum}</Typography>
-                <Typography variant="subheading">{x.label}</Typography>
+                <Typography variant={layout.w > 1 ? 'display2' : 'display1'}>
+                    {x.sum}
+                </Typography>
+                <Typography variant={layout.w > 1 ? 'subheading' : 'body2'}>
+                    {x.label}
+                </Typography>
             </Grid>
         </Grid>
     );

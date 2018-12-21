@@ -16,7 +16,10 @@ const styles = theme => ({
         height: 64,
     },
     showBorder: {
-        boxShadow: `0 -1px 0 ${theme.palette.divider} inset`,
+        // boxShadow: `0 -1px 0 ${theme.palette.divider} inset`,
+        boxShadow: theme.shadows[1],
+        zIndex: 49,
+        position: 'relative',
     },
     title: {
         lineHeight: '64px',

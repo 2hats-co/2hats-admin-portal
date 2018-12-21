@@ -26,6 +26,7 @@ const styles = theme => ({
     height: 64,
     paddingTop: (64 - 32) / 2,
     paddingBottom: (64 - 32) / 2,
+    zIndex: 99,
   },
   toggleContainer: {
     height: 32,

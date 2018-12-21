@@ -78,7 +78,7 @@ function withAnalytics(WrappedComponent) {
                 <CircularProgress style={{ color: idealTextColor(mainColor) }} />
             </Grid>
         );
-        else return <WrappedComponent trackers={data} title={props.title} width={props.width}/>;
+        else return <WrappedComponent trackers={data} title={props.title} layout={props.layout}/>;
     }
 };
 export default withAnalytics;

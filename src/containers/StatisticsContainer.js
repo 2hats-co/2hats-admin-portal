@@ -186,31 +186,31 @@ function StatisticsContainer(props) {
                // this.onLayoutChange(layout)
               }
               layout={layout}
-              cols={12} rowHeight={120} width={1200}
+              cols={12} rowHeight={100} width={1200}
             >
               {charts.map(chart => {
                 let chartElement;
                 switch (chart.type) {
                   case 'line':
-                    chartElement = (<TrackerLineChart title={chart.title} key={chart.id} trackers={chart.trackers} range={range} format={format}/>)
+                    chartElement = (<TrackerLineChart title={chart.title} key={chart.id} trackers={chart.trackers} range={range} format={format} layout={chart.layout} />)
                     break;
                   case 'bar':
-                    chartElement = (<TrackerBarChart title={chart.title} key={chart.id} trackers={chart.trackers} range={range} format={format}/>)
+                    chartElement = (<TrackerBarChart title={chart.title} key={chart.id} trackers={chart.trackers} range={range} format={format} layout={chart.layout} />)
                     break; 
                   case 'donut':
-                    chartElement = (<TrackerDonutChart title={chart.title} key={chart.id} trackers={chart.trackers} queries={chart.queries} range={range} format={format}/>)
+                    chartElement = (<TrackerDonutChart title={chart.title} key={chart.id} trackers={chart.trackers} queries={chart.queries} range={range} format={format} layout={chart.layout} />)
                     break;
                   case 'number':
-                    chartElement = (<TrackerNumber title={chart.title} key={chart.id} trackers={chart.trackers}  queries={chart.queries} range={range} format={format}/>)
+                    chartElement = (<TrackerNumber title={chart.title} key={chart.id} trackers={chart.trackers}  queries={chart.queries} range={range} format={format} layout={chart.layout} />)
                     break;
                   case 'percentage':
-                    chartElement = (<TrackerPercentage title={chart.title} key={chart.id} trackers={chart.trackers} queries={chart.queries} range={range} format={format} width={chart.layout.w} />)
+                    chartElement = (<TrackerPercentage title={chart.title} key={chart.id} trackers={chart.trackers} queries={chart.queries} range={range} format={format} layout={chart.layout} />)
                     break;
                   case 'queryNumber':
-                    chartElement = (<QueryNumber title={chart.title} query={chart.query} colour={chart.colour}/>)
+                    chartElement = (<QueryNumber title={chart.title} query={chart.query} colour={chart.colour} layout={chart.layout} />)
                     break;
                   default:
-                    chartElement = (<TrackerLineChart title={chart.title} key={chart.id} trackers={chart.trackers} range={range} format={format}/>)
+                    chartElement = (<TrackerLineChart title={chart.title} key={chart.id} trackers={chart.trackers} range={range} format={format} layout={chart.layout} />)
                     break;
                 }
                 return(

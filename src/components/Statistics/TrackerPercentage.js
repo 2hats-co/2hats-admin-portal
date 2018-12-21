@@ -4,6 +4,7 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import LinearProgress from '@material-ui/core/LinearProgress';
 
 import withAnalytics from './withAnalytics';
 
@@ -14,8 +15,6 @@ const styles = theme => ({
     container: {
         width: '100%',
         height: '100%',
-        // padding: theme.spacing.unit * 2,
-        // paddingBottom: '100%',
         position: 'relative',
     },
     circularProgress: {
@@ -32,38 +31,54 @@ const styles = theme => ({
         width: '100%',
         height: '100%',
     },
-    circularProgressCircle: {
-        fill: 'rgba(0,0,0,.2)',
+    circularProgressBgCircle: {
+        opacity: .2,
+    },
+    linearProgress: {
+        width: '100%',
+        position: 'absolute',
+        bottom: 0,
+        backgroundColor: 'transparent',
+    },
+    linearProgressBar: {
+        backgroundColor: 'currentColor',
     },
     textContainer: {
         position: 'absolute',
         top: 0,
         left: 0,
         right: 0,
-        bottom: 0,
+        bottom: 8,
         zIndex: 9,
 
         textAlign: 'center',
-        '& *': { color: 'inherit' }, 
-    },
-    percentage: {
-        // top: -theme.spacing.unit,
-        // right: -6,
-        // position: 'relative',
-        // zIndex: 99,
-
-        // marginBottom: 56,
+        '& *': {
+            color: 'inherit',
+            lineHeight: 1.1,
+        },
+        '& small': {
+            fontSize: '.67em',
+            fontWeight: 400,
+        },
     },
 });
 
 function TrackerPercentage(props) {
-    const { classes, theme, title, trackers, width } = props;
-    console.log('width', width)
-    if(trackers.length < 2) return <p>loadin %</p>
-    const colour = trackers[0].colour;
-    let percentage = 0;
+    const { classes, theme, title, trackers, layout } = props;
 
-    if (trackers[0].sum<trackers[1].sum) {
+    const colour = trackers[0].colour;
+
+    if (trackers.length < 2) return (
+    <Grid container justify="center" alignItems="center" style={{
+            height: '100%',
+            backgroundImage: `linear-gradient(to bottom right, ${colour.replace('rgb','rgba').replace(')',', 1)')} 0%, ${colour.replace('rgb','rgba').replace(')',', .67)')} 100%)`,
+    }}>
+        <CircularProgress style={{ color: theme.palette.getContrastText(colour) }} />
+    </Grid>
+    );
+
+    let percentage = 0;
+    if (trackers[0].sum < trackers[1].sum) {
         percentage = Math.round((trackers[0].sum/trackers[1].sum)*100);
     } else {
         percentage = Math.round((trackers[1].sum/trackers[0].sum)*100);
@@ -77,18 +92,38 @@ function TrackerPercentage(props) {
                 color: theme.palette.getContrastText(colour)
             }}
         >
-            {width > 1 && <Grid item className={classes.container}>
+            {layout.w > 1 && layout.h > 1 ?
+            <Grid item className={classes.container}>
                 <CircularProgress
                     className={classes.circularProgress}
-                    classes={{ svg:classes.circularProgressSvg, circle:classes.circularProgressCircle }}
+                    classes={{ svg:classes.circularProgressSvg, circle:classes.circularProgressBgCircle }}
+                    variant="determinate" value={100} size="100%" thickness={3} />
+                <CircularProgress
+                    className={classes.circularProgress}
+                    classes={{ svg:classes.circularProgressSvg }}
                     variant="static" value={percentage} size="100%" thickness={3} />
-            </Grid>}
+            </Grid>
+
+            : <LinearProgress variant="determinate" value={percentage}
+                className={classes.linearProgress}
+                classes={{ bar: classes.linearProgressBar }}
+            />
+            }
         </Grid>
 
-        <Grid container className={classes.textContainer} justify="center" alignItems="center">
+        <Grid container justify="center" alignItems="center"
+            className={classes.textContainer}
+            style={layout.w > 1 && layout.h > 1 ? { padding: theme.spacing.unit * 4 } : {}}
+        >
             <Grid item>
-                <Typography className={classes.percentage} variant="display2">{percentage}<small>%</small></Typography>
-                <Typography variant="subheading">{title}</Typography>
+                <Typography className={classes.percentage}
+                    variant={layout.w > 1 ? 'display2' : 'display1'}
+                >
+                    {percentage}<small>%</small>
+                </Typography>
+                <Typography variant={layout.w > 1 ? 'subheading' : 'body2'}>
+                    {title}
+                </Typography>
             </Grid>
         </Grid>
     </React.Fragment>);
