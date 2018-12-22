@@ -59,15 +59,22 @@ const MarketingContainer = Loadable({
 function App() {
   const currentUser = useAuthedUser();
 
-  if (!currentUser || currentUser.isLoading) return loadingCard;
+  if (currentUser && currentUser.isLoading) return loadingCard;
 
   const Theme = generateTheme(
-    (currentUser.adminPortal && currentUser.adminPortal.theme) || 'light',
-    (currentUser.adminPortal && currentUser.adminPortal.themeColor) ||
+    (currentUser && currentUser.adminPortal && currentUser.adminPortal.theme) ||
+      'light',
+    (currentUser &&
+      currentUser.adminPortal &&
+      currentUser.adminPortal.themeColor) ||
       ORANGE_COLOR
   );
 
-  if (currentUser.adminPortal && currentUser.adminPortal.theme === 'dark') {
+  if (
+    currentUser &&
+    currentUser.adminPortal &&
+    currentUser.adminPortal.theme === 'dark'
+  ) {
     document.body.style.backgroundColor = Theme.palette.background.default;
   }
 
@@ -77,7 +84,9 @@ function App() {
         <div
           className="app"
           style={
-            currentUser.adminPortal && currentUser.adminPortal.theme === 'dark'
+            currentUser &&
+            currentUser.adminPortal &&
+            currentUser.adminPortal.theme === 'dark'
               ? { backgroundColor: '#222' }
               : {}
           }
