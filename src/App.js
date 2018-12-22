@@ -2,26 +2,17 @@ import React from 'react';
 import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
 import Loadable from 'react-loadable';
 import Grid from '@material-ui/core/Grid';
-import CircularProgress from '@material-ui/core/CircularProgress';
 //routing
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import Theme from './Theme';
+import generateTheme, { ORANGE_COLOR } from './Theme';
 import { ROUTES } from './constants/routes';
 import Landing from './components/Landing';
-// containers
-//import TemplateGenerator from './components/TemplateGenerator'
+// import withAuthentication from './utilities/Session/withAuthentication';
+import { useAuthedUser } from './hooks/useAuthedUser';
+import LoadingHat from './components/LoadingHat';
 
 //containers
-const loadingCard = (
-  <Grid
-    container
-    alignItems="center"
-    justify="center"
-    style={{ height: '100%', position: 'absolute', top: 0, left: 0 }}
-  >
-    <CircularProgress size={64} />
-  </Grid>
-);
+const loadingCard = <LoadingHat />;
 
 const StatisticsContainer = Loadable({
   loader: () => import('./containers/StatisticsContainer'),
@@ -66,10 +57,31 @@ const MarketingContainer = Loadable({
 });
 
 function App() {
+  const currentUser = useAuthedUser();
+
+  if (!currentUser || currentUser.isLoading) return loadingCard;
+
+  const Theme = generateTheme(
+    (currentUser.adminPortal && currentUser.adminPortal.theme) || 'light',
+    (currentUser.adminPortal && currentUser.adminPortal.themeColor) ||
+      ORANGE_COLOR
+  );
+
+  if (currentUser.adminPortal && currentUser.adminPortal.theme === 'dark') {
+    document.body.style.backgroundColor = Theme.palette.background.default;
+  }
+
   return (
     <MuiThemeProvider theme={Theme}>
       <Router>
-        <div className="app">
+        <div
+          className="app"
+          style={
+            currentUser.adminPortal && currentUser.adminPortal.theme === 'dark'
+              ? { backgroundColor: '#222' }
+              : {}
+          }
+        >
           <Switch>
             <Route
               exact

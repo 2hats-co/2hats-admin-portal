@@ -12,8 +12,6 @@ import LocationIndicator from '../components/LocationIndicator';
 import Filter from '../components/Subjects/Filter';
 import SubjectItem from '../components/Subjects/SubjectItem';
 
-import useSubjectFilter from '../hooks/useSubjectFilter';
-
 const styles = theme => ({
   root: {
     height: '100vh',
@@ -30,7 +28,7 @@ const styles = theme => ({
   subjectListContainer: {
     width: '100%',
     overflowY: 'scroll',
-    borderTop: '1px solid #eee',
+    borderTop: `1px solid ${theme.palette.divider}`,
   },
 });
 

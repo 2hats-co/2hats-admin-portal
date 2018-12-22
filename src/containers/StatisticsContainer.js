@@ -63,6 +63,7 @@ const styles = theme => ({
     boxShadow: theme.shadows[1],
     overflow: 'hidden',
     transition: 'border-radius .2s',
+    color: theme.palette.text.primary,
 
     '& .edit-chart-button': {
       opacity: 0,

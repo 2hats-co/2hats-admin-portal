@@ -66,35 +66,84 @@ const styles = theme => ({
       position: 'absolute',
       left: 28,
       bottom: 0,
+      paperRoot: {
+        borderRadius: theme.shape.roundBorderRadius,
+        width: 664,
+        margin: '48px auto 0',
+        outline: 'none',
+        maxHeight: 'calc(100vh - 96px)',
+        overflow: 'hidden',
+      },
+      searchIcon: {
+        fontSize: 28,
+        marginRight: 12,
+        opacity: 0.54,
+      },
+      searchInput: {
+        fontSize: 24,
+        fontWeight: 500,
+        padding: '12px 0 12px 24px',
+        width: 640,
+        position: 'relative',
+
+        '&::after': {
+          content: '""',
+          display: 'block',
+          width: 612,
+          height: 1,
+          backgroundColor: theme.palette.divider,
+
+          position: 'absolute',
+          left: 28,
+          bottom: 0,
+        },
+      },
+      listWrapper: {
+        maxHeight: 'calc(100vh - 96px - 64px)',
+        overflowY: 'scroll',
+      },
+      listRoot: {
+        // borderRadius: '0 0 20px 20px',
+        overflow: 'hidden',
+      },
+      listItem: {
+        transition: 'background-color .2s',
+        '&:hover': {
+          backgroundColor: theme.palette.divider,
+        },
+      },
+      listIcon: {
+        margin: 0,
+      },
     },
-  },
-  listWrapper: {
-    maxHeight: 'calc(100vh - 96px - 64px)',
-    overflowY: 'scroll',
-  },
-  listRoot: {
-    // borderRadius: '0 0 20px 20px',
-    overflow: 'hidden',
-  },
-  listItem: {
-    transition: 'background-color .2s',
-    '&:hover': {
-      backgroundColor: theme.palette.divider,
+    listWrapper: {
+      maxHeight: 'calc(100vh - 96px - 64px)',
+      overflowY: 'scroll',
     },
-  },
-  listIcon: {
-    margin: 0,
-  },
-  secondaryAction: {
-    right: theme.spacing.unit,
-  },
-  noResults: {
-    paddingLeft: '40px !important',
-    opacity: 0.54,
-  },
-  listLoader: {
-    margin: `0 auto ${theme.spacing.unit * 2}px`,
-    width: 620,
+    listRoot: {
+      // borderRadius: '0 0 20px 20px',
+      overflow: 'hidden',
+    },
+    listItem: {
+      transition: 'background-color .2s',
+      '&:hover': {
+        backgroundColor: theme.palette.divider,
+      },
+    },
+    listIcon: {
+      margin: 0,
+    },
+    secondaryAction: {
+      right: theme.spacing.unit,
+    },
+    noResults: {
+      paddingLeft: '40px !important',
+      opacity: 0.54,
+    },
+    listLoader: {
+      margin: `0 auto ${theme.spacing.unit * 2}px`,
+      width: 620,
+    },
   },
 });
 
