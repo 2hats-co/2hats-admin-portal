@@ -11,7 +11,6 @@ import Chip from '@material-ui/core/Chip';
 import AddIcon from '@material-ui/icons/Add';
 import { Formik } from 'formik';
 //import Yup from 'yup';
-import { firestore } from '../../store';
 const styles = theme => ({
   root: {
     margin: theme.spacing.unit * 5,
@@ -39,7 +38,7 @@ const styles = theme => ({
 });
 
 function CampaignEditor(props) {
-  const { classes, action } = props;
+  const { classes, action, actions } = props;
   return (
     <Formik
       initialValues={{
@@ -53,10 +52,8 @@ function CampaignEditor(props) {
         message: '',
       }}
       onSubmit={(values, { setSubmitting }) => {
-        setTimeout(() => {
-          alert(JSON.stringify(values, null, 2));
-          setSubmitting(false);
-        }, 500);
+        actions.create(values);
+        console.log(values);
       }}
     >
       {formikProps => {
