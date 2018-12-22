@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {withRouter} from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 
 import withStyles from '@material-ui/core/styles/withStyles';
 import Grid from '@material-ui/core/Grid';
@@ -19,7 +19,7 @@ import LeadsIcon from '@material-ui/icons/BusinessCenter';
 import MarketingIcon from '@material-ui/icons/RecordVoiceOver';
 import NotificationIcon from '@material-ui/icons/Notifications';
 
-import {ROUTES} from '../../constants/routes';
+import { ROUTES } from '../../constants/routes';
 
 import logo from '../../assets/logo/WhiteIcon.svg';
 import NavigationItems from './NavigationItems';
@@ -30,171 +30,208 @@ import metadata from '../../metadata.json';
 
 import { useAdmins } from '../../hooks/useAdmins';
 import { useAuthedUser } from '../../hooks/useAuthedUser';
-import {AdminsProvider} from '../../contexts/AdminsContext'
+import { AdminsProvider } from '../../contexts/AdminsContext';
 const styles = theme => ({
-    leftNav: {
-        backgroundColor: theme.palette.primary.main,
-        color: theme.palette.common.white,
-        width: 64,
-        height: '100vh',
-        position: 'relative',
-        zIndex: 999,
-        overflowY: 'auto',
-        overflowX: 'hidden',
-    },
-    logo: {
-        width: 40,
-        height: 34,
-        margin: '0 auto',
-        padding: '15px 0',
-        display: 'block',
-        userDrag: 'none',
-        userSelect: 'none',
-        // borderBottom: '1px solid rgba(0,0,0,.12)',
-    },
-    searchButton: {
-        color: 'rgba(255,255,255,.87)',
-        // marginTop: theme.spacing.unit,
-    },
-    notificationButton: {
-        color: 'rgba(255,255,255,.87)',
-        display: 'none',
-    },
-    avatar: {
-        backgroundColor: 'rgba(255,255,255,.87)',
-        color: theme.palette.primary.main,
-        fontWeight: 500,
-        margin: theme.spacing.unit * 1.5,
-    },
-    avatarSpinner: {
-        margin: theme.spacing.unit * 1.5,
-    },
+  leftNav: {
+    backgroundColor: theme.palette.primary.main,
+    color: theme.palette.common.white,
+    width: 64,
+    height: '100vh',
+    position: 'relative',
+    zIndex: 999,
+    overflowY: 'auto',
+    overflowX: 'hidden',
+  },
+  logo: {
+    width: 40,
+    height: 34,
+    margin: '0 auto',
+    padding: '15px 0',
+    display: 'block',
+    userDrag: 'none',
+    userSelect: 'none',
+    // borderBottom: '1px solid rgba(0,0,0,.12)',
+  },
+  searchButton: {
+    color: 'rgba(255,255,255,.87)',
+    // marginTop: theme.spacing.unit,
+  },
+  notificationButton: {
+    color: 'rgba(255,255,255,.87)',
+    display: 'none',
+  },
+  avatar: {
+    backgroundColor: 'rgba(255,255,255,.87)',
+    color: theme.palette.primary.main,
+    fontWeight: 500,
+    margin: theme.spacing.unit * 1.5,
+  },
+  avatarSpinner: {
+    margin: theme.spacing.unit * 1.5,
+  },
 });
 
 const navigationRoutes = [
-    {
-        label: 'Statistics',
-        icon: <StatisticsIcon />,
-        route: ROUTES.stats,
-    }, {
-        label: 'Submissions',
-        icon: <DescriptionIcon />,
-        route: ROUTES.pending,
-        subRoutes: [ROUTES.submissions, ROUTES.pending, ROUTES.rejected, ROUTES.accepted],
-    }, {
-        label: 'Conversations',
-        icon: <ConversationsIcon />,
-        route: ROUTES.conversations,
-        incomplete: true,
-    }, {
-        label: 'Subjects',
-        icon: <SupervisorAccountIcon />,
-        route: ROUTES.subjects,
-        incomplete: true,
-    }, {
-        label: 'Marketing',
-        icon: <MarketingIcon />,
-        route: ROUTES.marketingLeadGeneration,
-        subRoutes: [ROUTES.marketingLeadGeneration, ROUTES.marketingEmail],
-        incomplete: true,
-    },
+  {
+    label: 'Statistics',
+    icon: <StatisticsIcon />,
+    route: ROUTES.stats,
+  },
+  {
+    label: 'Submissions',
+    icon: <DescriptionIcon />,
+    route: ROUTES.pending,
+    subRoutes: [
+      ROUTES.submissions,
+      ROUTES.pending,
+      ROUTES.rejected,
+      ROUTES.accepted,
+    ],
+  },
+  {
+    label: 'Conversations',
+    icon: <ConversationsIcon />,
+    route: ROUTES.conversations,
+    incomplete: true,
+  },
+  {
+    label: 'Subjects',
+    icon: <SupervisorAccountIcon />,
+    route: ROUTES.subjects,
+    incomplete: true,
+  },
+  {
+    label: 'Marketing',
+    icon: <MarketingIcon />,
+    route: ROUTES.marketingLeadGeneration,
+    subRoutes: [ROUTES.marketingLeadGeneration, ROUTES.marketingEmail],
+    incomplete: true,
+  },
 ];
 
+export default function withNavigation(WrappedComponent) {
+  function WithNavigation(props) {
+    const { history, classes, displayName, uid, location } = props;
 
-export const withNavigation = (WrappedComponent) => {
-    function WithNavigation(props) {
-        const { history, classes, displayName, uid, location } = props;
-        
-        const [ showSearch, setShowSearch ] = useState(false);
-        const currentUser = useAuthedUser()
-        let [admins] = useAdmins(uid)
-        const goTo = (route) => {
-            history.push(route);
+    const [showSearch, setShowSearch] = useState(false);
+    const currentUser = useAuthedUser();
+    let [admins] = useAdmins(uid);
+    const goTo = route => {
+      history.push(route);
+    };
+    const path = location.pathname;
+
+    let index = 0;
+
+    for (let i = 0; i < navigationRoutes.length; i++) {
+      if (path === navigationRoutes[i].route) index = i;
+      if (navigationRoutes[i].subRoutes) {
+        for (let subRoute of navigationRoutes[i].subRoutes) {
+          if (path === subRoute) index = i;
         }
-        const path = location.pathname;
+      }
+    }
 
-        let index = 0;
+    let initials;
+    if (displayName) initials = getInitials(displayName);
+    console.log('admins', admins);
+    return (
+      <React.Fragment>
+        <AdminsProvider value={admins}>
+          <Grid container wrap="nowrap">
+            <Slide in direction="right">
+              <Grid item className={classes.leftNav}>
+                <Grid
+                  container
+                  style={{ height: '100vh' }}
+                  justify="center"
+                  alignContent="space-between"
+                >
+                  <Grid item>
+                    <Tooltip
+                      title={
+                        <React.Fragment>
+                          <b>Build {metadata.hash}</b>
+                          <div>{new Date(metadata.date).toLocaleString()}</div>
+                        </React.Fragment>
+                      }
+                      placement="right"
+                    >
+                      <img
+                        alt="2hats logo"
+                        src={logo}
+                        className={classes.logo}
+                      />
+                    </Tooltip>
+                    <Tooltip title="Search candidates" placement="right">
+                      <IconButton
+                        className={classes.searchButton}
+                        onClick={() => {
+                          setShowSearch(true);
+                        }}
+                      >
+                        <SearchIcon />
+                      </IconButton>
+                    </Tooltip>
+                  </Grid>
+                  <Grid item>
+                    <NavigationItems
+                      goTo={goTo}
+                      currentLocation={path}
+                      selectedIndex={index}
+                      navigationRoutes={navigationRoutes}
+                    />
+                  </Grid>
+                  <Grid item style={{ textAlign: 'center' }}>
+                    <Tooltip title="Notifications" placement="right">
+                      <IconButton className={classes.notificationButton}>
+                        <NotificationIcon />
+                      </IconButton>
+                    </Tooltip>
+                    {currentUser && displayName && uid ? (
+                      <Fade in direction="right">
+                        <Tooltip
+                          title={
+                            <React.Fragment>
+                              <b>{displayName}</b>
+                              <div>{currentUser.UID}</div>
+                            </React.Fragment>
+                          }
+                          placement="right"
+                          leaveDelay={5000}
+                        >
+                          <Avatar
+                            src={currentUser.avatarURL}
+                            className={classes.avatar}
+                          >
+                            {initials ? initials : null}
+                          </Avatar>
+                        </Tooltip>
+                      </Fade>
+                    ) : (
+                      <CircularProgress
+                        color="inherit"
+                        className={classes.avatarSpinner}
+                      />
+                    )}
+                  </Grid>
+                </Grid>
+              </Grid>
+            </Slide>
+            <Fade in timeout={400}>
+              <Grid item xs>
+                <WrappedComponent {...props} classes={null} />
+              </Grid>
+            </Fade>
+          </Grid>
 
-        for (let i = 0; i < navigationRoutes.length; i++) {
-            if (path === navigationRoutes[i].route) index = i;
-            if (navigationRoutes[i].subRoutes) {
-                for (let subRoute of navigationRoutes[i].subRoutes) {
-                    if (path === subRoute) index = i;
-                }
-            }
-        }
+          {showSearch && (
+            <Search showSearch={showSearch} setShowSearch={setShowSearch} />
+          )}
+        </AdminsProvider>
+      </React.Fragment>
+    );
+  }
 
-        let initials;
-        if (displayName) initials = getInitials(displayName);
-        console.log('admins',admins)
-        return(<React.Fragment>
-             <AdminsProvider value={admins}>
-             <Grid container wrap="nowrap">
-                <Slide in direction="right">
-                    <Grid item className={classes.leftNav}>
-                        <Grid container style={{height:'100vh'}} justify="center" alignContent="space-between">
-                            <Grid item>
-                                <Tooltip
-                                    title={<React.Fragment>
-                                        <b>Build {metadata.hash}</b>
-                                        <div>{new Date(metadata.date).toLocaleString()}</div>
-                                    </React.Fragment>}
-                                    placement="right"
-                                >
-                                    <img alt="2hats logo" src={logo} className={classes.logo} />
-                                </Tooltip>
-                                <Tooltip title="Search candidates" placement="right">
-                                    <IconButton
-                                        className={classes.searchButton}
-                                        onClick={() => { setShowSearch(true); }}
-                                    >
-                                        <SearchIcon />
-                                    </IconButton>
-                                </Tooltip>
-                            </Grid>
-                            <Grid item>
-                                <NavigationItems
-                                    goTo={goTo}
-                                    currentLocation={path}
-                                    selectedIndex={index}
-                                    navigationRoutes={navigationRoutes}
-                                />
-                            </Grid>
-                            <Grid item style={{ textAlign:'center' }}>
-                                <Tooltip title="Notifications" placement="right">
-                                    <IconButton className={classes.notificationButton}>
-                                        <NotificationIcon />
-                                    </IconButton>
-                                </Tooltip>
-                                { currentUser && displayName && uid ?
-                                <Fade in direction="right">
-                                    <Tooltip
-                                        title={<React.Fragment>
-                                            <b>{displayName}</b>
-                                            <div>{currentUser.UID}</div>
-                                        </React.Fragment>}
-                                        placement="right"
-                                        leaveDelay={5000}
-                                    >
-                                        <Avatar src={currentUser.avatarURL} className={classes.avatar}>{initials ? initials : null}</Avatar>
-                                    </Tooltip>
-                                </Fade>
-                                : <CircularProgress color="inherit" className={classes.avatarSpinner} />}
-                            </Grid>
-                        </Grid>
-                    </Grid>
-                </Slide>
-                <Fade in timeout={400}>
-                    <Grid item xs>
-                        <WrappedComponent {...props} classes={null} />
-                    </Grid>
-                </Fade>
-            </Grid>
-
-            { showSearch && <Search showSearch={showSearch} setShowSearch={setShowSearch} /> }
-             </AdminsProvider>
-        </React.Fragment>);
-    }   
-
-    return withAuthentication(withRouter(withStyles(styles)(WithNavigation)));
+  return withAuthentication(withRouter(withStyles(styles)(WithNavigation)));
 }

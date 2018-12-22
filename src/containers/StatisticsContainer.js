@@ -148,7 +148,6 @@ function StatisticsContainer(props) {
   useEffect(
     () => {
       handleSaveLayout();
-      // console.log('moved',layout)
     },
     [layout]
   );
