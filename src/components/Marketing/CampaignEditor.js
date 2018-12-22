@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-
+import React from 'react';
+import remove from 'ramda/es/remove';
 import Grid from '@material-ui/core/Grid';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Typography from '@material-ui/core/Typography';
@@ -8,149 +8,228 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import Chip from '@material-ui/core/Chip';
-
 import AddIcon from '@material-ui/icons/Add';
-
+import { Formik } from 'formik';
+//import Yup from 'yup';
+import { firestore } from '../../store';
 const styles = theme => ({
-    root: {
-        margin: theme.spacing.unit * 5,
-        padding: theme.spacing.unit * 3,
-        maxWidth: 600,
-    },
-    title: {
-        marginBottom: theme.spacing.unit * 2,
-    },
-    addButton: {
-        marginRight: -theme.spacing.unit * 2,
-        marginBottom: -theme.spacing.unit,
-    },
-    chip: {
-        marginTop: theme.spacing.unit,
-    },
-    messageBox: {
-        marginTop: theme.spacing.unit * 2,
-    },
-    done: {
-        display: 'block',
-        marginLeft: 'auto',
-        marginTop: theme.spacing.unit,
-    },
+  root: {
+    margin: theme.spacing.unit * 5,
+    padding: theme.spacing.unit * 3,
+    maxWidth: 600,
+  },
+  title: {
+    marginBottom: theme.spacing.unit * 2,
+  },
+  addButton: {
+    marginRight: -theme.spacing.unit * 2,
+    marginBottom: -theme.spacing.unit,
+  },
+  chip: {
+    marginTop: theme.spacing.unit,
+  },
+  messageBox: {
+    marginTop: theme.spacing.unit * 2,
+  },
+  done: {
+    display: 'block',
+    marginLeft: 'auto',
+    marginTop: theme.spacing.unit,
+  },
 });
 
 function CampaignEditor(props) {
-    const { classes, action } = props;
-
-    const [campaignData, setCampaignData] = useState({
+  const { classes, action } = props;
+  return (
+    <Formik
+      initialValues={{
+        email: '',
+        password: '',
         query: '',
+        ignoreTerm: '',
+        requiredTerm: '',
         ignoreList: [],
         requiredList: [],
         message: '',
-    });
-
-    const [ignoreTerm, setIgnoreTerm] = useState('');
-    const [requiredTerm, setRequiredTerm] = useState('');
-
-    const handleDeleteFromList = (list, i) => {
-        const newList = campaignData[list];
-        newList.splice(i, 1);
-        setCampaignData({ ...campaignData, [list]: newList });
-    };
-
-    const handleAddToList = (list, item, setItemState) => {
-        if (item.length > 0) {
-            const newList = campaignData[list];
-            newList.push(item);
-            setCampaignData({ ...campaignData, [list]: newList });
-            setItemState('');
-        }
-    };
-
-    return (
-    <Paper className={classes.root}>
-        <Grid container direction="column" spacing={8}>
-            <Grid item><Typography variant="title">{action} Campaign</Typography></Grid>
-
-            <Grid item>
-                <TextField
-                    autoFocus fullWidth
+      }}
+      onSubmit={(values, { setSubmitting }) => {
+        setTimeout(() => {
+          alert(JSON.stringify(values, null, 2));
+          setSubmitting(false);
+        }, 500);
+      }}
+    >
+      {formikProps => {
+        const { values, handleChange, handleSubmit, setValues } = formikProps;
+        const handleDeleteFromList = (list, index) => {
+          const newList = remove(index, 1, values[list]);
+          setValues({ ...values, [list]: newList });
+        };
+        const handleAddToList = (list, item) => {
+          const currentList = values[list];
+          const newItem = values[item].toLowerCase().trim();
+          if (newItem.length > 0 && !currentList.includes(newItem)) {
+            const newList = currentList.concat([newItem]);
+            setValues({ ...values, [list]: newList, [item]: '' });
+          } else {
+            setValues({ ...values, [item]: '' });
+          }
+        };
+        return (
+          <form onSubmit={handleSubmit}>
+            <Paper className={classes.root}>
+              <Grid container direction="column" spacing={8}>
+                <Grid item>
+                  <Typography variant="title">{action} Campaign</Typography>
+                </Grid>
+                <Grid item>
+                  <TextField
+                    label="Linkedin email"
+                    id="email"
+                    placeholder="Linkedin account"
+                    type="text"
+                    onChange={handleChange}
+                    autoFocus
+                    fullWidth
+                    value={values.email}
+                  />
+                  <TextField
+                    label="Linkedin password"
+                    id="password"
+                    placeholder="Linkedin password"
+                    type="password"
+                    onChange={handleChange}
+                    fullWidth
+                    value={values.password}
+                  />
+                  <TextField
                     label="Search query"
-                    value={campaignData.setCampaignData}
-                    onChange={(e) => { setCampaignData({ ...campaignData, query: e.target.value }) }}
-                />
-            </Grid>
-
-            <Grid item>
-                <Grid container alignItems="flex-end">
+                    id="query"
+                    placeholder="Linkedin search"
+                    type="text"
+                    onChange={handleChange}
+                    fullWidth
+                    value={values.query}
+                  />
+                </Grid>
+                <Grid item>
+                  <Grid container alignItems="flex-end">
                     <Grid item xs>
-                        <TextField fullWidth label="Ignored terms"
-                            value={ignoreTerm}
-                            onChange={(e) => { setIgnoreTerm(e.target.value) }}
-                            onKeyPress={(e) => { if (e.key === 'Enter') handleAddToList('ignoreList', ignoreTerm, setIgnoreTerm) }}
-                        />
+                      <TextField
+                        id="ignoreTerm"
+                        placeholder="Ignored keyword"
+                        type="text"
+                        onChange={handleChange}
+                        autoFocus
+                        fullWidth
+                        value={values.ignoreTerm}
+                        label="Ignored keywords"
+                        onKeyPress={e => {
+                          if (e.key === 'Enter') {
+                            handleAddToList('ignoreList', 'ignoreTerm');
+                          }
+                        }}
+                      />
                     </Grid>
                     <Grid item>
-                        <IconButton
-                            className={classes.addButton}
-                            onClick={() => { handleAddToList('ignoreList', ignoreTerm, setIgnoreTerm) }}
-                        >
-                            <AddIcon fontSize="small" />
-                        </IconButton>
+                      <IconButton
+                        className={classes.addButton}
+                        onClick={() => {
+                          handleAddToList('ignoreList', 'ignoreTerm');
+                        }}
+                      >
+                        <AddIcon fontSize="small" />
+                      </IconButton>
                     </Grid>
+                  </Grid>
+                  {values.ignoreList.map((x, i) => (
+                    <Chip
+                      key={i}
+                      label={x}
+                      className={classes.chip}
+                      variant="outlined"
+                      onDelete={() => {
+                        handleDeleteFromList('ignoreList', i);
+                      }}
+                    />
+                  ))}
                 </Grid>
 
-                { campaignData.ignoreList.map((x, i) =>
-                    <Chip key={i} label={x} className={classes.chip} variant="outlined"
-                        onDelete={() => { handleDeleteFromList('ignoreList', i) }}
-                    />
-                )}
-            </Grid>
-
-            <Grid item>
-                <Grid container alignItems="flex-end">
+                <Grid item>
+                  <Grid container alignItems="flex-end">
                     <Grid item xs>
-                        <TextField fullWidth label="Required terms"
-                            value={requiredTerm}
-                            onChange={(e) => { setRequiredTerm(e.target.value) }}
-                            onKeyPress={(e) => { if (e.key === 'Enter') handleAddToList('requiredList', requiredTerm, setRequiredTerm) }}
-                        />
+                      <TextField
+                        id="requiredTerm"
+                        placeholder="Required keyword"
+                        type="text"
+                        onChange={handleChange}
+                        autoFocus
+                        fullWidth
+                        value={values.requiredTerm}
+                        label="Required keywords"
+                        onKeyPress={e => {
+                          if (e.key === 'Enter') {
+                            handleAddToList('requiredList', 'requiredTerm');
+                          }
+                        }}
+                      />
                     </Grid>
                     <Grid item>
-                        <IconButton
-                            className={classes.addButton}
-                            onClick={() => { handleAddToList('requiredList', requiredTerm, setRequiredTerm) }}
-                        >
-                            <AddIcon fontSize="small" />
-                        </IconButton>
+                      <IconButton
+                        className={classes.addButton}
+                        onClick={() => {
+                          handleAddToList('requiredList', 'requiredTerm');
+                        }}
+                      >
+                        <AddIcon fontSize="small" />
+                      </IconButton>
                     </Grid>
+                  </Grid>
+
+                  {values.requiredList.map((x, i) => (
+                    <Chip
+                      key={i}
+                      label={x}
+                      className={classes.chip}
+                      variant="outlined"
+                      onDelete={() => {
+                        handleDeleteFromList('requiredList', i);
+                      }}
+                    />
+                  ))}
                 </Grid>
 
-                { campaignData.requiredList.map((x, i) =>
-                    <Chip key={i} label={x} className={classes.chip} variant="outlined"
-                        onDelete={() => { handleDeleteFromList('requiredList', i) }}
-                    />
-                )}
-            </Grid>
-
-            <Grid item>
-                <TextField className={classes.messageBox}
-                    variant="outlined" multiline fullWidth rows={3}
+                <Grid item>
+                  <TextField
+                    className={classes.messageBox}
+                    variant="outlined"
+                    multiline
+                    fullWidth
+                    rows={3}
                     label="Message"
-                    value={campaignData.message}
-                    onChange={(e) => { setCampaignData({ ...campaignData, message: e.target.value }) }}
-                />
-            </Grid>
+                    id="message"
+                    onChange={handleChange}
+                    value={values.message}
+                  />
+                </Grid>
 
-            <Grid item>
-                <Button
-                    variant="contained" color="primary" className={classes.done}
-                >
+                <Grid item>
+                  <Button
+                    onClick={handleSubmit}
+                    variant="contained"
+                    color="primary"
+                    className={classes.done}
+                  >
                     Done
-                </Button>
-            </Grid>
-
-        </Grid>
-    </Paper>
-    );
+                  </Button>
+                </Grid>
+              </Grid>
+            </Paper>
+          </form>
+        );
+      }}
+    </Formik>
+  );
 }
 
 export default withStyles(styles)(CampaignEditor);
