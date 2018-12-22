@@ -21,16 +21,15 @@ const styles = theme => ({
         position: 'relative',
         transition: 'background-color .4s',
         borderRadius: '18px 0 0 18px',
-
-        '&:hover, &:focus': {
-            // backgroundColor: 'rgba(255,255,255,.16)',
-            backgroundColor: 'rgba(0, 0, 0, 0.08)',
-        },
     },
     selectedItem: {
         backgroundColor: `${theme.palette.background.paper} !important`,
+        cursor: 'default',
+
+        '& > span': { display: 'none' },
+
         '& svg': {
-            color: theme.palette.primary.main,
+            color: theme.palette.type === 'dark' ? theme.palette.primary.darkText : theme.palette.primary.main,
         },
         '&::before': {
             content: '""',
@@ -82,7 +81,7 @@ const styles = theme => ({
 });
 
 function NavigationItems(props){
-    const {classes, goTo, currentLocation, navigationRoutes, selectedIndex} = props
+    const {classes, theme, goTo, currentLocation, navigationRoutes, selectedIndex} = props
 
     return(
        <List component="nav" className={classes.root}>
@@ -106,4 +105,4 @@ function NavigationItems(props){
        </List>
     )
 }
-export default withStyles(styles)(NavigationItems)
+export default withStyles(styles, {withTheme:true})(NavigationItems)

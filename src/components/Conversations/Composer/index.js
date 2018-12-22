@@ -16,7 +16,7 @@ import {removeHtmlTags} from '../../../utilities';
 import {sendEmail} from '../../../utilities/email/gmail'
 const styles = theme => ({
     root: {
-        backgroundColor: theme.palette.background.paper,
+        backgroundColor: theme.palette.type === 'dark' ? theme.palette.background.default : theme.palette.background.paper,
         padding: theme.spacing.unit * 2,
         position: 'relative',
     },
@@ -40,7 +40,7 @@ const styles = theme => ({
             fontSize: 16,
             '&.ql-blank::before': {
                 fontStyle: 'normal',
-                color: 'rgba(0,0,0,0.4)',
+                color: theme.palette.type === 'dark' ? 'rgba(255,255,255,.4)' : 'rgba(0,0,0,.4)',
             },
         },
     },
@@ -89,7 +89,7 @@ function Composer(props) {
     }
     return (
     <div className={classes.root}
-        style={{backgroundColor: composerType === 'note' ? theme.palette.primary.light : theme.palette.background.paper}}
+        style={{backgroundColor: composerType === 'note' ? theme.palette.primary.light : 'inherit'}}
     >
         { composerType === 'email' ?
             <ReactQuill

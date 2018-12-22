@@ -30,7 +30,7 @@ const styles = theme => ({
         textAlign: 'left',
 
         '& .msg-body': {
-            backgroundColor: theme.palette.grey[200],
+            backgroundColor: theme.palette.grey[theme.palette.type === 'dark' ? 700 : 200],
             borderTopRightRadius: theme.shape.roundBorderRadius,
             borderBottomRightRadius: theme.shape.roundBorderRadius,
         },

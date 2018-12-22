@@ -73,7 +73,7 @@ function withAnalytics(WrappedComponent) {
         if (isLoading) return (
             <Grid container justify="center" alignItems="center" style={{
                 height: '100%',
-                backgroundImage: `linear-gradient(to bottom right, ${mainColor.replace('rgb','rgba').replace(')',', 1)')} 0%, ${mainColor.replace('rgb','rgba').replace(')',', .67)')} 100%)`,
+                backgroundImage: `linear-gradient(to bottom right, ${mainColor.replace('rgb','rgba').replace(')',', 1)')} 0%, ${mainColor.replace('rgb','rgba').replace(')',', .5)')} 100%)`,
             }}>
                 <CircularProgress style={{ color: idealTextColor(mainColor) }} />
             </Grid>

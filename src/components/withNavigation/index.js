@@ -25,13 +25,18 @@ import logo from '../../assets/logo/WhiteIcon.svg';
 import NavigationItems from './NavigationItems';
 import withAuthentication from '../../utilities/Session/withAuthentication';
 import Search from '../Search';
+import UserDialog from '../UserDialog';
 import { getInitials } from '../../utilities';
 import metadata from '../../metadata.json';
 
 import { useAdmins } from '../../hooks/useAdmins';
 import { useAuthedUser } from '../../hooks/useAuthedUser';
-import {AdminsProvider} from '../../contexts/AdminsContext'
+import { AdminsProvider } from '../../contexts/AdminsContext';
+
 const styles = theme => ({
+    root: {
+        backgroundColor: theme.palette.background.default,
+    },
     leftNav: {
         backgroundColor: theme.palette.primary.main,
         color: theme.palette.common.white,
@@ -64,7 +69,7 @@ const styles = theme => ({
         backgroundColor: 'rgba(255,255,255,.87)',
         color: theme.palette.primary.main,
         fontWeight: 500,
-        margin: theme.spacing.unit * 1.5,
+        // margin: theme.spacing.unit * 1.5,
     },
     avatarSpinner: {
         margin: theme.spacing.unit * 1.5,
@@ -103,18 +108,17 @@ const navigationRoutes = [
 
 export const withNavigation = (WrappedComponent) => {
     function WithNavigation(props) {
-        const { history, classes, displayName, uid, location } = props;
+        const { history, classes, theme, displayName, uid, location } = props;
         
         const [ showSearch, setShowSearch ] = useState(false);
-        const currentUser = useAuthedUser()
-        let [admins] = useAdmins(uid)
-        const goTo = (route) => {
-            history.push(route);
-        }
+        const [ showUserDialog, setShowUserDialog ] = useState(false);
+
+        const currentUser = useAuthedUser();
+        let [admins] = useAdmins(uid);
+        const goTo = (route) => { history.push(route) };
         const path = location.pathname;
 
         let index = 0;
-
         for (let i = 0; i < navigationRoutes.length; i++) {
             if (path === navigationRoutes[i].route) index = i;
             if (navigationRoutes[i].subRoutes) {
@@ -126,11 +130,12 @@ export const withNavigation = (WrappedComponent) => {
 
         let initials;
         if (displayName) initials = getInitials(displayName);
-        console.log('admins',admins)
-        return(<React.Fragment>
-             <AdminsProvider value={admins}>
-             <Grid container wrap="nowrap">
-                <Slide in direction="right">
+
+        // console.log('admins',admins)
+        return(
+        <AdminsProvider value={admins}>
+            <Grid container wrap="nowrap" className={classes.root}>
+                <Slide in direction="right"><React.Fragment>
                     <Grid item className={classes.leftNav}>
                         <Grid container style={{height:'100vh'}} justify="center" alignContent="space-between">
                             <Grid item>
@@ -167,34 +172,28 @@ export const withNavigation = (WrappedComponent) => {
                                     </IconButton>
                                 </Tooltip>
                                 { currentUser && displayName && uid ?
-                                <Fade in direction="right">
-                                    <Tooltip
-                                        title={<React.Fragment>
-                                            <b>{displayName}</b>
-                                            <div>{currentUser.UID}</div>
-                                        </React.Fragment>}
-                                        placement="right"
-                                        leaveDelay={5000}
-                                    >
+                                <Fade in>
+                                    <IconButton onClick={() => { setShowUserDialog(true) }}>
                                         <Avatar src={currentUser.avatarURL} className={classes.avatar}>{initials ? initials : null}</Avatar>
-                                    </Tooltip>
+                                    </IconButton>
                                 </Fade>
                                 : <CircularProgress color="inherit" className={classes.avatarSpinner} />}
                             </Grid>
                         </Grid>
                     </Grid>
-                </Slide>
+                </React.Fragment></Slide>
                 <Fade in timeout={400}>
-                    <Grid item xs>
+                    <Grid item xs style={{ backgroundColor: theme.palette.background.paper }}>
                         <WrappedComponent {...props} classes={null} />
                     </Grid>
                 </Fade>
             </Grid>
 
             { showSearch && <Search showSearch={showSearch} setShowSearch={setShowSearch} /> }
-             </AdminsProvider>
-        </React.Fragment>);
+            { showUserDialog && <UserDialog user={currentUser} showDialog={showUserDialog} setShowDialog={setShowUserDialog} /> }
+
+        </AdminsProvider>);
     }   
 
-    return withAuthentication(withRouter(withStyles(styles)(WithNavigation)));
+    return withAuthentication(withRouter(withStyles(styles, { withTheme:true })(WithNavigation)));
 }

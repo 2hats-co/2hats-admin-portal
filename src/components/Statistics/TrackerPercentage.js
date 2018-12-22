@@ -71,7 +71,7 @@ function TrackerPercentage(props) {
     if (trackers.length < 2) return (
     <Grid container justify="center" alignItems="center" style={{
             height: '100%',
-            backgroundImage: `linear-gradient(to bottom right, ${colour.replace('rgb','rgba').replace(')',', 1)')} 0%, ${colour.replace('rgb','rgba').replace(')',', .67)')} 100%)`,
+            backgroundImage: `linear-gradient(to bottom right, ${colour.replace('rgb','rgba').replace(')',', 1)')} 0%, ${colour.replace('rgb','rgba').replace(')',', .5)')} 100%)`,
     }}>
         <CircularProgress style={{ color: theme.palette.getContrastText(colour) }} />
     </Grid>
@@ -88,7 +88,7 @@ function TrackerPercentage(props) {
         <Grid container className={classes.root}
             justify="center" alignItems="center"
             style={{
-                backgroundImage: `linear-gradient(to bottom right, ${colour.replace('rgb','rgba').replace(')',', 1)')} 0%, ${colour.replace('rgb','rgba').replace(')',', .67)')} 100%)`,
+                backgroundImage: `linear-gradient(to bottom right, ${colour.replace('rgb','rgba').replace(')',', 1)')} 0%, ${colour.replace('rgb','rgba').replace(')',', .5)')} 100%)`,
                 color: theme.palette.getContrastText(colour)
             }}
         >

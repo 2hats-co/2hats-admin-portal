@@ -30,7 +30,7 @@ const styles = theme => ({
     subjectListContainer: {
         width: '100%',
         overflowY: 'scroll',
-        borderTop: '1px solid #eee',
+        borderTop: `1px solid ${theme.palette.divider}`,
     },
 })
 

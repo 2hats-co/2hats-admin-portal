@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 
-import Grid from '@material-ui/core/Grid';
-import CircularProgress from '@material-ui/core/CircularProgress';
+import withStyles from '@material-ui/core/styles/withStyles';
+import LoadingHat from '../../components/LoadingHat';
 
 import { auth } from '../../store';
 import AuthenticationContainer from "../../containers/AuthenticationContainer";
@@ -33,11 +33,7 @@ const withAuthentication = (Component) => {
             />
         );
         else if (!authedUser && !loading) return <AuthenticationContainer/>;
-        else return(
-        <Grid container justify="center" alignItems="center" style={{ height:'100vh', backgroundColor:'#fff' }}>
-            <CircularProgress size={64} />
-        </Grid>
-        );
+        else return <LoadingHat />;
         // else return (
         //     <div style={{display:'flex', justifyContent:'center', alignItems:'center', height:'100vh', backgroundImage:`url('./thatsallfolks.jpg')`, backgroundSize:'cover', backgroundPosition:'center'}}>
         //         <div style={{position:'relative'}}>
@@ -48,7 +44,7 @@ const withAuthentication = (Component) => {
         // );
     }
 
-    return WithAuthentication
+    return withStyles(null, {withTheme:true})(WithAuthentication);
 }
 
 export default withAuthentication;

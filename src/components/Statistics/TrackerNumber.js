@@ -27,7 +27,7 @@ function TrackerNumber(props) {
             className={classes.root}
             justify="center" alignItems="center"
             style={{
-                backgroundImage: `linear-gradient(to bottom right, ${x.colour.replace('rgb','rgba').replace(')',', 1)')} 0%, ${x.colour.replace('rgb','rgba').replace(')',', .67)')} 100%)`,
+                backgroundImage: `linear-gradient(to bottom right, ${x.colour.replace('rgb','rgba').replace(')',', 1)')} 0%, ${x.colour.replace('rgb','rgba').replace(')',', .5)')} 100%)`,
                 color: theme.palette.getContrastText(x.colour)
             }}
         >

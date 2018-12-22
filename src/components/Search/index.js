@@ -52,7 +52,7 @@ const styles = theme => ({
             display: 'block',
             width: 612,
             height: 1,
-            backgroundColor: 'rgba(0,0,0,.1)',
+            backgroundColor: theme.palette.divider,
 
             position: 'absolute',
             left: 28,

@@ -56,3 +56,9 @@ export const idealTextColor = (rgbColor) => {
 
     return ((255 - bgDelta) < nThreshold) ? "#000000" : "#ffffff";   
 }
+
+export const randomGreeting = () => {
+    const greetings = ['Hey', 'Howdy', '¡Hola', 'Sup', 'What’s good', 'Shalom', 'Yee haw', 'Top of the morning to ya', 'Bone app the teeth', 'Great to see ya', '¡Feliz cumpleaños'];
+
+    return greetings[Math.floor(Math.random() * greetings.length)];
+}

@@ -24,7 +24,7 @@ const styles = theme => ({
     // width: 'calc(100vw - 64px - 400px)',
     height: 300,
     overflowY: 'auto',
-    borderTop: '1px solid #ddd'
+    borderTop: `1px solid ${theme.palette.divider}`,
   }
 })
 

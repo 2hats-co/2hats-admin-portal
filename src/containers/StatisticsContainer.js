@@ -64,6 +64,7 @@ const styles = theme => ({
     // padding: theme.spacing.unit,
     overflow: 'hidden',
     transition: 'border-radius .2s',
+    color: theme.palette.text.primary,
 
     '& .edit-chart-button': {
       opacity: 0,

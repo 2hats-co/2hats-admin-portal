@@ -38,6 +38,7 @@ const styles = theme => ({
     },
     toggleButtonGroup: {
         display: 'flex',
+        backgroundColor: 'transparent',
         boxShadow: 'none',
         '& > *': {
             color: '#000',

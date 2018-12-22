@@ -34,7 +34,7 @@ const styles = theme => ({
     alignItems: "center",
     justifyContent: "flex-start",
     margin: 0,
-    background: '#fff',
+    background: theme.palette.background.paper,
     padding: '0 16px',
 
     '& + &': { borderLeft: `1px solid ${theme.palette.divider}` },

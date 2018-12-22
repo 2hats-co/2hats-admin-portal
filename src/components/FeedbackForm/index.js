@@ -39,11 +39,11 @@ const styles = theme => ({
     width: '100%',
     height: '100%',
     boxSizing: 'border-box',
-    backgroundColor: theme.palette.background.paper,
+    backgroundColor: theme.palette.background.default,
   },
   topButtons: {
-    backgroundColor: '#fff',
-    borderBottom: '1px solid rgba(0,0,0,.1)',
+    backgroundColor: theme.palette.background.default,
+    borderBottom: `1px solid ${theme.palette.divider}`,
     padding: 0,
     position: 'fixed',
     right: 0,
@@ -57,7 +57,7 @@ const styles = theme => ({
     boxSizing: 'border-box',
   },
   listSection: {
-    borderBottom: '1px solid rgba(0,0,0,.1)',
+    borderBottom: `1px solid ${theme.palette.divider}`,
     marginBottom: 20,
     paddingBottom: 16,
   },

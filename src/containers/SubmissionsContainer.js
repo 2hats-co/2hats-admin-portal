@@ -20,13 +20,19 @@ import { ROUTES } from '../constants/routes';
 
 // import Search from '../components/Search'
 const styles = theme => ({
+    root: {
+        backgroundColor: theme.palette.background.default,
+        height: 'calc(100vh - 64px)',
+    },
+    locationIndicatorWrapper: {
+        paddingLeft: 40 - 24,
+        backgroundColor: theme.palette.background.default,
+    },
     card: {
         height: '100%',
         boxSizing: 'border-box',
         overflow: 'hidden',
-        // padding: theme.spacing.unit * 5,
-        background: '#fff',
-        // boxShadow: '0 0 10px rgba(0,0,0,.1), 0 30px 60px -15px rgba(0,0,0,.125), 0 60px 80px -20px rgba(0,0,0,.1), 0 50px 100px -30px rgba(0,0,0,.15), 0 40px 120px -5px rgba(0,0,0,.15)',
+        background: theme.palette.background.paper,
         boxShadow: theme.shadows[16],
         borderRadius: '0 10px 0 0',
         zIndex: 2,
@@ -60,10 +66,11 @@ function SumbissionsContainer(props) {
 
     const [showSnackbar, setShowSnackbar] = useState(false);
 
-    const locationIndicator = <div style={{ paddingLeft: 40 - 24 }}>
+    const locationIndicator = <div className={classes.locationIndicatorWrapper}>
         <LocationIndicator
             title="Submissions"
             subRoutes={[ROUTES.pending, ROUTES.rejected, ROUTES.accepted]}
+            altBg
         />
     </div>;
 
@@ -114,13 +121,16 @@ function SumbissionsContainer(props) {
                 location={location}
                 history={history}
             />;
+            break;
+        default:
+            rightPanel = null;
     }
 
     return(<React.Fragment>
         { locationIndicator }
-        <Grid container style={{ height: 'calc(100vh - 64px)' }}>
+        <Grid container className={classes.root}>
             <Grid item xs className={classes.card}>
-                <Grid container direction="column" style={{ height:'100%' }}>
+                <Grid container direction="column" wrap="nowrap" style={{ height:'100%' }}>
                     <Grid item xs={template ? 7 : 12} style={{ overflowY:'auto', padding:40, maxWidth:'none' }}>
                         <Submission
                             submission={submission}

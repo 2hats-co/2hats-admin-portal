@@ -47,7 +47,7 @@ function QueryNumber(props) {
             className={classes.root}
             justify="center" alignItems="center"
             style={{
-                backgroundImage: `linear-gradient(to bottom right, ${colour.replace('rgb','rgba').replace(')',', 1)')} 0%, ${colour.replace('rgb','rgba').replace(')',', .67)')} 100%)`,
+                backgroundImage: `linear-gradient(to bottom right, ${colour.replace('rgb','rgba').replace(')',', 1)')} 0%, ${colour.replace('rgb','rgba').replace(')',', .5)')} 100%)`,
                 color: theme.palette.getContrastText(colour)
             }}
         >

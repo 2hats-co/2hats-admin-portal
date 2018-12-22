@@ -20,7 +20,7 @@ const styles = theme => ({
         height: '100vh',
        // marginTop: -64,
 
-        background: theme.palette.background.paper,
+        backgroundColor: theme.palette.type === 'dark' ? theme.palette.background.default : theme.palette.background.paper,
         borderLeft: `1px solid ${theme.palette.divider}`,
     },
     composerContainer: {

@@ -11,7 +11,7 @@ import Star from '@material-ui/icons/Star';
 const styles = theme => ({
     descriptionTooltip: {
         background: theme.palette.common.white,
-        color: theme.palette.text.primary,
+        color: 'rgba(0,0,0,.87)',
         fontSize: 14,
         boxShadow: theme.shadows[1],
         opacity: 1,

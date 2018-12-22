@@ -2,13 +2,13 @@ import React, { useState, useEffect } from 'react';
 
 import withStyles from '@material-ui/core/styles/withStyles';
 import Grid from '@material-ui/core/Grid';
-import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 
 import { ChromePicker } from 'react-color';
 import { randomColor } from 'randomcolor';
 
 import IconButton from '@material-ui/core/IconButton';
 import RemoveCircleOutlineIcon from '@material-ui/icons/RemoveCircleOutline';
+import Fade from '@material-ui/core/Fade';
 
 import IntegrationReactSelect from '../../IntegrationReactSelect';
 import { trackers, trackersList } from '../../../constants/statsTrackers';
@@ -76,13 +76,11 @@ function ChartItem(props) {
             <IconButton onClick={() => { setShowColourPicker(!showColourPicker) }}>
                 <div className={ classes.swatch } style={{background:colour}} />
             </IconButton>
-            { showColourPicker ?
-                //<ClickAwayListener onClick={() => { setShowColourPicker(false) }}>
-                    <div className={ classes.popover }>
-                        <div className={ classes.cover } onClick={() => { setShowColourPicker(!showColourPicker) }}/>
-                        <ChromePicker color={colour} onChange={(val) => { setColour(`rgb(${val.rgb.r}, ${val.rgb.g}, ${val.rgb.b})`) }} />
-                    </div>
-                //</ClickAwayListener>
+            { showColourPicker ? <Fade in>
+                <div className={ classes.popover }>
+                    <div className={ classes.cover } onClick={() => { setShowColourPicker(!showColourPicker) }}/>
+                    <ChromePicker color={colour} onChange={(val) => { setColour(`rgb(${val.rgb.r}, ${val.rgb.g}, ${val.rgb.b})`) }} />
+                </div></Fade>
             : null }
         </Grid>
 

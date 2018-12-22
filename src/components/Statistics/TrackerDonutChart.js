@@ -24,7 +24,7 @@ function TrackerDonutChart(props){
                 left: 'center',
 
                 textStyle: {
-                    fontFamily: 'Helvetica Neue',
+                    color: theme.palette.text.primary,
                     fontSize: 20,
                     fontWeight: 500,
                 },
@@ -43,8 +43,9 @@ function TrackerDonutChart(props){
                 show: true,
                 left: 'center',
                 bottom: theme.spacing.unit * 2,
+                textStyle: { color: theme.palette.text.primary },
             },
-            color: trackers.map(x=>x.colour),
+            color: trackers.map(x => x.colour),
             series: [
                 {
                     name:title,
@@ -55,7 +56,11 @@ function TrackerDonutChart(props){
                     labelLine: { normal: { show: false } },
                     data: trackers.map(x => ({ name:x.label, value:x.sum }))
                 }
-            ]
+            ],
+            textStyle: {
+                color: theme.palette.text.primary,
+                fontFamily: theme.typography.fontFamily
+            },
         }}
     />)
 }

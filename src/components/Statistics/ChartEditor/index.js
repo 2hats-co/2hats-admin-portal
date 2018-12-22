@@ -31,6 +31,9 @@ const styles = theme => ({
         maxWidth: 'none',
         position: 'relative',
     },
+    dialogTitle: {
+        paddingRight: theme.spacing.unit * 8,
+    },
     deleteButton: {
         position: 'absolute',
         top: theme.spacing.unit * 1.25,
@@ -180,7 +183,7 @@ function ChartEditor(props) {
         open={showDialog}
         onClose={handleClose}
     >
-        <DialogTitle>
+        <DialogTitle className={classes.dialogTitle}>
             { chartToEdit ? `Edit ${chartToEdit.title ? chartToEdit.title : 'chart'}` : 'New chart' }
         </DialogTitle>
 

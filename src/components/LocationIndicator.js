@@ -43,7 +43,7 @@ const styles = theme => ({
 });
 
 function LocationIndicator(props) {
-    const { classes, location, subRoutes, title, history, showBorder } = props;
+    const { classes, theme, location, subRoutes, title, history, showBorder, altBg } = props;
 
     const navItems = subRoutes && location && history ? subRoutes.map((x, i) =>
         <Tab
@@ -60,6 +60,7 @@ function LocationIndicator(props) {
     return(
         <Grid container alignItems="center"
             className={showBorder ? classNames(classes.root, classes.showBorder) : classes.root}
+            style={ altBg ? { backgroundColor: theme.palette.background.default } : {} }
         >
             <Typography variant="title" className={classes.title}>{title}</Typography>
             {navItems && navItems.length > 0 &&
@@ -76,4 +77,4 @@ function LocationIndicator(props) {
     );
 }
 
-export default withRouter(withStyles(styles)(LocationIndicator));
+export default withRouter(withStyles(styles, { withTheme:true })(LocationIndicator));

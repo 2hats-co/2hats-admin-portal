@@ -45,7 +45,7 @@ function TrackerBarChart(props) {
                     top: theme.spacing.unit * 2,
                     left: 'center',
                     textStyle: {
-                        fontFamily: 'Helvetica Neue',
+                        color: theme.palette.text.primary,
                         fontSize: 20,
                         fontWeight: 500,
                     },
@@ -63,27 +63,25 @@ function TrackerBarChart(props) {
                 xAxis: {
                     data: xAxis,
                     silent: false,
-                    axisLabel: {
-                        fontSize: 14,
-                        color: theme.palette.text.primary,
-                    },
+                    axisLabel: { fontSize: 14 },
                     axisLine: {
-                        lineStyle: { color: 'rgba(0,0,0,.2)' },
+                        lineStyle: { color: theme.palette.type === 'dark' ? 'rgba(255,255,255,.2)' : 'rgba(0,0,0,.2)' },
                     },
                 },
                 yAxis: {
                     type: 'value',
                     splitLine: { show: false },
-                    axisLabel: {
-                        fontSize: 14,
-                        color: theme.palette.text.primary,
-                    },
+                    axisLabel: { fontSize: 14 },
                     axisLine: {
-                        lineStyle: { color: 'rgba(0,0,0,.2)' },
+                        lineStyle: { color: theme.palette.type === 'dark' ? 'rgba(255,255,255,.2)' : 'rgba(0,0,0,.2)' },
                     },
                 },
                 series: seriesData,
                 legend: { show: false },
+                textStyle: {
+                    color: theme.palette.text.primary,
+                    fontFamily: theme.typography.fontFamily
+                },
             }}
         />
     </Grid>

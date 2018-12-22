@@ -26,14 +26,15 @@ const styles = theme => ({
     root: {
         paddingTop: theme.spacing.unit * 6,
         paddingBottom: theme.spacing.unit * 7,
+        minHeight: '100%',
         position: 'relative',
         '& > *': {
             padding: theme.spacing.unit * 2,
         }
     },
     topButtons: {
-        backgroundColor: '#fff',
-        borderBottom: '1px solid rgba(0,0,0,.1)',
+        backgroundColor: theme.palette.background.default,
+        borderBottom: `1px solid ${theme.palette.divider}`,
         padding: 0,
         position: 'fixed',
         right: 0,

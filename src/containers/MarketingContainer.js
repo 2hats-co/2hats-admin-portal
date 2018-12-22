@@ -18,7 +18,7 @@ import { momentLocales } from '../constants/momentLocales';
 const styles = theme => ({
     root: {
         backgroundColor: theme.palette.background.default,
-        minHeight: '100vh',
+        height: '100vh',
         overflow: 'auto',
     },
 });
