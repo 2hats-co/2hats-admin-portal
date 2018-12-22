@@ -6,148 +6,161 @@ const ORANGE_COLOR = 'hsl(15, 88%, 55%)'; // #f15a29
 const BORDER_RADIUS = 10;
 
 const modifyColor = (hsl, elem, mod) => {
-    const arr = hsl.replace('hsl(', '').replace(')', '').replace('%', '')
-        .replace(' ', '').split(',').map(x => parseInt(x, 10));
-    const editable = { h:arr[0], s:arr[1], l:arr[2] };
-    editable[elem] += mod;
-    if (elem !== 'h' && editable[elem] > 90) editable[elem] = 90;
-    if (elem !== 'h' && editable[elem] < 10) editable[elem] = 10;
-    return `hsl(${editable.h}, ${editable.s}%, ${editable.l}%)`;
+  const arr = hsl
+    .replace('hsl(', '')
+    .replace(')', '')
+    .replace('%', '')
+    .replace(' ', '')
+    .split(',')
+    .map(x => parseInt(x, 10));
+  const editable = { h: arr[0], s: arr[1], l: arr[2] };
+  editable[elem] += mod;
+  if (elem !== 'h' && editable[elem] > 90) editable[elem] = 90;
+  if (elem !== 'h' && editable[elem] < 10) editable[elem] = 10;
+  return `hsl(${editable.h}, ${editable.s}%, ${editable.l}%)`;
 };
 
 function generateTheme(theme, themeColor) {
-    let primaryColor = themeColor || ORANGE_COLOR;
-    let primaryDarkText = modifyColor(primaryColor, 'l', theme === 'dark' ? -30 : -20);
-    primaryDarkText = modifyColor(primaryDarkText, 's', theme === 'dark' ? -30 : -10);
-    let primaryLight = modifyColor(primaryColor, 'l', 40);
+  let primaryColor = themeColor || ORANGE_COLOR;
+  let primaryDarkText = modifyColor(
+    primaryColor,
+    'l',
+    theme === 'dark' ? -30 : -20
+  );
+  primaryDarkText = modifyColor(
+    primaryDarkText,
+    's',
+    theme === 'dark' ? -30 : -10
+  );
+  let primaryLight = modifyColor(primaryColor, 'l', 40);
 
-    if (theme === 'dark') {
-        const x = primaryDarkText;
-        primaryDarkText = primaryLight;
-        primaryLight = x;
-    }
+  if (theme === 'dark') {
+    const x = primaryDarkText;
+    primaryDarkText = primaryLight;
+    primaryLight = x;
+  }
 
-    const baseTheme = {
-        palette: {
-            primary: {
-                main: primaryColor,
-                dark: primaryColor,
-                darkText: primaryDarkText,
-                light: primaryLight,
-            },
-            secondary: {
-                main: primaryColor,
-            },
-            background: {
-                default: '#f5f5f5',
-            },
+  const baseTheme = {
+    palette: {
+      primary: {
+        main: primaryColor,
+        dark: primaryColor,
+        darkText: primaryDarkText,
+        light: primaryLight,
+      },
+      secondary: {
+        main: primaryColor,
+      },
+      background: {
+        default: '#f5f5f5',
+      },
+    },
+    typography: {
+      fontFamily: '"Helvetica Neue", Roboto, Arial, sans-serif',
+      display2: { fontWeight: 500 },
+      display1: { fontWeight: 500 },
+      headline: { fontWeight: 500 },
+      subheading: { fontWeight: 500 },
+      title: { textTransform: 'none' },
+      button: {
+        textTransform: 'none',
+        fontWeight: 700,
+      },
+    },
+    shape: {
+      borderRadius: BORDER_RADIUS,
+      roundBorderRadius: 20,
+      smallBorderRadius: 4,
+    },
+    overrides: {
+      MuiToggleButtonGroup: {
+        root: {
+          boxShadow: 'none !important',
         },
-        typography: {
-            fontFamily: '"Helvetica Neue", Roboto, Arial, sans-serif',
-            display2: { fontWeight: 500 },
-            display1: { fontWeight: 500 },
-            headline: { fontWeight: 500 },
-            subheading: { fontWeight: 500 },
-            title:{ textTransform: 'none' },
-            button: {
-                textTransform: 'none',
-                fontWeight: 700,
-            },
+      },
+      MuiToggleButton: {
+        root: {
+          borderRadius: `${BORDER_RADIUS}px !important`,
+          flex: 1,
+          transition: 'background-color .2s, color .2s',
         },
-        shape: {
-            borderRadius: BORDER_RADIUS,
-            roundBorderRadius: 20,
-            smallBorderRadius: 4,
+        label: {
+          color: 'rgba(0,0,0,.87)',
+          position: 'relative',
+          zIndex: 99,
         },
-        overrides: {
-            MuiToggleButtonGroup: {
-                root: {
-                    boxShadow: 'none !important',
-                },
-            },
-            MuiToggleButton: {
-                root: {
-                    borderRadius: `${BORDER_RADIUS}px !important`,
-                    flex: 1,
-                    transition: 'background-color .2s, color .2s',
-                },
-                label: {
-                    color: 'rgba(0,0,0,.87)',
-                    position: 'relative',
-                    zIndex: 99,
-                },
-                selected: {
-                    color: primaryColor,
-                    '& > span': { color: primaryColor },
-                    '&::after': {
-                        backgroundColor: primaryLight,
-                        opacity: .8,
-                    },
-                },
-            },
-            MuiButton: {
-                label: {
-                    '& svg': { marginRight: 8 }
-                },
-                containedPrimary: { color: '#fff' },
-            },
-            MuiFab: {
-                primary: { color: '#fff' },
-                extended: {
-                    '& svg': { marginRight: 8 },
-                }
-            },
-            MuiTooltip: {
-                tooltip: {
-                    backgroundColor: 'rgba(0,0,0,.75)',
-                    fontSize: 12,
-                },
-                popper: { opacity: 1 },
-            },
-            MuiTab: {
-                root: {
-                    minWidth: '64px !important',
-                    fontSize: '.875rem !important',
-                },
-            },
-            MuiChip: {
-                root: {
-                    '&:not(:last-of-type)': { marginRight: 8 }
-                },
-                colorPrimary: {
-                    color: primaryDarkText,
-                    backgroundColor: primaryLight,
-                    '&:focus': {
-                        backgroundColor: primaryColor,
-                        color: '#fff'
-                    },
-                },
-                iconColorPrimary: {
-                    opacity: .87,
-                },
-                deleteIconColorPrimary: {
-                    color: `inherit !important`,
-                    opacity: .87,
-                },
-            },
-            MuiAvatar: {
-                colorDefault: {
-                    backgroundColor: primaryLight,
-                    color: primaryColor,
-                },
-            },
-            MuiFormLabel: {
-                focused: { color: `${primaryColor} !important` },
-            },
-            MuiInput: {
-                underline: {
-                    '&::after': { borderBottomColor: primaryColor },
-                },
-            },
+        selected: {
+          color: primaryColor,
+          '& > span': { color: primaryColor },
+          '&::after': {
+            backgroundColor: primaryLight,
+            opacity: 0.8,
+          },
         },
-    };
+      },
+      MuiButton: {
+        label: {
+          '& svg': { marginRight: 8 },
+        },
+        containedPrimary: { color: '#fff' },
+      },
+      MuiFab: {
+        primary: { color: '#fff' },
+        extended: {
+          '& svg': { marginRight: 8 },
+        },
+      },
+      MuiTooltip: {
+        tooltip: {
+          backgroundColor: 'rgba(0,0,0,.75)',
+          fontSize: 12,
+        },
+        popper: { opacity: 1 },
+      },
+      MuiTab: {
+        root: {
+          minWidth: '64px !important',
+          fontSize: '.875rem !important',
+        },
+      },
+      MuiChip: {
+        root: {
+          '&:not(:last-of-type)': { marginRight: 8 },
+        },
+        colorPrimary: {
+          color: primaryDarkText,
+          backgroundColor: primaryLight,
+          '&:focus': {
+            backgroundColor: primaryColor,
+            color: '#fff',
+          },
+        },
+        iconColorPrimary: {
+          opacity: 0.87,
+        },
+        deleteIconColorPrimary: {
+          color: `inherit !important`,
+          opacity: 0.87,
+        },
+      },
+      MuiAvatar: {
+        colorDefault: {
+          backgroundColor: primaryLight,
+          color: primaryColor,
+        },
+      },
+      MuiFormLabel: {
+        focused: { color: `${primaryColor} !important` },
+      },
+      MuiInput: {
+        underline: {
+          '&::after': { borderBottomColor: primaryColor },
+        },
+      },
+    },
+  };
 
-    if (theme !== 'dark') return createMuiTheme(baseTheme);
+  if (theme !== 'dark') return createMuiTheme(baseTheme);
 
     return createMuiTheme({
         ...baseTheme,

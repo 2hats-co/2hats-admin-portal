@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import {withRouter} from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 
 import withStyles from '@material-ui/core/styles/withStyles';
 import Grid from '@material-ui/core/Grid';
@@ -19,7 +19,7 @@ import LeadsIcon from '@material-ui/icons/BusinessCenter';
 import MarketingIcon from '@material-ui/icons/RecordVoiceOver';
 import NotificationIcon from '@material-ui/icons/Notifications';
 
-import {ROUTES} from '../../constants/routes';
+import { ROUTES } from '../../constants/routes';
 
 import logo from '../../assets/logo/WhiteIcon.svg';
 import NavigationItems from './NavigationItems';
@@ -34,98 +34,106 @@ import { useAuthedUser } from '../../hooks/useAuthedUser';
 import { AdminsProvider } from '../../contexts/AdminsContext';
 
 const styles = theme => ({
-    root: {
-        backgroundColor: theme.palette.background.default,
-    },
-    leftNav: {
-        backgroundColor: theme.palette.primary.main,
-        color: theme.palette.common.white,
-        width: 64,
-        height: '100vh',
-        position: 'relative',
-        zIndex: 999,
-        overflowY: 'auto',
-        overflowX: 'hidden',
-    },
-    logo: {
-        width: 40,
-        height: 34,
-        margin: '0 auto',
-        padding: '15px 0',
-        display: 'block',
-        userDrag: 'none',
-        userSelect: 'none',
-        // borderBottom: '1px solid rgba(0,0,0,.12)',
-    },
-    searchButton: {
-        color: 'rgba(255,255,255,.87)',
-        // marginTop: theme.spacing.unit,
-    },
-    notificationButton: {
-        color: 'rgba(255,255,255,.87)',
-        display: 'none',
-    },
-    avatar: {
-        backgroundColor: 'rgba(255,255,255,.87)',
-        color: theme.palette.primary.main,
-        fontWeight: 500,
-        // margin: theme.spacing.unit * 1.5,
-    },
-    avatarSpinner: {
-        margin: theme.spacing.unit * 1.5,
-    },
+  root: {
+    backgroundColor: theme.palette.background.default,
+  },
+  leftNav: {
+    backgroundColor: theme.palette.primary.main,
+    color: theme.palette.common.white,
+    width: 64,
+    height: '100vh',
+    position: 'relative',
+    zIndex: 999,
+    overflowY: 'auto',
+    overflowX: 'hidden',
+  },
+  logo: {
+    width: 40,
+    height: 34,
+    margin: '0 auto',
+    padding: '15px 0',
+    display: 'block',
+    userDrag: 'none',
+    userSelect: 'none',
+    // borderBottom: '1px solid rgba(0,0,0,.12)',
+  },
+  searchButton: {
+    color: 'rgba(255,255,255,.87)',
+    // marginTop: theme.spacing.unit,
+  },
+  notificationButton: {
+    color: 'rgba(255,255,255,.87)',
+    display: 'none',
+  },
+  avatar: {
+    backgroundColor: 'rgba(255,255,255,.87)',
+    color: theme.palette.primary.main,
+    fontWeight: 500,
+    // margin: theme.spacing.unit * 1.5,
+  },
+  avatarSpinner: {
+    margin: theme.spacing.unit * 1.5,
+  },
 });
 
 const navigationRoutes = [
-    {
-        label: 'Statistics',
-        icon: <StatisticsIcon />,
-        route: ROUTES.stats,
-    }, {
-        label: 'Submissions',
-        icon: <DescriptionIcon />,
-        route: ROUTES.pending,
-        subRoutes: [ROUTES.submissions, ROUTES.pending, ROUTES.rejected, ROUTES.accepted],
-    }, {
-        label: 'Conversations',
-        icon: <ConversationsIcon />,
-        route: ROUTES.conversations,
-        incomplete: true,
-    }, {
-        label: 'Subjects',
-        icon: <SupervisorAccountIcon />,
-        route: ROUTES.subjects,
-        incomplete: true,
-    }, {
-        label: 'Marketing',
-        icon: <MarketingIcon />,
-        route: ROUTES.marketingLeadGeneration,
-        subRoutes: [ROUTES.marketingLeadGeneration, ROUTES.marketingEmail],
-        incomplete: true,
-    },
+  {
+    label: 'Statistics',
+    icon: <StatisticsIcon />,
+    route: ROUTES.stats,
+  },
+  {
+    label: 'Submissions',
+    icon: <DescriptionIcon />,
+    route: ROUTES.pending,
+    subRoutes: [
+      ROUTES.submissions,
+      ROUTES.pending,
+      ROUTES.rejected,
+      ROUTES.accepted,
+    ],
+  },
+  {
+    label: 'Conversations',
+    icon: <ConversationsIcon />,
+    route: ROUTES.conversations,
+    incomplete: true,
+  },
+  {
+    label: 'Subjects',
+    icon: <SupervisorAccountIcon />,
+    route: ROUTES.subjects,
+    incomplete: true,
+  },
+  {
+    label: 'Marketing',
+    icon: <MarketingIcon />,
+    route: ROUTES.marketingLeadGeneration,
+    subRoutes: [ROUTES.marketingLeadGeneration, ROUTES.marketingEmail],
+    incomplete: true,
+  },
 ];
 
+export default function withNavigation(WrappedComponent) {
+  function WithNavigation(props) {
+    const { history, classes, theme, displayName, uid, location } = props;
 
-export const withNavigation = (WrappedComponent) => {
-    function WithNavigation(props) {
-        const { history, classes, theme, displayName, uid, location } = props;
-        
-        const [ showSearch, setShowSearch ] = useState(false);
-        const [ showUserDialog, setShowUserDialog ] = useState(false);
+    const [showSearch, setShowSearch] = useState(false);
+    const [showUserDialog, setShowUserDialog] = useState(false);
 
-        const currentUser = useAuthedUser();
-        let [admins] = useAdmins(uid);
-        const goTo = (route) => { history.push(route) };
-        const path = location.pathname;
+    const currentUser = useAuthedUser();
+    let [admins] = useAdmins(uid);
+    const goTo = route => {
+      history.push(route);
+    };
+    const path = location.pathname;
 
-        let index = 0;
-        for (let i = 0; i < navigationRoutes.length; i++) {
-            if (path === navigationRoutes[i].route) index = i;
-            if (navigationRoutes[i].subRoutes) {
-                for (let subRoute of navigationRoutes[i].subRoutes) {
-                    if (path === subRoute) index = i;
-                }
-            }
+    let index = 0;
+    for (let i = 0; i < navigationRoutes.length; i++) {
+      if (path === navigationRoutes[i].route) index = i;
+      if (navigationRoutes[i].subRoutes) {
+        for (let subRoute of navigationRoutes[i].subRoutes) {
+          if (path === subRoute) index = i;
         }
 
         let initials;
