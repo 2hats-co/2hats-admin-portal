@@ -8,6 +8,7 @@ import Grid from '@material-ui/core/Grid';
 import Fab from '@material-ui/core/Fab';
 import Slide from '@material-ui/core/Slide';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Snackbar from '@material-ui/core/Snackbar';
 
 import ChartEditor from '../components/Statistics/ChartEditor';
 import EditIcon from '@material-ui/icons/Edit';
@@ -91,6 +92,9 @@ const styles = theme => ({
     right: theme.spacing.unit * 2,
     zIndex: 99,
   },
+  snackbar: {
+    marginBottom: theme.spacing.unit,
+  },
 });
 
 const ResponsiveGridLayout = WidthProvider(GridLayout);
@@ -108,6 +112,7 @@ function StatisticsContainer(props) {
   const [layoutLastUpdate, setLayoutLastUpdate] = useState(
     new Date().getTime()
   );
+  const [snackbarMessage, setSnackbarMessage] = useState('');
 
   const [showDialog, setShowDialog] = useState(false);
   const [chartToEdit, setChartToEdit] = useState(null);
@@ -129,7 +134,7 @@ function StatisticsContainer(props) {
     const now = new Date().getTime();
     const millsSinceLastUpdate = now - layoutLastUpdate;
     console.log(millsSinceLastUpdate);
-    const millsDelay = 20000;
+    const millsDelay = 5000;
     if (layoutShouldUpdate && millsSinceLastUpdate > millsDelay) {
       setLayoutLastUpdate(now);
       console.log('updating');
@@ -144,6 +149,7 @@ function StatisticsContainer(props) {
           .doc(chartLayout.i)
           .update({ layout: newLayout });
       });
+      setSnackbarMessage('Saved layout');
     }
   };
   useEffect(
@@ -355,6 +361,16 @@ function StatisticsContainer(props) {
             })}
           </ResponsiveGridLayout>
         </Grid>
+
+        <Snackbar
+          open={snackbarMessage.length > 0}
+          autoHideDuration={1500}
+          onClose={() => {
+            setSnackbarMessage('');
+          }}
+          message={snackbarMessage}
+          className={classes.snackbar}
+        />
       </div>
     );
   } else {

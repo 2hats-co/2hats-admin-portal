@@ -5,6 +5,7 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import LinearProgress from '@material-ui/core/LinearProgress';
+import Tooltip from '@material-ui/core/Tooltip';
 
 import withAnalytics from './withAnalytics';
 
@@ -155,18 +156,27 @@ function TrackerPercentage(props) {
             : {}
         }
       >
-        <Grid item>
-          <Typography
-            className={classes.percentage}
-            variant={layout.w > 1 ? 'display2' : 'display1'}
-          >
-            {percentage}
-            <small>%</small>
-          </Typography>
-          <Typography variant={layout.w > 1 ? 'subheading' : 'body2'}>
-            {title}
-          </Typography>
-        </Grid>
+        <Tooltip
+          title={
+            <React.Fragment>
+              <b>{trackers[0].label}</b>: {trackers[0].sum} <br />
+              <b>{trackers[1].label}</b>: {trackers[1].sum}
+            </React.Fragment>
+          }
+        >
+          <Grid item>
+            <Typography
+              className={classes.percentage}
+              variant={layout.w > 1 ? 'display2' : 'display1'}
+            >
+              {percentage}
+              <small>%</small>
+            </Typography>
+            <Typography variant={layout.w > 1 ? 'subheading' : 'body2'}>
+              {title}
+            </Typography>
+          </Grid>
+        </Tooltip>
       </Grid>
     </React.Fragment>
   );
