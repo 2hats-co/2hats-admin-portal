@@ -26,102 +26,124 @@ import { updateProperties } from '../../../utilities/firestore';
 import { COLLECTIONS } from '../../../constants/firestore';
 
 const styles = theme => ({
-    root: {
-        minWidth: 480,
-    },
-    iconButton: {
-        padding: theme.spacing.unit * 1.5,
-        borderRadius: '50%',
-        minWidth: 'auto',
-        marginRight: -10,
-    },
+  root: {
+    minWidth: 480,
+  },
+  iconButton: {
+    padding: theme.spacing.unit * 1.5,
+    borderRadius: '50%',
+    minWidth: 'auto',
+    marginRight: -10,
+    '& svg': { marginRight: 0 },
+  },
 });
 
 function ManageSubscribersDialog(props) {
-    const { classes, showDialog, conversation, setShowDialog } = props;
-    const [subscribersUIDs, setSubscribersUIDs] = useState(conversation.subscribedAdmins);
+  const { classes, showDialog, conversation, setShowDialog } = props;
+  const [subscribersUIDs, setSubscribersUIDs] = useState(
+    conversation.subscribedAdmins
+  );
 
-    const handleClose = () => { setShowDialog(false) };
+  const handleClose = () => {
+    setShowDialog(false);
+  };
 
-    const handleAddSubscriber = (data) => {
-        const newSubscribers = subscribersUIDs;
+  const handleAddSubscriber = data => {
+    const newSubscribers = subscribersUIDs;
 
-        if (data.value) {
-            newSubscribers.push(data.value);
-            updateProperties(COLLECTIONS.conversations, conversation.id, { subscribedAdmins: newSubscribers });
-            setSubscribersUIDs(newSubscribers);
-        }
-    };
+    if (data.value) {
+      newSubscribers.push(data.value);
+      updateProperties(COLLECTIONS.conversations, conversation.id, {
+        subscribedAdmins: newSubscribers,
+      });
+      setSubscribersUIDs(newSubscribers);
+    }
+  };
 
-    const handleRemoveSubscriber = (UID) => {
-        const newSubscribers = subscribersUIDs;
-        const index = subscribersUIDs.indexOf(UID);
+  const handleRemoveSubscriber = UID => {
+    const newSubscribers = subscribersUIDs;
+    const index = subscribersUIDs.indexOf(UID);
 
-        if (index > -1) {
-            newSubscribers.splice(index, 1);
-            updateProperties(COLLECTIONS.conversations, conversation.id, { subscribedAdmins: newSubscribers });
-            setSubscribersUIDs(newSubscribers);
-        }
-    };
+    if (index > -1) {
+      newSubscribers.splice(index, 1);
+      updateProperties(COLLECTIONS.conversations, conversation.id, {
+        subscribedAdmins: newSubscribers,
+      });
+      setSubscribersUIDs(newSubscribers);
+    }
+  };
 
-    return (
-        <Dialog
-            open={showDialog}
-            onClose={handleClose}
-            classes={{ paper: classes.root }}
-        >
-            <DialogTitle>Manage Subscribers</DialogTitle>
+  return (
+    <Dialog
+      open={showDialog}
+      onClose={handleClose}
+      classes={{ paper: classes.root }}
+    >
+      <DialogTitle>Manage Subscribers</DialogTitle>
 
-            <DialogContent>
-
-            <AdminsConsumer>
-            { context => {
-                const subscribedAdmins = context.filter(x => subscribersUIDs.includes(x.UID));
-                const notSubscribedAdmins = context.filter(x => !subscribersUIDs.includes(x.UID))
-                    .map(x => ({label: `${x.givenName} ${x.familyName}`, value: x.UID}));
-                return(<React.Fragment>
+      <DialogContent>
+        <AdminsConsumer>
+          {context => {
+            const subscribedAdmins = context.filter(x =>
+              subscribersUIDs.includes(x.UID)
+            );
+            const notSubscribedAdmins = context
+              .filter(x => !subscribersUIDs.includes(x.UID))
+              .map(x => ({
+                label: `${x.givenName} ${x.familyName}`,
+                value: x.UID,
+              }));
+            return (
+              <React.Fragment>
                 <IntegrationReactSelect
-                    placeholder="Add Subscriber"
-                    autoFocus
-                    changeHandler={handleAddSubscriber}
-                    suggestions={notSubscribedAdmins}
+                  placeholder="Add Subscriber"
+                  autoFocus
+                  changeHandler={handleAddSubscriber}
+                  suggestions={notSubscribedAdmins}
                 />
 
                 <List>
-                    { subscribedAdmins.map((x, i) => (
-                        <ListItem key={i} disableGutters>
-                            <ListItemAvatar>
-                                { x.photoURL ?
-                                    <Avatar src={x.photoURL} /> :
-                                    <Avatar>{ getInitials(`${x.givenName} ${x.familyName}`) }</Avatar>
-                                }
-                            </ListItemAvatar>
-                            <ListItemText
-                                primary={`${x.givenName} ${x.familyName}`}
-                                secondary={x.title}
-                            />
-                            <ListItemSecondaryAction>
-                                <IconButton onClick={() => {handleRemoveSubscriber(x.UID)}} className={classes.iconButton}>
-                                    <RemoveIcon />
-                                </IconButton>
-                            </ListItemSecondaryAction>
-                        </ListItem>
-                    )) }
+                  {subscribedAdmins.map((x, i) => (
+                    <ListItem key={i} disableGutters>
+                      <ListItemAvatar>
+                        {x.photoURL ? (
+                          <Avatar src={x.photoURL} />
+                        ) : (
+                          <Avatar>
+                            {getInitials(`${x.givenName} ${x.familyName}`)}
+                          </Avatar>
+                        )}
+                      </ListItemAvatar>
+                      <ListItemText
+                        primary={`${x.givenName} ${x.familyName}`}
+                        secondary={x.title}
+                      />
+                      <ListItemSecondaryAction>
+                        <IconButton
+                          onClick={() => {
+                            handleRemoveSubscriber(x.UID);
+                          }}
+                          className={classes.iconButton}
+                        >
+                          <RemoveIcon />
+                        </IconButton>
+                      </ListItemSecondaryAction>
+                    </ListItem>
+                  ))}
                 </List>
-                </React.Fragment>
-            )} }
-            </AdminsConsumer>
+              </React.Fragment>
+            );
+          }}
+        </AdminsConsumer>
+      </DialogContent>
 
-            </DialogContent>
-
-            <DialogActions>
-                <Button onClick={handleClose} color="primary">
-                    Done
-                </Button>
-            </DialogActions>
-
-        </Dialog>
-    );
+      <DialogActions>
+        <Button onClick={handleClose} color="primary">
+          Done
+        </Button>
+      </DialogActions>
+    </Dialog>
+  );
 }
 
 export default withStyles(styles)(ManageSubscribersDialog);

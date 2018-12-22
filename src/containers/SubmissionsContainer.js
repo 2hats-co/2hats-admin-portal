@@ -98,10 +98,9 @@ function SumbissionsContainer(props) {
   if (submission.complete) {
     console.log(submission);
     return (
-      <React.Fragment>
-        {' '}
-        {locationIndicator} <Done />{' '}
-      </React.Fragment>
+      <div style={{ overflow: 'hidden' }}>
+        {locationIndicator} <Done />
+      </div>
     );
   }
 

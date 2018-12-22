@@ -100,7 +100,7 @@ function ConversationsContainer(props) {
                 conversation={selectedConversation}
               />
 
-              <Grid item xs style={{ overflowY: 'scroll' }}>
+              <Grid item xs style={{ overflowY: 'auto' }}>
                 <Messages conversation={selectedConversation} />
               </Grid>
 
