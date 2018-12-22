@@ -112,7 +112,9 @@ function NavigationItems(props) {
             selected={selectedIndex === i}
             classes={{
               selected:
-                x.label === 'Statistics' || x.label === 'Marketing'
+                x.label === 'Statistics' ||
+                x.label === 'Marketing' ||
+                (x.label === 'Subjects' && theme.palette.type === 'dark')
                   ? classNames(classes.selectedItem, classes.selectedItemAltBG)
                   : classes.selectedItem,
             }}

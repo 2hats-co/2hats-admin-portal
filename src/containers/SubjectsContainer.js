@@ -15,6 +15,10 @@ import SubjectItem from '../components/Subjects/SubjectItem';
 const styles = theme => ({
   root: {
     height: '100vh',
+    backgroundColor:
+      theme.palette.type === 'dark'
+        ? theme.palette.background.default
+        : theme.palette.background.paper,
   },
   filterContainer: {
     padding: '0 24px 8px',
@@ -115,7 +119,10 @@ function SubjectsContainer(props) {
   return (
     <React.Fragment>
       <Grid container direction="column" className={classes.root}>
-        <LocationIndicator title="Subjects" />
+        <LocationIndicator
+          title="Subjects"
+          altBg={theme.palette.type === 'dark'}
+        />
 
         <Grid item className={classes.filterContainer}>
           <Tooltip title="Clear all filters">
