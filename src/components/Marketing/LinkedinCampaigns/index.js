@@ -2,6 +2,7 @@ import React from 'react';
 
 import CampaignEditor from './CampaignEditor';
 import CampaignCard from './CampaignCard';
+import LoadingHat from '../../LoadingHat';
 import useCollection from '../../../hooks/useCollection';
 import { firestore } from '../../../store';
 import { COLLECTIONS } from '../../../constants/firestore';
@@ -36,10 +37,10 @@ function LinkedinCampaigns(props) {
         {campaigns.map((x, i) => (
           <CampaignCard data={x} key={i} actions={{ run: runCampaign }} />
         ))}
-        <CampaignEditor action="Edit" actions={{ create: createCampaign }} />
+        <CampaignEditor action="Action" actions={{ create: createCampaign }} />
       </React.Fragment>
     );
-  else return <p>loadin</p>;
+  else return LoadingHat;
 }
 
 export default LinkedinCampaigns;
