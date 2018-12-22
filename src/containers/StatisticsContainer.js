@@ -133,7 +133,6 @@ function StatisticsContainer(props) {
   const handleSaveLayout = async () => {
     const now = new Date().getTime();
     const millsSinceLastUpdate = now - layoutLastUpdate;
-    console.log(millsSinceLastUpdate);
     const millsDelay = 5000;
     if (layoutShouldUpdate && millsSinceLastUpdate > millsDelay) {
       setLayoutLastUpdate(now);

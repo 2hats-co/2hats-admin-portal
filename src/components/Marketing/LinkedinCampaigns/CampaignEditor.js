@@ -10,6 +10,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Chip from '@material-ui/core/Chip';
 import AddIcon from '@material-ui/icons/Add';
 import { Formik } from 'formik';
+import Modal from '@material-ui/core/Modal';
 //import Yup from 'yup';
 const styles = theme => ({
   root: {
@@ -35,25 +36,39 @@ const styles = theme => ({
     marginLeft: 'auto',
     marginTop: theme.spacing.unit,
   },
+  modal: {},
 });
 
+const emptyForm = {
+  email: '',
+  password: '',
+  query: '',
+  ignoreTerm: '',
+  requiredTerm: '',
+  ignoreList: [],
+  requiredList: [],
+  message: '',
+};
 function CampaignEditor(props) {
-  const { classes, action, actions } = props;
-  return (
-    <Formik
-      initialValues={{
-        email: '',
+  const { classes, action, actions, open, campaign } = props;
+  const initialValues = campaign
+    ? {
+        email: campaign.email,
         password: '',
-        query: '',
+        query: campaign.query,
         ignoreTerm: '',
         requiredTerm: '',
-        ignoreList: [],
-        requiredList: [],
-        message: '',
-      }}
+        ignoreList: [campaign.ignoreList],
+        requiredList: [campaign.requiredList],
+        message: campaign.message,
+      }
+    : emptyForm;
+  console.log(initialValues, campaign);
+  return (
+    <Formik
+      initialValues={initialValues}
       onSubmit={(values, { setSubmitting }) => {
-        actions.create(values);
-        console.log(values);
+        actions[action](values);
       }}
     >
       {formikProps => {
@@ -74,154 +89,158 @@ function CampaignEditor(props) {
         };
         return (
           <form onSubmit={handleSubmit}>
-            <Paper className={classes.root}>
-              <Grid container direction="column" spacing={8}>
-                <Grid item>
-                  <Typography variant="title">{action} Campaign</Typography>
-                </Grid>
-                <Grid item>
-                  <TextField
-                    label="Linkedin email"
-                    id="email"
-                    placeholder="Linkedin account"
-                    type="text"
-                    onChange={handleChange}
-                    autoFocus
-                    fullWidth
-                    value={values.email}
-                  />
-                  <TextField
-                    label="Linkedin password"
-                    id="password"
-                    placeholder="Linkedin password"
-                    type="password"
-                    onChange={handleChange}
-                    fullWidth
-                    value={values.password}
-                  />
-                  <TextField
-                    label="Search query"
-                    id="query"
-                    placeholder="Linkedin search"
-                    type="text"
-                    onChange={handleChange}
-                    fullWidth
-                    value={values.query}
-                  />
-                </Grid>
-                <Grid item>
-                  <Grid container alignItems="flex-end">
-                    <Grid item xs>
-                      <TextField
-                        id="ignoreTerm"
-                        placeholder="Ignored keyword"
-                        type="text"
-                        onChange={handleChange}
-                        autoFocus
-                        fullWidth
-                        value={values.ignoreTerm}
-                        label="Ignored keywords"
-                        onKeyPress={e => {
-                          if (e.key === 'Enter') {
+            <Modal
+              open={open}
+              onClose={actions.close}
+              className={classes.modal}
+            >
+              <Paper className={classes.root}>
+                <Grid container direction="column" spacing={8}>
+                  <Grid item>
+                    <Typography variant="title">{action} Campaign</Typography>
+                  </Grid>
+                  <Grid item>
+                    <TextField
+                      label="Linkedin email"
+                      id="email"
+                      placeholder="Linkedin account"
+                      type="text"
+                      onChange={handleChange}
+                      autoFocus
+                      fullWidth
+                      value={values.email}
+                    />
+                    <TextField
+                      label="Linkedin password"
+                      id="password"
+                      placeholder="Linkedin password"
+                      type="password"
+                      onChange={handleChange}
+                      fullWidth
+                      value={values.password}
+                    />
+                    <TextField
+                      label="Search query"
+                      id="query"
+                      placeholder="Linkedin search"
+                      type="text"
+                      onChange={handleChange}
+                      fullWidth
+                      value={values.query}
+                    />
+                  </Grid>
+                  <Grid item>
+                    <Grid container alignItems="flex-end">
+                      <Grid item xs>
+                        <TextField
+                          id="ignoreTerm"
+                          placeholder="Ignored keyword"
+                          type="text"
+                          onChange={handleChange}
+                          fullWidth
+                          value={values.ignoreTerm}
+                          label="Ignored keywords"
+                          onKeyPress={e => {
+                            if (e.key === 'Enter') {
+                              handleAddToList('ignoreList', 'ignoreTerm');
+                            }
+                          }}
+                        />
+                      </Grid>
+                      <Grid item>
+                        <IconButton
+                          className={classes.addButton}
+                          onClick={() => {
                             handleAddToList('ignoreList', 'ignoreTerm');
-                          }
+                          }}
+                        >
+                          <AddIcon fontSize="small" />
+                        </IconButton>
+                      </Grid>
+                    </Grid>
+                    {values.ignoreList.map((x, i) => (
+                      <Chip
+                        key={i}
+                        label={x}
+                        className={classes.chip}
+                        variant="outlined"
+                        onDelete={() => {
+                          handleDeleteFromList('ignoreList', i);
                         }}
                       />
-                    </Grid>
-                    <Grid item>
-                      <IconButton
-                        className={classes.addButton}
-                        onClick={() => {
-                          handleAddToList('ignoreList', 'ignoreTerm');
-                        }}
-                      >
-                        <AddIcon fontSize="small" />
-                      </IconButton>
-                    </Grid>
+                    ))}
                   </Grid>
-                  {values.ignoreList.map((x, i) => (
-                    <Chip
-                      key={i}
-                      label={x}
-                      className={classes.chip}
-                      variant="outlined"
-                      onDelete={() => {
-                        handleDeleteFromList('ignoreList', i);
-                      }}
-                    />
-                  ))}
-                </Grid>
 
-                <Grid item>
-                  <Grid container alignItems="flex-end">
-                    <Grid item xs>
-                      <TextField
-                        id="requiredTerm"
-                        placeholder="Required keyword"
-                        type="text"
-                        onChange={handleChange}
-                        autoFocus
-                        fullWidth
-                        value={values.requiredTerm}
-                        label="Required keywords"
-                        onKeyPress={e => {
-                          if (e.key === 'Enter') {
+                  <Grid item>
+                    <Grid container alignItems="flex-end">
+                      <Grid item xs>
+                        <TextField
+                          id="requiredTerm"
+                          placeholder="Required keyword"
+                          type="text"
+                          onChange={handleChange}
+                          fullWidth
+                          value={values.requiredTerm}
+                          label="Required keywords"
+                          onKeyPress={e => {
+                            if (e.key === 'Enter') {
+                              handleAddToList('requiredList', 'requiredTerm');
+                            }
+                          }}
+                        />
+                      </Grid>
+                      <Grid item>
+                        <IconButton
+                          className={classes.addButton}
+                          onClick={() => {
                             handleAddToList('requiredList', 'requiredTerm');
-                          }
+                          }}
+                        >
+                          <AddIcon fontSize="small" />
+                        </IconButton>
+                      </Grid>
+                    </Grid>
+
+                    {values.requiredList.map((x, i) => (
+                      <Chip
+                        key={i}
+                        label={x}
+                        className={classes.chip}
+                        variant="outlined"
+                        onDelete={() => {
+                          handleDeleteFromList('requiredList', i);
                         }}
                       />
-                    </Grid>
-                    <Grid item>
-                      <IconButton
-                        className={classes.addButton}
-                        onClick={() => {
-                          handleAddToList('requiredList', 'requiredTerm');
-                        }}
-                      >
-                        <AddIcon fontSize="small" />
-                      </IconButton>
-                    </Grid>
+                    ))}
                   </Grid>
 
-                  {values.requiredList.map((x, i) => (
-                    <Chip
-                      key={i}
-                      label={x}
-                      className={classes.chip}
+                  <Grid item>
+                    <TextField
+                      className={classes.messageBox}
                       variant="outlined"
-                      onDelete={() => {
-                        handleDeleteFromList('requiredList', i);
-                      }}
+                      multiline
+                      fullWidth
+                      rows={3}
+                      label="Message"
+                      id="message"
+                      onChange={handleChange}
+                      value={values.message}
                     />
-                  ))}
-                </Grid>
+                  </Grid>
 
-                <Grid item>
-                  <TextField
-                    className={classes.messageBox}
-                    variant="outlined"
-                    multiline
-                    fullWidth
-                    rows={3}
-                    label="Message"
-                    id="message"
-                    onChange={handleChange}
-                    value={values.message}
-                  />
+                  <Grid item>
+                    <Button
+                      onClick={handleSubmit}
+                      variant="contained"
+                      color="primary"
+                      className={classes.done}
+                    >
+                      Done
+                    </Button>
+                  </Grid>
                 </Grid>
-
-                <Grid item>
-                  <Button
-                    onClick={handleSubmit}
-                    variant="contained"
-                    color="primary"
-                    className={classes.done}
-                  >
-                    Done
-                  </Button>
-                </Grid>
-              </Grid>
-            </Paper>
+              </Paper>
+            </Modal>
           </form>
         );
       }}

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import CampaignEditor from './CampaignEditor';
 import CampaignCard from './CampaignCard';
@@ -6,16 +6,10 @@ import LoadingHat from '../../LoadingHat';
 import useCollection from '../../../hooks/useCollection';
 import { firestore } from '../../../store';
 import { COLLECTIONS } from '../../../constants/firestore';
-const createCampaign = data => {
-  firestore.collection(COLLECTIONS.linkedinCampaigns).add({
-    ...data,
-    needsToRun: false,
-    ConnectionsPerSession: 4,
-    requestsCount: 0,
-    startPage: 0,
-    createdAt: new Date(),
-  });
-};
+
+import Fab from '@material-ui/core/Fab';
+import AddIcon from '@material-ui/icons/Add';
+
 const runCampaign = id => {
   firestore
     .collection(COLLECTIONS.linkedinCampaigns)
@@ -26,6 +20,20 @@ const runCampaign = id => {
 };
 function LinkedinCampaigns(props) {
   const { classes } = props;
+  const [showEditor, setShowEditor] = useState(false);
+  const [campaign, setCampaign] = useState(null);
+  const createCampaign = data => {
+    firestore.collection(COLLECTIONS.linkedinCampaigns).add({
+      ...data,
+      needsToRun: false,
+      connectionsPerSession: 4,
+      requestsCount: 0,
+      startPage: 0,
+      createdAt: new Date(),
+    });
+    setShowEditor(false);
+  };
+
   const [campaignsState, campaignsDispatch] = useCollection(
     COLLECTIONS.linkedinCampaigns,
     {}
@@ -35,9 +43,43 @@ function LinkedinCampaigns(props) {
     return (
       <React.Fragment>
         {campaigns.map((x, i) => (
-          <CampaignCard data={x} key={i} actions={{ run: runCampaign }} />
+          <CampaignCard
+            data={x}
+            key={i}
+            actions={{
+              run: runCampaign,
+              edit: () => {
+                setCampaign(x);
+                setShowEditor(true);
+              },
+            }}
+          />
         ))}
-        <CampaignEditor action="Action" actions={{ create: createCampaign }} />
+        <CampaignEditor
+          open={showEditor}
+          campaign={campaign}
+          action={campaign ? 'edit' : 'create'}
+          actions={{
+            create: createCampaign,
+            close: () => {
+              setShowEditor(false);
+            },
+          }}
+        />
+        <Fab
+          style={{
+            position: 'absolute',
+            bottom: 20,
+            right: 20,
+            zIndex: 99,
+          }}
+          color="primary"
+          onClick={() => {
+            setShowEditor(true);
+          }}
+        >
+          <AddIcon />
+        </Fab>
       </React.Fragment>
     );
   else return LoadingHat;

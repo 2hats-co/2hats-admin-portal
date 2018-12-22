@@ -55,11 +55,7 @@ function CampaignCard(props) {
         </Grid>
         <Grid item xs={1} className={classes.rightAligned}>
           <Tooltip title="Edit Campaign">
-            <IconButton
-              onClick={() => {
-                actions.edit(data.id);
-              }}
-            >
+            <IconButton onClick={actions.edit}>
               <EditIcon />
             </IconButton>
           </Tooltip>
