@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import withNavigation from '../components/withNavigation';
 import TimeBar from '../components/Statistics/TimeBar';
-import useCharts from '../hooks/useCharts';
+import useCollection from '../hooks/useCollection';
 
 import withStyles from '@material-ui/core/styles/withStyles';
 import Grid from '@material-ui/core/Grid';
@@ -96,7 +96,12 @@ const ResponsiveGridLayout = WidthProvider(GridLayout);
 function StatisticsContainer(props) {
   moment.updateLocale('en', momentLocales);
   const { classes, theme, uid } = props;
-  const charts = useCharts(uid);
+  // const charts = useCharts(uid);
+  const [chartsState] = useCollection(`admins/${uid}/charts`);
+  console.log(chartsState);
+  const charts = chartsState.documents;
+  console.log(charts);
+
   const [layout, setLayout] = useState([]);
   const [layoutShouldUpdate, setLayoutShouldUpdate] = useState(false);
   const [layoutLastUpdate, setLayoutLastUpdate] = useState(
