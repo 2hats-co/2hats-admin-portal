@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import withStyles from '@material-ui/core/styles/withStyles';
 import Paper from '@material-ui/core/Paper';
@@ -9,17 +9,23 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Avatar from '@material-ui/core/Avatar';
 
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
+
 import IconButton from '@material-ui/core/IconButton';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import Button from '@material-ui/core/Button';
 import Fade from '@material-ui/core/Fade';
 
+import Snackbar from '@material-ui/core/Snackbar';
+
 import { ChromePicker } from 'react-color';
 import { randomGreeting, getInitials } from '../utilities';
 import { COLLECTIONS } from '../constants/firestore';
 import { updateProperties } from '../utilities/firestore';
 import { ORANGE_COLOR } from '../Theme';
+import { ROUTES } from '../constants/routes';
 
 const styles = theme => ({
     paperRoot: {
@@ -51,11 +57,18 @@ const styles = theme => ({
         opacity: .67,
     },
 
-    themeEditor: {
+    borderedSection: {
         marginTop: theme.spacing.unit * 3,
         paddingTop: theme.spacing.unit * 2,
         borderTop: `1px solid ${theme.palette.divider}`,
     },
+
+    routeDropdown: {
+        marginTop: theme.spacing.unit,
+        marginLeft: theme.spacing.unit,
+        minWidth: 140,
+    },
+
     swatch: {
         background: '#fff',
         width:20,
@@ -83,16 +96,23 @@ const styles = theme => ({
         marginTop: theme.spacing.unit,
         textAlign: 'center',
     },
+
+    snackbar: {
+        marginBottom: theme.spacing.unit * 2,
+        '& > div': { justifyContent: 'center' },
+    },
 });
 
 function UserDialog(props) {
-    const { classes, showDialog, setShowDialog, user } = props;
+    const { classes, showDialog, setShowDialog, user, navigationRoutes } = props;
 
     const [slideIn, setSlideIn] = useState(true);
     const [greeting, setGreeting] = useState(randomGreeting());
     const [darkTheme, setDarkTheme] = useState((user.adminPortal && user.adminPortal.theme === 'dark') || false);
     const [themeColor, setThemeColor] = useState((user.adminPortal && user.adminPortal.themeColor) || ORANGE_COLOR);
     const [showColorPicker, setShowColorPicker] = useState(false);
+    const [defaultRoute, setDefaultRoute] = useState(user.defaultRoute);
+    const [snackbarMessage, setSnackbarMessage] = useState('');
 
     const onClose = () => {
         setSlideIn(false);
@@ -104,7 +124,14 @@ function UserDialog(props) {
             themeColor,
             theme: darkTheme ? 'dark' : 'light',
         } });
+        setSnackbarMessage('Saved theme! Reloading…');
         setTimeout(() => { window.location.reload() }, 1000);
+    };
+
+    const updateDefaultRoute = (val) => {
+        setDefaultRoute(val);
+        updateProperties(COLLECTIONS.admins, user.UID, {defaultRoute: val});
+        setSnackbarMessage('Saved default route!');
     };
 
     const initials = getInitials(`${user.givenName} ${user.familyName}`);
@@ -121,7 +148,22 @@ function UserDialog(props) {
                         <Typography variant="body1" className={classes.UID}>{user.UID}</Typography>
                     </Grid>
 
-                    <Grid item className={classes.themeEditor}>
+                    <Grid item className={classes.borderedSection}>
+                        <Grid container justify="center" alignItems="baseline" spacing={8}>
+                            <Typography variant="subheading">Default route: </Typography>
+                            <Select
+                                value={defaultRoute}
+                                onChange={(e) => { updateDefaultRoute(e.target.value) }}
+                                className={classes.routeDropdown}
+                            >
+                                { navigationRoutes.map((x, i) => (
+                                    <MenuItem key={i} value={x.route}>{x.label}</MenuItem>
+                                ))}
+                            </Select>
+                        </Grid>
+                    </Grid>
+
+                    <Grid item className={classes.borderedSection}>
                         <Grid container alignItems="center" justify="center">
 
                             <IconButton onClick={() => { setShowColorPicker(!showColorPicker) }}>
@@ -174,6 +216,14 @@ function UserDialog(props) {
                     </Grid>
 
                 </Grid>
+
+                <Snackbar
+                    open={snackbarMessage.length > 0}
+                    autoHideDuration={3000}
+                    onClose={() => { setSnackbarMessage('') }}
+                    message={snackbarMessage}
+                    className={classes.snackbar}
+                />
             </Paper>
         </Slide>
     </Modal>);

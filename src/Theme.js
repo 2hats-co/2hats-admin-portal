@@ -212,6 +212,9 @@ function generateTheme(theme, themeColor) {
             MuiCheckbox: {
                 checked: { color: `${primaryDarkText} !important` },
             },
+            MuiSwitch: {
+                checked: { color: `${primaryDarkText} !important` },
+            },
         },
     });
 }

@@ -172,11 +172,9 @@ export const withNavigation = (WrappedComponent) => {
                                     </IconButton>
                                 </Tooltip>
                                 { currentUser && displayName && uid ?
-                                <Fade in>
                                     <IconButton onClick={() => { setShowUserDialog(true) }}>
                                         <Avatar src={currentUser.avatarURL} className={classes.avatar}>{initials ? initials : null}</Avatar>
                                     </IconButton>
-                                </Fade>
                                 : <CircularProgress color="inherit" className={classes.avatarSpinner} />}
                             </Grid>
                         </Grid>
@@ -190,7 +188,7 @@ export const withNavigation = (WrappedComponent) => {
             </Grid>
 
             { showSearch && <Search showSearch={showSearch} setShowSearch={setShowSearch} /> }
-            { showUserDialog && <UserDialog user={currentUser} showDialog={showUserDialog} setShowDialog={setShowUserDialog} /> }
+            { showUserDialog && <UserDialog user={currentUser} showDialog={showUserDialog} setShowDialog={setShowUserDialog} navigationRoutes={navigationRoutes} /> }
 
         </AdminsProvider>);
     }   
