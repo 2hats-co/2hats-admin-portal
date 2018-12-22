@@ -25,7 +25,6 @@ import ResumeIcon from '@material-ui/icons/Attachment';
 
 import { useSearch } from '../../hooks/useSearch';
 import { ROUTES } from '../../constants/routes';
-import { Typography } from '@material-ui/core';
 
 const styles = theme => ({
   paperRoot: {
@@ -37,12 +36,12 @@ const styles = theme => ({
     overflow: 'hidden',
   },
   nbHits: {
-    fontSize: 16,
     position: 'absolute',
-    right: 25,
-    top: 25,
-    fontWeight: 'bold',
-    color: '#555',
+    right: 24,
+    top: 26,
+    color: theme.palette.text.primary,
+    zIndex: -1,
+    opacity: 0.5,
   },
   searchIcon: {
     fontSize: 28,
@@ -61,89 +60,40 @@ const styles = theme => ({
       display: 'block',
       width: 612,
       height: 1,
-      backgroundColor: 'rgba(0,0,0,.1)',
+      backgroundColor: theme.palette.divider,
 
       position: 'absolute',
       left: 28,
       bottom: 0,
-      paperRoot: {
-        borderRadius: theme.shape.roundBorderRadius,
-        width: 664,
-        margin: '48px auto 0',
-        outline: 'none',
-        maxHeight: 'calc(100vh - 96px)',
-        overflow: 'hidden',
-      },
-      searchIcon: {
-        fontSize: 28,
-        marginRight: 12,
-        opacity: 0.54,
-      },
-      searchInput: {
-        fontSize: 24,
-        fontWeight: 500,
-        padding: '12px 0 12px 24px',
-        width: 640,
-        position: 'relative',
-
-        '&::after': {
-          content: '""',
-          display: 'block',
-          width: 612,
-          height: 1,
-          backgroundColor: theme.palette.divider,
-
-          position: 'absolute',
-          left: 28,
-          bottom: 0,
-        },
-      },
-      listWrapper: {
-        maxHeight: 'calc(100vh - 96px - 64px)',
-        overflowY: 'scroll',
-      },
-      listRoot: {
-        // borderRadius: '0 0 20px 20px',
-        overflow: 'hidden',
-      },
-      listItem: {
-        transition: 'background-color .2s',
-        '&:hover': {
-          backgroundColor: theme.palette.divider,
-        },
-      },
-      listIcon: {
-        margin: 0,
-      },
     },
-    listWrapper: {
-      maxHeight: 'calc(100vh - 96px - 64px)',
-      overflowY: 'scroll',
+  },
+  listWrapper: {
+    maxHeight: 'calc(100vh - 96px - 64px)',
+    overflowY: 'auto',
+  },
+  listRoot: {
+    // borderRadius: '0 0 20px 20px',
+    overflow: 'hidden',
+  },
+  listItem: {
+    transition: 'background-color .2s',
+    '&:hover': {
+      backgroundColor: theme.palette.divider,
     },
-    listRoot: {
-      // borderRadius: '0 0 20px 20px',
-      overflow: 'hidden',
-    },
-    listItem: {
-      transition: 'background-color .2s',
-      '&:hover': {
-        backgroundColor: theme.palette.divider,
-      },
-    },
-    listIcon: {
-      margin: 0,
-    },
-    secondaryAction: {
-      right: theme.spacing.unit,
-    },
-    noResults: {
-      paddingLeft: '40px !important',
-      opacity: 0.54,
-    },
-    listLoader: {
-      margin: `0 auto ${theme.spacing.unit * 2}px`,
-      width: 620,
-    },
+  },
+  listIcon: {
+    margin: 0,
+  },
+  secondaryAction: {
+    right: theme.spacing.unit,
+  },
+  noResults: {
+    paddingLeft: '40px !important',
+    opacity: 0.67,
+  },
+  listLoader: {
+    margin: `0 auto ${theme.spacing.unit * 2}px`,
+    width: 620,
   },
 });
 
@@ -154,6 +104,7 @@ function Search(props) {
   const [hasMore, setHasMore] = useState(true);
   const [searchState, searchDispatch] = useSearch();
   const { results } = searchState;
+
   useEffect(
     () => {
       setHasMore(results.hitsPerPage < results.nbHits);
@@ -191,7 +142,7 @@ function Search(props) {
 
   let resultItems = [];
   if (results.hits && results.hits.length > 0) {
-    const resultItemsToRender = results.hits.map((hit, i) => (
+    resultItems = results.hits.map((hit, i) => (
       <ListItem key={i} className={classes.listItem}>
         <ListItemIcon classes={{ root: classes.listIcon }}>
           <PersonIcon />
@@ -222,10 +173,6 @@ function Search(props) {
         </ListItemSecondaryAction>
       </ListItem>
     ));
-    resultItems = useMemo(() => resultItemsToRender, [
-      results.nbHits,
-      results.hitsPerPage,
-    ]);
   }
 
   return (
@@ -242,9 +189,11 @@ function Search(props) {
             placeholder="Search candidates"
             startAdornment={<SearchIcon className={classes.searchIcon} />}
           />
-          <div className={classes.nbHits}>
-            found {results.nbHits} candidates
-          </div>
+          {resultItems.length > 0 && (
+            <div className={classes.nbHits}>
+              {resultItems.length} of {results.nbHits} results
+            </div>
+          )}
 
           <div className={classes.listWrapper}>
             <InfiniteScroll

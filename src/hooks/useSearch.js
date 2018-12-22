@@ -58,6 +58,5 @@ export function useSearch() {
     [searchState]
   );
 
-  console.log('searchState', searchState);
   return [searchState, searchDispatch];
 }
