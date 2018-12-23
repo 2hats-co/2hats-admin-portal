@@ -37,6 +37,7 @@ const styles = theme => ({
     position: 'absolute',
     bottom: theme.spacing.unit * 1.5,
     left: theme.spacing.unit * 9,
+    overflowY: 'auto',
   },
 
   header: {
@@ -98,7 +99,7 @@ const styles = theme => ({
   },
 
   snackbar: {
-    marginBottom: theme.spacing.unit * 2,
+    marginLeft: theme.spacing.unit * 11.5,
     '& > div': { justifyContent: 'center' },
   },
 });
@@ -147,144 +148,147 @@ function UserDialog(props) {
   const initials = getInitials(`${user.givenName} ${user.familyName}`);
 
   return (
-    <Modal open={showDialog} onClose={onClose} disableAutoFocus>
-      <Slide in={slideIn} direction="up">
-        <Paper elevation={24} classes={{ root: classes.paperRoot }}>
-          <Grid container direction="column" justify="center">
-            <Grid item className={classes.header}>
-              <Avatar src={user.avatarURL} className={classes.avatar}>
-                {initials ? initials : null}
-              </Avatar>
-              <Typography variant="display1" className={classes.greeting}>
-                {greeting}, {user.givenName}!
-              </Typography>
-              <Typography variant="body1" className={classes.UID}>
-                {user.UID}
-              </Typography>
-            </Grid>
-
-            <Grid item className={classes.borderedSection}>
-              <Grid
-                container
-                justify="center"
-                alignItems="baseline"
-                spacing={8}
-              >
-                <Typography variant="subheading">Default route: </Typography>
-                <Select
-                  value={defaultRoute}
-                  onChange={e => {
-                    updateDefaultRoute(e.target.value);
-                  }}
-                  className={classes.routeDropdown}
-                >
-                  {navigationRoutes.map((x, i) => (
-                    <MenuItem key={i} value={x.route}>
-                      {x.label}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </Grid>
-            </Grid>
-
-            <Grid item className={classes.borderedSection}>
-              <Grid container alignItems="center" justify="center">
-                <IconButton
-                  onClick={() => {
-                    setShowColorPicker(!showColorPicker);
-                  }}
-                >
-                  <div
-                    className={classes.swatch}
-                    style={{ background: themeColor }}
-                  />
-                </IconButton>
-                <Typography
-                  variant="body1"
-                  style={{ cursor: 'pointer' }}
-                  onClick={() => {
-                    setShowColorPicker(!showColorPicker);
-                  }}
-                >
-                  Theme colour
+    <React.Fragment>
+      <Modal open={showDialog} onClose={onClose} disableAutoFocus>
+        <Slide in={slideIn} direction="up">
+          <Paper elevation={24} classes={{ root: classes.paperRoot }}>
+            <Grid container direction="column" justify="center">
+              <Grid item className={classes.header}>
+                <Avatar src={user.avatarURL} className={classes.avatar}>
+                  {initials ? initials : null}
+                </Avatar>
+                <Typography variant="display1" className={classes.greeting}>
+                  {greeting}, {user.givenName}!
                 </Typography>
-                {showColorPicker ? (
-                  <Fade in>
-                    <div className={classes.popover}>
-                      <div
-                        className={classes.cover}
-                        onClick={() => {
-                          setShowColorPicker(!showColorPicker);
-                        }}
-                      />
-                      <ChromePicker
-                        color={themeColor}
-                        onChange={val => {
-                          setThemeColor(
-                            `hsl(${Math.floor(val.hsl.h)}, ${Math.floor(
-                              val.hsl.s * 100
-                            )}%, ${Math.floor(val.hsl.l * 100)}%)`
-                          );
-                        }}
-                      />
-                    </div>
-                  </Fade>
-                ) : null}
+                <Typography variant="body1" className={classes.UID}>
+                  {user.UID}
+                </Typography>
+              </Grid>
 
-                <FormControlLabel
-                  className={classes.darkThemeSwitch}
-                  control={
-                    <Switch
-                      checked={darkTheme}
-                      onChange={e => {
-                        setDarkTheme(e.target.checked);
-                      }}
-                      value="checkedDarkTheme"
+              <Grid item className={classes.borderedSection}>
+                <Grid
+                  container
+                  justify="center"
+                  alignItems="baseline"
+                  spacing={8}
+                >
+                  <Typography variant="subheading">Default route: </Typography>
+                  <Select
+                    value={defaultRoute}
+                    onChange={e => {
+                      updateDefaultRoute(e.target.value);
+                    }}
+                    className={classes.routeDropdown}
+                  >
+                    {navigationRoutes.map((x, i) => (
+                      <MenuItem key={i} value={x.route}>
+                        {x.label}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </Grid>
+              </Grid>
+
+              <Grid item className={classes.borderedSection}>
+                <Grid container alignItems="center" justify="center">
+                  <IconButton
+                    onClick={() => {
+                      setShowColorPicker(!showColorPicker);
+                    }}
+                  >
+                    <div
+                      className={classes.swatch}
+                      style={{ background: themeColor }}
                     />
+                  </IconButton>
+                  <Typography
+                    variant="body1"
+                    style={{ cursor: 'pointer' }}
+                    onClick={() => {
+                      setShowColorPicker(!showColorPicker);
+                    }}
+                  >
+                    Theme colour
+                  </Typography>
+                  {showColorPicker ? (
+                    <Fade in>
+                      <div className={classes.popover}>
+                        <div
+                          className={classes.cover}
+                          onClick={() => {
+                            setShowColorPicker(!showColorPicker);
+                          }}
+                        />
+                        <ChromePicker
+                          color={themeColor}
+                          onChange={val => {
+                            setThemeColor(
+                              `hsl(${Math.floor(val.hsl.h)}, ${Math.floor(
+                                val.hsl.s * 100
+                              )}%, ${Math.floor(val.hsl.l * 100)}%)`
+                            );
+                          }}
+                        />
+                      </div>
+                    </Fade>
+                  ) : null}
+
+                  <FormControlLabel
+                    className={classes.darkThemeSwitch}
+                    control={
+                      <Switch
+                        checked={darkTheme}
+                        onChange={e => {
+                          setDarkTheme(e.target.checked);
+                        }}
+                        value="checkedDarkTheme"
+                      />
+                    }
+                    label="Dark theme"
+                  />
+                </Grid>
+              </Grid>
+
+              <Grid item className={classes.themeButtons}>
+                <Button
+                  onClick={updateTheme}
+                  color="primary"
+                  variant="contained"
+                  disabled={
+                    user.adminPortal
+                      ? themeColor === user.adminPortal.themeColor &&
+                        darkTheme === (user.adminPortal.theme === 'dark')
+                      : false
                   }
-                  label="Dark theme"
-                />
+                >
+                  Save and Reload
+                </Button>
+                <Button
+                  onClick={() => {
+                    setThemeColor(ORANGE_COLOR);
+                    setDarkTheme(false);
+                  }}
+                  color="primary"
+                >
+                  Reset
+                </Button>
               </Grid>
             </Grid>
+          </Paper>
+        </Slide>
+      </Modal>
 
-            <Grid item className={classes.themeButtons}>
-              <Button
-                onClick={updateTheme}
-                color="primary"
-                variant="contained"
-                disabled={
-                  user.adminPortal
-                    ? themeColor === user.adminPortal.themeColor &&
-                      darkTheme === (user.adminPortal.theme === 'dark')
-                    : false
-                }
-              >
-                Save and Reload
-              </Button>
-              <Button
-                onClick={() => {
-                  setThemeColor(ORANGE_COLOR);
-                  setDarkTheme(false);
-                }}
-                color="primary"
-              >
-                Reset
-              </Button>
-            </Grid>
-          </Grid>
-
-          <Snackbar
-            open={snackbarMessage.length > 0}
-            autoHideDuration={3000}
-            onClose={() => {
-              setSnackbarMessage('');
-            }}
-            message={snackbarMessage}
-            className={classes.snackbar}
-          />
-        </Paper>
-      </Slide>
-    </Modal>
+      <Snackbar
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+        open={snackbarMessage.length > 0}
+        autoHideDuration={3000}
+        onClose={() => {
+          setSnackbarMessage('');
+        }}
+        message={snackbarMessage}
+        className={classes.snackbar}
+      />
+    </React.Fragment>
   );
 }
 export default withStyles(styles)(UserDialog);
