@@ -8,20 +8,17 @@ import GoogleLogin from '../../utilities/auth/GoogleLogin';
 import { withRouter } from 'react-router-dom';
 import { authAdmin } from '../../firebase/auth';
 const styles = theme => ({
-  root: {
-    paddingLeft: 50,
-    paddingRight: 50,
-    height: 500,
-  },
   socialButton: {
     margin: 5,
     width: 250,
     height: 40,
-    color: '#fff !important',
-    backgroundColor: '#0077B5',
-    '& *': { color: '#fff !important' },
+    color: `${theme.palette.primary.main} !important`,
+    backgroundColor: '#fff',
+    '& *': { color: `${theme.palette.primary.main} !important` },
   },
   socialIcon: {
+    fill: theme.palette.primary.main,
+    color: theme.palette.primary.main,
     marginTop: 2,
     marginRight: 17,
   },
@@ -72,13 +69,10 @@ class GoogleButton extends Component {
             <Button
               variant="contained"
               key={`google-button`}
-              style={{ backgroundColor: '#E05449' }}
+              //style={{ backgroundColor: '#fff' }}
               onClick={renderProps.onClick}
               className={classes.socialButton}
             >
-              <div className={classes.socialIcon}>
-                <img alt={'google-logo'} src={GoogleIcon} />
-              </div>{' '}
               Sign in with Google
             </Button>
           )}
