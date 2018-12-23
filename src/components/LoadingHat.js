@@ -15,9 +15,11 @@ const styles = theme => ({
     top: 0,
     left: 0,
   },
+  
   '@keyframes fade-in': {
-    from: { opacity: 0 },
-    to: { opacity: 1 },
+    //need to prevent flashing between different loads
+    // from: { opacity: 0 },
+    // to: { opacity: 1 },
   },
   loadingHat: {
     animationName: 'loading-hat',
