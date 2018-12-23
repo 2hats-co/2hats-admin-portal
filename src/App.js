@@ -5,51 +5,57 @@ import Loadable from 'react-loadable';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import generateTheme, { ORANGE_COLOR } from './Theme';
 import { ROUTES } from './constants/routes';
-import Landing from './components/Landing';
+//import Landing from './components/Landing';
 // import withAuthentication from './utilities/Session/withAuthentication';
 import { useAuthedUser } from './hooks/useAuthedUser';
 import LoadingHat from './components/LoadingHat';
-
+import SubmissionsContainer from './containers/SubmissionsContainer';
 //containers
 const loadingCard = <LoadingHat />;
 
 const StatisticsContainer = Loadable({
-  loader: () => import('./containers/StatisticsContainer'),
+  loader: () =>
+    import('./containers/StatisticsContainer' /* webpackChunkName: "StatisticsContainer" */),
   loading() {
     return loadingCard;
   },
 });
 
 const SubjectsContainer = Loadable({
-  loader: () => import('./containers/SubjectsContainer'),
+  loader: () =>
+    import('./containers/SubjectsContainer' /* webpackChunkName: "SubjectsContainer" */),
   loading() {
     return loadingCard;
   },
 });
 
 const AuthenticationContainer = Loadable({
-  loader: () => import('./containers/AuthenticationContainer'),
+  loader: () =>
+    import('./containers/AuthenticationContainer' /* webpackChunkName: "AuthenticationContainer" */),
   loading() {
     return loadingCard;
   },
 });
 
 const ConversationsContainer = Loadable({
-  loader: () => import('./containers/ConversationsContainer'),
+  loader: () =>
+    import('./containers/ConversationsContainer' /* webpackChunkName: "ConversationsContainer" */),
   loading() {
     return loadingCard;
   },
 });
 
-const SubmissionsContainer = Loadable({
-  loader: () => import('./containers/SubmissionsContainer'),
+const Landing = Loadable({
+  loader: () =>
+    import('./components/Landing' /* webpackChunkName: "Landing" */),
   loading() {
     return loadingCard;
   },
 });
 
 const MarketingContainer = Loadable({
-  loader: () => import('./containers/MarketingContainer'),
+  loader: () =>
+    import('./containers/MarketingContainer' /* webpackChunkName: "MarketingContainer" */),
   loading() {
     return loadingCard;
   },
@@ -77,19 +83,17 @@ function App() {
     document.body.style.backgroundColor = Theme.palette.background.default;
   }
 
+  let appStyle =
+    currentUser &&
+    currentUser.adminPortal &&
+    currentUser.adminPortal.theme === 'dark'
+      ? { backgroundColor: '#222' }
+      : {};
+
   return (
     <MuiThemeProvider theme={Theme}>
       <Router>
-        <div
-          className="app"
-          style={
-            currentUser &&
-            currentUser.adminPortal &&
-            currentUser.adminPortal.theme === 'dark'
-              ? { backgroundColor: '#222' }
-              : {}
-          }
-        >
+        <div className="app" style={appStyle}>
           <Switch>
             <Route
               exact
