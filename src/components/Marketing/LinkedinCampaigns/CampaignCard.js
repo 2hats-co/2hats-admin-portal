@@ -40,18 +40,18 @@ function CampaignCard(props) {
           </Tooltip>
         </Grid>
         <Grid item xs={5}>
-          <Typography variant="title">{data.query}</Typography>
-          <Typography variant="body1">
+          <Typography variant="h6">{data.query}</Typography>
+          <Typography variant="body2">
             account {data.email} · created {moment(data.createdAt).fromNow()}
           </Typography>
         </Grid>
         <Grid item xs={2} className={classes.rightAligned}>
-          <Typography variant="title">{data.requestsCount}</Typography>
-          <Typography variant="body1">Connection Requests</Typography>
+          <Typography variant="h6">{data.requestsCount}</Typography>
+          <Typography variant="body2">Connection Requests</Typography>
         </Grid>
         <Grid item xs={2} className={classes.rightAligned}>
-          <Typography variant="title">{data.startPage}</Typography>
-          <Typography variant="body1">Last Page</Typography>
+          <Typography variant="h6">{data.startPage}</Typography>
+          <Typography variant="body2">Last Page</Typography>
         </Grid>
         <Grid item xs={1} className={classes.rightAligned}>
           <Tooltip title="Edit Campaign">

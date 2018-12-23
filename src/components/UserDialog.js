@@ -156,10 +156,10 @@ function UserDialog(props) {
                 <Avatar src={user.avatarURL} className={classes.avatar}>
                   {initials ? initials : null}
                 </Avatar>
-                <Typography variant="display1" className={classes.greeting}>
+                <Typography variant="h4" className={classes.greeting}>
                   {greeting}, {user.givenName}!
                 </Typography>
-                <Typography variant="body1" className={classes.UID}>
+                <Typography variant="body2" className={classes.UID}>
                   {user.UID}
                 </Typography>
               </Grid>
@@ -171,7 +171,7 @@ function UserDialog(props) {
                   alignItems="baseline"
                   spacing={8}
                 >
-                  <Typography variant="subheading">Default route: </Typography>
+                  <Typography variant="subtitle1">Default route: </Typography>
                   <Select
                     value={defaultRoute}
                     onChange={e => {
@@ -201,7 +201,7 @@ function UserDialog(props) {
                     />
                   </IconButton>
                   <Typography
-                    variant="body1"
+                    variant="body2"
                     style={{ cursor: 'pointer' }}
                     onClick={() => {
                       setShowColorPicker(!showColorPicker);

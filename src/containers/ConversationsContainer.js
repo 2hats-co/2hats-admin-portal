@@ -153,7 +153,7 @@ function ConversationsContainer(props) {
             >
               <Grid item>
                 <ForumIcon />
-                <Typography variant="subheading" color="textSecondary">
+                <Typography variant="subtitle1" color="textSecondary">
                   No open conversations
                 </Typography>
               </Grid>

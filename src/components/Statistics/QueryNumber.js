@@ -22,7 +22,7 @@ const styles = theme => ({
     },
     '&:hover .query-number-updated': { opacity: 0.53 },
   },
-  subheading: {
+  subtitle1: {
     lineHeight: 1.1,
   },
 });
@@ -62,8 +62,8 @@ function QueryNumber(props) {
         }}
       >
         <Grid item>
-          <Typography variant="display2">{result.data.value}</Typography>
-          <Typography variant="subheading" className={classes.subheading}>
+          <Typography variant="h3">{result.data.value}</Typography>
+          <Typography variant="subtitle1" className={classes.subtitle1}>
             {title}
           </Typography>
           <Typography variant="caption" className="query-number-updated">

@@ -145,7 +145,7 @@ function Message(props) {
       bodyContent = (
         <ExpansionPanel classes={{ root: classes.emailExpansionRoot }}>
           <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-            <Typography variant="body2">
+            <Typography variant="body1">
               <MailIcon className={classes.emailIcon} />
               {data.subject}
             </Typography>
@@ -168,7 +168,7 @@ function Message(props) {
       );
       break;
     default:
-      bodyContent = <Typography variant="body1">{data.body}</Typography>;
+      bodyContent = <Typography variant="body2">{data.body}</Typography>;
       break;
   }
 

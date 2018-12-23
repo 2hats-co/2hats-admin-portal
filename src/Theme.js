@@ -56,12 +56,13 @@ function generateTheme(theme, themeColor) {
       },
     },
     typography: {
+      useNextVariants: true,
       fontFamily: '"Helvetica Neue", Roboto, Arial, sans-serif',
-      display2: { fontWeight: 500 },
-      display1: { fontWeight: 500 },
-      headline: { fontWeight: 500 },
-      subheading: { fontWeight: 500 },
-      title: { textTransform: 'none' },
+      h3: { fontWeight: 500 },
+      h4: { fontWeight: 500 },
+      h5: { fontWeight: 500 },
+      subtitle1: { fontWeight: 500 },
+      h6: { textTransform: 'none' },
       button: {
         textTransform: 'none',
         fontWeight: 700,
@@ -162,74 +163,74 @@ function generateTheme(theme, themeColor) {
 
   if (theme !== 'dark') return createMuiTheme(baseTheme);
 
-    return createMuiTheme({
-        ...baseTheme,
-        palette: {
-            ...baseTheme.palette,
-            background: { default: '#222' },
-            type: 'dark',
+  return createMuiTheme({
+    ...baseTheme,
+    palette: {
+      ...baseTheme.palette,
+      background: { default: '#222' },
+      type: 'dark',
+    },
+    overrides: {
+      ...baseTheme.overrides,
+      MuiToggleButton: {
+        ...baseTheme.overrides.MuiToggleButton,
+        label: {
+          ...baseTheme.overrides.MuiToggleButton.label,
+          color: 'rgba(255,255,255,.87)',
         },
-        overrides: {
-            ...baseTheme.overrides,
-            MuiToggleButton: {
-                ...baseTheme.overrides.MuiToggleButton,
-                label: {
-                    ...baseTheme.overrides.MuiToggleButton.label,
-                    color: 'rgba(255,255,255,.87)',
-                },
-                selected: {
-                    color: primaryDarkText,
-                    '& > span': { color: primaryDarkText },
-                    '&::after': {
-                        backgroundColor: primaryLight,
-                        opacity: .8,
-                    },
-                },
-            },
-            MuiButton: {
-                ...baseTheme.overrides.MuiButton,
-                textPrimary: {
-                    color: primaryDarkText,
-                },
-                outlinedPrimary: {
-                    color: primaryDarkText,
-                },
-            },
-            MuiAvatar: {
-                ...baseTheme.overrides.MuiAvatar,
-                colorDefault: {
-                    ...baseTheme.overrides.MuiAvatar.colorDefault,
-                    color: primaryDarkText,
-                },
-            },
-            MuiTooltip: {
-                ...baseTheme.overrides.MuiTooltip,
-                tooltip: {
-                    ...baseTheme.overrides.MuiTooltip.tooltip,
-                    backgroundColor: 'rgba(255,255,255,.9)',
-                    color: 'rgba(0,0,0,.87)',
-                },
-            },
-            MuiTab: {
-                ...baseTheme.overrides.MuiTab,
-                selected: { color: `${primaryDarkText} !important` },
-            },
-            MuiBackdrop: {
-                root: {
-                    backgroundColor: 'rgba(0,0,0,.75)',
-                },
-            },
-            MuiFormLabel: {
-                focused: { color: `${primaryDarkText} !important` },
-            },
-            MuiCheckbox: {
-                checked: { color: `${primaryDarkText} !important` },
-            },
-            MuiSwitch: {
-                checked: { color: `${primaryDarkText} !important` },
-            },
+        selected: {
+          color: primaryDarkText,
+          '& > span': { color: primaryDarkText },
+          '&::after': {
+            backgroundColor: primaryLight,
+            opacity: 0.8,
+          },
         },
-    });
+      },
+      MuiButton: {
+        ...baseTheme.overrides.MuiButton,
+        textPrimary: {
+          color: primaryDarkText,
+        },
+        outlinedPrimary: {
+          color: primaryDarkText,
+        },
+      },
+      MuiAvatar: {
+        ...baseTheme.overrides.MuiAvatar,
+        colorDefault: {
+          ...baseTheme.overrides.MuiAvatar.colorDefault,
+          color: primaryDarkText,
+        },
+      },
+      MuiTooltip: {
+        ...baseTheme.overrides.MuiTooltip,
+        tooltip: {
+          ...baseTheme.overrides.MuiTooltip.tooltip,
+          backgroundColor: 'rgba(255,255,255,.9)',
+          color: 'rgba(0,0,0,.87)',
+        },
+      },
+      MuiTab: {
+        ...baseTheme.overrides.MuiTab,
+        selected: { color: `${primaryDarkText} !important` },
+      },
+      MuiBackdrop: {
+        root: {
+          backgroundColor: 'rgba(0,0,0,.75)',
+        },
+      },
+      MuiFormLabel: {
+        focused: { color: `${primaryDarkText} !important` },
+      },
+      MuiCheckbox: {
+        checked: { color: `${primaryDarkText} !important` },
+      },
+      MuiSwitch: {
+        checked: { color: `${primaryDarkText} !important` },
+      },
+    },
+  });
 }
 
 export default generateTheme;

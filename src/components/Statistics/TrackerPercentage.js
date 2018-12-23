@@ -167,12 +167,12 @@ function TrackerPercentage(props) {
           <Grid item>
             <Typography
               className={classes.percentage}
-              variant={layout.w > 1 ? 'display2' : 'display1'}
+              variant={layout.w > 1 ? 'h3' : 'h4'}
             >
               {percentage}
               <small>%</small>
             </Typography>
-            <Typography variant={layout.w > 1 ? 'subheading' : 'body2'}>
+            <Typography variant={layout.w > 1 ? 'subtitle1' : 'body1'}>
               {title}
             </Typography>
           </Grid>

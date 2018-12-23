@@ -52,7 +52,7 @@ class AuthenticationContainer extends React.Component {
             direction="column"
             justify="space-between"
           >
-            <Typography variant="title">Admin Portal</Typography>
+            <Typography variant="h6">Admin Portal</Typography>
             <GoogleButton
               id="google-button"
               action="Sign in"

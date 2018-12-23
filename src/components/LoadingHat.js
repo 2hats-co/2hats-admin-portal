@@ -71,7 +71,7 @@ const LoadingHat = props => (
     />
     <div className={props.classes.floor} />
     {props.message && (
-      <Typography variant="title" className={props.classes.message}>
+      <Typography variant="h6" className={props.classes.message}>
         {props.message}
       </Typography>
     )}

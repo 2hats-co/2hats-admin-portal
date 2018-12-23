@@ -102,8 +102,8 @@ function SubjectItem(props) {
 
       <Grid item xs={2}>
         <Grid container direction="column">
-          <Typography variant="subheading">{props.name}</Typography>
-          <Typography variant="body1">{props.industry}</Typography>
+          <Typography variant="subtitle1">{props.name}</Typography>
+          <Typography variant="body2">{props.industry}</Typography>
         </Grid>
       </Grid>
 
@@ -114,7 +114,7 @@ function SubjectItem(props) {
           </Grid>
           {props.note ? (
             <Grid item xs={6} style={{ paddingLeft: 12 }}>
-              <Typography variant="body1">Note: {props.note}</Typography>
+              <Typography variant="body2">Note: {props.note}</Typography>
             </Grid>
           ) : null}
         </Grid>
