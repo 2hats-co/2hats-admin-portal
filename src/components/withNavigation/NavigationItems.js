@@ -92,7 +92,7 @@ function NavigationItems(props) {
     classes,
     theme,
     goTo,
-    currentLocation,
+    // currentLocation,
     navigationRoutes,
     selectedIndex,
   } = props;

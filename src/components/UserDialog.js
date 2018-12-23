@@ -25,7 +25,6 @@ import { randomGreeting, getInitials } from '../utilities';
 import { COLLECTIONS } from '../constants/firestore';
 import { updateProperties } from '../utilities/firestore';
 import { ORANGE_COLOR } from '../Theme';
-import { ROUTES } from '../constants/routes';
 
 const styles = theme => ({
   paperRoot: {
@@ -108,7 +107,7 @@ function UserDialog(props) {
   const { classes, showDialog, setShowDialog, user, navigationRoutes } = props;
 
   const [slideIn, setSlideIn] = useState(true);
-  const [greeting, setGreeting] = useState(randomGreeting());
+  const [greeting] = useState(randomGreeting());
   const [darkTheme, setDarkTheme] = useState(
     (user.adminPortal && user.adminPortal.theme === 'dark') || false
   );

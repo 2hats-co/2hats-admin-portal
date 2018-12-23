@@ -2,7 +2,7 @@ import React from 'react';
 //import withNavigation from '../components/withNavigation';
 
 import withStyles from '@material-ui/core/styles/withStyles';
-import Typography from '@material-ui/core/Typography';
+// import Typography from '@material-ui/core/Typography';
 import Fade from '@material-ui/core/Fade';
 
 import LocationIndicator from '../components/LocationIndicator';

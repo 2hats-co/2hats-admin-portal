@@ -1,7 +1,6 @@
 import React from 'react';
 import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
 import Loadable from 'react-loadable';
-import Grid from '@material-ui/core/Grid';
 //routing
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import generateTheme, { ORANGE_COLOR } from './Theme';

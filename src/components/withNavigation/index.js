@@ -15,7 +15,6 @@ import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
 import DescriptionIcon from '@material-ui/icons/Description';
 import StatisticsIcon from '@material-ui/icons/InsertChart';
 import ConversationsIcon from '@material-ui/icons/Forum';
-import LeadsIcon from '@material-ui/icons/BusinessCenter';
 import MarketingIcon from '@material-ui/icons/RecordVoiceOver';
 import NotificationIcon from '@material-ui/icons/Notifications';
 

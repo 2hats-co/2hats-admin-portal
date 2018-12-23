@@ -15,7 +15,6 @@ import ConversationHeader from '../components/Conversations/ConversationHeader';
 import Messages from '../components/Conversations/Messages';
 import Composer from '../components/Conversations/Composer';
 import { useWindowSize } from '../hooks/useWindowSize';
-import Loadable from 'react-loadable';
 
 const styles = theme => ({
   messagesContainer: {
