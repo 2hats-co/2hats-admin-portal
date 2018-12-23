@@ -12,15 +12,19 @@ const styles = theme => ({
     margin: 5,
     width: 250,
     height: 40,
-    color: `${theme.palette.primary.main} !important`,
-    backgroundColor: '#fff',
-    '& *': { color: `${theme.palette.primary.main} !important` },
+    color: '#fff !important',
+    backgroundColor: '#0077B5',
+    '& *': { color: '#fff !important' },
+    borderRadius: theme.shape.borderRadius,
   },
   socialIcon: {
     fill: theme.palette.primary.main,
     color: theme.palette.primary.main,
     marginTop: 2,
     marginRight: 17,
+  },
+  buttonText: {
+    marginTop: -4,
   },
 });
 function GoogleButton(props) {

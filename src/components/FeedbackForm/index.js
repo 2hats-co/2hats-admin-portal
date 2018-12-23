@@ -36,7 +36,7 @@ import {
 } from '../../constants/emails/templates';
 import {
   updateProperties,
-  updateUserDocs,
+  // updateUserDocs,
   generateSmartKey,
 } from '../../utilities/firestore';
 import { useAuthedUser } from '../../hooks/useAuthedUser';

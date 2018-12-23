@@ -1,7 +1,6 @@
 import React from 'react';
 
 import withStyles from '@material-ui/core/styles/withStyles';
-import ButtonBase from '@material-ui/core/ButtonBase';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Tooltip from '@material-ui/core/Tooltip';
@@ -48,12 +47,12 @@ const styles = theme => ({
 function SubjectItem(props) {
   const {
     classes,
-    name,
-    email,
-    phone,
-    industry,
-    tags,
-    note,
+    // name,
+    // email,
+    // phone,
+    // industry,
+    // tags,
+    // note,
     setSnackbarContent,
   } = props;
 
@@ -67,62 +66,60 @@ function SubjectItem(props) {
   ));
 
   return (
-    <ButtonBase className={classes.rootButton}>
-      <Grid container className={classes.root} alignItems="center" spacing={16}>
-        <Grid item>
-          <Grid container direction="column" justify="space-evenly">
-            <Tooltip title={props.email}>
-              <IconButton
-                className={classes.iconButton}
-                onClick={() => {
-                  copyToClipboard(props.email);
-                  setSnackbarContent(props.email);
-                }}
-              >
-                <MailIcon className={classes.smallIcon} />
-              </IconButton>
-            </Tooltip>
-            <Tooltip title={props.phone}>
-              <IconButton
-                className={classes.iconButton}
-                onClick={() => {
-                  copyToClipboard(props.phone);
-                  setSnackbarContent(props.phone);
-                }}
-              >
-                <PhoneIcon className={classes.smallIcon} />
-              </IconButton>
-            </Tooltip>
-          </Grid>
-        </Grid>
-
-        <Grid item>
-          <Avatar>
-            <PersonIcon />
-          </Avatar>
-        </Grid>
-
-        <Grid item xs={2}>
-          <Grid container direction="column">
-            <Typography variant="subheading">{props.name}</Typography>
-            <Typography variant="body1">{props.industry}</Typography>
-          </Grid>
-        </Grid>
-
-        <Grid item xs>
-          <Grid container direction="column">
-            <Grid item xs={6}>
-              {tagChips}
-            </Grid>
-            {props.note ? (
-              <Grid item xs={6} style={{ paddingLeft: 12 }}>
-                <Typography variant="body1">Note: {props.note}</Typography>
-              </Grid>
-            ) : null}
-          </Grid>
+    <Grid container className={classes.root} alignItems="center" spacing={16}>
+      <Grid item>
+        <Grid container direction="column" justify="space-evenly">
+          <Tooltip title={props.email}>
+            <IconButton
+              className={classes.iconButton}
+              onClick={() => {
+                copyToClipboard(props.email);
+                setSnackbarContent(props.email);
+              }}
+            >
+              <MailIcon className={classes.smallIcon} />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title={props.phone}>
+            <IconButton
+              className={classes.iconButton}
+              onClick={() => {
+                copyToClipboard(props.phone);
+                setSnackbarContent(props.phone);
+              }}
+            >
+              <PhoneIcon className={classes.smallIcon} />
+            </IconButton>
+          </Tooltip>
         </Grid>
       </Grid>
-    </ButtonBase>
+
+      <Grid item>
+        <Avatar>
+          <PersonIcon />
+        </Avatar>
+      </Grid>
+
+      <Grid item xs={2}>
+        <Grid container direction="column">
+          <Typography variant="subtitle1">{props.name}</Typography>
+          <Typography variant="body2">{props.industry}</Typography>
+        </Grid>
+      </Grid>
+
+      <Grid item xs>
+        <Grid container direction="column">
+          <Grid item xs={6}>
+            {tagChips}
+          </Grid>
+          {props.note ? (
+            <Grid item xs={6} style={{ paddingLeft: 12 }}>
+              <Typography variant="body2">Note: {props.note}</Typography>
+            </Grid>
+          ) : null}
+        </Grid>
+      </Grid>
+    </Grid>
   );
 }
 

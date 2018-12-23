@@ -19,7 +19,7 @@ const runCampaign = id => {
     });
 };
 function LinkedinCampaigns(props) {
-  const { classes } = props;
+  // const { classes } = props;
   const [showEditor, setShowEditor] = useState(false);
   const [campaign, setCampaign] = useState(null);
   const createCampaign = data => {
@@ -34,7 +34,7 @@ function LinkedinCampaigns(props) {
     setShowEditor(false);
   };
 
-  const [campaignsState, campaignsDispatch] = useCollection(
+  const [campaignsState /*campaignsDispatch*/] = useCollection(
     COLLECTIONS.linkedinCampaigns,
     {}
   );
@@ -82,7 +82,7 @@ function LinkedinCampaigns(props) {
         </Fab>
       </React.Fragment>
     );
-  else return LoadingHat;
+  else return <LoadingHat message="Loading campaigns…" />;
 }
 
 export default LinkedinCampaigns;

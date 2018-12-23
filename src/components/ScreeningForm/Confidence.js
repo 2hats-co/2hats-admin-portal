@@ -63,9 +63,9 @@ function Confidence(props) {
         alignItems="center"
         className={classes.confidenceBar}
       >
-        <Typography variant="subheading">Confidence:</Typography>
+        <Typography variant="subtitle1">Confidence:</Typography>
         {confidenceLevel.index > -1 && (
-          <Typography variant="subheading" className={classes.confidenceLabel}>
+          <Typography variant="subtitle1" className={classes.confidenceLabel}>
             {confidenceLevel.value}
             {confidenceLevel.index < 2 ? (
               <CloseIcon

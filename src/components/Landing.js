@@ -3,7 +3,7 @@ import { withRouter } from 'react-router-dom';
 import { ROUTES } from '../constants/routes';
 import withAuthentication from '../utilities/Session/withAuthentication';
 
-import LoadingCard from '../components/LoadingCard';
+import LoadingHat from '../components/LoadingHat';
 import { useAuthedUser } from '../hooks/useAuthedUser';
 
 function Landing(props) {
@@ -20,14 +20,7 @@ function Landing(props) {
     [currentUser]
   );
   if (currentUser) {
-    const { givenName } = currentUser;
-    return (
-      <LoadingCard
-        message={`Howdy, ${givenName} 🤠! Routing you now… Yee haw!`}
-        width={480}
-        height={260}
-      />
-    );
+    return <LoadingHat message="Routing…" />;
   } else {
     return <p />;
   }

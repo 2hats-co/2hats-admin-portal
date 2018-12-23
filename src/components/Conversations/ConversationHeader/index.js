@@ -28,7 +28,7 @@ const styles = theme => ({
 
 function ConversationHeader(props) {
   const windowSize = useWindowSize();
-  const [tag, setTag] = useState(null);
+  const [tag, setTag] = useState('');
   const InputLabelRef = useRef(null);
   console.log('windowSize', windowSize.isMobile);
   const { classes, conversation, closeConversation } = props;
@@ -58,11 +58,7 @@ function ConversationHeader(props) {
                 value={tag}
                 onChange={e => setTag(e.target.value)}
                 input={
-                  <OutlinedInput
-                    //labelWidth={25}
-                    name="tag"
-                    id="outlined-tag"
-                  />
+                  <OutlinedInput labelWidth={25} name="tag" id="outlined-tag" />
                 }
               >
                 <MenuItem value="futureNeed">Future Need</MenuItem>

@@ -2,11 +2,11 @@ import { firestore } from '../store';
 import { COLLECTIONS } from '../constants/firestore';
 import { useEffect, useReducer } from 'react';
 import * as R from 'ramda';
-const generateFilters = () => {
-  let filters = [];
+// const generateFilters = () => {
+//   let filters = [];
 
-  return filters;
-};
+//   return filters;
+// };
 
 const getConversations = (filters, limit, conversationDispatch) => {
   //updates prev values

@@ -2,6 +2,7 @@ import React from 'react';
 
 import withStyles from '@material-ui/core/styles/withStyles';
 import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
 
 import hatLoading from '../assets/hatLoading.svg';
 
@@ -15,7 +16,7 @@ const styles = theme => ({
     top: 0,
     left: 0,
   },
-  
+
   '@keyframes fade-in': {
     //need to prevent flashing between different loads
     // from: { opacity: 0 },
@@ -36,11 +37,29 @@ const styles = theme => ({
     '64%': { transform: 'scale(1,1)      translateY(10px)' },
     '100%': { transform: 'scale(1,1)      translateY(10px)' },
   },
+  floor: {
+    width: 200,
+    height: 40,
+    borderRadius: '50%',
+    backgroundColor:
+      theme.palette.type === 'dark' ? 'rgba(0,0,0,.5)' : 'rgba(0,0,0,.25)',
+
+    position: 'relative',
+    top: -25,
+    left: -10,
+    zIndex: -1,
+  },
+  message: {
+    marginBottom: -theme.spacing.unit * 6,
+    marginTop: theme.spacing.unit * 3,
+    marginLeft: -theme.spacing.unit,
+  },
 });
 
 const LoadingHat = props => (
   <Grid
     container
+    direction="column"
     justify="center"
     alignItems="center"
     className={props.classes.root}
@@ -52,6 +71,12 @@ const LoadingHat = props => (
       width={280}
       height={206}
     />
+    <div className={props.classes.floor} />
+    {props.message && (
+      <Typography variant="h6" className={props.classes.message}>
+        {props.message}
+      </Typography>
+    )}
   </Grid>
 );
 

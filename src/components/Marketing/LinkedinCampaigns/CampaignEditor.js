@@ -97,7 +97,7 @@ function CampaignEditor(props) {
               <Paper className={classes.root}>
                 <Grid container direction="column" spacing={8}>
                   <Grid item>
-                    <Typography variant="title">{action} Campaign</Typography>
+                    <Typography variant="h6">{action} Campaign</Typography>
                   </Grid>
                   <Grid item>
                     <TextField

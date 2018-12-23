@@ -149,7 +149,7 @@ function EventDialog(props) {
                   />
                 </Grid>
                 <Grid item>
-                  <Typography variant="body1">
+                  <Typography variant="body2">
                     {data.end.duration} min
                   </Typography>
                 </Grid>
@@ -174,7 +174,7 @@ function EventDialog(props) {
               </React.Fragment>
             )}
           </Grid>
-          <Typography variant="body1">
+          <Typography variant="body2">
             Ends at{' '}
             {data.end.dateTime && data.end.dateTime.format('D/MM/YYYY hh:mm a')}
           </Typography>

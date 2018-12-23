@@ -5,25 +5,25 @@ import { firestore } from '../../store';
 
 const secondsInHour = 3600;
 
-const getMonth = TS => {
-  const startTime = TS * 1000;
-  const month = moment(startTime).month();
-  const year = moment(startTime).year();
-  return moment(`${month}-${year}`, 'MM-YYYY');
-};
-const startMonth = TS => {
-  getMonth(TS).unix();
-};
-const endMonth = TS => {
-  console.log('df', getMonth(TS).add('month', 1));
-};
+// const getMonth = TS => {
+//   const startTime = TS * 1000;
+//   const month = moment(startTime).month();
+//   const year = moment(startTime).year();
+//   return moment(`${month}-${year}`, 'MM-YYYY');
+// };
+// const startMonth = TS => {
+//   getMonth(TS).unix();
+// };
+// const endMonth = TS => {
+//   console.log('df', getMonth(TS).add('month', 1));
+// };
 const getTrackerDocs = (tracker, range) => {
-  const startMonthTS = moment(range.start * 1000)
-    .startOf('month')
-    .unix();
-  const endMonthTS = moment(range.end * 1000)
-    .startOf('month')
-    .unix();
+  // const startMonthTS = moment(range.start * 1000)
+  //   .startOf('month')
+  //   .unix();
+  // const endMonthTS = moment(range.end * 1000)
+  //   .startOf('month')
+  //   .unix();
   //TODO:read only relavent month docs
   return new Promise(function(fulfilled, rejected) {
     const trackerCollection = firestore.collection('eventTrackers');
@@ -56,12 +56,12 @@ const hourFiller = (hourlyData, range) => {
   for (let index = 0; index < totalHoursRange + 1; index++) {
     const currentHour = range.start + index * secondsInHour;
     let hourData = hourlyData.filter(
-      x => parseInt(x.timeStamp) === currentHour
+      x => parseInt(x.timeStamp, 10) === currentHour
     );
     if (hourData[0]) {
       filledHours.push({
         value: hourData[0].value,
-        timeStamp: parseInt(hourData[0].timeStamp),
+        timeStamp: parseInt(hourData[0].timeStamp, 10),
       });
     } else {
       filledHours.push({

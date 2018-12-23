@@ -37,7 +37,7 @@ const withAuthentication = Component => {
         />
       );
     else if (!authedUser && !loading) return <AuthenticationContainer />;
-    else return <LoadingHat />;
+    else return <LoadingHat message="Authenticating…" />;
     // else return (
     //     <div style={{display:'flex', justifyContent:'center', alignItems:'center', height:'100vh', backgroundImage:`url('./thatsallfolks.jpg')`, backgroundSize:'cover', backgroundPosition:'center'}}>
     //         <div style={{position:'relative'}}>

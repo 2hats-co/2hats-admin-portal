@@ -207,7 +207,7 @@ function ScreeningForm(props) {
           />
           Disqualify Submission
         </Typography>
-        <Typography variant="body1">
+        <Typography variant="body2">
           This is sent to the candidate when their application has a mismatch
           with 2hats’ business priorities, such as people who are overqualified
           or people who are in a completely different industry to what we do.

@@ -11,8 +11,6 @@ import 'echarts/lib/component/title';
 import 'echarts/lib/component/tooltip';
 import withAnalytics from './withAnalytics';
 
-import { hexToRgb } from '../../utilities';
-
 function TrackerLineChart(props) {
   const { theme, trackers, title } = props;
   const xAxis = trackers[0].data.map(x => x.label);

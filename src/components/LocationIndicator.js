@@ -78,7 +78,7 @@ function LocationIndicator(props) {
       }
       style={altBg ? { backgroundColor: theme.palette.background.default } : {}}
     >
-      <Typography variant="title" className={classes.title}>
+      <Typography variant="h6" className={classes.title}>
         {title}
       </Typography>
       {navItems && navItems.length > 0 && (

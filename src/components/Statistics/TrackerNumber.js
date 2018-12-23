@@ -39,10 +39,8 @@ function TrackerNumber(props) {
       }}
     >
       <Grid item>
-        <Typography variant={layout.w > 1 ? 'display2' : 'display1'}>
-          {x.sum}
-        </Typography>
-        <Typography variant={layout.w > 1 ? 'subheading' : 'body2'}>
+        <Typography variant={layout.w > 1 ? 'h3' : 'h4'}>{x.sum}</Typography>
+        <Typography variant={layout.w > 1 ? 'subtitle1' : 'body1'}>
           {x.label}
         </Typography>
       </Grid>

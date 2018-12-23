@@ -59,11 +59,11 @@ const styles = theme => ({
   },
 });
 
-const DUMMY_EVENTS = [
-  { type: 'reminder', label: '12/12/2018 3:48 pm' },
-  { type: 'file', label: 'resume.pdf', link: 'google.com' },
-  { type: 'event', label: 'Meeting at 12/12/2018 3:48 pm' },
-];
+// const DUMMY_EVENTS = [
+//   { type: 'reminder', label: '12/12/2018 3:48 pm' },
+//   { type: 'file', label: 'resume.pdf', link: 'google.com' },
+//   { type: 'event', label: 'Meeting at 12/12/2018 3:48 pm' },
+// ];
 
 const getChipIcon = type => {
   switch (type) {
