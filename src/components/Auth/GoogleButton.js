@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Button from '@material-ui/core/Button';
 import { GOOGLE_CID_PRODUCTION, GOOGLE_CID_STAGING } from '../../config/auth';
-import GoogleIcon from '../../assets/Google.svg';
+//import GoogleIcon from '../../assets/Google.svg';
 //import GoogleLogin from "react-google-login";
 import GoogleLogin from '../../utilities/auth/GoogleLogin';
 import { withRouter } from 'react-router-dom';
@@ -12,9 +12,9 @@ const styles = theme => ({
     margin: 5,
     width: 250,
     height: 40,
-    color: '#fff !important',
+    // color: '#fff !important',
     backgroundColor: '#0077B5',
-    '& *': { color: '#fff !important' },
+    // '& *': { color: '#fff !important' },
     borderRadius: theme.shape.borderRadius,
   },
   socialIcon: {
@@ -62,7 +62,7 @@ function GoogleButton(props) {
           <Button
             variant="contained"
             key={`google-button`}
-            //style={{ backgroundColor: '#fff' }}
+            style={{ backgroundColor: '#fff' }}
             onClick={renderProps.onClick}
             className={classes.socialButton}
           >
