@@ -8,7 +8,7 @@ import Slide from '@material-ui/core/Slide';
 
 const styles = theme => ({
   root: {
-    backgroundColor: '#fff', //
+    backgroundColor: '#f5f5f5', //
     display: 'table',
     position: 'absolute',
     height: '100%',
@@ -40,7 +40,7 @@ const styles = theme => ({
     height: 42,
   },
   paper: {
-    borderRadius: 3,
+    borderRadius: theme.shape.roundBorderRadius,
     marginLeft: 'auto',
     marginRight: 'auto',
     overflowY: 'visible',
@@ -66,7 +66,7 @@ function LogoInCard(props) {
           <Paper
             className={classes.paper}
             style={{ width: width, height: height }}
-            elevation={15}
+            elevation={24}
           >
             <LinearProgress
               className={classes.loading}

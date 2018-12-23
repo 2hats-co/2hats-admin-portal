@@ -20,10 +20,14 @@ const styles = theme => ({
     color: '#fff !important',
     backgroundColor: '#0077B5',
     '& *': { color: '#fff !important' },
+    borderRadius: theme.shape.borderRadius,
   },
   socialIcon: {
     marginTop: 2,
     marginRight: 17,
+  },
+  buttonText: {
+    marginTop: -4,
   },
 });
 class GoogleButton extends Component {
@@ -79,7 +83,7 @@ class GoogleButton extends Component {
               <div className={classes.socialIcon}>
                 <img alt={'google-logo'} src={GoogleIcon} />
               </div>{' '}
-              Sign in with Google
+              <span className={classes.buttonText}>Sign in with Google</span>
             </Button>
           )}
           buttonText="Login"
