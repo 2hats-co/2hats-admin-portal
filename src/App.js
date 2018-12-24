@@ -1,23 +1,22 @@
 import React from 'react';
 import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
-import Loadable from 'react-loadable';
+
 //routing
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import generateTheme, { ORANGE_COLOR } from './Theme';
 import { ROUTES } from './constants/routes';
-//import Landing from './components/Landing';
-// import withAuthentication from './utilities/Session/withAuthentication';
 import { useAuthedUser } from './hooks/useAuthedUser';
 import LoadingHat from './components/LoadingHat';
 import SubmissionsContainer from './containers/SubmissionsContainer';
 //containers
+import Loadable from 'react-loadable';
 const loadingCard = <LoadingHat />;
 
 const StatisticsContainer = Loadable({
   loader: () =>
     import('./containers/StatisticsContainer' /* webpackChunkName: "StatisticsContainer" */),
   loading() {
-    return loadingCard;
+    return <LoadingHat message="Loading Stats" />;
   },
 });
 

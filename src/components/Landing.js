@@ -5,13 +5,14 @@ import withAuthentication from '../utilities/Session/withAuthentication';
 
 import LoadingHat from '../components/LoadingHat';
 import { useAuthedUser } from '../hooks/useAuthedUser';
-
+//import { initializePushNotifications } from '../store';
 function Landing(props) {
   const currentUser = useAuthedUser();
   console.log('currentUser', currentUser);
   useEffect(
     () => {
       if (currentUser && !currentUser.isLoading) {
+        //    initializePushNotifications();
         if (currentUser.defaultRoute)
           props.history.push(currentUser.defaultRoute);
         else props.history.push(ROUTES.stats);
