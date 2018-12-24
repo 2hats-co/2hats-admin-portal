@@ -34,6 +34,7 @@ import moment from 'moment';
 import { momentLocales } from '../constants/momentLocales';
 import { COLLECTIONS } from '../constants/firestore';
 import { sleep } from '../utilities';
+import { useWindowSize } from '../hooks/useWindowSize';
 
 const styles = theme => ({
   root: {
@@ -101,7 +102,9 @@ const ResponsiveGridLayout = WidthProvider(GridLayout);
 function StatisticsContainer(props) {
   moment.updateLocale('en', momentLocales);
   const { classes, theme, uid } = props;
-  // const charts = useCharts(uid);
+  let gridCols = 12;
+  const windowSize = useWindowSize();
+  if (windowSize.isMobile) gridCols = 6;
   const [chartsState] = useCollection(`admins/${uid}/charts`);
   console.log(chartsState);
   const charts = chartsState.documents;
@@ -228,7 +231,7 @@ function StatisticsContainer(props) {
               // this.onLayoutChange(layout)
             }
             layout={layout}
-            cols={12}
+            cols={gridCols}
             rowHeight={100}
             width={1200}
           >
