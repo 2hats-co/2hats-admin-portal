@@ -14,9 +14,11 @@ import FileIcon from '@material-ui/icons/Attachment';
 import ImageIcon from '@material-ui/icons/ImageOutlined';
 import EventIcon from '@material-ui/icons/EventOutlined';
 import ReminderIcon from '@material-ui/icons/NotificationsOutlined';
-import EmojiPicker from 'emoji-picker-react';
 import EventDialog from './EventDialog';
 import ReminderDialog from './ReminderDialog';
+
+import 'emoji-mart/css/emoji-mart.css';
+import { Picker } from 'emoji-mart';
 
 const emojiButton = handleClick => (
   <Tooltip title="Emoji" key="emoji">
@@ -139,11 +141,12 @@ const ComposerActions = React.memo(props => {
       break;
   }
   const addEmoji = e => {
-    actions.addText(`u{${e}}`);
+    actions.addText(e.native);
+    // setShowEmoji(false)
   };
   return (
     <React.Fragment>
-      {showEmoji && <EmojiPicker onEmojiClick={addEmoji} />}
+      {showEmoji && <Picker set="messenger" onSelect={addEmoji} />}
       <Grid item>
         <Grid container justify="space-between">
           <Grid item style={{ marginLeft: -12 }}>
