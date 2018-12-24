@@ -104,6 +104,7 @@ const styles = theme => ({
 });
 
 const ResponsiveGridLayout = WidthProvider(GridLayout);
+
 function StatisticsContainer(props) {
   const { classes, theme, uid } = props;
   let gridCols = 12;

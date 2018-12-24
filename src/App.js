@@ -10,6 +10,7 @@ import LoadingHat from './components/LoadingHat';
 import SubmissionsContainer from './containers/SubmissionsContainer';
 //containers
 import Loadable from 'react-loadable';
+import PushNotifications from './components/PushNotifications';
 const loadingCard = <LoadingHat />;
 
 const StatisticsContainer = Loadable({
@@ -149,6 +150,7 @@ function App() {
           </Switch>
         </div>
       </Router>
+      <PushNotifications />
     </MuiThemeProvider>
   );
 }

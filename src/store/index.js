@@ -21,9 +21,6 @@ export const firestore = firebase.firestore();
 export function initializePushNotifications() {
   const uid = auth.currentUser.uid;
   console.log('auth', uid);
-  //   messaging.usePublicVapidKey(
-  //     'BIlTAY0QyfNpixrdf2Wr7pJps1nKBIFTkwkjtBU4Cm86ACiGtvDCPOFKb2HjG3v_NS0NomR-E2B6R9oXXSHTUTM'
-  //   );
   messaging
     .requestPermission()
     .then(() => {
@@ -44,5 +41,4 @@ export function initializePushNotifications() {
       }
     });
 }
-
 export const functions = firebase.app().functions('asia-northeast1');
