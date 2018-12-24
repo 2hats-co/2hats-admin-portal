@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import CampaignEditor from './CampaignEditor';
+//import CampaignEditor from './CampaignEditor';
 import CampaignCard from './CampaignCard';
 import LoadingHat from '../../LoadingHat';
 import useCollection from '../../../hooks/useCollection';
@@ -9,7 +9,15 @@ import { COLLECTIONS } from '../../../constants/firestore';
 
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
+import Loadable from 'react-loadable';
 
+const CampaignEditor = Loadable({
+  loader: () =>
+    import('./CampaignEditor' /* webpackChunkName: "CampaignEditor" */),
+  loading() {
+    return <p />;
+  },
+});
 const runCampaign = id => {
   firestore
     .collection(COLLECTIONS.linkedinCampaigns)

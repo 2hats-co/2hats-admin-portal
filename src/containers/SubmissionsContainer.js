@@ -10,13 +10,50 @@ import Snackbar from '@material-ui/core/Snackbar';
 import { useSubmission } from '../hooks/useSubmission';
 
 import LocationIndicator from '../components/LocationIndicator';
-import Done from '../components/Done';
+//import Done from '../components/Done';
 import Submission from '../components/Submission';
-import ScreeningForm from '../components/ScreeningForm';
-import FeedbackForm from '../components/FeedbackForm';
-import TemplateGenerator from '../components/TemplateGenerator';
+//import ScreeningForm from '../components/ScreeningForm';
+//import FeedbackForm from '../components/FeedbackForm';
+//import TemplateGenerator from '../components/TemplateGenerator';
 import { sendEmail } from '../utilities/email/send';
 import { ROUTES } from '../constants/routes';
+import Loadable from 'react-loadable';
+//import { useWindowSize } from '../hooks/useWindowSize';
+const TemplateGenerator = Loadable({
+  loader: () =>
+    import('../components/TemplateGenerator' /* webpackChunkName: "TemplateGenerator" */),
+  loading() {
+    return <p />;
+  },
+});
+const FeedbackForm = Loadable({
+  loader: () =>
+    import('../components/FeedbackForm' /* webpackChunkName: "FeedbackForm" */),
+  loading() {
+    return <p />;
+  },
+});
+const ScreeningForm = Loadable({
+  loader: () =>
+    import('../components/ScreeningForm' /* webpackChunkName: "ScreeningForm" */),
+  loading() {
+    return <p />;
+  },
+});
+const Done = Loadable({
+  loader: () =>
+    import('../components/Done' /* webpackChunkName: "Submissions-Done" */),
+  loading() {
+    return <p />;
+  },
+});
+// const Submission = Loadable({
+//   loader: () =>
+//     import('../components/Submission' /* webpackChunkName: "Submission" */),
+//   loading() {
+//     return <p />;
+//   },
+// });
 
 // import Search from '../components/Search'
 const styles = theme => ({

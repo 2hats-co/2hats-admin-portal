@@ -1,7 +1,7 @@
 import { firestore } from '../store';
 // import { COLLECTIONS } from '../constants/firestore';
 import { useEffect, useReducer } from 'react';
-import * as R from 'ramda';
+import equals from 'ramda/es/equals';
 // const generateFilters = () => {
 //   let filters = [];
 
@@ -64,7 +64,7 @@ const useCollection = (path, intialOverrides) => {
   useEffect(
     () => {
       const { prevFilters, filters, prevLimit, limit } = collectionState;
-      if (!R.equals(prevFilters, filters) || prevLimit !== limit) {
+      if (!equals(prevFilters, filters) || prevLimit !== limit) {
         getDocuments(filters, limit);
       }
       return () => {

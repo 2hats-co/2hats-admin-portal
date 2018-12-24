@@ -11,7 +11,7 @@ import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import StartIcon from '@material-ui/icons/PlayArrow';
-import { Tooltip } from '@material-ui/core';
+import Tooltip from '@material-ui/core/Tooltip';
 const styles = theme => ({
   root: {
     margin: theme.spacing.unit * 2,

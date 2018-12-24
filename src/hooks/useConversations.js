@@ -1,7 +1,7 @@
 import { firestore } from '../store';
 import { COLLECTIONS } from '../constants/firestore';
 import { useEffect, useReducer } from 'react';
-import * as R from 'ramda';
+import equals from 'ramda/es/equals';
 // const generateFilters = () => {
 //   let filters = [];
 
@@ -74,9 +74,9 @@ export function useConversations(uid) {
     () => {
       const { prevFilters, filters, prevLimit, limit } = conversationsState;
 
-      if (!R.equals(prevFilters, filters) || prevLimit !== limit) {
+      if (!equals(prevFilters, filters) || prevLimit !== limit) {
         console.log(
-          !R.equals(prevFilters, filters),
+          !equals(prevFilters, filters),
           prevLimit !== limit,
           prevLimit,
           limit

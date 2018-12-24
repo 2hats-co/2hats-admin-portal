@@ -9,8 +9,6 @@ import Fab from '@material-ui/core/Fab';
 import Slide from '@material-ui/core/Slide';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Snackbar from '@material-ui/core/Snackbar';
-
-import ChartEditor from '../components/Statistics/ChartEditor';
 import EditIcon from '@material-ui/icons/Edit';
 import IconButton from '@material-ui/core/IconButton';
 import AddIcon from '@material-ui/icons/Add';
@@ -30,11 +28,18 @@ import '../../node_modules/react-resizable/css/styles.css';
 import { firestore } from '../store';
 
 import LocationIndicator from '../components/LocationIndicator';
-import moment from 'moment';
-import { momentLocales } from '../constants/momentLocales';
+
 import { COLLECTIONS } from '../constants/firestore';
 import { sleep } from '../utilities';
+import Loadable from 'react-loadable';
 import { useWindowSize } from '../hooks/useWindowSize';
+const ChartEditor = Loadable({
+  loader: () =>
+    import('../components/Statistics/ChartEditor' /* webpackChunkName: "ChartEditor" */),
+  loading() {
+    return <p />;
+  },
+});
 
 const styles = theme => ({
   root: {
@@ -100,7 +105,6 @@ const styles = theme => ({
 
 const ResponsiveGridLayout = WidthProvider(GridLayout);
 function StatisticsContainer(props) {
-  moment.updateLocale('en', momentLocales);
   const { classes, theme, uid } = props;
   let gridCols = 12;
   const windowSize = useWindowSize();
@@ -120,13 +124,8 @@ function StatisticsContainer(props) {
   const [showDialog, setShowDialog] = useState(false);
   const [chartToEdit, setChartToEdit] = useState(null);
   const [range, setRange] = useState({
-    start: moment()
-      .startOf('day')
-      .subtract(2, 'weeks')
-      .unix(),
-    end: moment()
-      .startOf('hour')
-      .unix(),
+    start: new Date().getTime(),
+    end: new Date().getTime(),
   });
   const [format, setFormat] = useState({
     stepSize: 24,

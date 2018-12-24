@@ -6,7 +6,7 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import Fade from '@material-ui/core/Fade';
 
 import LocationIndicator from '../components/LocationIndicator';
-import TemplateEditor from '../components/Marketing/TemplateEditor';
+//import TemplateEditor from '../components/Marketing/TemplateEditor';
 
 import { ROUTES } from '../constants/routes';
 
@@ -14,8 +14,23 @@ import moment from 'moment';
 import { momentLocales } from '../constants/momentLocales';
 
 import withNavigation from '../components/withNavigation';
-import LinkedinCampaigns from '../components/Marketing/LinkedinCampaigns';
-
+//import LinkedinCampaigns from '../components/Marketing/LinkedinCampaigns';
+import Loadable from 'react-loadable';
+import LoadingHat from '../components/LoadingHat';
+const LinkedinCampaigns = Loadable({
+  loader: () =>
+    import('../components/Marketing/LinkedinCampaigns' /* webpackChunkName: "LinkedinCampaigns" */),
+  loading() {
+    return <LoadingHat />;
+  },
+});
+const TemplateEditor = Loadable({
+  loader: () =>
+    import('../components/Marketing/TemplateEditor' /* webpackChunkName: "TemplateEditor" */),
+  loading() {
+    return <LoadingHat />;
+  },
+});
 const styles = theme => ({
   root: {
     backgroundColor: theme.palette.background.default,

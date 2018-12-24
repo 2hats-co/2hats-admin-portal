@@ -17,8 +17,28 @@ import ReminderIcon from '@material-ui/icons/NotificationsOutlined';
 import EventDialog from './EventDialog';
 import ReminderDialog from './ReminderDialog';
 
-import 'emoji-mart/css/emoji-mart.css';
-import { Picker } from 'emoji-mart';
+//import 'emoji-mart/css/emoji-mart.css';
+//import { Picker } from 'emoji-mart';
+//import Loadable from 'react-loadable';
+// const { Picker } = Loadable({
+//   loader: () => import('emoji-mart' /* webpackChunkName: "EmojiPicker" */),
+//   loading() {
+//     return <p />;
+//   },
+// });
+// const EventDialog = Loadable({
+//   loader: () => import('./EventDialog' /* webpackChunkName: "EventDialog" */),
+//   loading() {
+//     return <p />;
+//   },
+// });
+// const ReminderDialog = Loadable({
+//   loader: () =>
+//     import('./ReminderDialog' /* webpackChunkName: "ReminderDialog" */),
+//   loading() {
+//     return <p />;
+//   },
+// });
 
 const emojiButton = handleClick => (
   <Tooltip title="Emoji" key="emoji">
@@ -140,13 +160,13 @@ const ComposerActions = React.memo(props => {
     default:
       break;
   }
-  const addEmoji = e => {
-    actions.addText(e.native);
-    // setShowEmoji(false)
-  };
+  // const addEmoji = e => {
+  //   actions.addText(e.native);
+  //   // setShowEmoji(false)
+  // };
   return (
     <React.Fragment>
-      {showEmoji && <Picker set="messenger" onSelect={addEmoji} />}
+      {/* {showEmoji && <Picker set="messenger" onSelect={addEmoji} />} */}
       <Grid item>
         <Grid container justify="space-between">
           <Grid item style={{ marginLeft: -12 }}>

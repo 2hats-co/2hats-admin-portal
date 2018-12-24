@@ -23,6 +23,8 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import ChartItem from './ChartItem';
 import { getRandomId } from '../../../utilities';
 import { trackers } from '../../../constants/statsTrackers';
+import moment from 'moment';
+import { momentLocales } from '../../../constants/momentLocales';
 
 const styles = theme => ({
   dialogRoot: {
@@ -94,6 +96,7 @@ const getChartToEdit = chartToEdit => {
 };
 
 function ChartEditor(props) {
+  moment.updateLocale('en', momentLocales);
   const {
     classes,
     showDialog,

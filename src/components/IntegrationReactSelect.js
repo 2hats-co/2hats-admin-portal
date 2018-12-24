@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import Select from 'react-select';
-import { withStyles } from '@material-ui/core/styles';
+import withStyles from '@material-ui/core/styles/withStyles';
 import Typography from '@material-ui/core/Typography';
 import NoSsr from '@material-ui/core/NoSsr';
 import TextField from '@material-ui/core/TextField';
@@ -32,8 +32,10 @@ const styles = theme => ({
   },
   chipFocused: {
     backgroundColor: emphasize(
-      theme.palette.type === 'light' ? theme.palette.grey[300] : theme.palette.grey[700],
-      0.08,
+      theme.palette.type === 'light'
+        ? theme.palette.grey[300]
+        : theme.palette.grey[700],
+      0.08
     ),
   },
   noOptionsMessage: {
@@ -123,14 +125,21 @@ function Placeholder(props) {
 
 function SingleValue(props) {
   return (
-    <Typography className={props.selectProps.classes.singleValue} {...props.innerProps}>
+    <Typography
+      className={props.selectProps.classes.singleValue}
+      {...props.innerProps}
+    >
       {props.children}
     </Typography>
   );
 }
 
 function ValueContainer(props) {
-  return <div className={props.selectProps.classes.valueContainer}>{props.children}</div>;
+  return (
+    <div className={props.selectProps.classes.valueContainer}>
+      {props.children}
+    </div>
+  );
 }
 
 function MultiValue(props) {
@@ -167,38 +176,47 @@ const components = {
 };
 
 function IntegrationReactSelect(props) {
-    const { classes, theme, placeholder, label, autoFocus, changeHandler, suggestions, value } = props;
+  const {
+    classes,
+    theme,
+    placeholder,
+    label,
+    autoFocus,
+    changeHandler,
+    suggestions,
+    value,
+  } = props;
 
-    const selectStyles = {
-      input: base => ({
-        ...base,
-        color: theme.palette.text.primary,
-        '& input': {
-          font: 'inherit',
-        },
-      }),
-    };
+  const selectStyles = {
+    input: base => ({
+      ...base,
+      color: theme.palette.text.primary,
+      '& input': {
+        font: 'inherit',
+      },
+    }),
+  };
 
-    return (
-      <div className={classes.root}>
-        <NoSsr>
-          <Select
-            classes={classes}
-            styles={selectStyles}
-            options={suggestions}
-            components={components}
-            onChange={changeHandler}
-            placeholder={placeholder}
-            textFieldProps={{
-              label,
-              InputLabelProps: { shrink: true },
-              autoFocus
-            }}
-            value={value}
-          />
-        </NoSsr>
-      </div>
-    );
+  return (
+    <div className={classes.root}>
+      <NoSsr>
+        <Select
+          classes={classes}
+          styles={selectStyles}
+          options={suggestions}
+          components={components}
+          onChange={changeHandler}
+          placeholder={placeholder}
+          textFieldProps={{
+            label,
+            InputLabelProps: { shrink: true },
+            autoFocus,
+          }}
+          value={value}
+        />
+      </NoSsr>
+    </div>
+  );
 }
 
 /*

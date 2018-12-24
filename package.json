@@ -78,7 +78,7 @@
   },
   "scripts": {
     "precommit": "pretty-quick --staged",
-    "analyze": "source-map-explorer build/static/js/ConversationsContainer.*",
+    "analyze": "source-map-explorer build/static/js/MarketingContainer.*",
     "start": "node scripts/start.js",
     "build": "node generate-build-id.js && node scripts/build.js",
     "test": "node scripts/test.js --env=jsdom"
