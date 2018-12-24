@@ -13,8 +13,15 @@ import Tab from '@material-ui/core/Tab';
 import ConversationsList from '../components/Conversations/ConversationsList';
 import ConversationHeader from '../components/Conversations/ConversationHeader';
 import Messages from '../components/Conversations/Messages';
-import Composer from '../components/Conversations/Composer';
+import Loadable from 'react-loadable';
 import { useWindowSize } from '../hooks/useWindowSize';
+const Composer = Loadable({
+  loader: () =>
+    import('../components/Conversations/Composer' /* webpackChunkName: "MessagesComposer" */),
+  loading() {
+    return <p />;
+  },
+});
 
 const styles = theme => ({
   messagesContainer: {
