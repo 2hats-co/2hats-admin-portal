@@ -8,15 +8,16 @@ import { ROUTES } from './constants/routes';
 import { useAuthedUser } from './hooks/useAuthedUser';
 import LoadingHat from './components/LoadingHat';
 import SubmissionsContainer from './containers/SubmissionsContainer';
+import StatisticsContainer from './containers/StatisticsContainer';
 //containers
 import Loadable from 'react-loadable';
 import PushNotifications from './components/PushNotifications';
 
-const StatisticsContainer = Loadable({
-  loader: () =>
-    import('./containers/StatisticsContainer' /* webpackChunkName: "StatisticsContainer" */),
-  loading: LoadingHat,
-});
+// const StatisticsContainer = Loadable({
+//   loader: () =>
+//     import('./containers/StatisticsContainer' /* webpackChunkName: "StatisticsContainer" */),
+//   loading: LoadingHat,
+// });
 
 const SubjectsContainer = Loadable({
   loader: () =>
