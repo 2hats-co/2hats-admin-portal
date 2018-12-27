@@ -11,7 +11,7 @@ import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 
 import ConnectionRequest from './ConnectionRequest';
-
+import useCollection from '../../../hooks/useCollection';
 const styles = theme => ({
   dialogTitle: {
     '&::after': {
@@ -54,6 +54,10 @@ const styles = theme => ({
 function CampaignDetails(props) {
   const { classes, showDialog, setShowDialog, data } = props;
 
+  const [recentConnections] = useCollection(
+    `linkedinCampaigns/${data.id}/requests`,
+    { sort: { field: 'createdAt', direction: 'desc' } }
+  );
   return (
     <Dialog
       open={showDialog}
@@ -148,13 +152,15 @@ function CampaignDetails(props) {
           </Grid>
         </div>
 
-        {data.lastConnection && (
+        {recentConnections.documents && (
           <div className={classes.dialogSection}>
             <Typography variant="subtitle1">
               Latest connection request
             </Typography>
-            {/* Can be converted to an array map: */}
-            <ConnectionRequest data={data.lastConnection} />
+            {recentConnections.documents.map(data => (
+              //TODO:scrolly rolly
+              <ConnectionRequest data={data} />
+            ))}
           </div>
         )}
       </DialogContent>

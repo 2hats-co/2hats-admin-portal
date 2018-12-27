@@ -37,16 +37,21 @@ const useCollection = (path, intialOverrides) => {
     ...collectionIntialState,
     ...intialOverrides,
   });
-  const getDocuments = (filters, limit) => {
+  const getDocuments = (filters, limit, sort) => {
     //updates prev values
     collectionDispatch({
       prevFilters: filters,
       prevLimit: limit,
     });
+    console.log('path', path);
     let query = firestore.collection(path);
+
     filters.forEach(filter => {
       query = query.where(filter.field, filter.operator, filter.value);
     });
+    if (sort) {
+      query = query.orderBy(sort.field, sort.direction);
+    }
     query.limit(limit).onSnapshot(snapshot => {
       if (snapshot.docs.length > 0) {
         const documents = snapshot.docs.map(doc => {
@@ -58,14 +63,19 @@ const useCollection = (path, intialOverrides) => {
           documents,
           loading: false,
         });
+      } else {
+        collectionDispatch({
+          documents: [],
+          loading: false,
+        });
       }
     });
   };
   useEffect(
     () => {
-      const { prevFilters, filters, prevLimit, limit } = collectionState;
+      const { prevFilters, filters, prevLimit, limit, sort } = collectionState;
       if (!equals(prevFilters, filters) || prevLimit !== limit) {
-        getDocuments(filters, limit);
+        getDocuments(filters, limit, sort);
       }
       return () => {
         firestore.collection(path).onSnapshot(() => {});
