@@ -187,6 +187,11 @@ function generateTheme(theme, themeColor) {
           },
         },
       },
+      MuiIconButton: {
+        colorPrimary: {
+          color: primaryDarkText,
+        },
+      },
       MuiButton: {
         ...baseTheme.overrides.MuiButton,
         textPrimary: {
