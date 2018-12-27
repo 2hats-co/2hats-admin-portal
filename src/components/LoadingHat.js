@@ -63,6 +63,7 @@ const LoadingHat = props => (
     justify="center"
     alignItems="center"
     className={props.classes.root}
+    wrap="nowrap"
   >
     <img
       src={hatLoading}

@@ -18,6 +18,7 @@ const CampaignEditor = Loadable({
     return <p />;
   },
 });
+
 const runCampaign = id => {
   firestore
     .collection(COLLECTIONS.linkedinCampaigns)
@@ -26,6 +27,7 @@ const runCampaign = id => {
       needsToRun: true,
     });
 };
+
 function LinkedinCampaigns(props) {
   // const { classes } = props;
   const [showEditor, setShowEditor] = useState(false);
