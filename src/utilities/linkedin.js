@@ -1,5 +1,5 @@
-import { firestore } from '../../store';
-import { COLLECTIONS } from '../../constants/firestore';
+import { firestore } from '../store';
+import { COLLECTIONS } from '../constants/firestore';
 
 /**
  * @param {{UID:string,email:string}} recipient
@@ -7,18 +7,39 @@ import { COLLECTIONS } from '../../constants/firestore';
  * @param {{subject:string,body:string}} email
  */
 export const sendLinkedinMessage = async (
+  senderId,
   conversationId,
-  accountEmail,
+  linkedin,
   body
 ) => {
-  const linkedinMessagesQueDoc = {
+  const conversationsMessageDoc = {
+    senderId,
+    body,
+    createdAt: new Date(),
+    isIncoming: false,
+    sentAt: new Date(),
+    type: 'linkedin',
+  };
+  firestore
+    .collection(COLLECTIONS.conversations)
+    .doc(conversationId)
+    .update({ lastMessage: conversationsMessageDoc });
+  firestore
+    .collection(COLLECTIONS.conversations)
+    .doc(conversationId)
+    .collection(COLLECTIONS.messages)
+    .add(conversationsMessageDoc);
+
+  const linkedinMessagesQueueDoc = {
     conversationId,
     hasSent: false,
     body,
-    accountEmail,
+    ...linkedin,
     createdAt: new Date(),
   };
-  console.log('generated linkedinMessagesQueDoc doc', linkedinMessagesQueDoc);
-  //uncommenting will send out linkedin Messages
-  //return await firestore.collection(COLLECTIONS.lin).add(gmailDoc);
+
+  console.log('generated linkedinMessagesQueDoc doc', linkedinMessagesQueueDoc);
+  return await firestore
+    .collection(COLLECTIONS.linkedinMessageQueue)
+    .add(linkedinMessagesQueueDoc);
 };

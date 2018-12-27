@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import withStyles from '@material-ui/core/styles/withStyles';
 import InputBase from '@material-ui/core/InputBase';
@@ -12,9 +12,11 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.bubble.css';
 
 import ComposerActions from './ComposerActions';
+import { useAuthedUser } from '../../../hooks/useAuthedUser';
 import { removeHtmlTags } from '../../../utilities';
 import { sendEmail } from '../../../utilities/email/gmail';
-
+import { sendLinkedinMessage } from '../../../utilities/linkedin';
+import { markAsRead } from '../../../utilities/conversations';
 const styles = theme => ({
   root: {
     backgroundColor:
@@ -81,6 +83,15 @@ const getChipIcon = type => {
 function Composer(props) {
   const { classes, theme, conversation, composerType } = props;
   console.log('conversation', conversation);
+  const currentUser = useAuthedUser();
+  useEffect(
+    () => {
+      if (currentUser) {
+        markAsRead(currentUser.UID, conversation.id);
+      }
+    },
+    [currentUser, conversation]
+  );
   const [messageText, setMessageText] = useState('');
   const [messageHtml, setMessageHtml] = useState('');
   const [attachments, setAttachments] = useState([]);
@@ -98,7 +109,18 @@ function Composer(props) {
     console.log('adding note', messageText);
   };
   const handleSendLinkedin = () => {
-    console.log('sending linkedin', messageText);
+    sendLinkedinMessage(
+      currentUser.UID,
+      conversation.id,
+      {
+        accountEmail: conversation.channels.linkedin.account,
+        threadId: conversation.channels.linkedin.threadId,
+      },
+      messageText
+    );
+    //clear message box
+    setMessageHtml('');
+    setMessageText('');
   };
   return (
     <div

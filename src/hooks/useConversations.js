@@ -4,7 +4,6 @@ import { useEffect, useReducer } from 'react';
 import equals from 'ramda/es/equals';
 // const generateFilters = () => {
 //   let filters = [];
-
 //   return filters;
 // };
 
@@ -15,7 +14,6 @@ const getConversations = (filters, limit, conversationDispatch) => {
     prevLimit: limit,
   });
   let query = firestore.collection(COLLECTIONS.conversations);
-  console.log(filters);
   filters.forEach(filter => {
     query = query.where(filter.field, filter.operator, filter.value);
   });
@@ -73,14 +71,7 @@ export function useConversations(uid) {
   useEffect(
     () => {
       const { prevFilters, filters, prevLimit, limit } = conversationsState;
-
       if (!equals(prevFilters, filters) || prevLimit !== limit) {
-        console.log(
-          !equals(prevFilters, filters),
-          prevLimit !== limit,
-          prevLimit,
-          limit
-        );
         getConversations(filters, limit, conversationsDispatch);
       }
       return () => {
