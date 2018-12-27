@@ -11,7 +11,6 @@ export const markAsRead = async (adminId, conversationId) => {
   const conversationData = conversation.data();
 
   const indexOfadmin = indexOf(adminId, conversationData.unreadAdmins);
-  console.log(indexOfadmin, conversationData.unreadAdmins);
   if (indexOfadmin >= 0) {
     const newUndreadAdmin = remove(
       indexOfadmin,

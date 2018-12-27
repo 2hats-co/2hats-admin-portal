@@ -25,6 +25,12 @@ const runCampaign = id => {
       needsToRun: true,
     });
 };
+const deleteCampaign = id => {
+  firestore
+    .collection(COLLECTIONS.linkedinCampaigns)
+    .doc(id)
+    .delete();
+};
 
 function LinkedinCampaigns(props) {
   // const { classes } = props;
@@ -56,6 +62,7 @@ function LinkedinCampaigns(props) {
             key={i}
             actions={{
               run: runCampaign,
+              delete: deleteCampaign,
               edit: () => {
                 setCampaign(x);
                 setShowEditor(true);
