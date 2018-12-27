@@ -23,22 +23,22 @@ import LoadingHat from '../components/LoadingHat';
 const TemplateGenerator = Loadable({
   loader: () =>
     import('../components/TemplateGenerator' /* webpackChunkName: "TemplateGenerator" */),
-  loading: LoadingHat,
+  loading: CircularProgress,
 });
 const FeedbackForm = Loadable({
   loader: () =>
     import('../components/FeedbackForm' /* webpackChunkName: "FeedbackForm" */),
-  loading: LoadingHat,
+  loading: CircularProgress,
 });
 const ScreeningForm = Loadable({
   loader: () =>
     import('../components/ScreeningForm' /* webpackChunkName: "ScreeningForm" */),
-  loading: LoadingHat,
+  loading: CircularProgress,
 });
 const Done = Loadable({
   loader: () =>
     import('../components/Done' /* webpackChunkName: "Submissions-Done" */),
-  loading: LoadingHat,
+  loading: CircularProgress,
 });
 // const Submission = Loadable({
 //   loader: () =>
@@ -177,7 +177,7 @@ function SumbissionsContainer(props) {
   return (
     <React.Fragment>
       {locationIndicator}
-      <Grid container className={classes.root}>
+      <Grid container className={classes.root} wrap="nowrap">
         <Grid item xs className={classes.card}>
           <Grid
             container
@@ -187,7 +187,7 @@ function SumbissionsContainer(props) {
           >
             <Grid
               item
-              xs={template ? 7 : 12}
+              xs={template ? 8 : 12}
               style={{ overflowY: 'auto', padding: 40, maxWidth: 'none' }}
             >
               <Submission
@@ -195,8 +195,8 @@ function SumbissionsContainer(props) {
                 listType={location.pathname.split('/')[1]}
               />
             </Grid>
-            <Grid item xs={template ? 4 : 0} style={{ maxWidth: 'none' }}>
-              {template && (
+            {template && (
+              <Grid item xs={4} style={{ maxWidth: 'none' }}>
                 <TemplateGenerator
                   template={template}
                   recipientUID={submission.UID}
@@ -204,8 +204,8 @@ function SumbissionsContainer(props) {
                   setEmail={setEmail}
                   setEmailReady={setEmailReady}
                 />
-              )}
-            </Grid>
+              </Grid>
+            )}
           </Grid>
         </Grid>
         <Grid item style={{ width: 400, overflowY: 'auto' }}>

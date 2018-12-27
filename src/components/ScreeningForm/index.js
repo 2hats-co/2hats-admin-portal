@@ -200,7 +200,7 @@ function ScreeningForm(props) {
             <BackIcon className={classes.icon} /> Back
           </Button>
         </Grid>
-        <Typography variant="title" style={{ marginTop: 16 }}>
+        <Typography variant="h6" style={{ marginTop: 16 }}>
           <DisqualifyIcon
             className={classes.icon}
             style={{ verticalAlign: 'bottom' }}
