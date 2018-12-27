@@ -14,13 +14,12 @@ import ConversationsList from '../components/Conversations/ConversationsList';
 import ConversationHeader from '../components/Conversations/ConversationHeader';
 import Messages from '../components/Conversations/Messages';
 import Loadable from 'react-loadable';
+import LoadingHat from '../components/LoadingHat';
 import { useWindowSize } from '../hooks/useWindowSize';
 const Composer = Loadable({
   loader: () =>
     import('../components/Conversations/Composer' /* webpackChunkName: "MessagesComposer" */),
-  loading() {
-    return <p />;
-  },
+  loading: LoadingHat,
 });
 
 const styles = theme => ({

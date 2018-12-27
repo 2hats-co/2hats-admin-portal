@@ -20,16 +20,12 @@ import LoadingHat from '../components/LoadingHat';
 const LinkedinCampaigns = Loadable({
   loader: () =>
     import('../components/Marketing/LinkedinCampaigns' /* webpackChunkName: "LinkedinCampaigns" */),
-  loading() {
-    return <LoadingHat />;
-  },
+  loading: LoadingHat,
 });
 const TemplateEditor = Loadable({
   loader: () =>
     import('../components/Marketing/TemplateEditor' /* webpackChunkName: "TemplateEditor" */),
-  loading() {
-    return <LoadingHat />;
-  },
+  loading: LoadingHat,
 });
 const styles = theme => ({
   root: {

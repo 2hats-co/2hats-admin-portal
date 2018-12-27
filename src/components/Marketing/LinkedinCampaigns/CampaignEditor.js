@@ -1,16 +1,20 @@
 import React from 'react';
-import remove from 'ramda/es/remove';
-import Grid from '@material-ui/core/Grid';
+
 import withStyles from '@material-ui/core/styles/withStyles';
-import Typography from '@material-ui/core/Typography';
-import Paper from '@material-ui/core/Paper';
+import Dialog from '@material-ui/core/Dialog';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogActions from '@material-ui/core/DialogActions';
+import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import Chip from '@material-ui/core/Chip';
+
 import AddIcon from '@material-ui/icons/Add';
+
 import { Formik } from 'formik';
-import Modal from '@material-ui/core/Modal';
+import remove from 'ramda/es/remove';
 //import Yup from 'yup';
 const styles = theme => ({
   root: {
@@ -31,12 +35,6 @@ const styles = theme => ({
   messageBox: {
     marginTop: theme.spacing.unit * 2,
   },
-  done: {
-    display: 'block',
-    marginLeft: 'auto',
-    marginTop: theme.spacing.unit,
-  },
-  modal: {},
 });
 
 const emptyForm = {
@@ -63,7 +61,8 @@ function CampaignEditor(props) {
         message: campaign.message,
       }
     : emptyForm;
-  console.log(initialValues, campaign);
+  console.log('campaignEditor', initialValues, campaign);
+
   return (
     <Formik
       initialValues={initialValues}
@@ -87,23 +86,24 @@ function CampaignEditor(props) {
             setValues({ ...values, [item]: '' });
           }
         };
+        console.log('values', values);
         return (
           <form onSubmit={handleSubmit}>
-            <Modal
+            <Dialog
               open={open}
               onClose={actions.close}
               className={classes.modal}
             >
-              <Paper className={classes.root}>
+              <DialogTitle>
+                {action} Campaign{campaign && `: ${campaign.query}`}
+              </DialogTitle>
+
+              <DialogContent>
                 <Grid container direction="column" spacing={8}>
                   <Grid item>
-                    <Typography variant="h6">{action} Campaign</Typography>
-                  </Grid>
-                  <Grid item>
                     <TextField
-                      label="Linkedin email"
+                      label="LinkedIn email"
                       id="email"
-                      placeholder="Linkedin account"
                       type="text"
                       onChange={handleChange}
                       autoFocus
@@ -111,9 +111,8 @@ function CampaignEditor(props) {
                       value={values.email}
                     />
                     <TextField
-                      label="Linkedin password"
+                      label="LinkedIn password"
                       id="password"
-                      placeholder="Linkedin password"
                       type="password"
                       onChange={handleChange}
                       fullWidth
@@ -122,19 +121,18 @@ function CampaignEditor(props) {
                     <TextField
                       label="Search query"
                       id="query"
-                      placeholder="Linkedin search"
                       type="text"
                       onChange={handleChange}
                       fullWidth
                       value={values.query}
                     />
                   </Grid>
+
                   <Grid item>
                     <Grid container alignItems="flex-end">
                       <Grid item xs>
                         <TextField
                           id="ignoreTerm"
-                          placeholder="Ignored keyword"
                           type="text"
                           onChange={handleChange}
                           fullWidth
@@ -176,7 +174,6 @@ function CampaignEditor(props) {
                       <Grid item xs>
                         <TextField
                           id="requiredTerm"
-                          placeholder="Required keyword"
                           type="text"
                           onChange={handleChange}
                           fullWidth
@@ -227,20 +224,19 @@ function CampaignEditor(props) {
                       value={values.message}
                     />
                   </Grid>
-
-                  <Grid item>
-                    <Button
-                      onClick={handleSubmit}
-                      variant="contained"
-                      color="primary"
-                      className={classes.done}
-                    >
-                      Done
-                    </Button>
-                  </Grid>
                 </Grid>
-              </Paper>
-            </Modal>
+              </DialogContent>
+
+              <DialogActions>
+                <Button
+                  onClick={handleSubmit}
+                  color="primary"
+                  className={classes.done}
+                >
+                  Done
+                </Button>
+              </DialogActions>
+            </Dialog>
           </form>
         );
       }}

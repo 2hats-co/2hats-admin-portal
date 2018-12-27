@@ -18,41 +18,32 @@ import Submission from '../components/Submission';
 import { sendEmail } from '../utilities/email/send';
 import { ROUTES } from '../constants/routes';
 import Loadable from 'react-loadable';
+import LoadingHat from '../components/LoadingHat';
 //import { useWindowSize } from '../hooks/useWindowSize';
 const TemplateGenerator = Loadable({
   loader: () =>
     import('../components/TemplateGenerator' /* webpackChunkName: "TemplateGenerator" */),
-  loading() {
-    return <p />;
-  },
+  loading: LoadingHat,
 });
 const FeedbackForm = Loadable({
   loader: () =>
     import('../components/FeedbackForm' /* webpackChunkName: "FeedbackForm" */),
-  loading() {
-    return <p />;
-  },
+  loading: LoadingHat,
 });
 const ScreeningForm = Loadable({
   loader: () =>
     import('../components/ScreeningForm' /* webpackChunkName: "ScreeningForm" */),
-  loading() {
-    return <p />;
-  },
+  loading: LoadingHat,
 });
 const Done = Loadable({
   loader: () =>
     import('../components/Done' /* webpackChunkName: "Submissions-Done" */),
-  loading() {
-    return <p />;
-  },
+  loading: LoadingHat,
 });
 // const Submission = Loadable({
 //   loader: () =>
 //     import('../components/Submission' /* webpackChunkName: "Submission" */),
-//   loading() {
-//     return <p />;
-//   },
+//   loading: LoadingHat,
 // });
 
 // import Search from '../components/Search'

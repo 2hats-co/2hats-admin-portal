@@ -32,13 +32,12 @@ import LocationIndicator from '../components/LocationIndicator';
 import { COLLECTIONS } from '../constants/firestore';
 import { sleep } from '../utilities';
 import Loadable from 'react-loadable';
+import LoadingHat from '../components/LoadingHat';
 import { useWindowSize } from '../hooks/useWindowSize';
 const ChartEditor = Loadable({
   loader: () =>
     import('../components/Statistics/ChartEditor' /* webpackChunkName: "ChartEditor" */),
-  loading() {
-    return <p />;
-  },
+  loading: LoadingHat,
 });
 
 const styles = theme => ({

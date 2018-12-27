@@ -14,10 +14,9 @@ import Loadable from 'react-loadable';
 const CampaignEditor = Loadable({
   loader: () =>
     import('./CampaignEditor' /* webpackChunkName: "CampaignEditor" */),
-  loading() {
-    return <p />;
-  },
+  loading: LoadingHat,
 });
+
 const runCampaign = id => {
   firestore
     .collection(COLLECTIONS.linkedinCampaigns)
@@ -26,6 +25,7 @@ const runCampaign = id => {
       needsToRun: true,
     });
 };
+
 function LinkedinCampaigns(props) {
   // const { classes } = props;
   const [showEditor, setShowEditor] = useState(false);
@@ -66,7 +66,7 @@ function LinkedinCampaigns(props) {
         <CampaignEditor
           open={showEditor}
           campaign={campaign}
-          action={campaign ? 'edit' : 'create'}
+          action={campaign ? 'Edit' : 'Create'}
           actions={{
             create: createCampaign,
             close: () => {
