@@ -20,24 +20,19 @@ import ReminderDialog from './ReminderDialog';
 //import 'emoji-mart/css/emoji-mart.css';
 //import { Picker } from 'emoji-mart';
 //import Loadable from 'react-loadable';
+//import LoadingHat from '../../LoadingHat';
 // const { Picker } = Loadable({
 //   loader: () => import('emoji-mart' /* webpackChunkName: "EmojiPicker" */),
-//   loading() {
-//     return <p />;
-//   },
+//   loading: LoadingHat,
 // });
 // const EventDialog = Loadable({
 //   loader: () => import('./EventDialog' /* webpackChunkName: "EventDialog" */),
-//   loading() {
-//     return <p />;
-//   },
+//   loading: LoadingHat,
 // });
 // const ReminderDialog = Loadable({
 //   loader: () =>
 //     import('./ReminderDialog' /* webpackChunkName: "ReminderDialog" */),
-//   loading() {
-//     return <p />;
-//   },
+//   loading: LoadingHat,
 // });
 
 const emojiButton = handleClick => (

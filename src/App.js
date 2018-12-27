@@ -11,60 +11,47 @@ import SubmissionsContainer from './containers/SubmissionsContainer';
 //containers
 import Loadable from 'react-loadable';
 import PushNotifications from './components/PushNotifications';
-const loadingCard = <LoadingHat />;
 
 const StatisticsContainer = Loadable({
   loader: () =>
     import('./containers/StatisticsContainer' /* webpackChunkName: "StatisticsContainer" */),
-  loading() {
-    return <LoadingHat message="Loading Stats" />;
-  },
+  loading: LoadingHat,
 });
 
 const SubjectsContainer = Loadable({
   loader: () =>
     import('./containers/SubjectsContainer' /* webpackChunkName: "SubjectsContainer" */),
-  loading() {
-    return loadingCard;
-  },
+  loading: LoadingHat,
 });
 
 const AuthenticationContainer = Loadable({
   loader: () =>
     import('./containers/AuthenticationContainer' /* webpackChunkName: "AuthenticationContainer" */),
-  loading() {
-    return loadingCard;
-  },
+  loading: LoadingHat,
 });
 
 const ConversationsContainer = Loadable({
   loader: () =>
     import('./containers/ConversationsContainer' /* webpackChunkName: "ConversationsContainer" */),
-  loading() {
-    return loadingCard;
-  },
+  loading: LoadingHat,
 });
 
 const Landing = Loadable({
   loader: () =>
     import('./components/Landing' /* webpackChunkName: "Landing" */),
-  loading() {
-    return loadingCard;
-  },
+  loading: LoadingHat,
 });
 
 const MarketingContainer = Loadable({
   loader: () =>
     import('./containers/MarketingContainer' /* webpackChunkName: "MarketingContainer" */),
-  loading() {
-    return loadingCard;
-  },
+  loading: LoadingHat,
 });
 
 function App() {
   const currentUser = useAuthedUser();
 
-  if (currentUser && currentUser.isLoading) return loadingCard;
+  if (currentUser && currentUser.isLoading) return <LoadingHat />;
 
   const Theme = generateTheme(
     (currentUser && currentUser.adminPortal && currentUser.adminPortal.theme) ||

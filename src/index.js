@@ -6,9 +6,7 @@ import LoadingHat from './components/LoadingHat';
 import registerServiceWorker from './registerServiceWorker';
 const App = Loadable({
   loader: () => import('./App' /* webpackChunkName: "App" */),
-  loading() {
-    return LoadingHat;
-  },
+  loading: LoadingHat,
 });
 ReactDOM.render(<App />, document.getElementById('root'));
 registerServiceWorker();

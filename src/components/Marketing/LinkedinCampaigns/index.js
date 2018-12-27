@@ -14,9 +14,7 @@ import Loadable from 'react-loadable';
 const CampaignEditor = Loadable({
   loader: () =>
     import('./CampaignEditor' /* webpackChunkName: "CampaignEditor" */),
-  loading() {
-    return <p />;
-  },
+  loading: LoadingHat,
 });
 
 const runCampaign = id => {
