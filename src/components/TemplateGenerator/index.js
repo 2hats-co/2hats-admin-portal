@@ -67,14 +67,17 @@ function TemplateGenerator(props) {
   if (!candidate)
     return (
       <Slide in direction="up">
-        <Grid
-          container
-          justify="center"
-          alignItems="center"
-          className={classes.root}
-        >
-          <CircularProgress size={64} />
-        </Grid>
+        <React.Fragment>
+          <Grid
+            container
+            justify="center"
+            alignItems="center"
+            className={classes.root}
+            direction="row"
+          >
+            <CircularProgress size={64} />
+          </Grid>
+        </React.Fragment>
       </Slide>
     );
 
