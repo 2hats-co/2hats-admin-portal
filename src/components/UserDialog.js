@@ -48,6 +48,12 @@ const styles = theme => ({
     margin: `0 auto ${theme.spacing.unit * 2}px`,
     backgroundColor: theme.palette.primary.light,
     fontSize: theme.spacing.unit * 12,
+    cursor: 'none',
+    '&:hover': { animation: 'spin-me 2s linear infinite' },
+  },
+  '@keyframes spin-me': {
+    from: { transform: 'rotate(0deg)' },
+    to: { transform: 'rotate(360deg)' },
   },
   greeting: {
     marginBottom: theme.spacing.unit * 1.5,

@@ -18,6 +18,9 @@ const styles = theme => ({
       lineHeight: 1.1,
     },
   },
+  label: {
+    fontWeight: 500,
+  },
 });
 
 function TrackerNumber(props) {
@@ -40,7 +43,10 @@ function TrackerNumber(props) {
     >
       <Grid item>
         <Typography variant={layout.w > 1 ? 'h3' : 'h4'}>{x.sum}</Typography>
-        <Typography variant={layout.w > 1 ? 'subtitle1' : 'body1'}>
+        <Typography
+          variant={layout.w > 1 ? 'subtitle1' : 'body1'}
+          className={classes.label}
+        >
           {x.label}
         </Typography>
       </Grid>

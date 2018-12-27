@@ -9,7 +9,7 @@ import hatLoading from '../assets/hatLoading.svg';
 const styles = theme => ({
   root: {
     backgroundColor: theme.palette.background.default,
-    animation: 'fade-in .5s both',
+    // animation: 'fade-in .5s both',
     width: '100vw',
     height: '100vh',
     position: 'absolute',
@@ -17,11 +17,11 @@ const styles = theme => ({
     left: 0,
   },
 
-  '@keyframes fade-in': {
-    //need to prevent flashing between different loads
-    // from: { opacity: 0 },
-    // to: { opacity: 1 },
-  },
+  // '@keyframes fade-in': {
+  //need to prevent flashing between different loads
+  // from: { opacity: 0 },
+  // to: { opacity: 1 },
+  // },
   loadingHat: {
     animationName: 'loading-hat',
     animationDuration: '1.4s',

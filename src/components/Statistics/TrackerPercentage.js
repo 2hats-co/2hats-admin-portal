@@ -62,6 +62,9 @@ const styles = theme => ({
       fontWeight: 400,
     },
   },
+  title: {
+    fontWeight: 500,
+  },
 });
 
 function TrackerPercentage(props) {
@@ -172,7 +175,10 @@ function TrackerPercentage(props) {
               {percentage}
               <small>%</small>
             </Typography>
-            <Typography variant={layout.w > 1 ? 'subtitle1' : 'body1'}>
+            <Typography
+              variant={layout.w > 1 ? 'subtitle1' : 'body1'}
+              className={classes.title}
+            >
               {title}
             </Typography>
           </Grid>
