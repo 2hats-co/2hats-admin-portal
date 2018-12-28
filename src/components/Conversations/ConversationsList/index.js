@@ -6,8 +6,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import LinearProgress from '@material-ui/core/LinearProgress';
 
 import MailIcon from '@material-ui/icons/Mail';
-import ReadIcon from '@material-ui/icons/Drafts';
-import StarIcon from '@material-ui/icons/Star';
+//import StarIcon from '@material-ui/icons/Star';
 
 import List from '@material-ui/core/List';
 
@@ -23,24 +22,36 @@ const styles = theme => ({
   },
 });
 
+const unreadFilter = uid => ({
+  field: 'unreadAdmins',
+  operator: 'array-contains',
+  value: uid,
+});
+const subscriberFilter = uid => ({
+  field: 'subscribedAdmins',
+  operator: 'array-contains',
+  value: uid,
+});
 function ConversationsList(props) {
   const { classes, setSelectedConversation, selectedConversation, uid } = props;
-
-  const [filter, setFilter] = useState('all');
-  //const [conversationsState, conversationsDispatch] = useConversations('');
   const [conversationsState, conversationsDispatch] = useCollection(``, {
     path: `conversations`,
     sort: { field: 'lastMessage.sentAt', direction: 'desc' },
-    filters: [
-      {
-        field: 'subscribedAdmins',
-        operator: 'array-contains',
-        value: uid,
-      },
-    ],
+    filters: [subscriberFilter(uid)],
   });
   const conversations = conversationsState.documents;
   const [hasMore, setHasMore] = useState(true);
+  const [filter, setFilter] = useState('all');
+  useEffect(
+    () => {
+      if (filter === 'unread') {
+        conversationsDispatch({ filters: [unreadFilter(uid)] });
+      } else {
+        conversationsDispatch({ filters: [subscriberFilter(uid)] });
+      }
+    },
+    [filter]
+  );
   useEffect(
     () => {
       setHasMore(true);
@@ -84,8 +95,6 @@ function ConversationsList(props) {
         >
           <Tab value="all" label="All" />
           <Tab value="unread" label={<MailIcon />} />
-          <Tab value="read" label={<ReadIcon />} />
-          <Tab value="starred" label={<StarIcon />} />
         </Tabs>
       </Grid>
 
@@ -95,7 +104,6 @@ function ConversationsList(props) {
           pageStart={0}
           //BROKEN
           loadMore={() => {
-            console.log('moooor');
             loadMore();
           }}
           hasMore={hasMore}
