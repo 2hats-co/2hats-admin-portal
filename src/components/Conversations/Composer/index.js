@@ -16,7 +16,8 @@ import { useAuthedUser } from '../../../hooks/useAuthedUser';
 import { removeHtmlTags } from '../../../utilities';
 import { sendEmail } from '../../../utilities/email/gmail';
 import { sendLinkedinMessage } from '../../../utilities/linkedin';
-import { markAsRead } from '../../../utilities/conversations';
+import { markAsRead, addNote } from '../../../utilities/conversations';
+import { clear } from 'echarts/lib/util/throttle';
 const styles = theme => ({
   root: {
     backgroundColor:
@@ -92,6 +93,11 @@ function Composer(props) {
     },
     [currentUser, conversation]
   );
+  const clearComposer = () => {
+    //clear message box
+    setMessageHtml('');
+    setMessageText('');
+  };
   const [messageText, setMessageText] = useState('');
   const [messageHtml, setMessageHtml] = useState('');
   const [attachments, setAttachments] = useState([]);
@@ -103,10 +109,11 @@ function Composer(props) {
     const recipient = { email: 'shams.mosowi@gmail.com' };
     const sender = { email: 'shams@2hats.com.au' };
     sendEmail(conversation.id, { recipient, email, sender });
-    console.log('sending email', messageHtml);
+    clearComposer();
   };
   const handleAddNote = () => {
-    console.log('adding note', messageText);
+    addNote(currentUser.UID, conversation.id, messageText);
+    clearComposer();
   };
   const handleSendLinkedin = () => {
     sendLinkedinMessage(
@@ -118,9 +125,7 @@ function Composer(props) {
       },
       messageText
     );
-    //clear message box
-    setMessageHtml('');
-    setMessageText('');
+    clearComposer();
   };
   return (
     <div

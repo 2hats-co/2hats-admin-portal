@@ -24,3 +24,17 @@ export const markAsRead = async (adminId, conversationId) => {
       .update({ unreadAdmins: newUndreadAdmin });
   }
 };
+
+export const addNote = (adminId, conversationId, note) => {
+  firestore
+    .collection(COLLECTIONS.conversations)
+    .doc(conversationId)
+    .collection(COLLECTIONS.messages)
+    .add({
+      senderId: adminId,
+      body: note,
+      createdAt: new Date(),
+      sentAt: new Date(),
+      type: 'note',
+    });
+};

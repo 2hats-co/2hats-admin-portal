@@ -84,14 +84,14 @@ function ManageSubscribersDialog(props) {
       <DialogContent>
         <AdminsConsumer>
           {context => {
-            const subscribedAdmins = context.filter(x =>
-              subscribersUIDs.includes(x.UID)
+            const subscribedAdmins = context.admins.filter(x =>
+              subscribersUIDs.includes(x.id)
             );
             const notSubscribedAdmins = context
-              .filter(x => !subscribersUIDs.includes(x.UID))
+              .filter(x => !subscribersUIDs.includes(x.id))
               .map(x => ({
                 label: `${x.givenName} ${x.familyName}`,
-                value: x.UID,
+                value: x.id,
               }));
             return (
               <React.Fragment>
@@ -121,7 +121,7 @@ function ManageSubscribersDialog(props) {
                       <ListItemSecondaryAction>
                         <IconButton
                           onClick={() => {
-                            handleRemoveSubscriber(x.UID);
+                            handleRemoveSubscriber(x.id);
                           }}
                           className={classes.iconButton}
                         >

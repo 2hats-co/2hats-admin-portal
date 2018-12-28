@@ -18,6 +18,7 @@ import { momentLocales } from '../../../constants/momentLocales';
 // import timestamp from 'time-stamp';
 
 import { getInitials } from '../../../utilities';
+import { AdminsConsumer } from '../../../contexts/AdminsContext';
 
 const styles = theme => ({
   root: {
@@ -190,12 +191,19 @@ function Message(props) {
       <div className={classNames(classes.body, 'msg-body')}>{bodyContent}</div>
       {!isIncoming &&
         lastOfType &&
-        (data.sentBy ? (
-          <Tooltip title={data.sentBy}>
-            <Avatar className={classes.avatar}>
-              {getInitials(data.sentBy)}
-            </Avatar>
-          </Tooltip>
+        (data.senderId ? (
+          <AdminsConsumer>
+            {context => {
+              const sender = context.getAdmin(data.senderId);
+              return (
+                <Tooltip title={sender.givenName}>
+                  <Avatar className={classes.avatar} src={sender.avatarURL}>
+                    {sender.givenName[0]} {sender.familyName[0]}
+                  </Avatar>
+                </Tooltip>
+              );
+            }}
+          </AdminsConsumer>
         ) : (
           <Avatar className={classes.avatar}>
             <PersonIcon />

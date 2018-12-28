@@ -139,10 +139,8 @@ export default function withNavigation(WrappedComponent) {
 
     let initials;
     if (displayName) initials = getInitials(displayName);
-
-    // console.log('admins',admins)
     return (
-      <AdminsProvider value={admins}>
+      <AdminsProvider>
         <Grid container wrap="nowrap" className={classes.root}>
           <Slide in direction="right">
             <React.Fragment>
