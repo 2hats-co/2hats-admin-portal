@@ -1,4 +1,6 @@
-import React, { useState, useRef } from 'react';
+import React, {
+  useState, //useRef
+} from 'react';
 
 import withStyles from '@material-ui/core/styles/withStyles';
 import Grid from '@material-ui/core/Grid';
@@ -10,11 +12,11 @@ import AddSubscriberIcon from '@material-ui/icons/GroupAdd';
 import LinkIcon from '@material-ui/icons/Link';
 import BackIcon from '@material-ui/icons/ArrowBack';
 import StarOutlineIcon from '@material-ui/icons/StarBorder';
-import MenuItem from '@material-ui/core/MenuItem';
-import OutlinedInput from '@material-ui/core/OutlinedInput';
-import Select from '@material-ui/core/Select';
-import FormControl from '@material-ui/core/FormControl';
-import InputLabel from '@material-ui/core/InputLabel';
+// import MenuItem from '@material-ui/core/MenuItem';
+// import OutlinedInput from '@material-ui/core/OutlinedInput';
+// import Select from '@material-ui/core/Select';
+// import FormControl from '@material-ui/core/FormControl';
+// import InputLabel from '@material-ui/core/InputLabel';
 import ManageSubscribersDialog from './ManageSubscribersDialog';
 import { useWindowSize } from '../../../hooks/useWindowSize';
 const styles = theme => ({
@@ -28,11 +30,10 @@ const styles = theme => ({
 
 function ConversationHeader(props) {
   const windowSize = useWindowSize();
-  const [tag, setTag] = useState('');
-  const InputLabelRef = useRef(null);
-  console.log('windowSize', windowSize.isMobile);
+  //const [tag, setTag] = useState('');
+  //const InputLabelRef = useRef(null);
+
   const { classes, conversation, closeConversation } = props;
-  console.log('conversation', conversation);
   const [showSubscriberDialog, setShowSubscriberDialog] = useState(false);
 
   return (
@@ -50,7 +51,7 @@ function ConversationHeader(props) {
             <Typography variant="title">{conversation.displayName}</Typography>
           </Grid>
           <Grid item>
-            <FormControl variant="outlined" className={classes.formControl}>
+            {/* <FormControl variant="outlined" className={classes.formControl}>
               <InputLabel ref={InputLabelRef} htmlFor="outlined-tag">
                 Tag
               </InputLabel>
@@ -65,7 +66,7 @@ function ConversationHeader(props) {
                 <MenuItem value="generalCatchup">General Catchup</MenuItem>
                 <MenuItem value="partnerships">Partnerships</MenuItem>
               </Select>
-            </FormControl>
+            </FormControl> */}
           </Grid>
           <Grid item>
             <Tooltip title="Manage Subscribers">

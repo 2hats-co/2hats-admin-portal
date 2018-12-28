@@ -27,8 +27,6 @@ import Search from '../Search';
 import UserDialog from '../UserDialog';
 import { getInitials } from '../../utilities';
 import metadata from '../../metadata.json';
-
-import { useAdmins } from '../../hooks/useAdmins';
 import { useAuthedUser } from '../../hooks/useAuthedUser';
 import { AdminsProvider } from '../../contexts/AdminsContext';
 
@@ -119,9 +117,7 @@ export default function withNavigation(WrappedComponent) {
 
     const [showSearch, setShowSearch] = useState(false);
     const [showUserDialog, setShowUserDialog] = useState(false);
-
     const currentUser = useAuthedUser();
-    let [admins] = useAdmins(uid);
     const goTo = route => {
       history.push(route);
     };

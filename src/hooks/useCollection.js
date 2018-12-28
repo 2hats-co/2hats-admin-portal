@@ -26,6 +26,7 @@ const collectionReducer = (prevState, newProps) => {
 const collectionIntialState = {
   documents: null,
   prevFilters: null,
+  prevPath: null,
   filters: [],
   prevLimit: 0,
   limit: 20,
@@ -35,16 +36,24 @@ const collectionIntialState = {
 const useCollection = (path, intialOverrides) => {
   const [collectionState, collectionDispatch] = useReducer(collectionReducer, {
     ...collectionIntialState,
+    path,
     ...intialOverrides,
   });
   const getDocuments = (filters, limit, sort) => {
+    //unsubscribe from old path
+    if (
+      collectionState.prevPath &&
+      collectionState.path !== collectionState.prevPath
+    ) {
+      firestore.collection(collectionState.prevPath).onSnapshot(() => {});
+    }
     //updates prev values
     collectionDispatch({
       prevFilters: filters,
       prevLimit: limit,
+      prevPath: collectionState.path,
     });
-    console.log('path', path);
-    let query = firestore.collection(path);
+    let query = firestore.collection(collectionState.path);
 
     filters.forEach(filter => {
       query = query.where(filter.field, filter.operator, filter.value);
@@ -73,15 +82,27 @@ const useCollection = (path, intialOverrides) => {
   };
   useEffect(
     () => {
-      const { prevFilters, filters, prevLimit, limit, sort } = collectionState;
-      if (!equals(prevFilters, filters) || prevLimit !== limit) {
+      const {
+        prevFilters,
+        filters,
+        prevLimit,
+        limit,
+        prevPath,
+        path,
+        sort,
+      } = collectionState;
+      if (
+        !equals(prevFilters, filters) ||
+        prevLimit !== limit ||
+        prevPath !== path
+      ) {
         getDocuments(filters, limit, sort);
       }
       return () => {
         firestore.collection(path).onSnapshot(() => {});
       };
     },
-    [collectionState.filters, collectionState.limit]
+    [collectionState.filters, collectionState.limit, collectionState.path]
   );
   return [collectionState, collectionDispatch];
 };

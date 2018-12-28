@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 import withStyles from '@material-ui/core/styles/withStyles';
 import Grid from '@material-ui/core/Grid';
@@ -28,15 +28,36 @@ const isSameType = (a, b) =>
 
 function Messages(props) {
   const { classes, conversation } = props;
-  const [messagesState] = useCollection(
-    `conversations/${conversation.id}/messages`,
-    { sort: { field: 'sentAt', direction: 'asc' }, limit: 100 }
-  );
+  const messagesRef = useRef(null);
+  const messagesEnd = useRef(null);
+  const [messagesState, messagesDispatch] = useCollection(``, {
+    path: `conversations/${conversation.id}/messages`,
+    sort: { field: 'sentAt', direction: 'asc' },
+    limit: 100,
+  });
 
-  console.log('messagesState', messagesState);
+  useEffect(
+    () => {
+      messagesDispatch({
+        path: `conversations/${conversation.id}/messages`,
+        loading: true,
+      });
+    },
+    [conversation.id]
+  );
   const { documents } = messagesState;
 
   const messages = documents;
+  useEffect(
+    () => {
+      if (messagesRef) {
+        console.log(messagesRef, messagesEnd);
+      }
+      //  messagesEnd.current.scrollIntoView({ behavior: 'smooth' });
+    },
+    [messagesEnd]
+  );
+
   if (messagesState.loading)
     return (
       <Grid
@@ -51,7 +72,7 @@ function Messages(props) {
 
   return (
     <Slide in direction="down">
-      <div className={classes.root}>
+      <div className={classes.root} ref={messagesRef}>
         {messages &&
           messages.map((data, i) => (
             <Message
@@ -65,7 +86,7 @@ function Messages(props) {
               }
             />
           ))}
-        <div style={{ float: 'left', clear: 'both' }} />
+        <div style={{ float: 'left', clear: 'both' }} ref={messagesEnd} />
       </div>
     </Slide>
   );

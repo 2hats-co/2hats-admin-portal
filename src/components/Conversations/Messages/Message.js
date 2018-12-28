@@ -17,7 +17,7 @@ import moment from 'moment';
 import { momentLocales } from '../../../constants/momentLocales';
 // import timestamp from 'time-stamp';
 
-import { getInitials } from '../../../utilities';
+//import { getInitials } from '../../../utilities';
 import { AdminsConsumer } from '../../../contexts/AdminsContext';
 
 const styles = theme => ({

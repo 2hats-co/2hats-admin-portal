@@ -17,7 +17,6 @@ import { removeHtmlTags } from '../../../utilities';
 import { sendEmail } from '../../../utilities/email/gmail';
 import { sendLinkedinMessage } from '../../../utilities/linkedin';
 import { markAsRead, addNote } from '../../../utilities/conversations';
-import { clear } from 'echarts/lib/util/throttle';
 const styles = theme => ({
   root: {
     backgroundColor:
