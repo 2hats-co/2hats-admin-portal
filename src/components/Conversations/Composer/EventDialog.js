@@ -12,6 +12,7 @@ import Button from '@material-ui/core/Button';
 import Slider from '@material-ui/lab/Slider';
 import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
+import Chip from '@material-ui/core/Chip';
 
 import LeftIcon from '@material-ui/icons/KeyboardArrowLeft';
 import RightIcon from '@material-ui/icons/KeyboardArrowRight';
@@ -31,11 +32,26 @@ const styles = theme => ({
     minWidth: 480,
   },
   block: {
-    marginTop: theme.spacing.unit * 3,
+    marginTop: theme.spacing.unit * 2,
     '&:first-of-type': { marginTop: theme.spacing.unit / 2 },
+  },
+  suggestedLabel: {
+    marginLeft: theme.spacing.unit * 1.75,
+    marginRight: theme.spacing.unit,
+    marginTop: theme.spacing.unit,
+    lineHeight: `${theme.spacing.unit * 4}px`,
+  },
+  suggestionChip: {
+    marginTop: theme.spacing.unit,
+  },
+  durationLabel: {
+    marginLeft: theme.spacing.unit * 1.75,
   },
   dateTimePicker: {
     marginRight: theme.spacing.unit,
+  },
+  durationWrapper: {
+    minHeight: 44,
   },
   sliderWrapper: {
     marginRight: theme.spacing.unit * 3,
@@ -43,7 +59,9 @@ const styles = theme => ({
 });
 
 function EventDialog(props) {
-  const { classes, showDialog, setShowDialog } = props;
+  const { classes, showDialog, setShowDialog, conversation } = props;
+  const displayName = conversation.displayName;
+
   const [customDuration, setCustomDuration] = useState(false);
   const [data, setData] = useState({
     summary: '',
@@ -64,9 +82,17 @@ function EventDialog(props) {
   const updateData = (field, value) => {
     setData({ ...data, [field]: value });
   };
+
   const handleClose = () => {
     setShowDialog(false);
+    if (
+      data.end.duration === 30 ||
+      data.end.duration === 60 ||
+      data.end.duration === 120
+    )
+      setCustomDuration(false);
   };
+
   const handleDuration = (e, val) => {
     updateData('end', {
       ...data.end,
@@ -74,6 +100,14 @@ function EventDialog(props) {
       dateTime: data.start.dateTime.clone().add(val, 'm'),
     });
   };
+
+  const titleSuggestions = [
+    displayName,
+    `Meeting with ${displayName}`,
+    `Call ${displayName}`,
+    `Chat with ${displayName}`,
+  ];
+
   return (
     <Dialog
       open={showDialog}
@@ -94,7 +128,28 @@ function EventDialog(props) {
               updateData('summary', e.target.value);
             }}
             className={classes.titleField}
+            margin="dense"
           />
+          <Grid container alignItems="flex-start">
+            <Grid item>
+              <Typography variant="body2" className={classes.suggestedLabel}>
+                Suggested:
+              </Typography>
+            </Grid>
+            <Grid item xs>
+              {titleSuggestions.map(x => (
+                <Chip
+                  key={x}
+                  variant="outlined"
+                  label={x}
+                  className={classes.suggestionChip}
+                  onClick={() => {
+                    updateData('summary', x);
+                  }}
+                />
+              ))}
+            </Grid>
+          </Grid>
         </div>
 
         <div className={classes.block}>
@@ -109,6 +164,7 @@ function EventDialog(props) {
               updateData('description', e.target.value);
             }}
             className={classes.titleField}
+            margin="dense"
           />
         </div>
 
@@ -128,14 +184,21 @@ function EventDialog(props) {
               showTodayButton
               className={classes.dateTimePicker}
               variant="outlined"
+              margin="dense"
               fullWidth
             />
           </MuiPickersUtilsProvider>
         </div>
 
         <div className={classes.block}>
-          <Typography variant="caption">Duration</Typography>
-          <Grid container alignItems="center">
+          <Typography variant="caption" className={classes.durationLabel}>
+            Duration
+          </Typography>
+          <Grid
+            container
+            alignItems="center"
+            className={classes.durationWrapper}
+          >
             {customDuration ? (
               <React.Fragment>
                 <Grid item xs className={classes.sliderWrapper}>
@@ -157,26 +220,28 @@ function EventDialog(props) {
             ) : (
               <React.Fragment>
                 <ToggleButtonGroup
+                  exclusive
                   value={data.end.duration}
                   onChange={handleDuration}
                 >
                   <ToggleButton value={30}>30 min</ToggleButton>
-                  <ToggleButton value={60}>1hr</ToggleButton>
-                  <ToggleButton disabled value={120}>
-                    2hr
-                  </ToggleButton>
+                  <ToggleButton value={60}>1 h</ToggleButton>
+                  <ToggleButton value={120}>2 h</ToggleButton>
                 </ToggleButtonGroup>{' '}
-                <Tooltip title="custom">
+                <Tooltip title="Custom">
                   <IconButton onClick={() => setCustomDuration(true)}>
-                    <CustomIcon />
+                    <CustomIcon fontSize="small" />
                   </IconButton>
                 </Tooltip>
               </React.Fragment>
             )}
           </Grid>
-          <Typography variant="body2">
+          <Typography variant="body1" className={classes.durationLabel}>
             Ends at{' '}
-            {data.end.dateTime && data.end.dateTime.format('D/MM/YYYY hh:mm a')}
+            <b>
+              {data.end.dateTime &&
+                data.end.dateTime.format('D/MM/YYYY hh:mm a')}
+            </b>
           </Typography>
         </div>
 
@@ -190,6 +255,8 @@ function EventDialog(props) {
               updateData('location', e.target.value);
             }}
             className={classes.locationField}
+            margin="dense"
+            autoComplete="street-address"
           />
         </div>
       </DialogContent>

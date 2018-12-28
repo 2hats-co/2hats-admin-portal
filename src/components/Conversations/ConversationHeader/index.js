@@ -48,7 +48,7 @@ function ConversationHeader(props) {
             </Grid>
           )}
           <Grid item>
-            <Typography variant="title">{conversation.displayName}</Typography>
+            <Typography variant="h6">{conversation.displayName}</Typography>
           </Grid>
           <Grid item>
             {/* <FormControl variant="outlined" className={classes.formControl}>

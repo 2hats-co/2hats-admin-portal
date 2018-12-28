@@ -86,7 +86,7 @@ const atButton = handleClick => (
 );
 
 const ComposerActions = React.memo(props => {
-  const { composerType, actions } = props;
+  const { composerType, actions, conversation } = props;
   const [showEmoji, setShowEmoji] = useState(false);
   const [showEventDialog, setShowEventDialog] = useState(false);
   const [showReminderDialog, setShowReminderDialog] = useState(false);
@@ -183,10 +183,12 @@ const ComposerActions = React.memo(props => {
       <EventDialog
         showDialog={showEventDialog}
         setShowDialog={setShowEventDialog}
+        conversation={conversation}
       />
       <ReminderDialog
         showDialog={showReminderDialog}
         setShowDialog={setShowReminderDialog}
+        conversation={conversation}
       />
     </React.Fragment>
   );
