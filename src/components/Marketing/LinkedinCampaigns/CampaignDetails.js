@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 import withStyles from '@material-ui/core/styles/withStyles';
 import Dialog from '@material-ui/core/Dialog';
@@ -7,23 +7,16 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
+import List from '@material-ui/core/List';
 
 import CloseIcon from '@material-ui/icons/Close';
 
 import ConnectionRequest from './ConnectionRequest';
 import useCollection from '../../../hooks/useCollection';
+import InfiniteScroll from 'react-infinite-scroller';
+import LinearProgress from '@material-ui/core/LinearProgress';
+
 const styles = theme => ({
-  dialogTitle: {
-    '&::after': {
-      content: '""',
-      display: 'block',
-      width: '100%',
-      height: 1,
-      backgroundColor: theme.palette.divider,
-      position: 'relative',
-      top: theme.spacing.unit * 2.5,
-    },
-  },
   live: {
     borderRadius: theme.shape.borderRadius,
     backgroundColor: theme.palette.text.primary,
@@ -39,32 +32,72 @@ const styles = theme => ({
     top: theme.spacing.unit * 2,
     right: theme.spacing.unit * 2,
   },
+  dialogContent: {
+    paddingBottom: 0,
+  },
   dialogSection: {
-    paddingTop: theme.spacing.unit * 2,
-    '& + &': {
-      borderTop: `1px solid ${theme.palette.divider}`,
-      marginTop: theme.spacing.unit * 3,
-    },
+    '&:first-of-type': { marginBottom: theme.spacing.unit * 4 },
   },
   sectionTitle: {
     marginBottom: theme.spacing.unit,
+    paddingBottom: theme.spacing.unit,
+    borderBottom: `1px solid ${theme.palette.divider}`,
+  },
+  listRoot: {
+    paddingTop: 0,
+  },
+  infiniteScrollWrapper: {
+    overflowY: 'auto',
+    minHeight: 200,
+    height: 'calc(100vh - 480px)',
+    marginTop: -theme.spacing.unit,
+    marginLeft: -theme.spacing.unit * 3,
+    marginRight: -theme.spacing.unit * 3,
+  },
+  listLoader: {
+    marginTop: theme.spacing.unit * 2,
   },
 });
 
-function CampaignDetails(props) {
-  const { classes, showDialog, setShowDialog, data } = props;
+function CampaignDetailsDialog(props) {
+  const { classes, data, setShowDialog } = props;
 
-  const [recentConnections] = useCollection(
+  const [hasMore, setHasMore] = useState(false);
+
+  const [recentConnectionsState, recentConnectionsDispatch] = useCollection(
     `linkedinCampaigns/${data.id}/requests`,
     { sort: { field: 'createdAt', direction: 'desc' } }
   );
+  // console.log('recentConnectionsState', hasMore, recentConnectionsState);
+  const recentConnections = recentConnectionsState.documents;
+
+  useEffect(
+    () => {
+      if (
+        recentConnectionsState.loading ||
+        recentConnectionsState.limit === recentConnectionsState.cap
+      ) {
+        setHasMore(false);
+      } else {
+        setHasMore(
+          recentConnectionsState.documents.length ===
+            recentConnectionsState.limit
+        );
+      }
+    },
+    [recentConnectionsState]
+  );
+
+  const loadMore = () => {
+    // console.warn('loading more', hasMore);
+    if (hasMore) {
+      setHasMore(false);
+      recentConnectionsDispatch({ type: 'more' });
+    }
+  };
+
   return (
-    <Dialog
-      open={showDialog}
-      onClose={() => {
-        setShowDialog(false);
-      }}
-    >
+    <React.Fragment>
       <DialogTitle className={classes.dialogTitle}>
         Campaign: {data.query}
         {data.needsToRun && <span className={classes.live}>Live</span>}
@@ -79,26 +112,29 @@ function CampaignDetails(props) {
         <CloseIcon />
       </IconButton>
 
-      <DialogContent>
+      <DialogContent className={classes.dialogContent}>
         <div className={classes.dialogSection}>
           <Typography variant="subtitle1" className={classes.sectionTitle}>
             Stats (*fake data)
           </Typography>
           <Grid container spacing={24}>
             <Grid item xs={3}>
-              <Typography variant="h5">
-                {parseInt(data.startPage, 10) * 10} of {data.totalResults}
+              <Typography variant="h6">
+                {parseInt(data.startPage, 10) * 10}
+              </Typography>
+              <Typography variant="body1">
+                <b>of {data.totalResults}</b>
               </Typography>
               <Typography variant="body2">Scanned results</Typography>
             </Grid>
 
             <Grid item xs={3}>
-              <Typography variant="h5">{data.startPage}</Typography>
+              <Typography variant="h6">{data.startPage}</Typography>
               <Typography variant="body2">Last page</Typography>
             </Grid>
 
             <Grid item xs={3}>
-              <Typography variant="h5">
+              <Typography variant="h6">
                 {Math.floor(Math.random() * 100)}
                 <small>%</small>
               </Typography>
@@ -110,7 +146,7 @@ function CampaignDetails(props) {
             </Grid>
 
             <Grid item xs={3}>
-              <Typography variant="h5">
+              <Typography variant="h6">
                 {Math.floor(Math.random() * 100)}
                 <small>%</small>
               </Typography>
@@ -122,7 +158,7 @@ function CampaignDetails(props) {
             </Grid>
 
             <Grid item xs={3}>
-              <Typography variant="h5">{data.requestsCount}</Typography>
+              <Typography variant="h6">{data.requestsCount}</Typography>
               <Typography variant="body2">
                 Connection
                 <br />
@@ -131,7 +167,7 @@ function CampaignDetails(props) {
             </Grid>
 
             <Grid item xs={3}>
-              <Typography variant="h5">{data.connectionsPerSession}</Typography>
+              <Typography variant="h6">{data.connectionsPerSession}</Typography>
               <Typography variant="body2">
                 Connections
                 <br />
@@ -140,7 +176,7 @@ function CampaignDetails(props) {
             </Grid>
 
             <Grid item xs={3}>
-              <Typography variant="h5">
+              <Typography variant="h6">
                 {Math.floor(Math.random() * 10)}
               </Typography>
               <Typography variant="body2">
@@ -152,18 +188,57 @@ function CampaignDetails(props) {
           </Grid>
         </div>
 
-        {recentConnections.documents && (
+        {recentConnections && recentConnections.length > 0 && (
           <div className={classes.dialogSection}>
-            <Typography variant="subtitle1">
+            <Typography variant="subtitle1" className={classes.sectionTitle}>
               Latest connection request
+              {recentConnections.length > 1 ? 's ' : ' '}(
+              {recentConnections.length})
             </Typography>
-            {recentConnections.documents.map(data => (
-              //TODO:scrolly rolly
-              <ConnectionRequest data={data} />
-            ))}
+
+            <div className={classes.infiniteScrollWrapper}>
+              <InfiniteScroll
+                pageStart={0}
+                loadMore={loadMore}
+                hasMore={hasMore}
+                loader={
+                  <LinearProgress
+                    key="listLoader"
+                    className={classes.listLoader}
+                  />
+                }
+                useWindow={false}
+                threshold={1}
+              >
+                <List classes={{ root: classes.listRoot }}>
+                  {recentConnections.map(data => (
+                    <ConnectionRequest key={data.fullName} data={data} />
+                  ))}
+                </List>
+              </InfiniteScroll>
+            </div>
           </div>
         )}
       </DialogContent>
+    </React.Fragment>
+  );
+}
+
+function CampaignDetails(props) {
+  const { classes, showDialog, setShowDialog, data } = props;
+
+  return (
+    <Dialog
+      open={showDialog}
+      onClose={() => {
+        setShowDialog(false);
+      }}
+    >
+      <CampaignDetailsDialog
+        classes={classes}
+        data={data}
+        setShowDialog={setShowDialog}
+      />
     </Dialog>
   );
 }
