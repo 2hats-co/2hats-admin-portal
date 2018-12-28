@@ -12,29 +12,29 @@ import { useSubmission } from '../hooks/useSubmission';
 import LocationIndicator from '../components/LocationIndicator';
 //import Done from '../components/Done';
 import Submission from '../components/Submission';
-//import ScreeningForm from '../components/ScreeningForm';
-//import FeedbackForm from '../components/FeedbackForm';
-//import TemplateGenerator from '../components/TemplateGenerator';
+import ScreeningForm from '../components/ScreeningForm';
+import FeedbackForm from '../components/FeedbackForm';
+import TemplateGenerator from '../components/TemplateGenerator';
 import { sendEmail } from '../utilities/email/send';
 import { ROUTES } from '../constants/routes';
 import Loadable from 'react-loadable';
 //import LoadingHat from '../components/LoadingHat';
 //import { useWindowSize } from '../hooks/useWindowSize';
-const TemplateGenerator = Loadable({
-  loader: () =>
-    import('../components/TemplateGenerator' /* webpackChunkName: "TemplateGenerator" */),
-  loading: CircularProgress,
-});
-const FeedbackForm = Loadable({
-  loader: () =>
-    import('../components/FeedbackForm' /* webpackChunkName: "FeedbackForm" */),
-  loading: CircularProgress,
-});
-const ScreeningForm = Loadable({
-  loader: () =>
-    import('../components/ScreeningForm' /* webpackChunkName: "ScreeningForm" */),
-  loading: CircularProgress,
-});
+// const TemplateGenerator = Loadable({
+//   loader: () =>
+//     import('../components/TemplateGenerator' /* webpackChunkName: "TemplateGenerator" */),
+//   loading: CircularProgress,
+// });
+// const FeedbackForm = Loadable({
+//   loader: () =>
+//     import('../components/FeedbackForm' /* webpackChunkName: "FeedbackForm" */),
+//   loading: CircularProgress,
+// });
+// const ScreeningForm = Loadable({
+//   loader: () =>
+//     import('../components/ScreeningForm' /* webpackChunkName: "ScreeningForm" */),
+//   loading: CircularProgress,
+// });
 const Done = Loadable({
   loader: () =>
     import('../components/Done' /* webpackChunkName: "Submissions-Done" */),
