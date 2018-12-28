@@ -14,8 +14,8 @@ import List from '@material-ui/core/List';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Item from './Item';
-import { useConversations } from '../../../hooks/useConversations';
 import InfiniteScroll from 'react-infinite-scroller';
+import useCollection from '../../../hooks/useCollection';
 
 const styles = theme => ({
   tabs: {
@@ -27,14 +27,25 @@ function ConversationsList(props) {
   const { classes, setSelectedConversation, selectedConversation, uid } = props;
 
   const [filter, setFilter] = useState('all');
-  const [conversationsState, conversationsDispatch] = useConversations(uid);
-  //TODO :abstract into useConversations
+  //const [conversationsState, conversationsDispatch] = useConversations('');
+  const [conversationsState, conversationsDispatch] = useCollection(``, {
+    path: `conversations`,
+    sort: { field: 'lastMessage.sentAt', direction: 'desc' },
+    filters: [
+      {
+        field: 'subscribedAdmins',
+        operator: 'array-contains',
+        value: uid,
+      },
+    ],
+  });
+  const conversations = conversationsState.documents;
   const [hasMore, setHasMore] = useState(true);
   useEffect(
     () => {
       setHasMore(true);
     },
-    [conversationsState.conversations]
+    [conversationsState.documents]
   );
   const loadMore = num => {
     if (hasMore) {
@@ -95,8 +106,8 @@ function ConversationsList(props) {
           threshold={50}
         >
           <List disablePadding>
-            {conversationsState.conversations &&
-              conversationsState.conversations.map(x => (
+            {conversations &&
+              conversations.map(x => (
                 <Item
                   onClick={() => {
                     setSelectedConversation(x);
