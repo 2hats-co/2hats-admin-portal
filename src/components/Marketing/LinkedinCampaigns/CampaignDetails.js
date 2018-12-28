@@ -87,9 +87,9 @@ function CampaignDetails(props) {
           <Grid container spacing={24}>
             <Grid item xs={3}>
               <Typography variant="h5">
-                {Math.floor(Math.random() * 100)}
+                {parseInt(data.startPage) * 10} of {data.totalResults}
               </Typography>
-              <Typography variant="body2">Total results*</Typography>
+              <Typography variant="body2">Scanned results</Typography>
             </Grid>
 
             <Grid item xs={3}>
