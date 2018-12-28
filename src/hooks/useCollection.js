@@ -8,11 +8,13 @@ import equals from 'ramda/es/equals';
 //   return filters;
 // };
 
+const CAP = 100;
+
 const collectionReducer = (prevState, newProps) => {
   if (newProps.type) {
     switch (newProps.type) {
       case 'more':
-        if (prevState.limit < 100)
+        if (prevState.limit < CAP)
           // document hardcap
           return { ...prevState, limit: prevState.limit + 10 };
         else return { ...prevState };
@@ -31,6 +33,7 @@ const collectionIntialState = {
   prevLimit: 0,
   limit: 20,
   loading: true,
+  cap: CAP,
 };
 
 const useCollection = (path, intialOverrides) => {

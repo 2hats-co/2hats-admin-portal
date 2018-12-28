@@ -71,10 +71,6 @@ const styles = theme => ({
     maxHeight: 'calc(100vh - 96px - 64px)',
     overflowY: 'auto',
   },
-  listRoot: {
-    // borderRadius: '0 0 20px 20px',
-    overflow: 'hidden',
-  },
   listItem: {
     transition: 'background-color .2s',
     '&:hover': {
@@ -209,10 +205,7 @@ function Search(props) {
               useWindow={false}
               threshold={1}
             >
-              <List
-                className={classes.list}
-                classes={{ root: classes.listRoot }}
-              >
+              <List>
                 {resultItems.length > 0 ? (
                   resultItems
                 ) : (
