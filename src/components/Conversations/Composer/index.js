@@ -192,6 +192,7 @@ function Composer(props) {
         }}
         classes={classes}
         composerType={composerType}
+        conversation={conversation}
       />
     </div>
   );
