@@ -87,7 +87,7 @@ function ManageSubscribersDialog(props) {
             const subscribedAdmins = context.admins.filter(x =>
               subscribersUIDs.includes(x.id)
             );
-            const notSubscribedAdmins = context
+            const notSubscribedAdmins = context.admins
               .filter(x => !subscribersUIDs.includes(x.id))
               .map(x => ({
                 label: `${x.givenName} ${x.familyName}`,
