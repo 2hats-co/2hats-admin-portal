@@ -8,7 +8,7 @@ import Slide from '@material-ui/core/Slide';
 import moment from 'moment';
 
 import Message from './Message';
-import { useMessages } from '../../../hooks/useMessages';
+import useCollection from '../../../hooks/useCollection';
 
 const styles = theme => ({
   root: {
@@ -28,15 +28,15 @@ const isSameType = (a, b) =>
 
 function Messages(props) {
   const { classes, conversation } = props;
-  const [messagesState, messagesDispatch] = useMessages(conversation.id);
-  useEffect(
-    () => {
-      messagesDispatch({ conversationId: conversation.id });
-    },
-    [conversation]
+  const [messagesState] = useCollection(
+    `conversations/${conversation.id}/messages`,
+    { sort: { field: 'sentAt', direction: 'asc' }, limit: 100 }
   );
-  const { messages } = messagesState;
 
+  console.log('messagesState', messagesState);
+  const { documents } = messagesState;
+
+  const messages = documents;
   if (messagesState.loading)
     return (
       <Grid
@@ -53,20 +53,18 @@ function Messages(props) {
     <Slide in direction="down">
       <div className={classes.root}>
         {messages &&
-          messages
-            .reverse()
-            .map((data, i) => (
-              <Message
-                key={data.id}
-                data={data}
-                firstOfType={i > 0 ? !isSameType(messages[i - 1], data) : true}
-                lastOfType={
-                  i < messages.length - 1
-                    ? !isSameType(messages[i + 1], data)
-                    : true
-                }
-              />
-            ))}
+          messages.map((data, i) => (
+            <Message
+              key={data.id}
+              data={data}
+              firstOfType={i > 0 ? !isSameType(messages[i - 1], data) : true}
+              lastOfType={
+                i < messages.length - 1
+                  ? !isSameType(messages[i + 1], data)
+                  : true
+              }
+            />
+          ))}
         <div style={{ float: 'left', clear: 'both' }} />
       </div>
     </Slide>
