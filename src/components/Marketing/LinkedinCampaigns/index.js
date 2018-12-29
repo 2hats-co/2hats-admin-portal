@@ -48,7 +48,6 @@ function LinkedinCampaigns(props) {
     setShowEditor(false);
   };
   const updateCampaign = data => {
-    console.log('updating', data);
     firestore
       .collection(COLLECTIONS.linkedinCampaigns)
       .doc(data.id)

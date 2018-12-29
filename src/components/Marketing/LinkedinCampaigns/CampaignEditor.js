@@ -104,7 +104,6 @@ function CampaignEditor(props) {
             setValues({ ...values, [item]: '' });
           }
         };
-        console.log('values', values);
         return (
           <form onSubmit={handleSubmit}>
             <Dialog

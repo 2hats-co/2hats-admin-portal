@@ -38,3 +38,10 @@ export const addNote = (adminId, conversationId, note) => {
       type: 'note',
     });
 };
+
+export const setAssignee = (adminId, conversationId) => {
+  firestore
+    .collection(COLLECTIONS.conversations)
+    .doc(conversationId)
+    .update({ assignee: adminId });
+};

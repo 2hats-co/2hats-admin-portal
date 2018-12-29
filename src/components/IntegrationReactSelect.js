@@ -8,6 +8,7 @@ import NoSsr from '@material-ui/core/NoSsr';
 import TextField from '@material-ui/core/TextField';
 import Paper from '@material-ui/core/Paper';
 import Chip from '@material-ui/core/Chip';
+import Avatar from '@material-ui/core/Avatar';
 import MenuItem from '@material-ui/core/MenuItem';
 import CancelIcon from '@material-ui/icons/Cancel';
 import { emphasize } from '@material-ui/core/styles/colorManipulator';
@@ -106,6 +107,7 @@ function Option(props) {
       }}
       {...props.innerProps}
     >
+      {props.data.avatarURL && <Avatar scr={props.data.avatarURL}> </Avatar>}
       {props.children}
     </MenuItem>
   );
@@ -185,6 +187,7 @@ function IntegrationReactSelect(props) {
     changeHandler,
     suggestions,
     value,
+    //intialValue,
   } = props;
 
   const selectStyles = {
@@ -196,7 +199,6 @@ function IntegrationReactSelect(props) {
       },
     }),
   };
-
   return (
     <div className={classes.root}>
       <NoSsr>

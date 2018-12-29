@@ -15,6 +15,7 @@ import Tab from '@material-ui/core/Tab';
 import Item from './Item';
 import InfiniteScroll from 'react-infinite-scroller';
 import useCollection from '../../../hooks/useCollection';
+import AdminSelector from '../../AdminSelector';
 
 const styles = theme => ({
   tabs: {
@@ -32,6 +33,11 @@ const subscriberFilter = uid => ({
   operator: 'array-contains',
   value: uid,
 });
+const assigneeFilter = uid => ({
+  field: 'assignee',
+  operator: '==',
+  value: uid,
+});
 function ConversationsList(props) {
   const { classes, setSelectedConversation, selectedConversation, uid } = props;
   const [conversationsState, conversationsDispatch] = useCollection(``, {
@@ -42,15 +48,23 @@ function ConversationsList(props) {
   const conversations = conversationsState.documents;
   const [hasMore, setHasMore] = useState(true);
   const [filter, setFilter] = useState('all');
+  const [filters, setFilters] = useState([subscriberFilter(uid)]);
   useEffect(
     () => {
       if (filter === 'unread') {
-        conversationsDispatch({ filters: [unreadFilter(uid)] });
+        setFilters([unreadFilter(uid)]);
       } else {
-        conversationsDispatch({ filters: [subscriberFilter(uid)] });
+        setFilters([subscriberFilter(uid)]);
       }
     },
     [filter]
+  );
+
+  useEffect(
+    () => {
+      conversationsDispatch({ filters: filters });
+    },
+    [filters]
   );
   useEffect(
     () => {
@@ -83,6 +97,14 @@ function ConversationsList(props) {
   return (
     <Grid container direction="column" style={{ height: 'calc(100vh - 64px)' }}>
       <Grid item>
+        <AdminSelector
+          onSelect={uid => {
+            console.log('uid', uid);
+            setFilters([assigneeFilter(uid)]);
+          }}
+        />
+      </Grid>
+      <Grid item>
         <Tabs
           className={classes.tabs}
           value={filter}
@@ -108,7 +130,9 @@ function ConversationsList(props) {
           }}
           hasMore={hasMore}
           loader={
-            <LinearProgress key="listLoader" className={classes.listLoader} />
+            conversationsState.loading ? (
+              <LinearProgress key="listLoader" className={classes.listLoader} />
+            ) : null
           }
           useWindow={false}
           threshold={50}
