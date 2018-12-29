@@ -41,7 +41,6 @@ function LinkedinCampaigns(props) {
     firestore.collection(COLLECTIONS.linkedinCampaigns).add({
       ...data,
       needsToRun: false,
-      connectionsPerSession: 4,
       requestsCount: 0,
       startPage: 0,
       createdAt: new Date(),
@@ -56,7 +55,6 @@ function LinkedinCampaigns(props) {
       .update({
         ...data,
         needsToRun: false,
-        connectionsPerSession: 4,
         updatedAt: new Date(),
       });
     setShowEditor(false);
