@@ -25,6 +25,7 @@ const runCampaign = id => {
       needsToRun: true,
     });
 };
+
 const deleteCampaign = id => {
   firestore
     .collection(COLLECTIONS.linkedinCampaigns)
@@ -47,11 +48,22 @@ function LinkedinCampaigns(props) {
     });
     setShowEditor(false);
   };
-
-  const [campaignsState /*campaignsDispatch*/] = useCollection(
-    COLLECTIONS.linkedinCampaigns,
-    {}
-  );
+  const updateCampaign = data => {
+    console.log('updating', data);
+    firestore
+      .collection(COLLECTIONS.linkedinCampaigns)
+      .doc(data.id)
+      .update({
+        ...data,
+        needsToRun: false,
+        connectionsPerSession: 4,
+        updatedAt: new Date(),
+      });
+    setShowEditor(false);
+  };
+  const [campaignsState /*campaignsDispatch*/] = useCollection('', {
+    path: COLLECTIONS.linkedinCampaigns,
+  });
   const campaigns = campaignsState.documents;
   if (campaigns)
     return (
@@ -73,10 +85,12 @@ function LinkedinCampaigns(props) {
         <CampaignEditor
           open={showEditor}
           campaign={campaign}
-          action={campaign ? 'Edit' : 'Create'}
+          action={campaign ? 'update' : 'create'}
           actions={{
             create: createCampaign,
+            update: updateCampaign,
             close: () => {
+              setCampaign(null);
               setShowEditor(false);
             },
           }}

@@ -68,7 +68,6 @@ function CampaignDetailsDialog(props) {
     `linkedinCampaigns/${data.id}/requests`,
     { sort: { field: 'createdAt', direction: 'desc' } }
   );
-  // console.log('recentConnectionsState', hasMore, recentConnectionsState);
   const recentConnections = recentConnectionsState.documents;
 
   useEffect(
@@ -89,7 +88,6 @@ function CampaignDetailsDialog(props) {
   );
 
   const loadMore = () => {
-    // console.warn('loading more', hasMore);
     if (hasMore) {
       setHasMore(false);
       recentConnectionsDispatch({ type: 'more' });

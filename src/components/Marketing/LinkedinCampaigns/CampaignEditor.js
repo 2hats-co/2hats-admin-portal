@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import withStyles from '@material-ui/core/styles/withStyles';
 import Dialog from '@material-ui/core/Dialog';
@@ -10,6 +10,8 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import Chip from '@material-ui/core/Chip';
+import Slider from '@material-ui/lab/Slider';
+import Typography from '@material-ui/core/Typography';
 
 import AddIcon from '@material-ui/icons/Add';
 
@@ -46,23 +48,35 @@ const emptyForm = {
   ignoreList: [],
   requiredList: [],
   message: '',
+  connectionsPerSession: 10,
 };
 function CampaignEditor(props) {
   const { classes, action, actions, open, campaign } = props;
-  const initialValues = campaign
-    ? {
-        email: campaign.email,
-        password: '',
-        query: campaign.query,
-        ignoreTerm: '',
-        requiredTerm: '',
-        ignoreList: [campaign.ignoreList],
-        requiredList: [campaign.requiredList],
-        message: campaign.message,
-      }
-    : emptyForm;
-  console.log('campaignEditor', initialValues, campaign);
+  let initialValues = emptyForm;
 
+  let reload = true;
+  useEffect(
+    () => {
+      if (campaign) {
+        initialValues = {
+          id: campaign.id,
+          email: campaign.email,
+          password: campaign.password,
+          query: campaign.query,
+          ignoreTerm: '',
+          requiredTerm: '',
+          ignoreList: campaign.ignoreList,
+          requiredList: campaign.requiredList,
+          message: campaign.message,
+          connectionsPerSession: campaign.connectionsPerSession,
+        };
+      } else {
+        initialValues = emptyForm;
+      }
+      reload = true;
+    },
+    [campaign]
+  );
   return (
     <Formik
       initialValues={initialValues}
@@ -72,6 +86,10 @@ function CampaignEditor(props) {
     >
       {formikProps => {
         const { values, handleChange, handleSubmit, setValues } = formikProps;
+        if (reload) {
+          setValues({ ...values, ...initialValues });
+          reload = false;
+        }
         const handleDeleteFromList = (list, index) => {
           const newList = remove(index, 1, values[list]);
           setValues({ ...values, [list]: newList });
@@ -226,7 +244,26 @@ function CampaignEditor(props) {
                   </Grid>
                 </Grid>
               </DialogContent>
-
+              <Grid container>
+                <Grid item xs className={classes.sliderWrapper}>
+                  <Slider
+                    classes={{ container: classes.slider }}
+                    onChange={(e, v) => {
+                      setValues({ ...values, connectionsPerSession: v });
+                    }}
+                    id="connectionsPerSession"
+                    value={values.connectionsPerSession}
+                    min={5}
+                    max={180}
+                    step={5}
+                  />
+                </Grid>
+                <Grid item>
+                  <Typography variant="body2">
+                    {values.connectionsPerSession} Connections
+                  </Typography>
+                </Grid>
+              </Grid>
               <DialogActions>
                 <Button
                   onClick={handleSubmit}
