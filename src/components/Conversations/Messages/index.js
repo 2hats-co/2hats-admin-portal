@@ -30,7 +30,7 @@ function Messages(props) {
   const { classes, conversation } = props;
   const messagesRef = useRef(null);
   const messagesEnd = useRef(null);
-  const [messagesState, messagesDispatch] = useCollection(``, {
+  const [messagesState, messagesDispatch] = useCollection({
     path: `conversations/${conversation.id}/messages`,
     sort: { field: 'sentAt', direction: 'asc' },
     limit: 100,

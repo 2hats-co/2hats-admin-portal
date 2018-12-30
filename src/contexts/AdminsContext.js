@@ -4,7 +4,7 @@ import useCollection from '../hooks/useCollection';
 const AdminsContext = React.createContext([]);
 
 export const AdminsProvider = props => {
-  let [admins] = useCollection('admins');
+  let [admins] = useCollection({ path: 'admins' });
   const getAdmin = id => {
     const admin = admins.documents.filter(x => x.id === id);
     return admin[0];

@@ -58,7 +58,7 @@ function LinkedinCampaigns(props) {
       });
     setShowEditor(false);
   };
-  const [campaignsState /*campaignsDispatch*/] = useCollection('', {
+  const [campaignsState /*campaignsDispatch*/] = useCollection({
     path: COLLECTIONS.linkedinCampaigns,
   });
   const campaigns = campaignsState.documents;

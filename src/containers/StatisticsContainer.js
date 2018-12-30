@@ -109,7 +109,7 @@ function StatisticsContainer(props) {
   let gridCols = 12;
   const windowSize = useWindowSize();
   if (windowSize.isMobile) gridCols = 6;
-  const [chartsState] = useCollection(`admins/${uid}/charts`);
+  const [chartsState] = useCollection({ path: `admins/${uid}/charts` });
   const charts = chartsState.documents;
   const [layout, setLayout] = useState([]);
   const [layoutShouldUpdate, setLayoutShouldUpdate] = useState(false);

@@ -40,7 +40,7 @@ const assigneeFilter = uid => ({
 });
 function ConversationsList(props) {
   const { classes, setSelectedConversation, selectedConversation, uid } = props;
-  const [conversationsState, conversationsDispatch] = useCollection(``, {
+  const [conversationsState, conversationsDispatch] = useCollection({
     path: `conversations`,
     sort: { field: 'lastMessage.sentAt', direction: 'desc' },
     filters: [subscriberFilter(uid)],

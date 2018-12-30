@@ -64,10 +64,10 @@ function CampaignDetailsDialog(props) {
 
   const [hasMore, setHasMore] = useState(false);
 
-  const [recentConnectionsState, recentConnectionsDispatch] = useCollection(
-    `linkedinCampaigns/${data.id}/requests`,
-    { sort: { field: 'createdAt', direction: 'desc' } }
-  );
+  const [recentConnectionsState, recentConnectionsDispatch] = useCollection({
+    path: `linkedinCampaigns/${data.id}/requests`,
+    sort: { field: 'createdAt', direction: 'desc' },
+  });
   const recentConnections = recentConnectionsState.documents;
 
   useEffect(

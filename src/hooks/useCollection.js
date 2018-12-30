@@ -14,8 +14,8 @@ const collectionReducer = (prevState, newProps) => {
   if (newProps.type) {
     switch (newProps.type) {
       case 'more':
-        if (prevState.limit < CAP)
-          // document hardcap
+        if (prevState.limit < prevState.cap)
+          // documents count hardcap
           return { ...prevState, limit: prevState.limit + 10 };
         else return { ...prevState };
       default:
@@ -36,10 +36,9 @@ const collectionIntialState = {
   cap: CAP,
 };
 
-const useCollection = (path, intialOverrides) => {
+const useCollection = intialOverrides => {
   const [collectionState, collectionDispatch] = useReducer(collectionReducer, {
     ...collectionIntialState,
-    path,
     ...intialOverrides,
   });
   const getDocuments = (filters, limit, sort) => {
