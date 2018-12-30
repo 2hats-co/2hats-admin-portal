@@ -114,8 +114,6 @@ function SubjectsContainer(props) {
   const { classes, theme } = props;
 
   const [snackbarContent, setSnackbarContent] = useState('');
-  // const [subjectFilter, subjectFilterDispatch] = useSubjectFilter();
-
   return (
     <React.Fragment>
       <Grid container direction="column" className={classes.root}>

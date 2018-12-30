@@ -24,7 +24,7 @@ import PendingIcon from '@material-ui/icons/Schedule';
 import CodeIcon from '@material-ui/icons/Code';
 
 import EduExpCard from './EduExpCard';
-import { useCandidate } from '../../hooks/useCandidate';
+import useDocument from '../../hooks/useDocument';
 import { copyToClipboard } from '../../utilities';
 
 const styles = theme => ({
@@ -89,9 +89,10 @@ function Submission(props) {
   const timeString = moment.unix(submission.createdAt.seconds).fromNow();
   const timestamp = moment.unix(submission.createdAt.seconds).format('LLLL');
 
-  const candidate = useCandidate(submission.UID);
-  // console.log(submission.UID, candidate);
-
+  const [candidateState] = useDocument({
+    path: `candidates/${submission.UID}`,
+  });
+  const candidate = candidateState.doc;
   let interests = '';
   if (submission.submissionContent.careerInterests.value) {
     for (

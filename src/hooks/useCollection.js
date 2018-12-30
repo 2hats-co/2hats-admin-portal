@@ -1,14 +1,7 @@
 import { firestore } from '../store';
-// import { COLLECTIONS } from '../constants/firestore';
 import { useEffect, useReducer } from 'react';
 import equals from 'ramda/es/equals';
-// const generateFilters = () => {
-//   let filters = [];
-
-//   return filters;
-// };
-
-const CAP = 100;
+const CAP = 30;
 
 const collectionReducer = (prevState, newProps) => {
   if (newProps.type) {
@@ -29,6 +22,7 @@ const collectionIntialState = {
   documents: null,
   prevFilters: null,
   prevPath: null,
+  path: null,
   filters: [],
   prevLimit: 0,
   limit: 20,

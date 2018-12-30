@@ -14,7 +14,7 @@ import Slide from '@material-ui/core/Slide';
 
 import clone from 'ramda/es/clone';
 
-import { useCandidate } from '../../hooks/useCandidate';
+import useDocument from '../../hooks/useDocument';
 
 const styles = theme => ({
   root: {
@@ -59,10 +59,10 @@ function TemplateGenerator(props) {
     setEmail,
     setEmailReady,
   } = props;
-  console.log(template);
-
   const authedUser = useAuthedUser();
-  const candidate = useCandidate(recipientUID);
+  const [candidateState] = useDocument({ path: `candidates/${recipientUID}` });
+  console.log('candidateState', candidateState);
+  const candidate = candidateState.doc;
 
   if (!candidate)
     return (
@@ -81,7 +81,7 @@ function TemplateGenerator(props) {
       </Slide>
     );
 
-  const recipient = { UID: candidate.UID, email: candidate.email };
+  const recipient = { UID: candidate.id, email: candidate.email };
   console.log(recipient);
 
   const templateClone = clone(template);
@@ -91,7 +91,13 @@ function TemplateGenerator(props) {
     () => {
       console.log('authedUser', authedUser);
       console.log('candidate', candidate);
-      if (emailBody === '' && authedUser.title && candidate) {
+      if (
+        candidate &&
+        authedUser &&
+        emailBody === '' &&
+        authedUser.title &&
+        candidate
+      ) {
         const personalisables = [
           {
             firstName: candidate.firstName,
