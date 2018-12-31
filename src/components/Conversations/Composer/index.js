@@ -82,7 +82,6 @@ const getChipIcon = type => {
 
 function Composer(props) {
   const { classes, theme, conversation, composerType } = props;
-  console.log('conversation', conversation);
   const currentUser = useAuthedUser();
   useEffect(
     () => {

@@ -57,7 +57,8 @@ const styles = theme => ({
 function ConversationsContainer(props) {
   const { classes, uid } = props;
   const windowSize = useWindowSize();
-  const [composerType, setComposerType] = useState('email');
+
+  const [composerType, setComposerType] = useState('linkedin');
   const [selectedConversation, setSelectedConversation] = useState({
     id: null,
   });
@@ -119,22 +120,26 @@ function ConversationsContainer(props) {
                   indicatorColor="primary"
                   textColor="primary"
                 >
-                  <Tab
-                    value="email"
-                    label="Email"
-                    classes={{
-                      root: classes.tabRoot,
-                      labelContainer: classes.tabLabelContainer,
-                    }}
-                  />
-                  <Tab
-                    value="linkedin"
-                    label="LinkedIn"
-                    classes={{
-                      root: classes.tabRoot,
-                      labelContainer: classes.tabLabelContainer,
-                    }}
-                  />
+                  {selectedConversation.channels.linkedin && (
+                    <Tab
+                      value="linkedin"
+                      label="LinkedIn"
+                      classes={{
+                        root: classes.tabRoot,
+                        labelContainer: classes.tabLabelContainer,
+                      }}
+                    />
+                  )}
+                  {selectedConversation.channels.email && (
+                    <Tab
+                      value="email"
+                      label="Email"
+                      classes={{
+                        root: classes.tabRoot,
+                        labelContainer: classes.tabLabelContainer,
+                      }}
+                    />
+                  )}
                   <Tab
                     value="note"
                     label="Note"
