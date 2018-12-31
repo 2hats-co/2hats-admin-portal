@@ -17,7 +17,6 @@ import StarOutlineIcon from '@material-ui/icons/StarBorder';
 // import Select from '@material-ui/core/Select';
 // import FormControl from '@material-ui/core/FormControl';
 // import InputLabel from '@material-ui/core/InputLabel';
-import { setAssignee } from '../../../utilities/conversations';
 import ManageSubscribersDialog from './ManageSubscribersDialog';
 import { useWindowSize } from '../../../hooks/useWindowSize';
 import AdminSelector from '../../AdminSelector';
@@ -55,14 +54,7 @@ function ConversationHeader(props) {
           <Grid item>
             <Typography variant="h6">{conversation.displayName}</Typography>
           </Grid>
-          <Grid item className={classes.assignee}>
-            <AdminSelector
-              // selected ={conversation.assignee}
-              onSelect={v => {
-                setAssignee(v, conversation.id);
-              }}
-            />
-          </Grid>
+          <Grid item className={classes.assignee} />
           <Grid item>
             {/* <FormControl variant="outlined" className={classes.formControl}>
               <InputLabel ref={InputLabelRef} htmlFor="outlined-tag">

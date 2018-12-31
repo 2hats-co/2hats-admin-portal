@@ -15,6 +15,8 @@ import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/Button';
 import RemoveIcon from '@material-ui/icons/Close';
+import AssigneeIcon from '@material-ui/icons/HowToReg';
+import { setAssignee } from '../../../utilities/conversations';
 
 import Button from '@material-ui/core/Button';
 
@@ -115,11 +117,23 @@ function ManageSubscribersDialog(props) {
                         )}
                       </ListItemAvatar>
                       <ListItemText
-                        primary={`${x.givenName} ${x.familyName}`}
+                        primary={`${x.givenName} ${x.familyName} ${
+                          x.id === conversation.assignee ? '(Owner)' : ''
+                        }`}
                         secondary={x.title}
                       />
                       <ListItemSecondaryAction>
                         <IconButton
+                          disabled={x.id === conversation.assignee}
+                          onClick={() => {
+                            setAssignee(x.id, conversation.id);
+                          }}
+                          className={classes.iconButton}
+                        >
+                          <AssigneeIcon />
+                        </IconButton>
+                        <IconButton
+                          disabled={x.id === conversation.assignee}
                           onClick={() => {
                             handleRemoveSubscriber(x.id);
                           }}

@@ -16,6 +16,7 @@ import Messages from '../components/Conversations/Messages';
 import Loadable from 'react-loadable';
 import LoadingHat from '../components/LoadingHat';
 import { useWindowSize } from '../hooks/useWindowSize';
+import useDocument from '../hooks/useDocument';
 const Composer = Loadable({
   loader: () =>
     import('../components/Conversations/Composer' /* webpackChunkName: "MessagesComposer" */),
@@ -59,13 +60,15 @@ function ConversationsContainer(props) {
   const windowSize = useWindowSize();
 
   const [composerType, setComposerType] = useState('linkedin');
-  const [selectedConversation, setSelectedConversation] = useState({
-    id: null,
-  });
+  // const [selectedConversation, setSelectedConversation] = useState({
+  //   id: null,
+  // });
+  const [conversationState, dispatchConversation] = useDocument();
+  const selectedConversation = conversationState.doc;
   const openedConversationOnMobile =
-    windowSize.isMobile && selectedConversation.id;
+    windowSize.isMobile && selectedConversation;
   const handleCloseConversation = () => {
-    setSelectedConversation({ id: null });
+    dispatchConversation({ path: null });
   };
   return (
     <Fade in>
@@ -83,7 +86,12 @@ function ConversationsContainer(props) {
               <ConversationsList
                 uid={uid}
                 selectedConversation={selectedConversation}
-                setSelectedConversation={setSelectedConversation}
+                setSelectedConversation={conversation => {
+                  console.log(conversation.id);
+                  dispatchConversation({
+                    path: `conversations/${conversation.id}`,
+                  });
+                }}
               />
             </Grid>
           </React.Fragment>
@@ -94,7 +102,7 @@ function ConversationsContainer(props) {
           className={classes.messagesContainer}
           style={{ marginTop: windowSize.isMobile ? 0 : '-64px' }}
         >
-          {selectedConversation.id !== null ? (
+          {selectedConversation ? (
             <Grid
               container
               direction="column"
@@ -109,7 +117,9 @@ function ConversationsContainer(props) {
               <Grid item xs style={{ overflowY: 'auto' }}>
                 <Messages conversation={selectedConversation} />
               </Grid>
-
+              {
+                //TODO: move composer tabs inside comoposer
+              }
               <Grid item className={classes.composerContainer}>
                 <Tabs
                   classes={{ root: classes.tabRoot }}

@@ -146,7 +146,9 @@ function ConversationsList(props) {
                   }}
                   data={x}
                   key={x.id}
-                  selected={x.id === selectedConversation.id}
+                  selected={
+                    selectedConversation && x.id === selectedConversation.id
+                  }
                   isUnread={x.unreadAdmins.includes(uid)}
                   // isStarred={x.isStarred}
                 />
