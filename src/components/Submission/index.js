@@ -89,9 +89,13 @@ function Submission(props) {
   const timeString = moment.unix(submission.createdAt.seconds).fromNow();
   const timestamp = moment.unix(submission.createdAt.seconds).format('LLLL');
 
-  const [candidateState] = useDocument({
-    path: `candidates/${submission.UID}`,
-  });
+  const [candidateState, candidateDispatch] = useDocument();
+  useEffect(
+    () => {
+      candidateDispatch({ path: `candidates/${submission.UID}` });
+    },
+    [submission]
+  );
   const candidate = candidateState.doc;
   let interests = '';
   if (submission.submissionContent.careerInterests.value) {

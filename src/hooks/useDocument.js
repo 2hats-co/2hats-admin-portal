@@ -32,9 +32,10 @@ const useDocument = intialOverrides => {
   };
   useEffect(
     () => {
-      if (documentState.path !== documentState.prevPath) setDocumentListner();
+      const { path, prevPath } = documentState;
+      if (path && path !== prevPath) setDocumentListner();
       return () => {
-        firestore.doc(documentState.path).onSnapshot(() => {});
+        if (path) firestore.doc(path).onSnapshot(() => {});
       };
     },
     [documentState]

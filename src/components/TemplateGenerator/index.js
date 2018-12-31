@@ -60,8 +60,13 @@ function TemplateGenerator(props) {
     setEmailReady,
   } = props;
   const authedUser = useAuthedUser();
-  const [candidateState] = useDocument({ path: `candidates/${recipientUID}` });
-  console.log('candidateState', candidateState);
+  const [candidateState, candidateDispatch] = useDocument();
+  useEffect(
+    () => {
+      candidateDispatch({ path: `candidates/${recipientUID}` });
+    },
+    [recipientUID]
+  );
   const candidate = candidateState.doc;
 
   if (!candidate)
@@ -82,15 +87,13 @@ function TemplateGenerator(props) {
     );
 
   const recipient = { UID: candidate.id, email: candidate.email };
-  console.log(recipient);
+  console.log('recipient', recipient);
 
   const templateClone = clone(template);
   const theme = clone(THEME1);
 
   useEffect(
     () => {
-      console.log('authedUser', authedUser);
-      console.log('candidate', candidate);
       if (
         candidate &&
         authedUser &&
