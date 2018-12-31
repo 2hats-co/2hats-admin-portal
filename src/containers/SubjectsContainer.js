@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import withNavigation from '../components/withNavigation';
+import { ROUTES } from '../constants/routes';
 
 import withStyles from '@material-ui/core/styles/withStyles';
 import Grid from '@material-ui/core/Grid';
@@ -11,7 +12,9 @@ import FilterIcon from '@material-ui/icons/FilterList';
 import LocationIndicator from '../components/LocationIndicator';
 import Filter from '../components/Subjects/Filter';
 import SubjectItem from '../components/Subjects/SubjectItem';
-
+import useCollection from '../hooks/useCollection';
+import LoadingHat from '../components/LoadingHat';
+import { COLLECTIONS } from '../constants/firestore';
 const styles = theme => ({
   root: {
     height: '100vh',
@@ -21,6 +24,7 @@ const styles = theme => ({
         : theme.palette.background.paper,
   },
   filterContainer: {
+    marginTop: '20px',
     padding: '0 24px 8px',
   },
   clearFilterButton: {
@@ -82,7 +86,7 @@ const FAKE_DATA = [
   },
 ];
 
-const FILTERS = [
+const CANIDIDATE_FILTERS = [
   {
     title: 'Submission Status',
     values: ['Pending', 'Scheduled', 'Placed', 'Cancelled'],
@@ -110,18 +114,59 @@ const FILTERS = [
   },
 ];
 
+const CLIENT_FILTERS = [
+  {
+    title: 'Assignee',
+    values: ['Pending', 'Scheduled', 'Placed', 'Cancelled'],
+  },
+  {
+    title: 'Submission Status II',
+    type: 'date',
+    values: ['Pending', 'Scheduled', 'Placed', 'Cancelled'],
+  },
+  {
+    title: 'Company',
+    type: 'search',
+    values: [
+      'Apple',
+      'BP',
+      'Chevron',
+      'Deloitte',
+      'Energizer',
+      'Foursquare',
+      'Google',
+      'Hyundai',
+      'Iglu',
+      'Wumbo',
+    ],
+  },
+];
 function SubjectsContainer(props) {
-  const { classes, theme } = props;
-
+  const { classes, theme, route } = props;
+  let collection = COLLECTIONS.candidates;
+  let filters = CANIDIDATE_FILTERS;
+  if (route === ROUTES.clients) {
+    filters = CLIENT_FILTERS;
+    collection = COLLECTIONS.clients;
+  }
+  const [subjectsState, subjectsStatus] = useCollection({
+    path: collection,
+    sort: { field: 'createdAt', direction: 'desc' },
+  });
+  const subjects = subjectsState.documents;
+  console.log('subject', subjects);
   const [snackbarContent, setSnackbarContent] = useState('');
   return (
     <React.Fragment>
       <Grid container direction="column" className={classes.root}>
         <LocationIndicator
-          title="Subjects"
-          altBg={theme.palette.type === 'dark'}
+          title="Groups"
+          showBorder
+          subRoutes={[
+            { label: 'Clients', value: ROUTES.clients },
+            { label: 'Candidtate', value: ROUTES.candidates },
+          ]}
         />
-
         <Grid item className={classes.filterContainer}>
           <Tooltip title="Clear all filters">
             <IconButton
@@ -138,7 +183,7 @@ function SubjectsContainer(props) {
               <FilterIcon />
             </IconButton>
           </Tooltip>
-          {FILTERS.map((x, i) => (
+          {filters.map((x, i) => (
             <Filter
               key={i}
               title={x.title}
@@ -150,20 +195,35 @@ function SubjectsContainer(props) {
         </Grid>
 
         <Grid item xs className={classes.subjectListContainer}>
-          <div>
-            {FAKE_DATA.map((x, i) => (
-              <SubjectItem
-                key={i}
-                name={x.name}
-                email={x.email}
-                phone={x.phone}
-                industry={x.industry}
-                tags={x.tags}
-                note={x.note}
-                setSnackbarContent={setSnackbarContent}
-              />
-            ))}
-          </div>
+          <React.Fragment>
+            {//TODO:scrolly rolly
+            subjectsState.loading ? (
+              <LoadingHat message="rounding up your subjects" />
+            ) : (
+              <div>
+                {subjects.map((x, i) => (
+                  <SubjectItem
+                    key={i}
+                    name={
+                      x.displayName
+                        ? x.displayName
+                        : `${x.firstName} ${x.lastName}`
+                    }
+                    tags={[
+                      { type: 'leads', label: 'opportunity' },
+                      { type: 'stage', label: 'cv' },
+                    ]}
+                    // email={x.email}
+                    // phone={x.phone}
+                    // industry={x.industry}
+                    // tags={x.tags}
+                    // note={x.note}
+                    // setSnackbarContent={setSnackbarContent}
+                  />
+                ))}
+              </div>
+            )}
+          </React.Fragment>
         </Grid>
       </Grid>
       <Snackbar

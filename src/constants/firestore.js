@@ -1,6 +1,10 @@
 export const COLLECTIONS = {
+  admins: 'admins',
   users: 'users',
   candidates: 'candidates',
+  clients: 'clients',
+  communications: 'communications',
+  conversations: 'conversations',
   submissions: 'submissions',
   upcomingEvents: 'upcomingEvents',
   profiles: 'profiles',
@@ -10,11 +14,8 @@ export const COLLECTIONS = {
   bugReports: 'bugReports',
   charts: 'charts',
   messages: 'messages',
-  admins: 'admins',
   linkedinClients: 'linkedinClients',
   linkedinCampaigns: 'linkedinCampaigns',
   linkedinMessageQueue: 'linkedinMessageQueue',
-  communications: 'communications',
-  conversations: 'conversations',
   gmailOutbox: 'gmailOutbox',
 };

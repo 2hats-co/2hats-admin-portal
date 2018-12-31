@@ -23,6 +23,9 @@ const withAuthentication = Component =>
               setLoading(false);
             }
           });
+          return () => {
+            auth.onAuthStateChanged(() => {});
+          };
         }
       },
       [auth]

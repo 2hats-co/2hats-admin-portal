@@ -100,6 +100,16 @@ function App() {
             />
             <Route
               exact
+              path={ROUTES.candidates}
+              component={() => <SubjectsContainer route={ROUTES.candidates} />}
+            />
+            <Route
+              exact
+              path={ROUTES.clients}
+              component={() => <SubjectsContainer route={ROUTES.clients} />}
+            />
+            <Route
+              exact
               path={ROUTES.conversations}
               component={() => <ConversationsContainer />}
             />
