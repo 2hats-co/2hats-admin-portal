@@ -40,51 +40,51 @@ const styles = theme => ({
   },
 });
 
-const FAKE_DATA = [
-  {
-    name: 'Prosafia Caming',
-    email: 'prosafia@caming.xxx',
-    phone: '000',
-    industry: 'Baby Showers',
-    tags: [
-      { type: 'leads', label: 'opportunity' },
-      { type: 'stage', label: 'cv' },
-    ],
-    note: 'x',
-  },
-  {
-    name: 'Prosafia Caming',
-    email: 'prosafia@caming.xxx',
-    phone: '000',
-    industry: 'Baby Showers',
-    tags: [
-      { type: 'leads', label: 'opportunity' },
-      { type: 'stage', label: 'cv' },
-    ],
-    note: '',
-  },
-  {
-    name: 'Prosafia Caming',
-    email: 'prosafia@caming.xxx',
-    phone: '000',
-    industry: 'Bone app the teeth',
-    tags: [
-      { type: 'leads', label: 'opportunity' },
-      { type: 'stage', label: 'cv' },
-    ],
-    note: 'x',
-  },
-  {
-    name: 'Prosafia Caming',
-    email: 'prosafia@caming.xxx',
-    phone: '000',
-    industry: 'Baby Showers',
-    tags: [
-      { type: 'leads', label: 'opportunity' },
-      { type: 'stage', label: 'cv' },
-    ],
-  },
-];
+// const FAKE_DATA = [
+//   {
+//     name: 'Prosafia Caming',
+//     email: 'prosafia@caming.xxx',
+//     phone: '000',
+//     industry: 'Baby Showers',
+//     tags: [
+//       { type: 'leads', label: 'opportunity' },
+//       { type: 'stage', label: 'cv' },
+//     ],
+//     note: 'x',
+//   },
+//   {
+//     name: 'Prosafia Caming',
+//     email: 'prosafia@caming.xxx',
+//     phone: '000',
+//     industry: 'Baby Showers',
+//     tags: [
+//       { type: 'leads', label: 'opportunity' },
+//       { type: 'stage', label: 'cv' },
+//     ],
+//     note: '',
+//   },
+//   {
+//     name: 'Prosafia Caming',
+//     email: 'prosafia@caming.xxx',
+//     phone: '000',
+//     industry: 'Bone app the teeth',
+//     tags: [
+//       { type: 'leads', label: 'opportunity' },
+//       { type: 'stage', label: 'cv' },
+//     ],
+//     note: 'x',
+//   },
+//   {
+//     name: 'Prosafia Caming',
+//     email: 'prosafia@caming.xxx',
+//     phone: '000',
+//     industry: 'Baby Showers',
+//     tags: [
+//       { type: 'leads', label: 'opportunity' },
+//       { type: 'stage', label: 'cv' },
+//     ],
+//   },
+// ];
 
 const CANIDIDATE_FILTERS = [
   {
@@ -149,7 +149,7 @@ function SubjectsContainer(props) {
     filters = CLIENT_FILTERS;
     collection = COLLECTIONS.clients;
   }
-  const [subjectsState, subjectsStatus] = useCollection({
+  const [subjectsState /*subjectsDispatch*/] = useCollection({
     path: collection,
     sort: { field: 'createdAt', direction: 'desc' },
   });

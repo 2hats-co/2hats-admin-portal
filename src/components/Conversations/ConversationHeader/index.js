@@ -19,7 +19,6 @@ import StarOutlineIcon from '@material-ui/icons/StarBorder';
 // import InputLabel from '@material-ui/core/InputLabel';
 import ManageSubscribersDialog from './ManageSubscribersDialog';
 import { useWindowSize } from '../../../hooks/useWindowSize';
-import AdminSelector from '../../AdminSelector';
 const styles = theme => ({
   root: {
     padding: `${theme.spacing.unit}px ${theme.spacing.unit * 1.5}px ${
@@ -34,8 +33,6 @@ const styles = theme => ({
 
 function ConversationHeader(props) {
   const windowSize = useWindowSize();
-  //const [tag, setTag] = useState('');
-  //const InputLabelRef = useRef(null);
 
   const { classes, conversation, closeConversation } = props;
   const [showSubscriberDialog, setShowSubscriberDialog] = useState(false);

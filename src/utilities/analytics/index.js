@@ -31,7 +31,7 @@ const getTrackerDocs = (tracker, range) => {
       .doc(tracker.type)
       .collection(tracker.name);
     // .where('startsAt','>',startMonthTS)
-    // .where('startsAt','<',endMonthTS)
+    // .where('startsAt','<',endMonthTS+ monthTime)
     let docsData = [];
     trackerRef
       .get()
