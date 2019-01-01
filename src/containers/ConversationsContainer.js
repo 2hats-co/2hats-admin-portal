@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import withNavigation from '../components/withNavigation';
 import withStyles from '@material-ui/core/styles/withStyles';
 
@@ -56,7 +56,7 @@ const styles = theme => ({
   },
 });
 function ConversationsContainer(props) {
-  const { classes, uid } = props;
+  const { classes, uid, location } = props;
   const windowSize = useWindowSize();
 
   const [composerType, setComposerType] = useState('linkedin');
@@ -67,6 +67,21 @@ function ConversationsContainer(props) {
   const handleCloseConversation = () => {
     dispatchConversation({ path: null });
   };
+
+  useEffect(
+    () => {
+      if (location.search.indexOf('?id=') > -1) {
+        const conversationId = location.search.replace('?id=', '');
+        dispatchConversation({ path: `conversations/${conversationId}` });
+      } else if (location.search.indexOf('?uid=') > -1) {
+        const conversationId = location.search.replace('?uid=', '');
+        dispatchConversation({ path: `conversations/${conversationId}` });
+      }
+      //return () => {};
+    },
+    [location.search]
+  );
+
   return (
     <Fade in>
       <Grid container direction="row" style={{ height: 'calc(100vh - 64px)' }}>
