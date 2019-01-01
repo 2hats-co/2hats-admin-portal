@@ -29,7 +29,7 @@ import { getInitials } from '../../utilities';
 import metadata from '../../metadata.json';
 import { useAuthedUser } from '../../hooks/useAuthedUser';
 import { AdminsProvider } from '../../contexts/AdminsContext';
-
+import useKeypress from '../../hooks/useKeypress';
 const styles = theme => ({
   root: {
     backgroundColor: theme.palette.background.default,
@@ -114,6 +114,7 @@ const navigationRoutes = [
 export default function withNavigation(WrappedComponent) {
   function WithNavigation(props) {
     const { history, classes, theme, displayName, uid, location } = props;
+    const showGloria = useKeypress('g');
     const [showSearch, setShowSearch] = useState(false);
     const [showUserDialog, setShowUserDialog] = useState(false);
     const currentUser = useAuthedUser();
@@ -158,7 +159,8 @@ export default function withNavigation(WrappedComponent) {
                     >
                       <img
                         alt="2hats logo"
-                        src={logo}
+                        //TODO:add miniGloria
+                        src={showGloria ? null : logo}
                         className={classes.logo}
                       />
                     </Tooltip>
