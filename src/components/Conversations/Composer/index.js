@@ -103,9 +103,10 @@ function Composer(props) {
     setMessageText(messageText + addition);
   };
   const handleSendEmail = () => {
+    //TODO: add subject field
     const email = { subject: 'test', body: messageHtml };
-    const recipient = { email: 'shams.mosowi@gmail.com' };
-    const sender = { email: 'shams@2hats.com.au' };
+    const recipient = { email: conversation.channels.email };
+    const sender = { email: currentUser.email, id: currentUser.UID };
     sendEmail(conversation.id, { recipient, email, sender });
     clearComposer();
   };

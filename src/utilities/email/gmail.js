@@ -1,5 +1,6 @@
-// import {firestore} from '../../store';
-// import {COLLECTIONS} from '../../constants/firestore'
+import { firestore } from '../../store';
+import { COLLECTIONS } from '../../constants/firestore';
+import { removeHtmlTags } from '../index';
 
 /**
  * @param {{UID:string,email:string}} recipient
@@ -8,6 +9,7 @@
  */
 export const sendEmail = async (conversationId, emailObject) => {
   const { recipient, sender, email } = emailObject;
+  const now = new Date();
   const gmailDoc = {
     conversationId,
     headers: {
@@ -16,9 +18,29 @@ export const sendEmail = async (conversationId, emailObject) => {
       Subject: email.subject,
     },
     body: email.body,
-    createdAt: new Date(),
+    createdAt: now,
   };
+  const messageText = removeHtmlTags(email.body);
+  const messageDoc = {
+    body: email.body,
+    subject: email.subject,
+    isIncoming: false,
+    senderId: sender.id,
+    createdAt: now,
+    sentAt: now,
+    type: 'email',
+  };
+  const lastMessage = { ...messageDoc, body: messageText };
   console.log('gmailDoc', gmailDoc);
   //uncommenting will send out emails
-  // return await firestore.collection(COLLECTIONS.gmailOutbox).add(gmailDoc);
+  await firestore
+    .collection(COLLECTIONS.conversations)
+    .doc(conversationId)
+    .collection(COLLECTIONS.messages)
+    .add(messageDoc);
+  await firestore
+    .collection(COLLECTIONS.conversations)
+    .doc(conversationId)
+    .update({ lastMessage });
+  return await firestore.collection(COLLECTIONS.gmailOutbox).add(gmailDoc);
 };
