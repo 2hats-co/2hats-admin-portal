@@ -70,7 +70,7 @@ export const idealTextColor = rgbColor => {
 
 export const randomGreeting = () => {
   const greetings = [
-    'ni hao',
+    'Ni hao',
     'Yo',
     'Hey',
     'Howdy',

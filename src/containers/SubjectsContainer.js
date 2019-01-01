@@ -159,11 +159,11 @@ function SubjectsContainer(props) {
     <React.Fragment>
       <Grid container direction="column" className={classes.root}>
         <LocationIndicator
-          title="Groups"
+          title="Subjects"
           showBorder
           subRoutes={[
             { label: 'Clients', value: ROUTES.clients },
-            { label: 'Candidtate', value: ROUTES.candidates },
+            { label: 'Candidate', value: ROUTES.candidates },
           ]}
         />
         <Grid item className={classes.filterContainer}>
@@ -197,7 +197,7 @@ function SubjectsContainer(props) {
           <React.Fragment>
             {//TODO:scrolly rolly
             subjectsState.loading ? (
-              <LoadingHat message="rounding up your subjects" />
+              <LoadingHat message="Rounding up your subjects…" />
             ) : (
               <div>
                 {subjects.map((x, i) => (

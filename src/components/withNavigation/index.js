@@ -21,6 +21,7 @@ import NotificationIcon from '@material-ui/icons/Notifications';
 import { ROUTES } from '../../constants/routes';
 
 import logo from '../../assets/logo/WhiteIcon.svg';
+import gloria from '../../assets/gloria.jpg';
 import NavigationItems from './NavigationItems';
 import withAuthentication from '../../utilities/Session/withAuthentication';
 import Search from '../Search';
@@ -52,7 +53,16 @@ const styles = theme => ({
     display: 'block',
     userDrag: 'none',
     userSelect: 'none',
-    // borderBottom: '1px solid rgba(0,0,0,.12)',
+  },
+  gloria: {
+    width: 34,
+    height: 34,
+    margin: '0 auto',
+    padding: '15px 0',
+    display: 'block',
+    userDrag: 'none',
+    userSelect: 'none',
+    transform: 'scale(2)',
   },
   searchButton: {
     color: 'rgba(255,255,255,.87)',
@@ -100,6 +110,7 @@ const navigationRoutes = [
     label: 'Subjects',
     icon: <SupervisorAccountIcon />,
     route: ROUTES.subjects,
+    subRoutes: [ROUTES.clients, ROUTES.candidates],
     incomplete: true,
   },
   {
@@ -160,8 +171,8 @@ export default function withNavigation(WrappedComponent) {
                       <img
                         alt="2hats logo"
                         //TODO:add miniGloria
-                        src={showGloria ? null : logo}
-                        className={classes.logo}
+                        src={showGloria ? gloria : logo}
+                        className={showGloria ? classes.gloria : classes.logo}
                       />
                     </Tooltip>
                     <Tooltip title="Search candidates" placement="right">
