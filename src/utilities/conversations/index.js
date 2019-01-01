@@ -42,3 +42,37 @@ export const setAssignee = (adminId, conversationId) => {
     .doc(conversationId)
     .update({ assignee: adminId });
 };
+
+export const createConversation = async (uid, assignee) => {
+  const candidateDoc = await firestore
+    .collection('candidates')
+    .doc(uid)
+    .get();
+  if (candidateDoc.exists) {
+    const data = candidateDoc.data();
+    const UID = candidateDoc.id;
+    const conversationDoc = {
+      UID,
+      assignee: assignee || '',
+      displayName: `${data.firstName} ${data.lastName}`,
+      firstName: data.firstName,
+      lastName: data.lastName,
+      type: 'candidate',
+      subscribedAdmins: [],
+      unreadAdmins: [],
+      lastMessage: {
+        body: 'New conversation',
+        createdAt: new Date(),
+        sentAt: new Date(),
+        isIncoming: false,
+        type: 'system',
+      },
+      channels: { email: data.email, phoneNumber: data.phoneNumber || '' },
+      createdAt: new Date(),
+    };
+    const conversation = await firestore
+      .collection('conversations')
+      .add(conversationDoc);
+    return conversation.id;
+  }
+};

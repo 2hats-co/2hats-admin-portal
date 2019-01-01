@@ -17,6 +17,8 @@ import Loadable from 'react-loadable';
 import LoadingHat from '../components/LoadingHat';
 import { useWindowSize } from '../hooks/useWindowSize';
 import useDocument from '../hooks/useDocument';
+import { getfirstIdOfQuery } from '../utilities/firestore';
+import { createConversation } from '../utilities/conversations';
 const Composer = Loadable({
   loader: () =>
     import('../components/Conversations/Composer' /* webpackChunkName: "MessagesComposer" */),
@@ -57,6 +59,7 @@ const styles = theme => ({
 });
 function ConversationsContainer(props) {
   const { classes, uid, location } = props;
+  const currentUserId = uid;
   const windowSize = useWindowSize();
 
   const [composerType, setComposerType] = useState('linkedin');
@@ -69,15 +72,26 @@ function ConversationsContainer(props) {
   };
 
   useEffect(
-    () => {
+    async () => {
+      //TODO: entertain user while this is going on, maybe offer them a snackbar 🥨🍿🍘🌰
       if (location.search.indexOf('?id=') > -1) {
         const conversationId = location.search.replace('?id=', '');
         dispatchConversation({ path: `conversations/${conversationId}` });
       } else if (location.search.indexOf('?uid=') > -1) {
-        const conversationId = location.search.replace('?uid=', '');
-        dispatchConversation({ path: `conversations/${conversationId}` });
+        const uid = location.search.replace('?uid=', '');
+        const filters = [{ field: 'UID', operator: '==', value: uid }];
+        const conversationId = await getfirstIdOfQuery(
+          'conversations',
+          filters
+        );
+        if (conversationId) {
+          dispatchConversation({ path: `conversations/${conversationId}` });
+        } else {
+          console.log('creating conversation');
+          const conversationId = await createConversation(uid, currentUserId);
+          dispatchConversation({ path: `conversations/${conversationId}` });
+        }
       }
-      //return () => {};
     },
     [location.search]
   );

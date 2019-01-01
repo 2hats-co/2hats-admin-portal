@@ -21,6 +21,7 @@ import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import SearchIcon from '@material-ui/icons/Search';
 import PersonIcon from '@material-ui/icons/Person';
 import SubmissionIcon from '@material-ui/icons/DescriptionOutlined';
+import ConversationIcon from '@material-ui/icons/ChatBubbleOutlined';
 import ResumeIcon from '@material-ui/icons/Attachment';
 
 import { useSearch } from '../../hooks/useSearch';
@@ -122,9 +123,8 @@ function Search(props) {
     }, 100);
   };
 
-  const handleRoute = hit => {
+  const handleSubmissionRoute = hit => {
     const { status, objectID } = hit;
-    // console.log(stage, status, objectID);
     if (
       status !== 'pre-review' ||
       status !== 'incomplete' ||
@@ -133,9 +133,11 @@ function Search(props) {
       history.push(`${ROUTES.submissions}?uid=${objectID}`);
     }
   };
+  const handleConversationRoute = hit => {
+    const { objectID } = hit;
 
-  // console.log('results (re-render)', results);
-
+    history.push(`${ROUTES.conversations}?uid=${objectID}`);
+  };
   let resultItems = [];
   if (results.hits && results.hits.length > 0) {
     resultItems = results.hits.map((hit, i) => (
@@ -157,13 +159,24 @@ function Search(props) {
             </Tooltip>
           )}
 
-          <Tooltip title="Submission">
+          {hit.status !== 'incomplete' && (
+            <Tooltip title="Submission">
+              <IconButton
+                onClick={() => {
+                  handleSubmissionRoute(hit);
+                }}
+              >
+                <SubmissionIcon />
+              </IconButton>
+            </Tooltip>
+          )}
+          <Tooltip title="Conversation">
             <IconButton
               onClick={() => {
-                handleRoute(hit);
+                handleConversationRoute(hit);
               }}
             >
-              <SubmissionIcon />
+              <ConversationIcon />
             </IconButton>
           </Tooltip>
         </ListItemSecondaryAction>
