@@ -154,7 +154,6 @@ function SubjectsContainer(props) {
     sort: { field: 'createdAt', direction: 'desc' },
   });
   const subjects = subjectsState.documents;
-  console.log('subject', subjects);
   const [snackbarContent, setSnackbarContent] = useState('');
   return (
     <React.Fragment>

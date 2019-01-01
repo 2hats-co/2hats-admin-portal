@@ -91,15 +91,11 @@ function ConversationsList(props) {
       </Grid>
     );
 
-  // handleCandidateFilter = (event, value) => {
-  //     conversationsDispatch({ filter: value });
-  // }
   return (
     <Grid container direction="column" style={{ height: 'calc(100vh - 64px)' }}>
       <Grid item>
         <AdminSelector
           onSelect={uid => {
-            console.log('uid', uid);
             setFilters([assigneeFilter(uid)]);
           }}
         />

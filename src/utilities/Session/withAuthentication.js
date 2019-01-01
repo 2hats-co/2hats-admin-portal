@@ -24,7 +24,10 @@ const withAuthentication = Component =>
             }
           });
           return () => {
-            auth.onAuthStateChanged(() => {});
+            var unsubscribe = auth.onAuthStateChanged(function(user) {
+              // handle it
+            });
+            unsubscribe();
           };
         }
       },

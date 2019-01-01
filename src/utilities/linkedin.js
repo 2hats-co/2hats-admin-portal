@@ -37,8 +37,6 @@ export const sendLinkedinMessage = async (
     ...linkedin,
     createdAt: new Date(),
   };
-
-  console.log('generated linkedinMessagesQueDoc doc', linkedinMessagesQueueDoc);
   return await firestore
     .collection(COLLECTIONS.linkedinMessageQueue)
     .add(linkedinMessagesQueueDoc);

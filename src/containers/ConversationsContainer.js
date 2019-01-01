@@ -60,9 +60,6 @@ function ConversationsContainer(props) {
   const windowSize = useWindowSize();
 
   const [composerType, setComposerType] = useState('linkedin');
-  // const [selectedConversation, setSelectedConversation] = useState({
-  //   id: null,
-  // });
   const [conversationState, dispatchConversation] = useDocument();
   const selectedConversation = conversationState.doc;
   const openedConversationOnMobile =

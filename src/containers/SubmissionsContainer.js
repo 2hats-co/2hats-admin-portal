@@ -88,6 +88,7 @@ function SumbissionsContainer(props) {
         const uid = location.search.replace('?uid=', '');
         submissionDispatch({ uid });
       }
+      //return () => {};
     },
     [submission, location.search]
   );

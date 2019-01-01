@@ -95,7 +95,7 @@ const useCollection = intialOverrides => {
         getDocuments(filters, limit, sort);
       }
       return () => {
-        firestore.collection(path).onSnapshot(() => {});
+        if (path) firestore.collection(path).onSnapshot(() => {});
       };
     },
     [collectionState.filters, collectionState.limit, collectionState.path]

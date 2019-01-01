@@ -42,7 +42,6 @@ const styles = theme => ({
 });
 function CampaignCard(props) {
   const { classes, data, actions } = props;
-  // console.log('campaign data', data);
 
   const [showDetailsDialog, setShowDetailsDialog] = useState(false);
 

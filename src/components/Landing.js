@@ -8,7 +8,6 @@ import { useAuthedUser } from '../hooks/useAuthedUser';
 //import { initializePushNotifications } from '../store';
 function Landing(props) {
   const currentUser = useAuthedUser();
-  console.log('currentUser', currentUser);
   useEffect(
     () => {
       if (currentUser && !currentUser.isLoading) {

@@ -20,14 +20,12 @@ export const firestore = firebase.firestore();
 
 export function initializePushNotifications() {
   const uid = auth.currentUser.uid;
-  console.log('auth', uid);
   messaging
     .requestPermission()
     .then(() => {
       return messaging.getToken();
     })
     .then(token => {
-      console.log('FCM Token:', token);
       firestore
         .collection(COLLECTIONS.admins)
         .doc(uid)
@@ -35,7 +33,7 @@ export function initializePushNotifications() {
     })
     .catch(error => {
       if (error.code === 'messaging/permission-blocked') {
-        console.log('Please Unblock Notification Request Manually');
+        alert('Please Unblock Notification Request Manually');
       } else {
         console.log('Error Occurred', error);
       }

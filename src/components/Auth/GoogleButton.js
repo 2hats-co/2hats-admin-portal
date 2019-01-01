@@ -32,10 +32,8 @@ function GoogleButton(props) {
 
   if (process.env.REACT_APP_ENV === 'PRODUCTION' && !cid) {
     setCID(GOOGLE_CID_PRODUCTION);
-    console.log('google auth production', GOOGLE_CID_PRODUCTION);
   } else if (!cid) {
     setCID(GOOGLE_CID_STAGING);
-    console.log('google auth staging', GOOGLE_CID_STAGING);
   }
   const handleRouting = route => {
     this.props.history.replace(route);

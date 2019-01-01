@@ -18,7 +18,7 @@ export const sendEmail = async (conversationId, emailObject) => {
     body: email.body,
     createdAt: new Date(),
   };
-  console.log('generated gmail outbox doc', gmailDoc);
+  console.log('gmailDoc', gmailDoc);
   //uncommenting will send out emails
   // return await firestore.collection(COLLECTIONS.gmailOutbox).add(gmailDoc);
 };
