@@ -95,6 +95,17 @@ function ConversationsContainer(props) {
     },
     [location.search]
   );
+  useEffect(
+    () => {
+      if (selectedConversation) {
+        console.log(selectedConversation);
+        if (selectedConversation.channels.email) setComposerType('email');
+        else if (selectedConversation.channels.linkedin)
+          setComposerType('linkedin');
+      }
+    },
+    [selectedConversation]
+  );
 
   return (
     <Fade in>
