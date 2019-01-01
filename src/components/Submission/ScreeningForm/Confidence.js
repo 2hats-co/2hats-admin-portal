@@ -13,10 +13,10 @@ import red from '@material-ui/core/colors/red';
 import CheckIcon from '@material-ui/icons/Check';
 import CloseIcon from '@material-ui/icons/Close';
 
-import yesImg from '../../assets/obama/yes.png';
-import maybeImg from '../../assets/obama/maybe.png';
-import unlikelyImg from '../../assets/obama/unlikely.png';
-import noImg from '../../assets/obama/no.png';
+import yesImg from '../../../assets/obama/yes.png';
+import maybeImg from '../../../assets/obama/maybe.png';
+import unlikelyImg from '../../../assets/obama/unlikely.png';
+import noImg from '../../../assets/obama/no.png';
 
 const styles = theme => ({
   root: {},

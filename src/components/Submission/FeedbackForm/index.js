@@ -1,8 +1,8 @@
 import React, { useReducer, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { CLOUD_FUNCTIONS, callable } from '../../firebase/functions';
+import { CLOUD_FUNCTIONS, callable } from '../../../firebase/functions';
 import withStyles from '@material-ui/core/styles/withStyles';
-import { propsIntoObject } from '../../utilities/index';
+import { propsIntoObject } from '../../../utilities/index';
 import Grid from '@material-ui/core/Grid';
 import List from '@material-ui/core/List';
 import Button from '@material-ui/core/Button';
@@ -25,21 +25,21 @@ import SendToPendingIcon from '@material-ui/icons/SettingsBackupRestore';
 import FeedbackElement from './FeedbackElement';
 import map from 'lodash/map';
 
-import { COLLECTIONS } from '../../constants/firestore';
+import { COLLECTIONS } from '../../../constants/firestore';
 import {
   SUBMISSION_FEEDBACK,
   getFeedbackContent,
-} from '../../constants/feedback';
+} from '../../../constants/feedback';
 import {
   rejectedWithFeedback,
   resumeAccepted,
-} from '../../constants/emails/templates';
+} from '../../../constants/emails/templates';
 import {
   updateProperties,
   // updateUserDocs,
   generateSmartKey,
-} from '../../utilities/firestore';
-import { useAuthedUser } from '../../hooks/useAuthedUser';
+} from '../../../utilities/firestore';
+import { useAuthedUser } from '../../../hooks/useAuthedUser';
 
 const styles = theme => ({
   root: {

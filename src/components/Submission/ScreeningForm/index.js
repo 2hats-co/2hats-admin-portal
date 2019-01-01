@@ -20,15 +20,15 @@ import {
   outsideDemographic,
   outsideIndusty,
   invalidSubmission,
-} from '../../constants/emails/templates';
+} from '../../../constants/emails/templates';
 import {
   updateProperties,
   generateSmartKey,
   updateUserDocs,
-} from '../../utilities/firestore';
-import { COLLECTIONS } from '../../constants/firestore';
-import { CLOUD_FUNCTIONS, callable } from '../../firebase/functions';
-import { useAuthedUser } from '../../hooks/useAuthedUser';
+} from '../../../utilities/firestore';
+import { COLLECTIONS } from '../../../constants/firestore';
+import { CLOUD_FUNCTIONS, callable } from '../../../firebase/functions';
+import { useAuthedUser } from '../../../hooks/useAuthedUser';
 
 const styles = theme => ({
   root: {
