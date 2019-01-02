@@ -170,7 +170,6 @@ export default function withNavigation(WrappedComponent) {
                     >
                       <img
                         alt="2hats logo"
-                        //TODO:add miniGloria
                         src={showGloria ? gloria : logo}
                         className={showGloria ? classes.gloria : classes.logo}
                       />

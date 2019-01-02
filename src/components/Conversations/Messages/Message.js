@@ -115,7 +115,7 @@ const styles = theme => ({
     boxShadow: 'none',
   },
   renderedHTML: {
-    backgroundColor: '#fff !important',
+    // backgroundColor: '#fff !important',
     padding: 0,
     textAlign: 'left',
     '& p': { color: theme.palette.text.primary },

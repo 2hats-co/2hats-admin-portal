@@ -8,8 +8,6 @@ import LocationIndicator from '../components/LocationIndicator';
 
 import Grid from '@material-ui/core/Grid';
 import Fade from '@material-ui/core/Fade';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
 import ConversationsList from '../components/Conversations/ConversationsList';
 import ConversationHeader from '../components/Conversations/ConversationHeader';
 import Messages from '../components/Conversations/Messages';
@@ -38,12 +36,8 @@ const styles = theme => ({
   },
   composerContainer: {
     borderTop: `1px solid ${theme.palette.divider}`,
-  },
-  tabRoot: {
-    minHeight: 36,
-  },
-  tabLabelContainer: {
-    padding: '6px 16px',
+    overflowY: 'auto',
+    maxHeight: '50%',
   },
   noOpenMsg: {
     height: '100vh',
@@ -62,7 +56,6 @@ function ConversationsContainer(props) {
   const currentUserId = uid;
   const windowSize = useWindowSize();
 
-  const [composerType, setComposerType] = useState('linkedin');
   const [conversationState, dispatchConversation] = useDocument();
   const selectedConversation = conversationState.doc;
   const openedConversationOnMobile =
@@ -94,17 +87,6 @@ function ConversationsContainer(props) {
       }
     },
     [location.search]
-  );
-  useEffect(
-    () => {
-      if (selectedConversation) {
-        console.log(selectedConversation);
-        if (selectedConversation.channels.email) setComposerType('email');
-        else if (selectedConversation.channels.linkedin)
-          setComposerType('linkedin');
-      }
-    },
-    [selectedConversation]
   );
 
   return (
@@ -154,51 +136,10 @@ function ConversationsContainer(props) {
               <Grid item xs style={{ overflowY: 'auto' }}>
                 <Messages conversation={selectedConversation} />
               </Grid>
-              {
-                //TODO: move composer tabs inside comoposer
-              }
               <Grid item className={classes.composerContainer}>
-                <Tabs
-                  classes={{ root: classes.tabRoot }}
-                  value={composerType}
-                  onChange={(e, val) => {
-                    setComposerType(val);
-                  }}
-                  indicatorColor="primary"
-                  textColor="primary"
-                >
-                  {selectedConversation.channels.linkedin && (
-                    <Tab
-                      value="linkedin"
-                      label="LinkedIn"
-                      classes={{
-                        root: classes.tabRoot,
-                        labelContainer: classes.tabLabelContainer,
-                      }}
-                    />
-                  )}
-                  {selectedConversation.channels.email && (
-                    <Tab
-                      value="email"
-                      label="Email"
-                      classes={{
-                        root: classes.tabRoot,
-                        labelContainer: classes.tabLabelContainer,
-                      }}
-                    />
-                  )}
-                  <Tab
-                    value="note"
-                    label="Note"
-                    classes={{
-                      root: classes.tabRoot,
-                      labelContainer: classes.tabLabelContainer,
-                    }}
-                  />
-                </Tabs>
                 <Composer
                   conversation={selectedConversation}
-                  composerType={composerType}
+                  channels={selectedConversation.channels}
                 />
               </Grid>
             </Grid>

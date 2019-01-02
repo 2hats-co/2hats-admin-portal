@@ -5,7 +5,7 @@ import Grid from '@material-ui/core/Grid';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import LinearProgress from '@material-ui/core/LinearProgress';
 
-import MailIcon from '@material-ui/icons/Mail';
+// import MailIcon from '@material-ui/icons/Mail';
 //import StarIcon from '@material-ui/icons/Star';
 
 import List from '@material-ui/core/List';
@@ -112,7 +112,7 @@ function ConversationsList(props) {
           fullWidth
         >
           <Tab value="all" label="All" />
-          <Tab value="unread" label={<MailIcon />} />
+          <Tab value="unread" label="Unread" />
         </Tabs>
       </Grid>
 

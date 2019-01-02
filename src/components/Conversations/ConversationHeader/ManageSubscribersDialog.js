@@ -13,9 +13,11 @@ import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import Avatar from '@material-ui/core/Avatar';
+import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/Button';
+
 import RemoveIcon from '@material-ui/icons/Close';
-import AssigneeIcon from '@material-ui/icons/HowToReg';
+import AssigneeIcon from '@material-ui/icons/HowToRegOutlined';
 import { setAssignee } from '../../../utilities/conversations';
 
 import Button from '@material-ui/core/Button';
@@ -108,8 +110,8 @@ function ManageSubscribersDialog(props) {
                   {subscribedAdmins.map((x, i) => (
                     <ListItem key={i} disableGutters>
                       <ListItemAvatar>
-                        {x.photoURL ? (
-                          <Avatar src={x.photoURL} />
+                        {x.avatarURL ? (
+                          <Avatar src={x.avatarURL} />
                         ) : (
                           <Avatar>
                             {getInitials(`${x.givenName} ${x.familyName}`)}
@@ -118,29 +120,33 @@ function ManageSubscribersDialog(props) {
                       </ListItemAvatar>
                       <ListItemText
                         primary={`${x.givenName} ${x.familyName} ${
-                          x.id === conversation.assignee ? '(Owner)' : ''
+                          x.id === conversation.assignee ? '(Owner 👑)' : ''
                         }`}
                         secondary={x.title}
                       />
                       <ListItemSecondaryAction>
-                        <IconButton
-                          disabled={x.id === conversation.assignee}
-                          onClick={() => {
-                            setAssignee(x.id, conversation.id);
-                          }}
-                          className={classes.iconButton}
-                        >
-                          <AssigneeIcon />
-                        </IconButton>
-                        <IconButton
-                          disabled={x.id === conversation.assignee}
-                          onClick={() => {
-                            handleRemoveSubscriber(x.id);
-                          }}
-                          className={classes.iconButton}
-                        >
-                          <RemoveIcon />
-                        </IconButton>
+                        <Tooltip title={`Make ${x.givenName} the owner`}>
+                          <IconButton
+                            disabled={x.id === conversation.assignee}
+                            onClick={() => {
+                              setAssignee(x.id, conversation.id);
+                            }}
+                            className={classes.iconButton}
+                          >
+                            <AssigneeIcon />
+                          </IconButton>
+                        </Tooltip>
+                        <Tooltip title={`Unsubscribe ${x.givenName}`}>
+                          <IconButton
+                            disabled={x.id === conversation.assignee}
+                            onClick={() => {
+                              handleRemoveSubscriber(x.id);
+                            }}
+                            className={classes.iconButton}
+                          >
+                            <RemoveIcon />
+                          </IconButton>
+                        </Tooltip>
                       </ListItemSecondaryAction>
                     </ListItem>
                   ))}
