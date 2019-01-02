@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
@@ -16,6 +16,7 @@ import EventIcon from '@material-ui/icons/EventOutlined';
 import ReminderIcon from '@material-ui/icons/NotificationsOutlined';
 import EventDialog from './EventDialog';
 import ReminderDialog from './ReminderDialog';
+import useKeyPress from '../../../hooks/useKeypress';
 
 //import 'emoji-mart/css/emoji-mart.css';
 //import { Picker } from 'emoji-mart';
@@ -90,7 +91,16 @@ const ComposerActions = React.memo(props => {
   const [showEmoji, setShowEmoji] = useState(false);
   const [showEventDialog, setShowEventDialog] = useState(false);
   const [showReminderDialog, setShowReminderDialog] = useState(false);
-
+  const returnKey = useKeyPress('Enter');
+  const shiftKey = useKeyPress('Shift');
+  useEffect(
+    () => {
+      if (shiftKey && returnKey) {
+        actions[composerType]();
+      }
+    },
+    [shiftKey, returnKey]
+  );
   let fabContent;
   switch (composerType) {
     case 'email':
