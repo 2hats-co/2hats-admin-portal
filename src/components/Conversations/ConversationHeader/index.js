@@ -8,10 +8,10 @@ import Typography from '@material-ui/core/Typography';
 import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
 
-import AddSubscriberIcon from '@material-ui/icons/GroupAdd';
+import AddSubscriberIcon from '@material-ui/icons/GroupAddOutlined';
 import LinkIcon from '@material-ui/icons/Link';
 import BackIcon from '@material-ui/icons/ArrowBack';
-import StarOutlineIcon from '@material-ui/icons/StarBorder';
+// import StarOutlineIcon from '@material-ui/icons/StarBorder';
 // import MenuItem from '@material-ui/core/MenuItem';
 // import OutlinedInput from '@material-ui/core/OutlinedInput';
 // import Select from '@material-ui/core/Select';
@@ -89,11 +89,11 @@ function ConversationHeader(props) {
                 <LinkIcon />
               </IconButton>
             </Tooltip>
-            <Tooltip title="Star">
+            {/* <Tooltip title="Star">
               <IconButton>
                 <StarOutlineIcon />
               </IconButton>
-            </Tooltip>
+            </Tooltip> */}
           </Grid>
         </Grid>
       </Grid>

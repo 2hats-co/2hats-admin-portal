@@ -1,7 +1,7 @@
 import React from 'react';
 import useCollection from '../hooks/useCollection';
 
-const AdminsContext = React.createContext([]);
+export const AdminsContext = React.createContext([]);
 
 export const AdminsProvider = props => {
   let [admins] = useCollection({ path: 'admins' });

@@ -2,7 +2,7 @@ import { callable, CLOUD_FUNCTIONS } from './functions';
 
 import { auth } from '../store';
 
-export const authAdmin = (r, callback) =>
+export const authAdmin = (r, callback, failCallback) =>
   callable(
     CLOUD_FUNCTIONS.auth,
     { r },
@@ -12,7 +12,7 @@ export const authAdmin = (r, callback) =>
       });
     },
     o => {
-      //TODO: show snackbar 🥨🍿🍘🌰
       console.log('fail', o);
+      failCallback(o);
     }
   );

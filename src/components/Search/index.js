@@ -21,7 +21,7 @@ import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import SearchIcon from '@material-ui/icons/Search';
 import PersonIcon from '@material-ui/icons/Person';
 import SubmissionIcon from '@material-ui/icons/DescriptionOutlined';
-import ConversationIcon from '@material-ui/icons/ChatBubbleOutlined';
+import ConversationIcon from '@material-ui/icons/ChatOutlined';
 import ResumeIcon from '@material-ui/icons/Attachment';
 
 import { useSearch } from '../../hooks/useSearch';
@@ -216,7 +216,7 @@ function Search(props) {
                 />
               }
               useWindow={false}
-              threshold={1}
+              threshold={100}
             >
               <List>
                 {resultItems.length > 0 ? (

@@ -149,6 +149,9 @@ function generateTheme(theme, themeColor) {
           backgroundColor: primaryLight,
           color: primaryColor,
         },
+        img: {
+          backgroundColor: primaryLight,
+        },
       },
       MuiFormLabel: {
         focused: { color: `${primaryColor} !important` },
@@ -205,6 +208,10 @@ function generateTheme(theme, themeColor) {
         ...baseTheme.overrides.MuiAvatar,
         colorDefault: {
           ...baseTheme.overrides.MuiAvatar.colorDefault,
+          color: primaryDarkText,
+        },
+        img: {
+          ...baseTheme.overrides.MuiAvatar.img,
           color: primaryDarkText,
         },
       },

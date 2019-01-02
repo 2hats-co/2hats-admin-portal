@@ -3,6 +3,10 @@ import React, { useState, useEffect } from 'react';
 import withStyles from '@material-ui/core/styles/withStyles';
 import InputBase from '@material-ui/core/InputBase';
 import Chip from '@material-ui/core/Chip';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
 
 import FileIcon from '@material-ui/icons/Attachment';
 import EventIcon from '@material-ui/icons/EventOutlined';
@@ -26,10 +30,27 @@ const styles = theme => ({
     padding: theme.spacing.unit * 2,
     position: 'relative',
   },
+  tabs: {
+    position: 'relative',
+    top: -theme.spacing.unit * 2,
+    left: -theme.spacing.unit * 2,
+  },
+  tabRoot: {
+    minHeight: theme.spacing.unit * 4.5,
+  },
+  tabLabelContainer: {
+    padding: '6px 16px',
+  },
   topBar: {
     position: 'absolute',
-    right: 0,
-    top: -36,
+    right: theme.spacing.unit,
+    top: 0,
+  },
+  emailSubject: {
+    position: 'relative',
+    top: -1,
+    width: theme.spacing.unit * 40,
+    marginRight: theme.spacing.unit,
   },
   plainTextBox: {
     width: '100%',
@@ -37,8 +58,10 @@ const styles = theme => ({
   },
   quillEditor: {
     minHeight: 100,
-    // border: `1px solid ${theme.palette.divider}`,
 
+    '& .ql-container': {
+      top: -2,
+    },
     '& .ql-editor': {
       minHeight: 100,
       padding: 0,
@@ -81,7 +104,19 @@ const getChipIcon = type => {
 };
 
 function Composer(props) {
-  const { classes, theme, conversation, composerType } = props;
+  const { classes, theme, conversation, channels } = props;
+
+  const [composerType, setComposerType] = useState(
+    channels.email ? 'email' : 'linkedin'
+  );
+  useEffect(
+    () => {
+      if (channels.email) setComposerType('email');
+      else if (channels.linkedin) setComposerType('linkedin');
+    },
+    [channels]
+  );
+
   const currentUser = useAuthedUser();
   useEffect(
     () => {
@@ -95,7 +130,9 @@ function Composer(props) {
     //clear message box
     setMessageHtml('');
     setMessageText('');
+    setEmailSubject('');
   };
+  const [emailSubject, setEmailSubject] = useState('');
   const [messageText, setMessageText] = useState('');
   const [messageHtml, setMessageHtml] = useState('');
   const [attachments, setAttachments] = useState([]);
@@ -103,8 +140,7 @@ function Composer(props) {
     setMessageText(messageText + addition);
   };
   const handleSendEmail = () => {
-    //TODO: add subject field
-    const email = { subject: 'test', body: messageHtml };
+    const email = { subject: emailSubject, body: messageHtml };
     const recipient = { email: conversation.channels.email };
     const sender = { email: currentUser.email, id: currentUser.UID };
     sendEmail(conversation.id, { recipient, email, sender });
@@ -134,19 +170,73 @@ function Composer(props) {
           composerType === 'note' ? theme.palette.primary.light : 'inherit',
       }}
     >
-      {composerType === 'email' ? (
-        <ReactQuill
-          autoFocus
-          placeholder="Type your email here…"
-          value={messageHtml}
-          onChange={val => {
-            setMessageHtml(val);
-            setMessageText(removeHtmlTags(val));
+      <Tabs
+        className={classes.tabs}
+        classes={{ root: classes.tabRoot }}
+        value={composerType}
+        onChange={(e, val) => {
+          setComposerType(val);
+        }}
+        indicatorColor="primary"
+        textColor="primary"
+      >
+        {channels.linkedin && (
+          <Tab
+            value="linkedin"
+            label="LinkedIn"
+            classes={{
+              root: classes.tabRoot,
+              labelContainer: classes.tabLabelContainer,
+            }}
+          />
+        )}
+        {channels.email && (
+          <Tab
+            value="email"
+            label="Email"
+            classes={{
+              root: classes.tabRoot,
+              labelContainer: classes.tabLabelContainer,
+            }}
+          />
+        )}
+        <Tab
+          value="note"
+          label="Note"
+          classes={{
+            root: classes.tabRoot,
+            labelContainer: classes.tabLabelContainer,
           }}
-          theme="bubble"
-          className={classes.quillEditor}
-          preserveWhiteSpace
         />
+      </Tabs>
+      {composerType === 'email' ? (
+        <React.Fragment>
+          <div className={classes.topBar}>
+            <TextField
+              className={classes.emailSubject}
+              placeholder="Subject"
+              value={emailSubject}
+              onChange={e => {
+                setEmailSubject(e.target.value);
+              }}
+              margin="dense"
+            />
+            <Button color="primary">CC</Button>
+            <Button color="primary">Use template</Button>
+          </div>
+          <ReactQuill
+            autoFocus
+            placeholder="Type your email here…"
+            value={messageHtml}
+            onChange={val => {
+              setMessageHtml(val);
+              setMessageText(removeHtmlTags(val));
+            }}
+            theme="bubble"
+            className={classes.quillEditor}
+            preserveWhiteSpace
+          />
+        </React.Fragment>
       ) : (
         <InputBase
           autoFocus
