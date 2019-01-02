@@ -236,8 +236,7 @@ function SubjectsContainer(props) {
 
         <Grid item xs className={classes.subjectListContainer}>
           <React.Fragment>
-            {//TODO:scrolly rolly
-            subjectsState.loading ? (
+            {subjectsState.loading ? (
               <LoadingHat message="Rounding up your subjects…" />
             ) : (
               <InfiniteScroll
@@ -251,7 +250,7 @@ function SubjectsContainer(props) {
                   />
                 }
                 useWindow={false}
-                threshold={1}
+                threshold={100}
               >
                 {subjects.map((x, i) => (
                   <SubjectItem
