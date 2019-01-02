@@ -28,17 +28,11 @@ import '../../node_modules/react-resizable/css/styles.css';
 import { firestore } from '../store';
 
 import LocationIndicator from '../components/LocationIndicator';
+import ChartEditor from '../components/Statistics/ChartEditor';
 
 import { COLLECTIONS } from '../constants/firestore';
 import { sleep } from '../utilities';
-import Loadable from 'react-loadable';
-import LoadingHat from '../components/LoadingHat';
 import { useWindowSize } from '../hooks/useWindowSize';
-const ChartEditor = Loadable({
-  loader: () =>
-    import('../components/Statistics/ChartEditor' /* webpackChunkName: "ChartEditor" */),
-  loading: LoadingHat,
-});
 
 const styles = theme => ({
   root: {
@@ -46,6 +40,7 @@ const styles = theme => ({
     height: '100vh',
   },
   grid: {
+    backgroundColor: theme.palette.background.default,
     width: '100%',
     height: 'calc(100vh - 64px)',
     overflowX: 'hidden',

@@ -85,7 +85,12 @@ function AdminSelector(props) {
           }}
           MenuProps={{ anchorEl }}
         >
-          <MenuItem value="">Unassigned</MenuItem>
+          <MenuItem value="">
+            <Avatar className={classes.avatar}>
+              <PersonIcon />
+            </Avatar>
+            Unassigned
+          </MenuItem>
           {context.admins.map(x => (
             <MenuItem key={x.id} value={x.id}>
               {x.avatarURL ? (
