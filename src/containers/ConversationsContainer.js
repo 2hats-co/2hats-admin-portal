@@ -39,7 +39,7 @@ const styles = theme => ({
     overflowY: 'auto',
     maxHeight: '50%',
   },
-  noOpenMsg: {
+  noConvs: {
     height: '100vh',
     color: theme.palette.text.secondary,
     textAlign: 'center',
@@ -148,7 +148,7 @@ function ConversationsContainer(props) {
               container
               justify="center"
               alignItems="center"
-              className={classes.noOpenMsg}
+              className={classes.noConvs}
             >
               <Grid item>
                 <ForumIcon />

@@ -92,14 +92,14 @@ const ComposerActions = React.memo(props => {
   const [showEventDialog, setShowEventDialog] = useState(false);
   const [showReminderDialog, setShowReminderDialog] = useState(false);
   const returnKey = useKeyPress('Enter');
-  const shiftKey = useKeyPress('Shift');
+  const controlKey = useKeyPress('Control');
   useEffect(
     () => {
-      if (shiftKey && returnKey) {
+      if (controlKey && returnKey) {
         actions[composerType]();
       }
     },
-    [shiftKey, returnKey]
+    [controlKey, returnKey]
   );
   let fabContent;
   switch (composerType) {

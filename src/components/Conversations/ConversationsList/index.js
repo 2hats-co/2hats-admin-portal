@@ -4,22 +4,39 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import Grid from '@material-ui/core/Grid';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import LinearProgress from '@material-ui/core/LinearProgress';
-
-// import MailIcon from '@material-ui/icons/Mail';
-//import StarIcon from '@material-ui/icons/Star';
-
 import List from '@material-ui/core/List';
-
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-import Item from './Item';
+import Typography from '@material-ui/core/Typography';
+
+import ForumIcon from '@material-ui/icons/Forum';
+
 import InfiniteScroll from 'react-infinite-scroller';
+
 import useCollection from '../../../hooks/useCollection';
 import AdminSelector from '../../AdminSelector';
+import Item from './Item';
 
 const styles = theme => ({
+  adminSelectorWrapper: {
+    marginTop: -theme.spacing.unit * 7,
+    marginBottom: theme.spacing.unit,
+    textAlign: 'right',
+    paddingRight: theme.spacing.unit,
+  },
   tabs: {
     boxShadow: `0 -1px 0 ${theme.palette.divider} inset`,
+  },
+  noConvs: {
+    height: '100%',
+    color: theme.palette.text.secondary,
+    textAlign: 'center',
+    cursor: 'default',
+    userSelect: 'none',
+    '& svg': {
+      fontSize: 48,
+      color: theme.palette.text.disabled,
+    },
   },
 });
 
@@ -93,7 +110,7 @@ function ConversationsList(props) {
 
   return (
     <Grid container direction="column" style={{ height: 'calc(100vh - 64px)' }}>
-      <Grid item>
+      <Grid item className={classes.adminSelectorWrapper}>
         <AdminSelector
           onSelect={uid => {
             setFilters([assigneeFilter(uid)]);
@@ -116,26 +133,45 @@ function ConversationsList(props) {
         </Tabs>
       </Grid>
 
-      <Grid item xs style={{ overflowY: 'scroll' }}>
-        <InfiniteScroll
-          initialLoad={false}
-          pageStart={0}
-          //BROKEN
-          loadMore={() => {
-            loadMore();
-          }}
-          hasMore={hasMore}
-          loader={
-            conversationsState.loading ? (
-              <LinearProgress key="listLoader" className={classes.listLoader} />
-            ) : null
-          }
-          useWindow={false}
-          threshold={50}
-        >
-          <List disablePadding>
-            {conversations &&
-              conversations.map(x => (
+      {conversations && conversations.length === 0 ? (
+        <Grid item xs>
+          <Grid
+            container
+            justify="center"
+            alignItems="center"
+            className={classes.noConvs}
+          >
+            <Grid item>
+              <ForumIcon />
+              <Typography variant="subtitle1" color="textSecondary">
+                No conversations
+              </Typography>
+            </Grid>
+          </Grid>
+        </Grid>
+      ) : (
+        <Grid item xs style={{ overflowY: 'scroll' }}>
+          <InfiniteScroll
+            initialLoad={false}
+            pageStart={0}
+            //BROKEN
+            loadMore={() => {
+              loadMore();
+            }}
+            hasMore={hasMore}
+            loader={
+              conversationsState.loading ? (
+                <LinearProgress
+                  key="listLoader"
+                  className={classes.listLoader}
+                />
+              ) : null
+            }
+            useWindow={false}
+            threshold={50}
+          >
+            <List disablePadding>
+              {conversations.map(x => (
                 <Item
                   onClick={() => {
                     setSelectedConversation(x);
@@ -149,9 +185,10 @@ function ConversationsList(props) {
                   // isStarred={x.isStarred}
                 />
               ))}
-          </List>
-        </InfiniteScroll>
-      </Grid>
+            </List>
+          </InfiniteScroll>
+        </Grid>
+      )}
     </Grid>
   );
 }
