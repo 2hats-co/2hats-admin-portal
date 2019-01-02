@@ -148,6 +148,7 @@ function generateTheme(theme, themeColor) {
         colorDefault: {
           backgroundColor: primaryLight,
           color: primaryColor,
+          fontWeight: 500,
         },
         img: {
           backgroundColor: primaryLight,
@@ -159,6 +160,13 @@ function generateTheme(theme, themeColor) {
       MuiInput: {
         underline: {
           '&::after': { borderBottomColor: primaryColor },
+        },
+      },
+      MuiFilledInput: {
+        root: { borderRadius: BORDER_RADIUS },
+        underline: {
+          borderBottomLeftRadius: 0,
+          borderBottomRightRadius: 0,
         },
       },
     },

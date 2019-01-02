@@ -3,6 +3,7 @@ import join from 'ramda/es/join';
 
 const makeElement = (template, type, replaceables) => {
   let output = template[type];
+
   for (const replaceable in replaceables) {
     output = globalReplace(
       output,
@@ -12,11 +13,12 @@ const makeElement = (template, type, replaceables) => {
   }
   return output;
 };
-const makeElements = (template, elements) => {
-  return elements.map(element =>
+
+const makeElements = (template, elements) =>
+  elements.map(element =>
     makeElement(template, element.type, element.replaceables)
   );
-};
+
 const footerElements = [
   {
     type: 'footerText',
@@ -27,6 +29,7 @@ const footerElements = [
   //   replaceables:{url:'https://portal.2hats.com.au/?unsubscribe=123#unsubscribe',label:'Unsubscribe from our emails'}
   // },
 ];
+
 export const makeEmail = (template, bodyElements) => {
   let output = template.wrapper;
   const logo = makeElement(template, 'logo', {

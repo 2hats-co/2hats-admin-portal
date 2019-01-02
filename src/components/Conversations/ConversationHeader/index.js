@@ -80,7 +80,7 @@ function ConversationHeader(props) {
                 <AddSubscriberIcon />
               </IconButton>
             </Tooltip>
-            <Tooltip title="Open Link in New Tab">
+            {/* <Tooltip title="Open Link in New Tab">
               <IconButton
                 onClick={() => {
                   window.open('', '_blank');
@@ -88,7 +88,7 @@ function ConversationHeader(props) {
               >
                 <LinkIcon />
               </IconButton>
-            </Tooltip>
+            </Tooltip> */}
             {/* <Tooltip title="Star">
               <IconButton>
                 <StarOutlineIcon />

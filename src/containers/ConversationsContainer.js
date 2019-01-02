@@ -36,8 +36,6 @@ const styles = theme => ({
   },
   composerContainer: {
     borderTop: `1px solid ${theme.palette.divider}`,
-    overflowY: 'auto',
-    maxHeight: '50%',
   },
   noConvs: {
     height: '100vh',
@@ -66,7 +64,6 @@ function ConversationsContainer(props) {
 
   useEffect(
     async () => {
-      //TODO: entertain user while this is going on, maybe offer them a snackbar 🥨🍿🍘🌰
       if (location.search.indexOf('?id=') > -1) {
         const conversationId = location.search.replace('?id=', '');
         dispatchConversation({ path: `conversations/${conversationId}` });
@@ -143,6 +140,21 @@ function ConversationsContainer(props) {
                 />
               </Grid>
             </Grid>
+          ) : location.search.indexOf('?id=') > -1 ||
+            location.search.indexOf('?uid=') > -1 ? (
+            <LoadingHat
+              message={
+                <React.Fragment>
+                  Finding and/or creating conversation, depending on whether
+                  this user already has a conversation recorded in the system…
+                  <br />
+                  <br />
+                  Thank you for your patience and understanding.
+                  <br />
+                  Have a great day.
+                </React.Fragment>
+              }
+            />
           ) : (
             <Grid
               container

@@ -14,6 +14,7 @@ export const sendEmail = async (conversationId, emailObject) => {
     conversationId,
     headers: {
       To: recipient.email,
+      Cc: recipient.cc,
       From: sender.email,
       Subject: email.subject,
     },
@@ -29,6 +30,7 @@ export const sendEmail = async (conversationId, emailObject) => {
     createdAt: now,
     sentAt: now,
     type: 'email',
+    cc: recipient.cc,
   };
   const lastMessage = { ...messageDoc, body: messageText };
   console.log('gmailDoc', gmailDoc);

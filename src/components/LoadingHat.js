@@ -53,6 +53,8 @@ const styles = theme => ({
     marginBottom: -theme.spacing.unit * 6,
     marginTop: theme.spacing.unit * 3,
     marginLeft: -theme.spacing.unit,
+    maxWidth: 600,
+    textAlign: 'center',
   },
 });
 
