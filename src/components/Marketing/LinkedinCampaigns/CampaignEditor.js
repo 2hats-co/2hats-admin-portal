@@ -19,10 +19,8 @@ import { Formik } from 'formik';
 import remove from 'ramda/es/remove';
 //import Yup from 'yup';
 const styles = theme => ({
-  root: {
-    margin: theme.spacing.unit * 5,
-    padding: theme.spacing.unit * 3,
-    maxWidth: 600,
+  paperRoot: {
+    width: 600,
   },
   title: {
     marginBottom: theme.spacing.unit * 2,
@@ -36,6 +34,13 @@ const styles = theme => ({
   },
   messageBox: {
     marginTop: theme.spacing.unit * 2,
+  },
+  sliderWrapper: {
+    marginRight: theme.spacing.unit * 3,
+  },
+  sectionTitle: {
+    marginLeft: theme.spacing.unit,
+    color: theme.palette.text.secondary,
   },
 });
 
@@ -109,7 +114,7 @@ function CampaignEditor(props) {
             <Dialog
               open={open}
               onClose={actions.close}
-              className={classes.modal}
+              classes={{ paper: classes.paperRoot }}
             >
               <DialogTitle>
                 {action} Campaign{campaign && `: ${campaign.query}`}
@@ -127,6 +132,8 @@ function CampaignEditor(props) {
                       fullWidth
                       value={values.email}
                     />
+                  </Grid>
+                  <Grid item>
                     <TextField
                       label="LinkedIn password"
                       id="password"
@@ -135,6 +142,8 @@ function CampaignEditor(props) {
                       fullWidth
                       value={values.password}
                     />
+                  </Grid>
+                  <Grid item>
                     <TextField
                       label="Search query"
                       id="query"
@@ -231,45 +240,59 @@ function CampaignEditor(props) {
                   <Grid item>
                     <TextField
                       className={classes.messageBox}
-                      variant="outlined"
                       multiline
                       fullWidth
-                      rows={3}
+                      rows={5}
                       label="Message"
                       id="message"
                       onChange={handleChange}
                       value={values.message}
+                      variant="outlined"
+                      margin="dense"
                     />
+                  </Grid>
+
+                  <Grid item>
+                    <Typography
+                      variant="caption"
+                      className={classes.sectionTitle}
+                    >
+                      Connections per session
+                    </Typography>
+                    <Grid container alignItems="center">
+                      <Grid item xs className={classes.sliderWrapper}>
+                        <Slider
+                          classes={{ container: classes.slider }}
+                          onChange={(e, v) => {
+                            setValues({ ...values, connectionsPerSession: v });
+                          }}
+                          id="connectionsPerSession"
+                          value={values.connectionsPerSession}
+                          min={5}
+                          max={100}
+                          step={5}
+                        />
+                      </Grid>
+                      <Grid item>
+                        <Typography variant="body2">
+                          {values.connectionsPerSession} Connections
+                        </Typography>
+                      </Grid>
+                    </Grid>
                   </Grid>
                 </Grid>
               </DialogContent>
-              <Grid container>
-                <Grid item xs className={classes.sliderWrapper}>
-                  <Slider
-                    classes={{ container: classes.slider }}
-                    onChange={(e, v) => {
-                      setValues({ ...values, connectionsPerSession: v });
-                    }}
-                    id="connectionsPerSession"
-                    value={values.connectionsPerSession}
-                    min={5}
-                    max={180}
-                    step={5}
-                  />
-                </Grid>
-                <Grid item>
-                  <Typography variant="body2">
-                    {values.connectionsPerSession} Connections
-                  </Typography>
-                </Grid>
-              </Grid>
+
               <DialogActions>
+                <Button onClick={actions.close} color="primary">
+                  Cancel
+                </Button>
                 <Button
                   onClick={handleSubmit}
                   color="primary"
-                  className={classes.done}
+                  variant="contained"
                 >
-                  Done
+                  {action}
                 </Button>
               </DialogActions>
             </Dialog>

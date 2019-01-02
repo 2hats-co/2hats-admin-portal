@@ -57,6 +57,9 @@ const styles = theme => ({
   listLoader: {
     marginTop: theme.spacing.unit * 2,
   },
+  fake: {
+    opacity: 0.54,
+  },
 });
 
 function CampaignDetailsDialog(props) {
@@ -113,7 +116,7 @@ function CampaignDetailsDialog(props) {
       <DialogContent className={classes.dialogContent}>
         <div className={classes.dialogSection}>
           <Typography variant="subtitle1" className={classes.sectionTitle}>
-            Stats (*fake data)
+            Stats <span className={classes.fake}>(*fake data)</span>
           </Typography>
           <Grid container spacing={24}>
             <Grid item xs={3}>
@@ -131,7 +134,7 @@ function CampaignDetailsDialog(props) {
               <Typography variant="body2">Last page</Typography>
             </Grid>
 
-            <Grid item xs={3}>
+            <Grid item xs={3} className={classes.fake}>
               <Typography variant="h6">
                 {Math.floor(Math.random() * 100)}
                 <small>%</small>
@@ -143,7 +146,7 @@ function CampaignDetailsDialog(props) {
               </Typography>
             </Grid>
 
-            <Grid item xs={3}>
+            <Grid item xs={3} className={classes.fake}>
               <Typography variant="h6">
                 {Math.floor(Math.random() * 100)}
                 <small>%</small>
@@ -173,7 +176,7 @@ function CampaignDetailsDialog(props) {
               </Typography>
             </Grid>
 
-            <Grid item xs={3}>
+            <Grid item xs={3} className={classes.fake}>
               <Typography variant="h6">
                 {Math.floor(Math.random() * 10)}
               </Typography>

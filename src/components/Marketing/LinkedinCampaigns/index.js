@@ -82,7 +82,7 @@ function LinkedinCampaigns(props) {
         <CampaignEditor
           open={showEditor}
           campaign={campaign}
-          action={campaign ? 'update' : 'create'}
+          action={campaign ? 'Update' : 'Create'}
           actions={{
             create: createCampaign,
             update: updateCampaign,
