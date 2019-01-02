@@ -209,7 +209,7 @@ function CampaignDetailsDialog(props) {
                   />
                 }
                 useWindow={false}
-                threshold={1}
+                threshold={100}
               >
                 <List classes={{ root: classes.listRoot }}>
                   {recentConnections.map(data => (

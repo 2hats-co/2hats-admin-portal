@@ -168,7 +168,7 @@ function ConversationsList(props) {
               ) : null
             }
             useWindow={false}
-            threshold={50}
+            threshold={100}
           >
             <List disablePadding>
               {conversations.map(x => (
