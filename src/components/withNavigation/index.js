@@ -125,7 +125,8 @@ const navigationRoutes = [
 export default function withNavigation(WrappedComponent) {
   function WithNavigation(props) {
     const { history, classes, theme, displayName, uid, location } = props;
-    const showGloria = useKeypress('g');
+    // const showGloria = useKeypress('g');
+    const showGloria = false;
     const [showSearch, setShowSearch] = useState(false);
     const [showUserDialog, setShowUserDialog] = useState(false);
     const currentUser = useAuthedUser();
