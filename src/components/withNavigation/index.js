@@ -118,7 +118,6 @@ const navigationRoutes = [
     icon: <MarketingIcon />,
     route: ROUTES.marketingLeadGeneration,
     subRoutes: [ROUTES.marketingLeadGeneration, ROUTES.marketingEmail],
-    incomplete: true,
   },
 ];
 
