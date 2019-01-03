@@ -18,6 +18,7 @@ import TimeIcon from '@material-ui/icons/AccessTime';
 import DetailsIcon from '@material-ui/icons/Notes';
 import LocationIcon from '@material-ui/icons/LocationOnOutlined';
 import AttendeesIcon from '@material-ui/icons/PeopleOutlined';
+import ReminderIcon from '@material-ui/icons/NotificationsOutlined';
 
 import moment from 'moment';
 import { momentLocales } from '../../../constants/momentLocales';
@@ -28,7 +29,7 @@ import { AdminsContext } from '../../../contexts/AdminsContext';
 
 const styles = theme => ({
   root: {
-    '& p': { textAlign: 'left' },
+    '& p, & h6': { textAlign: 'left' },
     '& .msg-caption': { display: 'none' },
   },
   linkedin: {},
@@ -51,7 +52,7 @@ const styles = theme => ({
       borderBottomLeftRadius: theme.shape.roundBorderRadius,
       marginRight: theme.spacing.unit * 6,
     },
-    '& p': { color: theme.palette.primary.darkText },
+    '& p, & h6': { color: theme.palette.primary.darkText },
     '& .msg-caption': { marginRight: theme.spacing.unit * 8 },
   },
 
@@ -203,6 +204,36 @@ const styles = theme => ({
     display: 'inline-block',
     textAlign: 'right',
   },
+
+  reminder: {
+    textAlign: 'center',
+
+    '& .msg-body': {
+      boxShadow: `0 0 0 1px ${theme.palette.primary.darkText} inset`,
+      borderRadius: `${theme.shape.roundBorderRadius}px !important`,
+      backgroundColor:
+        theme.palette.type === 'dark'
+          ? theme.palette.background.default
+          : theme.palette.background.paper,
+    },
+  },
+  reminderIcon: {
+    marginRight: theme.spacing.unit,
+    marginTop: theme.spacing.unit / 4,
+    marginLeft: -theme.spacing.unit / 2,
+    color: theme.palette.primary.darkText,
+  },
+  reminderAttendeesIcon: {
+    marginRight: theme.spacing.unit,
+    marginTop: -theme.spacing.unit / 4,
+    marginLeft: -theme.spacing.unit / 2,
+    opacity: 0.87,
+    color: theme.palette.text.primary,
+  },
+  reminderSubscribers: {
+    '& p': { color: theme.palette.text.primary },
+    marginTop: theme.spacing.unit,
+  },
 });
 
 function Message(props) {
@@ -210,7 +241,7 @@ function Message(props) {
   moment.updateLocale('en', momentLocales);
 
   const timestamp = moment(data.sentAt.seconds * 1000).format(
-    'DD/MM/YYYY h:mm a'
+    'D/MM/YYYY h:mm a'
   );
   const timeLabel = moment(data.sentAt.seconds * 1000).fromNow();
   const isIncoming = data.isIncoming;
@@ -294,16 +325,16 @@ function Message(props) {
                   <React.Fragment>
                     <Typography variant="body2">
                       <span className={classes.eventDetailCaption}>from</span>
-                      {startTime.format('ddd, D/MM/YYYY  ·  h:mm a')}
+                      {startTime.format('ddd, D/MM/YYYY · h:mm a')}
                     </Typography>
                     <Typography variant="body2">
                       <span className={classes.eventDetailCaption}>to</span>
-                      {endTime.format('ddd, D/MM/YYYY  ·  h:mm a')}
+                      {endTime.format('ddd, D/MM/YYYY · h:mm a')}
                     </Typography>
                   </React.Fragment>
                 ) : (
                   <Typography variant="body2">
-                    {startTime.format('ddd, D/MM/YYYY  ·  h:mm a')}–
+                    {startTime.format('ddd, D/MM/YYYY · h:mm a')}–
                     {endTime.format('h:mm a')}
                   </Typography>
                 )}
@@ -348,6 +379,38 @@ function Message(props) {
         </ExpansionPanel>
       );
       break;
+    case 'reminder':
+      bodyContent = (
+        <Grid container>
+          <Grid item>
+            <ReminderIcon className={classes.reminderIcon} />
+          </Grid>
+          <Grid item>
+            <Typography variant="subtitle1">{data.data.title}</Typography>
+            <Typography variant="body2">
+              {moment
+                .unix(data.data.dateTime.seconds)
+                .format('D/MM/YYYY · h:mm a')}
+            </Typography>
+          </Grid>
+
+          {data.data.subscribers && (
+            <Grid container className={classes.reminderSubscribers}>
+              <Grid item>
+                <AttendeesIcon className={classes.reminderAttendeesIcon} />
+              </Grid>
+              <Grid item>
+                {data.data.subscribers.map(x => (
+                  <Typography key={x} variant="body2">
+                    {adminsContext.getAdmin(x).givenName}
+                  </Typography>
+                ))}
+              </Grid>
+            </Grid>
+          )}
+        </Grid>
+      );
+      break;
     default:
       bodyContent = <Typography variant="body2">{data.body}</Typography>;
       break;
@@ -366,7 +429,8 @@ function Message(props) {
         data.type === 'note' && classes.note,
         data.type === 'email' && classes.email,
         data.type === 'activity' && classes.activity,
-        data.type === 'event' && classes.event
+        data.type === 'event' && classes.event,
+        data.type === 'reminder' && classes.reminder
       )}
     >
       <Tooltip
@@ -392,7 +456,8 @@ function Message(props) {
               <Avatar className={classes.avatar} src={sender.avatarURL} />
             ) : (
               <Avatar className={classes.avatar}>
-                {sender.givenName[0]} {sender.familyName[0]}
+                {sender.givenName[0]}
+                {sender.familyName[0]}
               </Avatar>
             )}
           </Tooltip>

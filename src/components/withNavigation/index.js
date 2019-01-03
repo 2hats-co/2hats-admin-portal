@@ -108,8 +108,8 @@ const navigationRoutes = [
   {
     label: 'Subjects',
     icon: <SupervisorAccountIcon />,
-    route: ROUTES.subjects,
-    subRoutes: [ROUTES.clients, ROUTES.candidates],
+    route: ROUTES.candidates,
+    subRoutes: [ROUTES.clients, ROUTES.candidates, ROUTES.subjects],
     incomplete: true,
   },
   {

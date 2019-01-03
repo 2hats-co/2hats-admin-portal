@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useContext } from 'react';
 
 import withStyles from '@material-ui/core/styles/withStyles';
 import Grid from '@material-ui/core/Grid';
@@ -10,6 +10,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Chip from '@material-ui/core/Chip';
+import Avatar from '@material-ui/core/Avatar';
 
 import LeftIcon from '@material-ui/icons/KeyboardArrowLeft';
 import RightIcon from '@material-ui/icons/KeyboardArrowRight';
@@ -21,8 +22,13 @@ import MomentUtils from '@date-io/moment';
 import { DateTimePicker } from 'material-ui-pickers';
 import moment from 'moment';
 import ToggleButton from '@material-ui/lab/ToggleButton';
-
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
+
+import AdminSelector from '../../AdminSelector';
+import { AdminsContext } from '../../../contexts/AdminsContext';
+import { useAuthedUser } from '../../../hooks/useAuthedUser';
+import { addReminder } from '../../../utilities/conversations';
+import { getInitials } from '../../../utilities';
 
 const styles = theme => ({
   root: {
@@ -66,7 +72,7 @@ const styles = theme => ({
       left: -theme.spacing.unit,
     },
   },
-  finalBlock: {
+  borderedBlock: {
     paddingLeft: theme.spacing.unit * 1.75,
     paddingRight: theme.spacing.unit * 1.75,
     marginTop: theme.spacing.unit * 3,
@@ -83,18 +89,53 @@ const styles = theme => ({
       top: -theme.spacing.unit * 3,
     },
   },
+  subscriberPicker: {
+    marginLeft: -theme.spacing.unit,
+  },
+  subscriberChip: {
+    marginTop: theme.spacing.unit,
+  },
+  avatar: {
+    color: theme.palette.primary.main,
+  },
 });
 
 function ReminderDialog(props) {
   const { classes, showDialog, setShowDialog, conversation } = props;
   const displayName = conversation.displayName;
+  const context = useContext(AdminsContext);
+  const currentUser = useAuthedUser();
 
   const [title, setTitle] = useState('');
   const [dt, setDt] = useState(moment());
   const [duration, setDuration] = useState(1);
   const [units, setUnits] = useState('days');
+  const [subscribers, setSubscribers] = useState([]);
+
+  useEffect(
+    () => {
+      if (currentUser && subscribers.indexOf(currentUser.UID) === -1)
+        handleAddSubscriber(currentUser.UID);
+    },
+    [currentUser]
+  );
 
   const picker = useRef(null);
+
+  const resetForm = () => {
+    setTitle('');
+    setDt(moment());
+    setDuration(1);
+    setUnits('days');
+    setSubscribers(currentUser ? [currentUser.UID] : []);
+  };
+
+  useEffect(
+    () => {
+      resetForm();
+    },
+    [conversation]
+  );
 
   const handleClose = () => {
     setShowDialog(false);
@@ -113,11 +154,37 @@ function ReminderDialog(props) {
     [duration, units]
   );
 
+  const handleAddSubscriber = uid => {
+    if (uid && subscribers.indexOf(uid) === -1) {
+      const newSubscribers = [...subscribers];
+      newSubscribers.push(uid);
+      setSubscribers(newSubscribers);
+    }
+  };
+  const handleDeleteSubscriber = i => {
+    const newSubscribers = [...subscribers];
+    newSubscribers.splice(i, 1);
+    setSubscribers(newSubscribers);
+  };
+
+  const handleAdd = () => {
+    const data = {
+      title,
+      dateTime: dt.toDate(),
+      subscribers,
+    };
+    addReminder(currentUser.UID, conversation.id, data);
+    resetForm();
+    handleClose();
+  };
+
   const titleSuggestions = [
     displayName,
     `Call ${displayName}`,
     `Reply to ${displayName}`,
   ];
+
+  const disableAdd = title.length === 0 || !dt || subscribers.length === 0;
 
   return (
     <Dialog
@@ -179,6 +246,7 @@ function ReminderDialog(props) {
                   setDuration(e.target.value);
                 }}
                 type="number"
+                inputProps={{ min: 1 }}
                 disabled={units === 'custom'}
                 margin="dense"
               />
@@ -231,9 +299,51 @@ function ReminderDialog(props) {
           </MuiPickersUtilsProvider>
         </div>
 
-        <div className={classes.finalBlock}>
+        <div className={classes.borderedBlock}>
+          <Typography variant="caption">Subscribers</Typography>
+          <Grid container spacing={8}>
+            <Grid item>
+              <AdminSelector
+                onSelect={handleAddSubscriber}
+                className={classes.subscriberPicker}
+              />
+            </Grid>
+            <Grid item xs>
+              {subscribers.map((x, i) => {
+                const admin = context.getAdmin(x);
+                return (
+                  <Chip
+                    key={x}
+                    avatar={
+                      admin.avatarURL ? (
+                        <Avatar src={admin.avatarURL} />
+                      ) : (
+                        <Avatar className={classes.avatar}>
+                          {getInitials(
+                            `${admin.givenName} ${admin.familyName}`
+                          )}
+                        </Avatar>
+                      )
+                    }
+                    label={admin.givenName}
+                    onDelete={() => {
+                      handleDeleteSubscriber(i);
+                    }}
+                    variant="outlined"
+                    className={classes.subscriberChip}
+                  />
+                );
+              })}
+            </Grid>
+          </Grid>
+        </div>
+
+        <div className={classes.borderedBlock}>
           <Typography variant="body1">
-            You’ll be notified on
+            {subscribers.length === 1 && subscribers[0] === currentUser.UID
+              ? 'You’ll '
+              : subscribers.length + ' people will '}
+            be notified on
             <b> {dt && dt.format('D/MM/YYYY hh:mm a')}</b>
           </Typography>
         </div>
@@ -243,7 +353,12 @@ function ReminderDialog(props) {
         <Button onClick={handleClose} color="primary">
           Cancel
         </Button>
-        <Button onClick={handleClose} color="primary" variant="contained">
+        <Button
+          onClick={handleAdd}
+          color="primary"
+          variant="contained"
+          disabled={disableAdd}
+        >
           Add
         </Button>
       </DialogActions>

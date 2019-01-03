@@ -8,7 +8,7 @@ import Typography from '@material-ui/core/Typography';
 import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
 
-import AddSubscriberIcon from '@material-ui/icons/GroupAddOutlined';
+import AddSubscriberIcon from '@material-ui/icons/GroupAdd';
 // import LinkIcon from '@material-ui/icons/Link';
 import BackIcon from '@material-ui/icons/ArrowBack';
 // import StarOutlineIcon from '@material-ui/icons/StarBorder';

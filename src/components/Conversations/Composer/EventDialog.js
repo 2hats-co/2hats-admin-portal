@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import withStyles from '@material-ui/core/styles/withStyles';
 import Grid from '@material-ui/core/Grid';
@@ -100,6 +100,19 @@ function EventDialog(props) {
     setData({ ...data, [field]: value });
   };
 
+  const resetForm = () => {
+    setData(initialData);
+    setCustomDuration(false);
+    setAttendeeField('');
+  };
+
+  useEffect(
+    () => {
+      resetForm();
+    },
+    [conversation]
+  );
+
   const handleClose = () => {
     setShowDialog(false);
     if (
@@ -117,6 +130,16 @@ function EventDialog(props) {
       dateTime: data.start.dateTime.clone().add(val, 'm'),
     });
   };
+
+  useEffect(
+    () => {
+      updateData('end', {
+        ...data.end,
+        dateTime: data.start.dateTime.clone().add(data.end.duration, 'm'),
+      });
+    },
+    [data.start.dateTime]
+  );
 
   const titleSuggestions = [
     displayName,
@@ -159,6 +182,7 @@ function EventDialog(props) {
     outData.start.dateTime = data.start.dateTime.toISOString(true);
     outData.end.dateTime = data.end.dateTime.toISOString(true);
     addEvent(currentUser.UID, conversation.id, outData);
+    resetForm();
     handleClose();
   };
 

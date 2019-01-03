@@ -138,6 +138,8 @@ function ConversationsList(props) {
           onSelect={uid => {
             setFilters([assigneeFilter(uid)]);
           }}
+          tooltip="Filter by assignee"
+          noneText="Unassigned"
         />
       </Grid>
       <Grid item>
