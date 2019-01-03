@@ -18,6 +18,7 @@ import TimeIcon from '@material-ui/icons/AccessTime';
 import DetailsIcon from '@material-ui/icons/Notes';
 import LocationIcon from '@material-ui/icons/LocationOnOutlined';
 import AttendeesIcon from '@material-ui/icons/PeopleOutlined';
+import ReminderIcon from '@material-ui/icons/NotificationsOutlined';
 
 import moment from 'moment';
 import { momentLocales } from '../../../constants/momentLocales';
@@ -28,7 +29,7 @@ import { AdminsContext } from '../../../contexts/AdminsContext';
 
 const styles = theme => ({
   root: {
-    '& p': { textAlign: 'left' },
+    '& p, & h6': { textAlign: 'left' },
     '& .msg-caption': { display: 'none' },
   },
   linkedin: {},
@@ -51,7 +52,7 @@ const styles = theme => ({
       borderBottomLeftRadius: theme.shape.roundBorderRadius,
       marginRight: theme.spacing.unit * 6,
     },
-    '& p': { color: theme.palette.primary.darkText },
+    '& p, & h6': { color: theme.palette.primary.darkText },
     '& .msg-caption': { marginRight: theme.spacing.unit * 8 },
   },
 
@@ -203,6 +204,25 @@ const styles = theme => ({
     display: 'inline-block',
     textAlign: 'right',
   },
+
+  reminder: {
+    textAlign: 'center',
+
+    '& .msg-body': {
+      boxShadow: `0 0 0 1px ${theme.palette.primary.darkText} inset`,
+      borderRadius: `${theme.shape.roundBorderRadius}px !important`,
+      backgroundColor:
+        theme.palette.type === 'dark'
+          ? theme.palette.background.default
+          : theme.palette.background.paper,
+    },
+  },
+  reminderIcon: {
+    marginRight: theme.spacing.unit,
+    marginTop: theme.spacing.unit / 4,
+    marginLeft: -theme.spacing.unit / 2,
+    color: theme.palette.primary.darkText,
+  },
 });
 
 function Message(props) {
@@ -348,6 +368,21 @@ function Message(props) {
         </ExpansionPanel>
       );
       break;
+    case 'reminder':
+      bodyContent = (
+        <Grid container>
+          <Grid item>
+            <ReminderIcon className={classes.reminderIcon} />
+          </Grid>
+          <Grid item>
+            <Typography variant="subtitle1">{data.data.title}</Typography>
+            <Typography variant="body2">
+              {data.data.dateTime.toString()}
+            </Typography>
+          </Grid>
+        </Grid>
+      );
+      break;
     default:
       bodyContent = <Typography variant="body2">{data.body}</Typography>;
       break;
@@ -366,7 +401,8 @@ function Message(props) {
         data.type === 'note' && classes.note,
         data.type === 'email' && classes.email,
         data.type === 'activity' && classes.activity,
-        data.type === 'event' && classes.event
+        data.type === 'event' && classes.event,
+        data.type === 'reminder' && classes.reminder
       )}
     >
       <Tooltip
