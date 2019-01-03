@@ -131,6 +131,10 @@ const styles = theme => ({
       maxWidth: 800,
     },
   },
+
+  event: {
+    backgroundColor: 'red',
+  },
 });
 
 function Message(props) {
@@ -185,7 +189,8 @@ function Message(props) {
         data.type === 'linkedin' && classes.linkedin,
         data.type === 'note' && classes.note,
         data.type === 'email' && classes.email,
-        data.type === 'activity' && classes.activity
+        data.type === 'activity' && classes.activity,
+        data.type === 'event' && classes.event
       )}
     >
       <div className={classNames(classes.body, 'msg-body')}>{bodyContent}</div>

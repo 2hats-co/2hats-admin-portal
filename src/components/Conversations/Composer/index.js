@@ -171,6 +171,8 @@ function Composer(props) {
     setCc('');
   };
 
+  useEffect(clearComposer, [conversation.id]);
+
   const [emailSubject, setEmailSubject] = useState('');
   const [messageText, setMessageText] = useState('');
   const [messageHtml, setMessageHtml] = useState('');
@@ -260,26 +262,24 @@ function Composer(props) {
         indicatorColor="primary"
         textColor="primary"
       >
-        {channels.linkedin && (
-          <Tab
-            value="linkedin"
-            label="LinkedIn"
-            classes={{
-              root: classes.tabRoot,
-              labelContainer: classes.tabLabelContainer,
-            }}
-          />
-        )}
-        {channels.email && (
-          <Tab
-            value="email"
-            label="Email"
-            classes={{
-              root: classes.tabRoot,
-              labelContainer: classes.tabLabelContainer,
-            }}
-          />
-        )}
+        <Tab
+          value="linkedin"
+          label="LinkedIn"
+          classes={{
+            root: classes.tabRoot,
+            labelContainer: classes.tabLabelContainer,
+          }}
+          disabled={!channels.linkedin}
+        />
+        <Tab
+          value="email"
+          label="Email"
+          classes={{
+            root: classes.tabRoot,
+            labelContainer: classes.tabLabelContainer,
+          }}
+          disabled={!channels.email}
+        />
         <Tab
           value="note"
           label="Note"
@@ -310,7 +310,9 @@ function Composer(props) {
             >
               <MenuItem value={-1}>No template</MenuItem>
               {templates.map((x, i) => (
-                <MenuItem value={i}>{x.templateName}</MenuItem>
+                <MenuItem key={`${x}-${i}`} value={i}>
+                  {x.templateName}
+                </MenuItem>
               ))}
             </TextField>
           </div>

@@ -18,6 +18,7 @@ import LeftIcon from '@material-ui/icons/KeyboardArrowLeft';
 import RightIcon from '@material-ui/icons/KeyboardArrowRight';
 import DateIcon from '@material-ui/icons/EventOutlined';
 import TimeIcon from '@material-ui/icons/AccessTime';
+import AddIcon from '@material-ui/icons/Add';
 
 import { MuiPickersUtilsProvider } from 'material-ui-pickers';
 import MomentUtils from '@date-io/moment';
@@ -26,13 +27,16 @@ import moment from 'moment';
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import CustomIcon from '@material-ui/icons/Build';
 
+import { useAuthedUser } from '../../../hooks/useAuthedUser';
+import { addEvent } from '../../../utilities/conversations';
+import clone from 'ramda/es/clone';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 const styles = theme => ({
   root: {
     minWidth: 480,
   },
   block: {
-    marginTop: theme.spacing.unit * 2,
+    marginTop: theme.spacing.unit * 3,
     '&:first-of-type': { marginTop: theme.spacing.unit / 2 },
   },
   suggestedLabel: {
@@ -43,6 +47,14 @@ const styles = theme => ({
   },
   suggestionChip: {
     marginTop: theme.spacing.unit,
+  },
+  attendeeField: {
+    marginRight: theme.spacing.unit,
+  },
+  addAttendeeButton: {
+    height: theme.spacing.unit * 6,
+    marginTop: theme.spacing.unit,
+    boxShadow: '0 0 0 1px rgba(0, 0, 0, 0.23) inset',
   },
   durationLabel: {
     marginLeft: theme.spacing.unit * 1.75,
@@ -62,8 +74,7 @@ function EventDialog(props) {
   const { classes, showDialog, setShowDialog, conversation } = props;
   const displayName = conversation.displayName;
 
-  const [customDuration, setCustomDuration] = useState(false);
-  const [data, setData] = useState({
+  const initialData = {
     summary: '',
     description: '',
     location: '66-68 Devonshire St, Surry Hills NSW 2010',
@@ -76,8 +87,12 @@ function EventDialog(props) {
       duration: 30, // needs to be removed on output
       timeZone: 'Australia/Sydney',
     },
-    attendees: [],
-  });
+    attendees: [conversation.channels.email],
+  };
+
+  const [customDuration, setCustomDuration] = useState(false);
+  const [data, setData] = useState(initialData);
+  const [attendeeField, setAttendeeField] = useState('');
 
   const updateData = (field, value) => {
     setData({ ...data, [field]: value });
@@ -108,6 +123,43 @@ function EventDialog(props) {
     `Chat with ${displayName}`,
   ];
 
+  const addAttendee = email => {
+    const emailToAdd = email || attendeeField;
+    if (emailToAdd && emailToAdd.length > 0) {
+      const newData = clone(data);
+      newData.attendees.push(emailToAdd);
+      setData(newData);
+      setAttendeeField('');
+    }
+  };
+
+  const removeAttendee = i => {
+    const newData = clone(data);
+    newData.attendees.splice(i, 1);
+    setData(newData);
+  };
+
+  const disableAdd =
+    data.summary.length === 0 ||
+    data.attendees.length === 0 ||
+    !data.start.dateTime ||
+    !data.end.dateTime;
+
+  const currentUser = useAuthedUser();
+  const handleAdd = () => {
+    const outData = clone(data); // needed for deep clone
+    delete outData.end.duration;
+    outData.attendees = outData.attendees.map(x =>
+      x === conversation.channels.email
+        ? { email: x, displayName: conversation.displayName }
+        : { email: x }
+    );
+    outData.start.dateTime = data.start.dateTime.toISOString(true);
+    outData.end.dateTime = data.end.dateTime.toISOString(true);
+    addEvent(currentUser.UID, conversation.id, outData);
+    handleClose();
+  };
+
   return (
     <Dialog
       open={showDialog}
@@ -127,7 +179,6 @@ function EventDialog(props) {
             onChange={e => {
               updateData('summary', e.target.value);
             }}
-            className={classes.titleField}
             margin="dense"
           />
           <Grid container alignItems="flex-start">
@@ -140,12 +191,12 @@ function EventDialog(props) {
               {titleSuggestions.map(x => (
                 <Chip
                   key={x}
-                  variant="outlined"
                   label={x}
                   className={classes.suggestionChip}
                   onClick={() => {
                     updateData('summary', x);
                   }}
+                  variant="outlined"
                 />
               ))}
             </Grid>
@@ -166,6 +217,74 @@ function EventDialog(props) {
             className={classes.titleField}
             margin="dense"
           />
+        </div>
+
+        <div className={classes.block}>
+          <Grid container alignItems="flex-start">
+            <Grid item xs className={classes.attendeeField}>
+              <TextField
+                label="Add attendees by email"
+                placeholder="Press Enter or click the Add button"
+                variant="outlined"
+                fullWidth
+                value={attendeeField}
+                onKeyPress={e => {
+                  if (e.key === 'Enter') {
+                    addAttendee();
+                  }
+                }}
+                onChange={e => {
+                  setAttendeeField(e.target.value);
+                }}
+                margin="dense"
+              />
+            </Grid>
+            <Grid>
+              <IconButton
+                variant="contained"
+                className={classes.addAttendeeButton}
+                onClick={() => {
+                  addAttendee(); // needs to be this call or else will pass event object
+                }}
+              >
+                <AddIcon />
+              </IconButton>
+            </Grid>
+          </Grid>
+          {data.attendees.map((x, i) => (
+            <Chip
+              key={`${x}-${i}`}
+              label={x}
+              className={classes.suggestionChip}
+              onDelete={() => {
+                removeAttendee(i);
+              }}
+              variant="outlined"
+            />
+          ))}
+          {conversation.channels.email &&
+            data.attendees.indexOf(conversation.channels.email) === -1 && (
+              <Grid container alignItems="flex-start">
+                <Grid item>
+                  <Typography
+                    variant="body2"
+                    className={classes.suggestedLabel}
+                  >
+                    Suggested:
+                  </Typography>
+                </Grid>
+                <Grid item xs>
+                  <Chip
+                    label={conversation.channels.email}
+                    className={classes.suggestionChip}
+                    onClick={() => {
+                      addAttendee(conversation.channels.email);
+                    }}
+                    variant="outlined"
+                  />
+                </Grid>
+              </Grid>
+            )}
         </div>
 
         <div className={classes.block}>
@@ -265,7 +384,12 @@ function EventDialog(props) {
         <Button onClick={handleClose} color="primary">
           Cancel
         </Button>
-        <Button onClick={handleClose} color="primary" variant="contained">
+        <Button
+          onClick={handleAdd}
+          color="primary"
+          variant="contained"
+          disabled={disableAdd}
+        >
           Add
         </Button>
       </DialogActions>

@@ -36,6 +36,20 @@ export const addNote = (adminId, conversationId, note) => {
     });
 };
 
+export const addEvent = (adminId, conversationId, event) => {
+  firestore
+    .collection(COLLECTIONS.conversations)
+    .doc(conversationId)
+    .collection(COLLECTIONS.messages)
+    .add({
+      senderId: adminId,
+      createdAt: new Date(),
+      sentAt: new Date(),
+      type: 'event',
+      data: event,
+    });
+};
+
 export const setAssignee = (adminId, conversationId) => {
   firestore
     .collection(COLLECTIONS.conversations)
