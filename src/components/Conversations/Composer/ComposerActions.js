@@ -14,6 +14,8 @@ import FileIcon from '@material-ui/icons/Attachment';
 import ImageIcon from '@material-ui/icons/ImageOutlined';
 import EventIcon from '@material-ui/icons/EventOutlined';
 import ReminderIcon from '@material-ui/icons/NotificationsOutlined';
+
+import EmojiDialog from './EmojiDialog';
 import EventDialog from './EventDialog';
 import ReminderDialog from './ReminderDialog';
 import useKeyPress from '../../../hooks/useKeypress';
@@ -88,7 +90,7 @@ const atButton = handleClick => (
 
 const ComposerActions = React.memo(props => {
   const { composerType, actions, conversation } = props;
-  const [showEmoji, setShowEmoji] = useState(false);
+  const [showEmojiDialog, setShowEmojiDialog] = useState(false);
   const [showEventDialog, setShowEventDialog] = useState(false);
   const [showReminderDialog, setShowReminderDialog] = useState(false);
   const returnKey = useKeyPress('Enter');
@@ -132,7 +134,7 @@ const ComposerActions = React.memo(props => {
       break;
   }
   const EmojiButton = emojiButton(() => {
-    setShowEmoji(!showEmoji);
+    setShowEmojiDialog(!showEmojiDialog);
   });
   let actionButtons;
   switch (composerType) {
@@ -165,13 +167,9 @@ const ComposerActions = React.memo(props => {
     default:
       break;
   }
-  // const addEmoji = e => {
-  //   actions.addText(e.native);
-  //   // setShowEmoji(false)
-  // };
+
   return (
     <React.Fragment>
-      {/* {showEmoji && <Picker set="messenger" onSelect={addEmoji} />} */}
       <Grid item>
         <Grid container justify="space-between">
           <Grid item style={{ marginLeft: -12 }}>
@@ -190,6 +188,10 @@ const ComposerActions = React.memo(props => {
         </Grid>
       </Grid>
 
+      <EmojiDialog
+        showDialog={showEmojiDialog}
+        setShowDialog={setShowEmojiDialog}
+      />
       <EventDialog
         showDialog={showEventDialog}
         setShowDialog={setShowEventDialog}
