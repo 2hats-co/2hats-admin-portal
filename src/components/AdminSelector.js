@@ -40,7 +40,7 @@ function AdminSelector(props) {
 
   if (context.admins) {
     const currentUser = context.admins.filter(x => x.id === selected)[0];
-
+    const displayedAdmins = context.admins.filter(x => !x.fired);
     return (
       <React.Fragment>
         <Tooltip title="Filter by owner">
@@ -91,7 +91,7 @@ function AdminSelector(props) {
             </Avatar>
             Unassigned
           </MenuItem>
-          {context.admins.map(x => (
+          {displayedAdmins.map(x => (
             <MenuItem key={x.id} value={x.id}>
               {x.avatarURL ? (
                 <Avatar className={classes.avatar} src={x.avatarURL} />
