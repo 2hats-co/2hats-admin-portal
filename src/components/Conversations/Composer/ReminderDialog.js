@@ -21,8 +21,10 @@ import MomentUtils from '@date-io/moment';
 import { DateTimePicker } from 'material-ui-pickers';
 import moment from 'moment';
 import ToggleButton from '@material-ui/lab/ToggleButton';
-
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
+
+import { useAuthedUser } from '../../../hooks/useAuthedUser';
+import { addReminder } from '../../../utilities/conversations';
 
 const styles = theme => ({
   root: {
@@ -112,6 +114,16 @@ function ReminderDialog(props) {
     },
     [duration, units]
   );
+
+  const currentUser = useAuthedUser();
+  const handleAdd = () => {
+    const data = {
+      title,
+      dateTime: dt.toDate(),
+    };
+    addReminder(currentUser.UID, conversation.id, data);
+    handleClose();
+  };
 
   const titleSuggestions = [
     displayName,
@@ -243,7 +255,7 @@ function ReminderDialog(props) {
         <Button onClick={handleClose} color="primary">
           Cancel
         </Button>
-        <Button onClick={handleClose} color="primary" variant="contained">
+        <Button onClick={handleAdd} color="primary" variant="contained">
           Add
         </Button>
       </DialogActions>

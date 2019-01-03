@@ -50,6 +50,20 @@ export const addEvent = (adminId, conversationId, event) => {
     });
 };
 
+export const addReminder = (adminId, conversationId, data) => {
+  firestore
+    .collection(COLLECTIONS.conversations)
+    .doc(conversationId)
+    .collection(COLLECTIONS.messages)
+    .add({
+      senderId: adminId,
+      createdAt: new Date(),
+      sentAt: new Date(),
+      type: 'reminder',
+      data,
+    });
+};
+
 export const setAssignee = (adminId, conversationId) => {
   firestore
     .collection(COLLECTIONS.conversations)
