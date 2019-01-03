@@ -32,7 +32,7 @@ const styles = theme => ({
 });
 
 function AdminSelector(props) {
-  const { classes, onSelect } = props;
+  const { classes, className, onSelect, tooltip, noneText } = props;
   const [selected, setSelected] = useState('');
   const [open, setOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -43,13 +43,14 @@ function AdminSelector(props) {
     const displayedAdmins = context.admins.filter(x => !x.fired);
     return (
       <React.Fragment>
-        <Tooltip title="Filter by owner">
+        <Tooltip title={tooltip || 'Choose admin'}>
           <Button
             onClick={e => {
               setAnchorEl(e.currentTarget);
               setOpen(true);
             }}
             classes={{ root: classes.buttonRoot }}
+            className={className}
           >
             {currentUser ? (
               currentUser.avatarURL ? (
@@ -89,7 +90,7 @@ function AdminSelector(props) {
             <Avatar className={classes.avatar}>
               <PersonIcon />
             </Avatar>
-            Unassigned
+            {noneText || 'None'}
           </MenuItem>
           {displayedAdmins.map(x => (
             <MenuItem key={x.id} value={x.id}>

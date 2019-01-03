@@ -20,7 +20,7 @@ import { createConversation } from '../utilities/conversations';
 const Composer = Loadable({
   loader: () =>
     import('../components/Conversations/Composer' /* webpackChunkName: "MessagesComposer" */),
-  loading: LoadingHat,
+  loading: () => <LoadingHat message="Serving up your messages…" />,
 });
 
 const styles = theme => ({

@@ -223,6 +223,15 @@ const styles = theme => ({
     marginLeft: -theme.spacing.unit / 2,
     color: theme.palette.primary.darkText,
   },
+  reminderAttendeesIcon: {
+    marginRight: theme.spacing.unit,
+    marginTop: -theme.spacing.unit / 4,
+    marginLeft: -theme.spacing.unit / 2,
+  },
+  reminderSubscribers: {
+    '& p': { color: theme.palette.text.primary },
+    marginTop: theme.spacing.unit,
+  },
 });
 
 function Message(props) {
@@ -230,7 +239,7 @@ function Message(props) {
   moment.updateLocale('en', momentLocales);
 
   const timestamp = moment(data.sentAt.seconds * 1000).format(
-    'DD/MM/YYYY h:mm a'
+    'D/MM/YYYY h:mm a'
   );
   const timeLabel = moment(data.sentAt.seconds * 1000).fromNow();
   const isIncoming = data.isIncoming;
@@ -314,16 +323,16 @@ function Message(props) {
                   <React.Fragment>
                     <Typography variant="body2">
                       <span className={classes.eventDetailCaption}>from</span>
-                      {startTime.format('ddd, D/MM/YYYY  ·  h:mm a')}
+                      {startTime.format('ddd, D/MM/YYYY · h:mm a')}
                     </Typography>
                     <Typography variant="body2">
                       <span className={classes.eventDetailCaption}>to</span>
-                      {endTime.format('ddd, D/MM/YYYY  ·  h:mm a')}
+                      {endTime.format('ddd, D/MM/YYYY · h:mm a')}
                     </Typography>
                   </React.Fragment>
                 ) : (
                   <Typography variant="body2">
-                    {startTime.format('ddd, D/MM/YYYY  ·  h:mm a')}–
+                    {startTime.format('ddd, D/MM/YYYY · h:mm a')}–
                     {endTime.format('h:mm a')}
                   </Typography>
                 )}
@@ -377,9 +386,26 @@ function Message(props) {
           <Grid item>
             <Typography variant="subtitle1">{data.data.title}</Typography>
             <Typography variant="body2">
-              {data.data.dateTime.toString()}
+              {moment
+                .unix(data.data.dateTime.seconds)
+                .format('D/MM/YYYY · h:mm a')}
             </Typography>
           </Grid>
+
+          {data.data.subscribers && (
+            <Grid container className={classes.reminderSubscribers}>
+              <Grid item>
+                <AttendeesIcon className={classes.reminderAttendeesIcon} />
+              </Grid>
+              <Grid item>
+                {data.data.subscribers.map(x => (
+                  <Typography key={x} variant="body2">
+                    {adminsContext.getAdmin(x).givenName}
+                  </Typography>
+                ))}
+              </Grid>
+            </Grid>
+          )}
         </Grid>
       );
       break;
@@ -428,7 +454,8 @@ function Message(props) {
               <Avatar className={classes.avatar} src={sender.avatarURL} />
             ) : (
               <Avatar className={classes.avatar}>
-                {sender.givenName[0]} {sender.familyName[0]}
+                {sender.givenName[0]}
+                {sender.familyName[0]}
               </Avatar>
             )}
           </Tooltip>
