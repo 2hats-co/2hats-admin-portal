@@ -16,7 +16,7 @@ const styles = theme => ({
   },
 });
 
-const Bullhorn = props => (
+const LinkedIn = props => (
   <svg className={props.classes.root} focusable="false" viewBox="0 0 24 24">
     <path
       fillRule="evenodd"
@@ -26,4 +26,4 @@ const Bullhorn = props => (
   </svg>
 );
 
-export default withStyles(styles)(Bullhorn);
+export default withStyles(styles)(LinkedIn);

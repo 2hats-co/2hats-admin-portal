@@ -124,7 +124,10 @@ function generateTheme(theme, themeColor) {
           minWidth: '64px !important',
           fontSize: '.875rem !important',
         },
-        textColorPrimary: { color: 'rgba(0,0,0,.87)' },
+        textColorPrimary: {
+          color: 'rgba(0,0,0,.87)',
+          '& svg': { opacity: 0.87 },
+        },
       },
       MuiChip: {
         root: {

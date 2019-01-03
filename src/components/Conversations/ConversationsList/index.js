@@ -8,8 +8,12 @@ import List from '@material-ui/core/List';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
+import Tooltip from '@material-ui/core/Tooltip';
 
 import ForumIcon from '@material-ui/icons/Forum';
+import UnreadIcon from '@material-ui/icons/Markunread';
+import ClientIcon from '@material-ui/icons/BusinessCenter';
+import CandidateIcon from '@material-ui/icons/School';
 
 import InfiniteScroll from 'react-infinite-scroller';
 
@@ -55,6 +59,17 @@ const assigneeFilter = uid => ({
   operator: '==',
   value: uid,
 });
+const candidateFilter = {
+  field: 'type',
+  operator: '==',
+  value: 'candidate',
+};
+const clientFilter = {
+  field: 'type',
+  operator: '==',
+  value: 'client',
+};
+
 function ConversationsList(props) {
   const { classes, setSelectedConversation, selectedConversation, uid } = props;
   const [conversationsState, conversationsDispatch] = useCollection({
@@ -68,10 +83,18 @@ function ConversationsList(props) {
   const [filters, setFilters] = useState([subscriberFilter(uid)]);
   useEffect(
     () => {
-      if (filter === 'unread') {
-        setFilters([unreadFilter(uid)]);
-      } else {
-        setFilters([subscriberFilter(uid)]);
+      switch (filter) {
+        case 'unread':
+          setFilters([unreadFilter(uid)]);
+          break;
+        case 'candidate':
+          setFilters([candidateFilter]);
+          break;
+        case 'client':
+          setFilters([clientFilter]);
+          break;
+        default:
+          setFilters([subscriberFilter(uid)]);
       }
     },
     [filter]
@@ -129,7 +152,33 @@ function ConversationsList(props) {
           fullWidth
         >
           <Tab value="all" label="All" />
-          <Tab value="unread" label="Unread" />
+
+          <Tab
+            value="unread"
+            label={
+              <Tooltip title="Unread">
+                <UnreadIcon />
+              </Tooltip>
+            }
+          />
+
+          <Tab
+            value="client"
+            label={
+              <Tooltip title="Clients">
+                <ClientIcon />
+              </Tooltip>
+            }
+          />
+
+          <Tab
+            value="candidate"
+            label={
+              <Tooltip title="Candidates">
+                <CandidateIcon />
+              </Tooltip>
+            }
+          />
         </Tabs>
       </Grid>
 

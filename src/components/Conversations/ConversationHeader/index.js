@@ -14,6 +14,8 @@ import BackIcon from '@material-ui/icons/ArrowBack';
 // import StarOutlineIcon from '@material-ui/icons/StarBorder';
 import ClientIcon from '@material-ui/icons/BusinessCenter';
 import CandidateIcon from '@material-ui/icons/School';
+import EmailIcon from '@material-ui/icons/Markunread';
+import LinkedInIcon from '../../../assets/icons/LinkedIn';
 
 // import MenuItem from '@material-ui/core/MenuItem';
 // import OutlinedInput from '@material-ui/core/OutlinedInput';
@@ -23,6 +25,7 @@ import CandidateIcon from '@material-ui/icons/School';
 
 import ManageSubscribersDialog from './ManageSubscribersDialog';
 import { useWindowSize } from '../../../hooks/useWindowSize';
+import { copyToClipboard } from '../../../utilities';
 
 const styles = theme => ({
   root: {
@@ -39,6 +42,9 @@ const styles = theme => ({
   },
   assignee: {
     width: 160,
+  },
+  linkedInButton: {
+    color: `${theme.palette.text.secondary} !important`,
   },
 });
 
@@ -71,11 +77,6 @@ function ConversationHeader(props) {
               </Grid>
               <Grid item>
                 <Typography variant="h6">{conversation.displayName}</Typography>
-                {conversation.channels.email && (
-                  <Typography variant="body2">
-                    {conversation.channels.email}
-                  </Typography>
-                )}
               </Grid>
             </Grid>
           </Grid>
@@ -99,6 +100,31 @@ function ConversationHeader(props) {
             </FormControl> */}
           </Grid>
           <Grid item>
+            {conversation.channels.email && (
+              <Tooltip
+                onClick={() => {
+                  copyToClipboard(conversation.channels.email);
+                }}
+                title={
+                  <React.Fragment>
+                    conversation.channels.email
+                    <br />
+                    (Click to copy)
+                  </React.Fragment>
+                }
+              >
+                <IconButton>
+                  <EmailIcon />
+                </IconButton>
+              </Tooltip>
+            )}
+            {conversation.channels.linkedin && (
+              //<Tooltip title={conversation.channels.email}>
+              <IconButton disabled className={classes.linkedInButton}>
+                <LinkedInIcon />
+              </IconButton>
+              //</Tooltip>
+            )}
             <Tooltip title="Manage Subscribers">
               <IconButton
                 onClick={() => {
