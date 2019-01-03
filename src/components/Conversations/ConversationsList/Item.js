@@ -5,14 +5,27 @@ import Typography from '@material-ui/core/Typography';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 
+import ClientIcon from '@material-ui/icons/BusinessCenter';
+import CandidateIcon from '@material-ui/icons/School';
+
 import moment from 'moment';
 import { momentLocales } from '../../../constants/momentLocales';
 import withStyles from '@material-ui/core/styles/withStyles';
 
 const styles = theme => ({
+  root: {
+    paddingLeft: theme.spacing.unit * 2,
+    paddingRight: theme.spacing.unit * 2,
+  },
   selectedItem: {
     backgroundColor: `${theme.palette.primary.light} !important`,
     color: `${theme.palette.primary.darkText} !important`,
+  },
+  typeIcon: {
+    fontSize: 18,
+    verticalAlign: 'text-bottom',
+    marginRight: theme.spacing.unit * 0.75,
+    opacity: 0.67,
   },
   listItemTextRoot: {
     paddingRight: 0,
@@ -34,6 +47,7 @@ const styles = theme => ({
   clipBodyText: {
     maxHeight: 40,
     overflow: 'hidden',
+    marginLeft: theme.spacing.unit * 3,
   },
 });
 
@@ -46,7 +60,7 @@ function CandidateItem(props) {
       onClick={props.onClick}
       button
       selected={selected}
-      classes={{ selected: classes.selectedItem }}
+      classes={{ root: classes.root, selected: classes.selectedItem }}
     >
       <ListItemText
         primary={
@@ -56,6 +70,12 @@ function CandidateItem(props) {
                 variant="subtitle1"
                 style={{ display: 'inline-block' }}
               >
+                {data.type === 'client' && (
+                  <ClientIcon className={classes.typeIcon} />
+                )}
+                {data.type === 'candidate' && (
+                  <CandidateIcon className={classes.typeIcon} />
+                )}
                 {data.displayName}
               </Typography>
             </Grid>

@@ -9,22 +9,33 @@ import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
 
 import AddSubscriberIcon from '@material-ui/icons/GroupAddOutlined';
-import LinkIcon from '@material-ui/icons/Link';
+// import LinkIcon from '@material-ui/icons/Link';
 import BackIcon from '@material-ui/icons/ArrowBack';
 // import StarOutlineIcon from '@material-ui/icons/StarBorder';
+import ClientIcon from '@material-ui/icons/BusinessCenter';
+import CandidateIcon from '@material-ui/icons/School';
+
 // import MenuItem from '@material-ui/core/MenuItem';
 // import OutlinedInput from '@material-ui/core/OutlinedInput';
 // import Select from '@material-ui/core/Select';
 // import FormControl from '@material-ui/core/FormControl';
 // import InputLabel from '@material-ui/core/InputLabel';
+
 import ManageSubscribersDialog from './ManageSubscribersDialog';
 import { useWindowSize } from '../../../hooks/useWindowSize';
+
 const styles = theme => ({
   root: {
     padding: `${theme.spacing.unit}px ${theme.spacing.unit * 1.5}px ${
       theme.spacing.unit
-    }px ${theme.spacing.unit * 3}px`,
+    }px ${theme.spacing.unit * 2.25}px`,
     borderBottom: `1px solid ${theme.palette.divider}`,
+  },
+  typeIcon: {
+    marginTop: theme.spacing.unit / 2,
+    marginRight: theme.spacing.unit,
+    opacity: 0.87,
+    color: theme.palette.text.primary,
   },
   assignee: {
     width: 160,
@@ -49,7 +60,24 @@ function ConversationHeader(props) {
             </Grid>
           )}
           <Grid item>
-            <Typography variant="h6">{conversation.displayName}</Typography>
+            <Grid container alignItems="flex-start">
+              <Grid item>
+                {conversation.type === 'client' && (
+                  <ClientIcon className={classes.typeIcon} />
+                )}
+                {conversation.type === 'candidate' && (
+                  <CandidateIcon className={classes.typeIcon} />
+                )}
+              </Grid>
+              <Grid item>
+                <Typography variant="h6">{conversation.displayName}</Typography>
+                {conversation.channels.email && (
+                  <Typography variant="body2">
+                    {conversation.channels.email}
+                  </Typography>
+                )}
+              </Grid>
+            </Grid>
           </Grid>
           <Grid item className={classes.assignee} />
           <Grid item>

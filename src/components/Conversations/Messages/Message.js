@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import classNames from 'classnames';
 
 import withStyles from '@material-ui/core/styles/withStyles';
@@ -24,7 +24,7 @@ import { momentLocales } from '../../../constants/momentLocales';
 // import timestamp from 'time-stamp';
 
 //import { getInitials } from '../../../utilities';
-import { AdminsConsumer } from '../../../contexts/AdminsContext';
+import { AdminsContext } from '../../../contexts/AdminsContext';
 
 const styles = theme => ({
   root: {
@@ -209,8 +209,14 @@ function Message(props) {
   const { data, classes, firstOfType, lastOfType } = props;
   moment.updateLocale('en', momentLocales);
 
+  const timestamp = moment(data.sentAt.seconds * 1000).format(
+    'DD/MM/YYYY h:mm a'
+  );
   const timeLabel = moment(data.sentAt.seconds * 1000).fromNow();
   const isIncoming = data.isIncoming;
+
+  const adminsContext = useContext(AdminsContext);
+  const sender = data.senderId && adminsContext.getAdmin(data.senderId);
 
   let bodyContent;
   switch (data.type) {
@@ -363,22 +369,33 @@ function Message(props) {
         data.type === 'event' && classes.event
       )}
     >
-      <div className={classNames(classes.body, 'msg-body')}>{bodyContent}</div>
+      <Tooltip
+        title={
+          <React.Fragment>
+            {timestamp}
+            <br />
+            {sender && sender.givenName} {sender && sender.familyName}
+          </React.Fragment>
+        }
+        placement={isIncoming ? 'right' : 'left'}
+        enterDelay={1000}
+      >
+        <div className={classNames(classes.body, 'msg-body')}>
+          {bodyContent}
+        </div>
+      </Tooltip>
       {!isIncoming &&
         lastOfType &&
-        (data.senderId ? (
-          <AdminsConsumer>
-            {context => {
-              const sender = context.getAdmin(data.senderId);
-              return (
-                <Tooltip title={sender.givenName}>
-                  <Avatar className={classes.avatar} src={sender.avatarURL}>
-                    {sender.givenName[0]} {sender.familyName[0]}
-                  </Avatar>
-                </Tooltip>
-              );
-            }}
-          </AdminsConsumer>
+        (sender ? (
+          <Tooltip title={sender.givenName}>
+            {sender.avatarURL ? (
+              <Avatar className={classes.avatar} src={sender.avatarURL} />
+            ) : (
+              <Avatar className={classes.avatar}>
+                {sender.givenName[0]} {sender.familyName[0]}
+              </Avatar>
+            )}
+          </Tooltip>
         ) : (
           <Avatar className={classes.avatar}>
             <PersonIcon />

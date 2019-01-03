@@ -124,6 +124,7 @@ function generateTheme(theme, themeColor) {
           minWidth: '64px !important',
           fontSize: '.875rem !important',
         },
+        textColorPrimary: { color: 'rgba(0,0,0,.87)' },
       },
       MuiChip: {
         root: {
@@ -235,6 +236,7 @@ function generateTheme(theme, themeColor) {
       MuiTab: {
         ...baseTheme.overrides.MuiTab,
         selected: { color: `${primaryDarkText} !important` },
+        textColorPrimary: { color: '#fff' },
       },
       MuiBackdrop: {
         root: {
