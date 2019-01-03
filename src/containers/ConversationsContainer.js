@@ -1,4 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, {
+  //useState,
+  useEffect,
+} from 'react';
 import withNavigation from '../components/withNavigation';
 import withStyles from '@material-ui/core/styles/withStyles';
 
