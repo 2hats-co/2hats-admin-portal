@@ -130,6 +130,13 @@ function ReminderDialog(props) {
     setSubscribers(currentUser ? [currentUser.UID] : []);
   };
 
+  useEffect(
+    () => {
+      resetForm();
+    },
+    [conversation]
+  );
+
   const handleClose = () => {
     setShowDialog(false);
   };

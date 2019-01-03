@@ -23,7 +23,7 @@ const styles = theme => ({
     width: 600,
   },
   title: {
-    marginBottom: theme.spacing.unit * 2,
+    textTransform: 'capitalize',
   },
   addButton: {
     marginRight: -theme.spacing.unit * 2,
@@ -116,7 +116,7 @@ function CampaignEditor(props) {
               onClose={actions.close}
               classes={{ paper: classes.paperRoot }}
             >
-              <DialogTitle>
+              <DialogTitle className={classes.title}>
                 {action} Campaign{campaign && `: ${campaign.query}`}
               </DialogTitle>
 

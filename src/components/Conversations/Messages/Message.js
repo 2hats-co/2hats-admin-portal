@@ -227,6 +227,8 @@ const styles = theme => ({
     marginRight: theme.spacing.unit,
     marginTop: -theme.spacing.unit / 4,
     marginLeft: -theme.spacing.unit / 2,
+    opacity: 0.87,
+    color: theme.palette.text.primary,
   },
   reminderSubscribers: {
     '& p': { color: theme.palette.text.primary },

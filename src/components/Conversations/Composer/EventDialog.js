@@ -106,6 +106,13 @@ function EventDialog(props) {
     setAttendeeField('');
   };
 
+  useEffect(
+    () => {
+      resetForm();
+    },
+    [conversation]
+  );
+
   const handleClose = () => {
     setShowDialog(false);
     if (
