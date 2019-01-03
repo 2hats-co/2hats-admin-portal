@@ -63,6 +63,7 @@ function generateTheme(theme, themeColor) {
       h5: { fontWeight: 500 },
       subtitle1: { fontWeight: 500 },
       h6: { textTransform: 'none' },
+      body2: { lineHeight: 1.45 },
       button: {
         textTransform: 'none',
         fontWeight: 700,

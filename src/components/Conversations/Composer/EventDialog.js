@@ -70,6 +70,8 @@ const styles = theme => ({
   },
 });
 
+const STREET_ADDRESS = '66-68 Devonshire St, Surry Hills NSW 2010, Australia';
+
 function EventDialog(props) {
   const { classes, showDialog, setShowDialog, conversation } = props;
   const displayName = conversation.displayName;
@@ -77,7 +79,7 @@ function EventDialog(props) {
   const initialData = {
     summary: '',
     description: '',
-    location: '66-68 Devonshire St, Surry Hills NSW 2010',
+    location: STREET_ADDRESS,
     start: {
       dateTime: moment(), // needs to be converted to ISO string on output
       timeZone: 'Australia/Sydney',
@@ -377,6 +379,26 @@ function EventDialog(props) {
             margin="dense"
             autoComplete="street-address"
           />
+
+          {data.location !== STREET_ADDRESS && (
+            <Grid container alignItems="flex-start">
+              <Grid item>
+                <Typography variant="body2" className={classes.suggestedLabel}>
+                  Suggested:
+                </Typography>
+              </Grid>
+              <Grid item xs>
+                <Chip
+                  label={STREET_ADDRESS}
+                  className={classes.suggestionChip}
+                  onClick={() => {
+                    updateData('location', STREET_ADDRESS);
+                  }}
+                  variant="outlined"
+                />
+              </Grid>
+            </Grid>
+          )}
         </div>
       </DialogContent>
 

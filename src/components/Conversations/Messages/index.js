@@ -23,6 +23,7 @@ const isSameType = (a, b) =>
   a.isIncoming === b.isIncoming &&
   a.type === b.type &&
   a.sentBy === b.sentBy &&
+  a.senderId === b.senderId &&
   moment(a.sentAt.seconds * 1000).fromNow() ===
     moment(b.sentAt.seconds * 1000).fromNow();
 
