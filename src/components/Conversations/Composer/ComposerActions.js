@@ -8,13 +8,12 @@ import Fab from '@material-ui/core/Fab';
 
 import SendIcon from '@material-ui/icons/Send';
 import DoneIcon from '@material-ui/icons/Done';
-// import AtIcon from '@material-ui/icons/AlternateEmail';
+import AtIcon from '@material-ui/icons/AlternateEmail';
 import EmojiIcon from '@material-ui/icons/InsertEmoticon';
-import GifIcon from '@material-ui/icons/Gif';
 import FileIcon from '@material-ui/icons/Attachment';
-import ImageIcon from '@material-ui/icons/ImageOutlined';
 import EventIcon from '@material-ui/icons/EventOutlined';
 import ReminderIcon from '@material-ui/icons/NotificationsOutlined';
+import GroupIcon from '@material-ui/icons/Group';
 
 import EmojiDialog from './EmojiDialog';
 import EventDialog from './EventDialog';
@@ -22,44 +21,12 @@ import ReminderDialog from './ReminderDialog';
 import useKeyPress from '../../../hooks/useKeypress';
 
 import GooglePicker from '../../GooglePicker';
-// import GooglePicker from 'react-google-picker';
-
-//import 'emoji-mart/css/emoji-mart.css';
-//import { Picker } from 'emoji-mart';
-//import Loadable from 'react-loadable';
-//import LoadingHat from '../../LoadingHat';
-// const { Picker } = Loadable({
-//   loader: () => import('emoji-mart' /* webpackChunkName: "EmojiPicker" */),
-//   loading: LoadingHat,
-// });
-// const EventDialog = Loadable({
-//   loader: () => import('./EventDialog' /* webpackChunkName: "EventDialog" */),
-//   loading: LoadingHat,
-// });
-// const ReminderDialog = Loadable({
-//   loader: () =>
-//     import('./ReminderDialog' /* webpackChunkName: "ReminderDialog" */),
-//   loading: LoadingHat,
-// });
+import AdminSelector from '../../AdminSelector';
 
 const emojiButton = handleClick => (
   <Tooltip title="Emoji" key="emoji">
     <IconButton onClick={handleClick}>
       <EmojiIcon />
-    </IconButton>
-  </Tooltip>
-);
-const gifButton = handleClick => (
-  <Tooltip title="GIF" key="gif">
-    <IconButton onClick={handleClick} style={{ padding: 6 }}>
-      <GifIcon style={{ fontSize: 36 }} />
-    </IconButton>
-  </Tooltip>
-);
-const imageButton = handleClick => (
-  <Tooltip title="Image" key="image">
-    <IconButton onClick={handleClick}>
-      <ImageIcon />
     </IconButton>
   </Tooltip>
 );
@@ -86,13 +53,22 @@ const reminderButton = handleClick => (
     </IconButton>
   </Tooltip>
 );
-// const atButton = handleClick => (
-//   <Tooltip title="At" key="at">
-//     <IconButton onClick={handleClick}>
-//       <AtIcon />
-//     </IconButton>
-//   </Tooltip>
-// );
+const atButton = handleSelect => (
+  <AdminSelector
+    key="at"
+    onSelect={handleSelect}
+    extraItems={[
+      { value: 'all', label: 'All subscribers', icon: <GroupIcon /> },
+    ]}
+    disableNone
+  >
+    <Tooltip title="Notify others">
+      <IconButton>
+        <AtIcon />
+      </IconButton>
+    </Tooltip>
+  </AdminSelector>
+);
 
 const styles = theme => ({
   actionsWrapper: {
@@ -165,9 +141,6 @@ const ComposerActions = React.memo(props => {
     case 'email':
       actionButtons = [
         emojiButton(handleEmoji),
-        // imageButton(),
-        // gifButton(),
-
         eventButton(() => {
           setShowEventDialog(true);
         }),
@@ -180,13 +153,11 @@ const ComposerActions = React.memo(props => {
     case 'note':
       actionButtons = [
         emojiButton(handleEmoji),
-        // imageButton(),
-        // gifButton(),
         reminderButton(() => {
           setShowReminderDialog(true);
         }),
         fileButton(handleFile),
-        // atButton(),
+        atButton(actions.at),
       ];
       break;
     default:

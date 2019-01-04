@@ -62,6 +62,7 @@ const styles = theme => ({
       boxShadow: 'none !important',
       borderRadius: 0,
       padding: 0,
+      paddingLeft: theme.spacing.unit,
       paddingRight: theme.spacing.unit,
     },
     '& p': {
@@ -144,7 +145,10 @@ const styles = theme => ({
     minHeight: `${theme.spacing.unit * 5}px !important`,
     padding: `0 ${theme.spacing.unit * 2}px`,
   },
-  expansionTitle: { fontWeight: 500 },
+  expansionTitle: {
+    fontWeight: 500,
+    paddingRight: `${theme.spacing.unit * 3}px !important`,
+  },
   expandIcon: {
     right: 0,
     '$yourMessage &': { color: theme.palette.primary.darkText },

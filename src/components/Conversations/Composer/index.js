@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 
 import withStyles from '@material-ui/core/styles/withStyles';
 import Grid from '@material-ui/core/Grid';
@@ -9,10 +9,7 @@ import Tab from '@material-ui/core/Tab';
 import TextField from '@material-ui/core/TextField';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import MenuItem from '@material-ui/core/MenuItem';
-
-import FileIcon from '@material-ui/icons/Attachment';
-import EventIcon from '@material-ui/icons/EventOutlined';
-import ReminderIcon from '@material-ui/icons/NotificationsOutlined';
+import Avatar from '@material-ui/core/Avatar';
 
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.bubble.css';
@@ -21,6 +18,7 @@ import classNames from 'classnames';
 import clone from 'ramda/es/clone';
 
 import ComposerActions from './ComposerActions';
+import { AdminsContext } from '../../../contexts/AdminsContext';
 import { useAuthedUser } from '../../../hooks/useAuthedUser';
 import { removeHtmlTags } from '../../../utilities';
 import { sendEmail } from '../../../utilities/email/gmail';
@@ -32,7 +30,6 @@ import {
   makeEmail,
   personaliseElements,
 } from '../../../utilities/email/templateGenerator';
-// import { generateSmartKey } from '../../../utilities/firestore';
 
 const styles = theme => ({
   root: {
@@ -42,6 +39,12 @@ const styles = theme => ({
         : theme.palette.background.paper,
     padding: theme.spacing.unit * 2,
     position: 'relative',
+  },
+  noteComposer: {
+    backgroundColor:
+      theme.palette.type !== 'dark'
+        ? theme.palette.background.default
+        : theme.palette.background.paper,
   },
   tabs: {
     position: 'relative',
@@ -106,9 +109,9 @@ const styles = theme => ({
   chipWrapper: {
     marginLeft: -theme.spacing.unit,
   },
-  chipIcon: {
-    marginLeft: theme.spacing.unit,
-  },
+  // chipIcon: {
+  //   marginLeft: theme.spacing.unit,
+  // },
 });
 
 // const DUMMY_EVENTS = [
@@ -131,21 +134,10 @@ const CANDIDATE_TEMPLATES = [
   templatesObject.resumeAccepted,
 ];
 
-const getChipIcon = type => {
-  switch (type) {
-    case 'reminder':
-      return <ReminderIcon />;
-    case 'file':
-      return <FileIcon />;
-    case 'event':
-      return <EventIcon />;
-    default:
-      return null;
-  }
-};
-
 function Composer(props) {
-  const { classes, theme, conversation, channels } = props;
+  const { classes, conversation, channels } = props;
+
+  const adminsContext = useContext(AdminsContext);
 
   const [composerType, setComposerType] = useState(
     channels.email ? 'email' : 'linkedin'
@@ -174,6 +166,7 @@ function Composer(props) {
     setEmailSubject('');
     setTemplateIndex(-1);
     setCc('');
+    setNotifyList('');
   };
 
   useEffect(clearComposer, [conversation.id]);
@@ -181,12 +174,35 @@ function Composer(props) {
   const [emailSubject, setEmailSubject] = useState('');
   const [messageText, setMessageText] = useState('');
   const [messageHtml, setMessageHtml] = useState('');
-  const [attachments, setAttachments] = useState([]);
+  // const [attachments, setAttachments] = useState([]);
   const [cc, setCc] = useState('');
   const [templateIndex, setTemplateIndex] = useState(-1);
+  const [notifyList, setNotifyList] = useState([]);
 
   const addText = addition => {
     setMessageText(messageText + addition);
+  };
+
+  const handleAt = uid => {
+    if (!uid) return;
+    if (uid === 'all') {
+      setNotifyList([
+        ...notifyList,
+        ...conversation.subscribedAdmins.filter(
+          x => notifyList.indexOf(x) === -1
+        ),
+      ]);
+
+      const newText = '@all ' + messageText;
+      setMessageText(newText);
+      setMessageHtml(newText);
+    } else if (notifyList.indexOf(uid) === -1) {
+      setNotifyList([...notifyList, uid]);
+      const newText =
+        '@' + adminsContext.getAdmin(uid).givenName + ' ' + messageText;
+      setMessageText(newText);
+      setMessageHtml(newText);
+    }
   };
 
   const templates =
@@ -232,7 +248,7 @@ function Composer(props) {
   };
 
   const handleAddNote = () => {
-    addNote(currentUser.UID, conversation.id, messageText);
+    addNote(currentUser.UID, conversation.id, messageText, notifyList);
     clearComposer();
   };
 
@@ -251,11 +267,10 @@ function Composer(props) {
 
   return (
     <div
-      className={classes.root}
-      style={{
-        backgroundColor:
-          composerType === 'note' ? theme.palette.primary.light : 'inherit',
-      }}
+      className={classNames(
+        classes.root,
+        composerType === 'note' && classes.noteComposer
+      )}
     >
       <Tabs
         className={classes.tabs}
@@ -404,7 +419,7 @@ function Composer(props) {
         />
       )}
 
-      <div className={classes.chipWrapper}>
+      {/* <div className={classes.chipWrapper}>
         {attachments.map((x, i) => (
           <Chip
             key={i}
@@ -418,7 +433,28 @@ function Composer(props) {
             classes={{ icon: classes.chipIcon }}
           />
         ))}
-      </div>
+      </div> */}
+
+      {composerType === 'note' && (
+        <div className={classes.chipWrapper}>
+          {notifyList &&
+            notifyList.map((x, i) => {
+              const admin = adminsContext.getAdmin(x);
+              return (
+                <Chip
+                  key={x}
+                  label={admin.givenName}
+                  avatar={<Avatar src={admin.avatarURL} />}
+                  onDelete={() => {
+                    const newNotifyList = notifyList;
+                    newNotifyList.splice(i, 1);
+                    setNotifyList(newNotifyList);
+                  }}
+                />
+              );
+            })}
+        </div>
+      )}
 
       <ComposerActions
         actions={{
@@ -426,6 +462,7 @@ function Composer(props) {
           note: handleAddNote,
           linkedin: handleSendLinkedin,
           addText,
+          at: handleAt,
         }}
         composerType={composerType}
         conversation={conversation}
@@ -434,4 +471,4 @@ function Composer(props) {
   );
 }
 
-export default withStyles(styles, { withTheme: true })(Composer);
+export default withStyles(styles)(Composer);

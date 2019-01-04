@@ -22,7 +22,8 @@ export const markAsRead = async (adminId, conversationId) => {
   }
 };
 
-export const addNote = (adminId, conversationId, note) => {
+export const addNote = (adminId, conversationId, note, notifyList) => {
+  if (!notifyList) notifyList = [];
   firestore
     .collection(COLLECTIONS.conversations)
     .doc(conversationId)
@@ -30,9 +31,11 @@ export const addNote = (adminId, conversationId, note) => {
     .add({
       senderId: adminId,
       body: note,
+      notifyList,
       createdAt: new Date(),
       sentAt: new Date(),
       type: 'note',
+      isIncoming: false,
     });
 };
 

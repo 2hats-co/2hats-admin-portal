@@ -32,44 +32,66 @@ const styles = theme => ({
 });
 
 function AdminSelector(props) {
-  const { classes, className, onSelect, tooltip, noneText } = props;
+  const {
+    classes,
+    className,
+    children,
+    onSelect,
+    tooltip,
+    noneText,
+    disableNone,
+    extraItems,
+  } = props;
   const [selected, setSelected] = useState('');
   const [open, setOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const context = useContext(AdminsContext);
 
+  const handleClick = e => {
+    setAnchorEl(e.currentTarget);
+    setOpen(true);
+  };
+
+  const childrenWithProps = children
+    ? React.Children.map(children, child =>
+        React.cloneElement(child, { onClick: handleClick })
+      )
+    : null;
+
   if (context.admins) {
     const currentUser = context.admins.filter(x => x.id === selected)[0];
     const displayedAdmins = context.admins.filter(x => !x.fired);
-    return (
-      <React.Fragment>
-        <Tooltip title={tooltip || 'Choose admin'}>
-          <Button
-            onClick={e => {
-              setAnchorEl(e.currentTarget);
-              setOpen(true);
-            }}
-            classes={{ root: classes.buttonRoot }}
-            className={className}
-          >
-            {currentUser ? (
-              currentUser.avatarURL ? (
-                <Avatar src={currentUser.avatarURL} />
-              ) : (
-                <Avatar>
-                  {getInitials(
-                    `${currentUser.givenName} ${currentUser.familyName}`
-                  )}
-                </Avatar>
-              )
+
+    const defaultPicker = (
+      <Tooltip title={tooltip || 'Choose admin'}>
+        <Button
+          onClick={handleClick}
+          classes={{ root: classes.buttonRoot }}
+          className={className}
+        >
+          {currentUser ? (
+            currentUser.avatarURL ? (
+              <Avatar src={currentUser.avatarURL} />
             ) : (
               <Avatar>
-                <PersonIcon />
+                {getInitials(
+                  `${currentUser.givenName} ${currentUser.familyName}`
+                )}
               </Avatar>
-            )}
-            <DropDownIcon className={classes.dropdownIcon} />
-          </Button>
-        </Tooltip>
+            )
+          ) : (
+            <Avatar>
+              <PersonIcon />
+            </Avatar>
+          )}
+          <DropDownIcon className={classes.dropdownIcon} />
+        </Button>
+      </Tooltip>
+    );
+
+    return (
+      <React.Fragment>
+        {childrenWithProps || defaultPicker}
         <Select
           classes={{ root: classes.selectRoot }}
           open={open}
@@ -86,12 +108,23 @@ function AdminSelector(props) {
           }}
           MenuProps={{ anchorEl }}
         >
-          <MenuItem value="">
-            <Avatar className={classes.avatar}>
-              <PersonIcon />
-            </Avatar>
-            {noneText || 'None'}
-          </MenuItem>
+          {!disableNone && (
+            <MenuItem value="">
+              <Avatar className={classes.avatar}>
+                <PersonIcon />
+              </Avatar>
+              {noneText || 'None'}
+            </MenuItem>
+          )}
+          {extraItems &&
+            extraItems.map(x => (
+              <MenuItem value={x.value}>
+                <Avatar className={classes.avatar}>
+                  {x.icon || <PersonIcon />}
+                </Avatar>
+                {x.label}
+              </MenuItem>
+            ))}
           {displayedAdmins.map(x => (
             <MenuItem key={x.id} value={x.id}>
               {x.avatarURL ? (

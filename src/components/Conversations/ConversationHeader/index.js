@@ -107,7 +107,7 @@ function ConversationHeader(props) {
                 }}
                 title={
                   <React.Fragment>
-                    conversation.channels.email
+                    <b>{conversation.channels.email}</b>
                     <br />
                     (Click to copy)
                   </React.Fragment>

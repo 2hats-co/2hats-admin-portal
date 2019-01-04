@@ -3,7 +3,6 @@ import React, { useEffect, useRef } from 'react';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Grid from '@material-ui/core/Grid';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import Slide from '@material-ui/core/Slide';
 
 import moment from 'moment';
 
@@ -51,12 +50,11 @@ function Messages(props) {
   const messages = documents;
   useEffect(
     () => {
-      if (messagesRef) {
-        console.log(messagesRef, messagesEnd);
+      if (messagesEnd.current) {
+        messagesEnd.current.scrollIntoView({ behavior: 'smooth' });
       }
-      //  messagesEnd.current.scrollIntoView({ behavior: 'smooth' });
     },
-    [messagesEnd]
+    [messages]
   );
 
   if (messagesState.loading)
@@ -72,24 +70,26 @@ function Messages(props) {
     );
 
   return (
-    <Slide in direction="down">
-      <div className={classes.root} ref={messagesRef}>
-        {messages &&
-          messages.map((data, i) => (
-            <Message
-              key={data.id}
-              data={data}
-              firstOfType={i > 0 ? !isSameType(messages[i - 1], data) : true}
-              lastOfType={
-                i < messages.length - 1
-                  ? !isSameType(messages[i + 1], data)
-                  : true
-              }
-            />
-          ))}
-        <div style={{ float: 'left', clear: 'both' }} ref={messagesEnd} />
-      </div>
-    </Slide>
+    <div className={classes.root} ref={messagesRef}>
+      {messages &&
+        messages.map((data, i) => (
+          <Message
+            key={data.id}
+            data={data}
+            firstOfType={i > 0 ? !isSameType(messages[i - 1], data) : true}
+            lastOfType={
+              i < messages.length - 1
+                ? !isSameType(messages[i + 1], data)
+                : true
+            }
+          />
+        ))}
+      <div
+        id="messages-end"
+        style={{ float: 'left', clear: 'both' }}
+        ref={messagesEnd}
+      />
+    </div>
   );
 }
 
