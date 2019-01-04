@@ -118,7 +118,7 @@ function AdminSelector(props) {
           )}
           {extraItems &&
             extraItems.map(x => (
-              <MenuItem value={x.value}>
+              <MenuItem key={x.value} value={x.value}>
                 <Avatar className={classes.avatar}>
                   {x.icon || <PersonIcon />}
                 </Avatar>

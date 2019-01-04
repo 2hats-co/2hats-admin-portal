@@ -38,6 +38,7 @@ const styles = theme => ({
         ? theme.palette.background.default
         : theme.palette.background.paper,
     padding: theme.spacing.unit * 2,
+    paddingTop: 0,
     position: 'relative',
   },
   noteComposer: {
@@ -46,21 +47,24 @@ const styles = theme => ({
         ? theme.palette.background.default
         : theme.palette.background.paper,
   },
-  tabs: {
-    position: 'relative',
-    top: -theme.spacing.unit * 2,
-    left: -theme.spacing.unit * 2,
-  },
-  tabRoot: {
-    minHeight: theme.spacing.unit * 4.5,
-  },
-  tabLabelContainer: {
-    padding: '6px 16px',
-  },
+
   topBar: {
-    position: 'absolute',
-    right: theme.spacing.unit * 2,
-    top: 0,
+    marginLeft: -theme.spacing.unit * 2,
+    marginBottom: theme.spacing.unit * 2,
+    width: `calc(100% + ${theme.spacing.unit * 3}px)`,
+    height: theme.spacing.unit * 4.5,
+  },
+  tabsScroller: { width: 'auto' },
+  tabsFlexContainer: { display: 'inline-flex' },
+  tabRoot: { minHeight: theme.spacing.unit * 4.5 },
+  tabLabelContainer: { padding: '6px 16px' },
+  emailFields: {
+    marginLeft: theme.spacing.unit * 2,
+    marginRight: theme.spacing.unit * 2,
+  },
+  templateDropdownWrapper: {
+    position: 'relative',
+    top: theme.spacing.unit / 2,
   },
   templateDropdown: {
     paddingTop: theme.spacing.unit,
@@ -69,25 +73,21 @@ const styles = theme => ({
     fontSize: '.875rem',
     minWidth: 100,
   },
-  emailBar: {
-    marginTop: -theme.spacing.unit * 3,
-    marginBottom: 0,
-  },
+
   scrollableBox: {
     maxHeight: 400,
     overflowY: 'auto',
   },
   plainTextBox: {
     width: '100%',
-    minHeight: 133,
+    minHeight: 100,
   },
   quillEditor: {
     minHeight: 100,
+    position: 'relative',
+    top: -2,
 
-    '& .ql-container': {
-      top: -2,
-      position: 'static',
-    },
+    '& .ql-container': { position: 'static' },
     '& .ql-editor': {
       minHeight: 100,
       padding: 0,
@@ -272,134 +272,150 @@ function Composer(props) {
         composerType === 'note' && classes.noteComposer
       )}
     >
-      <Tabs
-        className={classes.tabs}
-        classes={{ root: classes.tabRoot }}
-        value={composerType}
-        onChange={(e, val) => {
-          setComposerType(val);
-        }}
-        indicatorColor="primary"
-        textColor="primary"
-      >
-        <Tab
-          value="linkedin"
-          label="LinkedIn"
-          classes={{
-            root: classes.tabRoot,
-            labelContainer: classes.tabLabelContainer,
-          }}
-          disabled={!channels.linkedin}
-        />
-        <Tab
-          value="email"
-          label="Email"
-          classes={{
-            root: classes.tabRoot,
-            labelContainer: classes.tabLabelContainer,
-          }}
-          disabled={!channels.email}
-        />
-        <Tab
-          value="note"
-          label="Note"
-          classes={{
-            root: classes.tabRoot,
-            labelContainer: classes.tabLabelContainer,
-          }}
-        />
-      </Tabs>
+      <Grid container className={classes.topBar} alignItems="center">
+        <Grid item>
+          <Tabs
+            classes={{
+              root: classes.tabRoot,
+              scroller: classes.tabsScroller,
+              flexContainer: classes.tabsFlexContainer,
+            }}
+            value={composerType}
+            onChange={(e, val) => {
+              setComposerType(val);
+            }}
+            indicatorColor="primary"
+            textColor="primary"
+          >
+            <Tab
+              value="linkedin"
+              label="LinkedIn"
+              classes={{
+                root: classes.tabRoot,
+                labelContainer: classes.tabLabelContainer,
+              }}
+              disabled={!channels.linkedin}
+            />
+            <Tab
+              value="email"
+              label="Email"
+              classes={{
+                root: classes.tabRoot,
+                labelContainer: classes.tabLabelContainer,
+              }}
+              disabled={!channels.email}
+            />
+            <Tab
+              value="note"
+              label="Note"
+              classes={{
+                root: classes.tabRoot,
+                labelContainer: classes.tabLabelContainer,
+              }}
+            />
+          </Tabs>
+        </Grid>
+        {composerType === 'email' && (
+          <React.Fragment>
+            <Grid item xs className={classes.emailFields}>
+              <Grid container spacing={8}>
+                <Grid item xs={6}>
+                  <TextField
+                    value={emailSubject}
+                    onChange={e => {
+                      setEmailSubject(e.target.value);
+                    }}
+                    margin="dense"
+                    fullWidth
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">
+                          Subject
+                        </InputAdornment>
+                      ),
+                    }}
+                  />
+                </Grid>
+                <Grid item xs={6}>
+                  <TextField
+                    value={cc}
+                    onChange={e => {
+                      setCc(e.target.value);
+                    }}
+                    margin="dense"
+                    fullWidth
+                    InputProps={{
+                      startAdornment: (
+                        <InputAdornment position="start">CC</InputAdornment>
+                      ),
+                    }}
+                  />
+                </Grid>
+              </Grid>
+            </Grid>
+            <Grid item className={classes.templateDropdownWrapper}>
+              <TextField
+                select
+                InputProps={{
+                  disableUnderline: true,
+                  classes: { inputMarginDense: classes.templateDropdown },
+                }}
+                InputLabelProps={{
+                  classes: {
+                    root: classes.label,
+                    shrink: classes.shrinkedLabel,
+                  },
+                }}
+                margin="dense"
+                variant="filled"
+                value={templateIndex}
+                onChange={e => {
+                  setTemplate(e.target.value);
+                }}
+              >
+                <MenuItem value={-1}>No template</MenuItem>
+                {templates.map((x, i) => (
+                  <MenuItem key={`${x}-${i}`} value={i}>
+                    {x.templateName}
+                  </MenuItem>
+                ))}
+              </TextField>
+            </Grid>
+          </React.Fragment>
+        )}
+      </Grid>
       {composerType === 'email' ? (
-        <React.Fragment>
-          <div className={classes.topBar}>
-            <TextField
-              select
-              InputProps={{
-                disableUnderline: true,
-                classes: { inputMarginDense: classes.templateDropdown },
-              }}
-              InputLabelProps={{
-                classes: { root: classes.label, shrink: classes.shrinkedLabel },
-              }}
-              margin="dense"
-              variant="filled"
-              value={templateIndex}
-              onChange={e => {
-                setTemplate(e.target.value);
-              }}
-            >
-              <MenuItem value={-1}>No template</MenuItem>
-              {templates.map((x, i) => (
-                <MenuItem key={`${x}-${i}`} value={i}>
-                  {x.templateName}
-                </MenuItem>
-              ))}
-            </TextField>
-          </div>
-          <Grid container className={classes.emailBar} spacing={16}>
-            <Grid item xs={6}>
-              <TextField
-                value={emailSubject}
-                onChange={e => {
-                  setEmailSubject(e.target.value);
-                }}
-                margin="dense"
-                fullWidth
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">Subject</InputAdornment>
-                  ),
-                }}
-              />
-            </Grid>
-            <Grid item xs={6}>
-              <TextField
-                value={cc}
-                onChange={e => {
-                  setCc(e.target.value);
-                }}
-                margin="dense"
-                fullWidth
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">CC</InputAdornment>
-                  ),
-                }}
-              />
-            </Grid>
-          </Grid>
-          {templateIndex > -1 ? (
-            <div
-              className={classes.scrollableBox}
-              style={{ width: '100%', height: '100%' }}
-              dangerouslySetInnerHTML={{ __html: messageHtml }}
-            />
-          ) : (
-            <ReactQuill
-              autoFocus
-              placeholder="Type your email here…"
-              value={messageHtml}
-              onChange={val => {
-                setMessageHtml(val);
-                setMessageText(removeHtmlTags(val));
-              }}
-              theme="bubble"
-              className={classNames(classes.quillEditor, classes.scrollableBox)}
-              preserveWhiteSpace
-              modules={{
-                toolbar: [
-                  ['bold', 'italic', 'underline'],
+        templateIndex > -1 ? (
+          <div
+            className={classes.scrollableBox}
+            style={{ width: '100%', height: '100%' }}
+            dangerouslySetInnerHTML={{ __html: messageHtml }}
+          />
+        ) : (
+          <ReactQuill
+            autoFocus
+            placeholder="Type your email here…"
+            value={messageHtml}
+            onChange={val => {
+              setMessageHtml(val);
+              setMessageText(removeHtmlTags(val));
+            }}
+            theme="bubble"
+            className={classNames(classes.quillEditor, classes.scrollableBox)}
+            preserveWhiteSpace
+            modules={{
+              toolbar: [
+                ['bold', 'italic', 'underline'],
 
-                  [{ header: 1 }, { header: 2 }],
-                  [{ list: 'bullet' }],
+                [{ header: 1 }, { header: 2 }],
+                [{ list: 'bullet' }],
 
-                  [{ color: [] }, { background: [] }],
-                  ['link', 'image'],
-                ],
-              }}
-            />
-          )}
-        </React.Fragment>
+                [{ color: [] }, { background: [] }],
+                ['link', 'image'],
+              ],
+            }}
+          />
+        )
       ) : (
         <InputBase
           autoFocus

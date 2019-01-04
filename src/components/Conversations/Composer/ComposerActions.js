@@ -31,7 +31,12 @@ const emojiButton = handleClick => (
   </Tooltip>
 );
 const fileButton = handleClick => (
-  <GooglePicker key="Google Picker" onChange={handleClick}>
+  <GooglePicker
+    key="Google Picker"
+    onChange={handleClick}
+    spinnerSize={24}
+    spinnerPadding={12}
+  >
     <Tooltip title="File">
       <IconButton>
         <FileIcon />
