@@ -10,7 +10,7 @@ export const markAsRead = async (adminId, conversationId) => {
   const conversationData = conversation.data();
   const indexOfadmin = indexOf(adminId, conversationData.unreadAdmins);
   if (indexOfadmin >= 0) {
-    const newUndreadAdmin = remove(
+    const newUndreadAdmins = remove(
       indexOfadmin,
       1,
       conversation.data().unreadAdmins
@@ -18,7 +18,7 @@ export const markAsRead = async (adminId, conversationId) => {
     firestore
       .collection(COLLECTIONS.conversations)
       .doc(conversationId)
-      .update({ unreadAdmins: newUndreadAdmin });
+      .update({ unreadAdmins: newUndreadAdmins });
   }
 };
 

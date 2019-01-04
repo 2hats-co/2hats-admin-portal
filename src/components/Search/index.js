@@ -116,7 +116,7 @@ function Search(props) {
     }
   };
 
-  const onClose = () => {
+  const handleClose = () => {
     setSlideIn(false);
     setTimeout(() => {
       setShowSearch(false);
@@ -131,13 +131,15 @@ function Search(props) {
       status !== 'complete'
     ) {
       history.push(`${ROUTES.submissions}?uid=${objectID}`);
+      handleClose();
     }
   };
   const handleConversationRoute = hit => {
     const { objectID } = hit;
-
     history.push(`${ROUTES.conversations}?uid=${objectID}`);
+    handleClose();
   };
+
   let resultItems = [];
   if (results.hits && results.hits.length > 0) {
     resultItems = results.hits.map((hit, i) => (
@@ -185,7 +187,7 @@ function Search(props) {
   }
 
   return (
-    <Modal open={showSearch} onClose={onClose} disableAutoFocus>
+    <Modal open={showSearch} onClose={handleClose} disableAutoFocus>
       <Slide in={slideIn} direction="down">
         <Paper elevation={24} classes={{ root: classes.paperRoot }}>
           <InputBase

@@ -16,7 +16,6 @@ import DescriptionIcon from '@material-ui/icons/Description';
 import StatisticsIcon from '@material-ui/icons/InsertChart';
 import ConversationsIcon from '@material-ui/icons/Forum';
 import MarketingIcon from '../../assets/icons/Bullhorn';
-import NotificationIcon from '@material-ui/icons/Notifications';
 
 import { ROUTES } from '../../constants/routes';
 
@@ -25,12 +24,14 @@ import gloria from '../../assets/gloria.jpg';
 import NavigationItems from './NavigationItems';
 import withAuthentication from '../../utilities/Session/withAuthentication';
 import Search from '../Search';
+import Notifications from '../Notifications';
 import UserDialog from '../UserDialog';
+
 import { getInitials } from '../../utilities';
 import metadata from '../../metadata.json';
 import { useAuthedUser } from '../../hooks/useAuthedUser';
 import { AdminsProvider } from '../../contexts/AdminsContext';
-//import useKeypress from '../../hooks/useKeypress';
+
 const styles = theme => ({
   root: {
     backgroundColor: theme.palette.background.default,
@@ -66,17 +67,14 @@ const styles = theme => ({
   },
   searchButton: {
     color: 'rgba(255,255,255,.87)',
-    // marginTop: theme.spacing.unit,
   },
   notificationButton: {
     color: 'rgba(255,255,255,.87)',
-    display: 'none',
   },
   avatar: {
     backgroundColor: 'rgba(255,255,255,.87)',
     color: theme.palette.primary.main,
     fontWeight: 500,
-    // margin: theme.spacing.unit * 1.5,
   },
   avatarSpinner: {
     margin: theme.spacing.unit * 1.5,
@@ -127,6 +125,10 @@ export default function withNavigation(WrappedComponent) {
     const showGloria = false;
     const [showSearch, setShowSearch] = useState(false);
     const [showUserDialog, setShowUserDialog] = useState(false);
+    const [showNotificationsDialog, setShowNotificationsDialog] = useState(
+      false
+    );
+
     const currentUser = useAuthedUser();
     const goTo = route => {
       history.push(route);
@@ -193,11 +195,10 @@ export default function withNavigation(WrappedComponent) {
                     />
                   </Grid>
                   <Grid item style={{ textAlign: 'center' }}>
-                    <Tooltip title="Notifications" placement="right">
-                      <IconButton className={classes.notificationButton}>
-                        <NotificationIcon />
-                      </IconButton>
-                    </Tooltip>
+                    <Notifications
+                      uid={uid}
+                      className={classes.notificationButton}
+                    />
                     {currentUser && displayName && uid ? (
                       <IconButton
                         onClick={() => {

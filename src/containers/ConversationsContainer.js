@@ -58,33 +58,33 @@ function ConversationsContainer(props) {
   const windowSize = useWindowSize();
 
   const [conversationState, dispatchConversation] = useDocument();
-  const selectedConversation = conversationState.doc;
+  let selectedConversation = conversationState.doc;
   const openedConversationOnMobile =
     windowSize.isMobile && selectedConversation;
   const handleCloseConversation = () => {
     dispatchConversation({ path: null });
   };
-
-  useEffect(
-    async () => {
-      if (location.search.indexOf('?id=') > -1) {
-        const conversationId = location.search.replace('?id=', '');
+  const setConversationWithURL = async () => {
+    if (location.search.indexOf('?id=') > -1) {
+      const conversationId = location.search.replace('?id=', '');
+      dispatchConversation({ path: `conversations/${conversationId}` });
+    } else if (location.search.indexOf('?uid=') > -1) {
+      const uid = location.search.replace('?uid=', '');
+      const filters = [{ field: 'UID', operator: '==', value: uid }];
+      const conversationId = await getfirstIdOfQuery('conversations', filters);
+      if (conversationId) {
         dispatchConversation({ path: `conversations/${conversationId}` });
-      } else if (location.search.indexOf('?uid=') > -1) {
-        const uid = location.search.replace('?uid=', '');
-        const filters = [{ field: 'UID', operator: '==', value: uid }];
-        const conversationId = await getfirstIdOfQuery(
-          'conversations',
-          filters
-        );
-        if (conversationId) {
-          dispatchConversation({ path: `conversations/${conversationId}` });
-        } else {
-          console.log('creating conversation');
-          const conversationId = await createConversation(uid, currentUserId);
-          dispatchConversation({ path: `conversations/${conversationId}` });
-        }
+      } else {
+        console.log('creating conversation');
+        const conversationId = await createConversation(uid, currentUserId);
+        dispatchConversation({ path: `conversations/${conversationId}` });
       }
+    }
+  };
+  useEffect(
+    () => {
+      selectedConversation = null;
+      setConversationWithURL();
     },
     [location.search]
   );

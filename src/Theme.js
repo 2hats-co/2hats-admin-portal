@@ -174,6 +174,9 @@ function generateTheme(theme, themeColor) {
           borderBottomRightRadius: 0,
         },
       },
+      MuiBadge: {
+        badge: { fontWeight: 700 },
+      },
     },
   };
 

@@ -84,13 +84,13 @@ function SumbissionsContainer(props) {
 
   useEffect(
     () => {
-      if (!submission && location.search.indexOf('?uid=') > -1) {
+      if (location.search.indexOf('?uid=') > -1) {
         const uid = location.search.replace('?uid=', '');
         submissionDispatch({ uid });
       }
       //return () => {};
     },
-    [submission, location.search]
+    [location.search]
   );
 
   const [email, setEmail] = useState(null);

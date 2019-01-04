@@ -18,4 +18,5 @@ export const COLLECTIONS = {
   linkedinCampaigns: 'linkedinCampaigns',
   linkedinMessageQueue: 'linkedinMessageQueue',
   gmailOutbox: 'gmailOutbox',
+  notifications: 'notifications',
 };
