@@ -64,7 +64,7 @@ function GoogleButton(props) {
       <div onClick={props.onClick}>
         <GoogleLogin
           clientId={cid}
-          scope="https://www.googleapis.com/auth/gmail.readonly https://www.googleapis.com/auth/gmail.send https://www.googleapis.com/auth/calendar"
+          scope="https://www.googleapis.com/auth/gmail.readonly https://www.googleapis.com/auth/gmail.send https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/drive"
           //scope="https://www.googleapis.com/auth/gmail.readonly"
           accessType="offline"
           responseType="code"
