@@ -197,7 +197,6 @@ function SubjectsContainer(props) {
             title="aiPhoneBook.ml.biz.ru"
             showBorder
             subRoutes={[
-              { label: 'All', value: ROUTES.subjects },
               { label: 'Clients', value: ROUTES.clients },
               { label: 'Candidates', value: ROUTES.candidates },
             ]}
@@ -243,12 +242,6 @@ function SubjectsContainer(props) {
                 pageStart={0}
                 loadMore={loadMore}
                 hasMore={hasMore}
-                loader={
-                  <LinearProgress
-                    key="listLoader"
-                    className={classes.listLoader}
-                  />
-                }
                 useWindow={false}
                 threshold={100}
               >

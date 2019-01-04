@@ -20,6 +20,7 @@ import LocationIcon from '@material-ui/icons/LocationOnOutlined';
 import AttendeesIcon from '@material-ui/icons/PeopleOutlined';
 import ReminderIcon from '@material-ui/icons/NotificationsOutlined';
 
+import { isOnlyEmojis } from '../../../utilities/emoji';
 import moment from 'moment';
 import { momentLocales } from '../../../constants/momentLocales';
 // import timestamp from 'time-stamp';
@@ -54,6 +55,20 @@ const styles = theme => ({
     },
     '& p, & h6': { color: theme.palette.primary.darkText },
     '& .msg-caption': { marginRight: theme.spacing.unit * 8 },
+  },
+  emojiMessage: {
+    '& .msg-body': {
+      backgroundColor: 'transparent',
+      boxShadow: 'none !important',
+      borderRadius: 0,
+      padding: 0,
+      paddingRight: theme.spacing.unit,
+    },
+    '& p': {
+      fontSize: 48,
+      lineHeight: 1,
+    },
+    '& $avatar': { top: -6 },
   },
 
   firstOfIncoming: {
@@ -156,6 +171,7 @@ const styles = theme => ({
     padding: `0 ${theme.spacing.unit * 2}px`,
     borderRadius: theme.shape.roundBorderRadius * 0.8,
     '& p': { color: 'initial' },
+    '& img': { maxWidth: '100%' },
   },
 
   activity: {
@@ -241,7 +257,7 @@ function Message(props) {
   moment.updateLocale('en', momentLocales);
 
   const timestamp = moment(data.sentAt.seconds * 1000).format(
-    'D/MM/YYYY h:mm a'
+    'D/MM/YYYY h:mm:ss a'
   );
   const timeLabel = moment(data.sentAt.seconds * 1000).fromNow();
   const isIncoming = data.isIncoming;
@@ -430,7 +446,8 @@ function Message(props) {
         data.type === 'email' && classes.email,
         data.type === 'activity' && classes.activity,
         data.type === 'event' && classes.event,
-        data.type === 'reminder' && classes.reminder
+        data.type === 'reminder' && classes.reminder,
+        data.body && isOnlyEmojis(data.body) && classes.emojiMessage
       )}
     >
       <Tooltip

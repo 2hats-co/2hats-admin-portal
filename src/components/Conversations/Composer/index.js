@@ -83,6 +83,7 @@ const styles = theme => ({
 
     '& .ql-container': {
       top: -2,
+      position: 'static',
     },
     '& .ql-editor': {
       minHeight: 100,
@@ -96,6 +97,10 @@ const styles = theme => ({
             ? 'rgba(255,255,255,.4)'
             : 'rgba(0,0,0,.4)',
       },
+    },
+    '& .ql-bubble .ql-tooltip': {
+      transform: 'translateY(95px) translateX(15px)',
+      zIndex: 1,
     },
   },
   chipWrapper: {
@@ -366,6 +371,17 @@ function Composer(props) {
               theme="bubble"
               className={classNames(classes.quillEditor, classes.scrollableBox)}
               preserveWhiteSpace
+              modules={{
+                toolbar: [
+                  ['bold', 'italic', 'underline'],
+
+                  [{ header: 1 }, { header: 2 }],
+                  [{ list: 'bullet' }],
+
+                  [{ color: [] }, { background: [] }],
+                  ['link', 'image'],
+                ],
+              }}
             />
           )}
         </React.Fragment>
@@ -411,7 +427,6 @@ function Composer(props) {
           linkedin: handleSendLinkedin,
           addText,
         }}
-        classes={classes}
         composerType={composerType}
         conversation={conversation}
       />
