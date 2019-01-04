@@ -30,7 +30,7 @@ import { getInitials } from '../../utilities';
 import metadata from '../../metadata.json';
 import { useAuthedUser } from '../../hooks/useAuthedUser';
 import { AdminsProvider } from '../../contexts/AdminsContext';
-import useKeypress from '../../hooks/useKeypress';
+//import useKeypress from '../../hooks/useKeypress';
 const styles = theme => ({
   root: {
     backgroundColor: theme.palette.background.default,
@@ -104,7 +104,6 @@ const navigationRoutes = [
     label: 'Conversations',
     icon: <ConversationsIcon />,
     route: ROUTES.conversations,
-    incomplete: true,
   },
   {
     label: 'Subjects',
