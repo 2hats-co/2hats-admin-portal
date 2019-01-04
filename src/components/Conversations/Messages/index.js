@@ -51,7 +51,7 @@ function Messages(props) {
   useEffect(
     () => {
       if (messagesEnd.current) {
-        messagesEnd.current.scrollIntoView({ behavior: 'smooth' });
+        messagesEnd.current.scrollIntoView();
       }
     },
     [messages]
