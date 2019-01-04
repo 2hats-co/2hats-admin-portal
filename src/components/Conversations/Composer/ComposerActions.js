@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import withStyles from '@material-ui/core/styles/withStyles';
 
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
@@ -7,7 +8,7 @@ import Fab from '@material-ui/core/Fab';
 
 import SendIcon from '@material-ui/icons/Send';
 import DoneIcon from '@material-ui/icons/Done';
-import AtIcon from '@material-ui/icons/AlternateEmail';
+// import AtIcon from '@material-ui/icons/AlternateEmail';
 import EmojiIcon from '@material-ui/icons/InsertEmoticon';
 import GifIcon from '@material-ui/icons/Gif';
 import FileIcon from '@material-ui/icons/Attachment';
@@ -19,6 +20,9 @@ import EmojiDialog from './EmojiDialog';
 import EventDialog from './EventDialog';
 import ReminderDialog from './ReminderDialog';
 import useKeyPress from '../../../hooks/useKeypress';
+
+import GooglePicker from '../../GooglePicker';
+// import GooglePicker from 'react-google-picker';
 
 //import 'emoji-mart/css/emoji-mart.css';
 //import { Picker } from 'emoji-mart';
@@ -60,11 +64,13 @@ const imageButton = handleClick => (
   </Tooltip>
 );
 const fileButton = handleClick => (
-  <Tooltip title="File" key="file">
-    <IconButton onClick={handleClick}>
-      <FileIcon />
-    </IconButton>
-  </Tooltip>
+  <GooglePicker key="Google Picker" onChange={handleClick}>
+    <Tooltip title="File">
+      <IconButton>
+        <FileIcon />
+      </IconButton>
+    </Tooltip>
+  </GooglePicker>
 );
 const eventButton = handleClick => (
   <Tooltip title="Event" key="event">
@@ -80,21 +86,30 @@ const reminderButton = handleClick => (
     </IconButton>
   </Tooltip>
 );
-const atButton = handleClick => (
-  <Tooltip title="At" key="at">
-    <IconButton onClick={handleClick}>
-      <AtIcon />
-    </IconButton>
-  </Tooltip>
-);
+// const atButton = handleClick => (
+//   <Tooltip title="At" key="at">
+//     <IconButton onClick={handleClick}>
+//       <AtIcon />
+//     </IconButton>
+//   </Tooltip>
+// );
+
+const styles = theme => ({
+  actionsWrapper: {
+    marginLeft: -theme.spacing.unit * 1.5,
+    '& > *': { display: 'inline-block' },
+  },
+});
 
 const ComposerActions = React.memo(props => {
-  const { composerType, actions, conversation } = props;
+  const { classes, composerType, actions, conversation } = props;
+
   const [showEmojiDialog, setShowEmojiDialog] = useState(false);
   const [showEventDialog, setShowEventDialog] = useState(false);
   const [showReminderDialog, setShowReminderDialog] = useState(false);
   const returnKey = useKeyPress('Enter');
   const controlKey = useKeyPress('Control');
+
   useEffect(
     () => {
       if (controlKey && returnKey) {
@@ -133,35 +148,45 @@ const ComposerActions = React.memo(props => {
       fabContent = null;
       break;
   }
-  const EmojiButton = emojiButton(() => {
+
+  const handleEmoji = () => {
     setShowEmojiDialog(!showEmojiDialog);
-  });
+  };
+
+  const handleFile = data => {
+    console.log('GooglePicker', data);
+    if (data.action === 'picked' && data.docs) {
+      data.docs.forEach((x, i) => {});
+    }
+  };
+
   let actionButtons;
   switch (composerType) {
     case 'email':
       actionButtons = [
-        EmojiButton,
-        imageButton(),
-        gifButton(),
-        fileButton(),
+        emojiButton(handleEmoji),
+        // imageButton(),
+        // gifButton(),
+
         eventButton(() => {
           setShowEventDialog(true);
         }),
+        fileButton(handleFile),
       ];
       break;
     case 'linkedin':
-      actionButtons = [EmojiButton];
+      actionButtons = [emojiButton(handleEmoji)];
       break;
     case 'note':
       actionButtons = [
-        EmojiButton,
-        imageButton(),
-        gifButton(),
-        fileButton(),
+        emojiButton(handleEmoji),
+        // imageButton(),
+        // gifButton(),
         reminderButton(() => {
           setShowReminderDialog(true);
         }),
-        atButton(),
+        fileButton(handleFile),
+        // atButton(),
       ];
       break;
     default:
@@ -172,7 +197,7 @@ const ComposerActions = React.memo(props => {
     <React.Fragment>
       <Grid item>
         <Grid container justify="space-between">
-          <Grid item style={{ marginLeft: -12 }}>
+          <Grid item className={classes.actionsWrapper}>
             {actionButtons}
           </Grid>
           <Grid item>
@@ -206,4 +231,4 @@ const ComposerActions = React.memo(props => {
   );
 });
 
-export default ComposerActions;
+export default withStyles(styles)(ComposerActions);
