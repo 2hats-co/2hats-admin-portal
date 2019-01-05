@@ -156,7 +156,7 @@ function Search(props) {
                   window.open(hit.resume.downloadURL, '_blank');
                 }}
               >
-                <ResumeIcon />
+                <ResumeIcon style={{ transform: 'rotate(-45deg)' }} />
               </IconButton>
             </Tooltip>
           )}

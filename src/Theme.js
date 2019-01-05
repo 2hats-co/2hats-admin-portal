@@ -177,6 +177,9 @@ function generateTheme(theme, themeColor) {
       MuiBadge: {
         badge: { fontWeight: 700 },
       },
+      MuiInputAdornment: {
+        positionStart: { marginBottom: 2 },
+      },
     },
   };
 
@@ -187,6 +190,7 @@ function generateTheme(theme, themeColor) {
     palette: {
       ...baseTheme.palette,
       background: { default: '#222' },
+      divider: 'rgba(0,0,0,.67)',
       type: 'dark',
     },
     overrides: {

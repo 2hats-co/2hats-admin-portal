@@ -1,36 +1,75 @@
 import React, { useState } from 'react';
-import { messaging } from '../store';
-import Snackbar from '@material-ui/core/Snackbar';
+
 import withStyles from '@material-ui/core/styles/withStyles';
+import Typography from '@material-ui/core/Typography';
+import Snackbar from '@material-ui/core/Snackbar';
+import Grid from '@material-ui/core/Grid';
+
+import Avatar from '@material-ui/core/Avatar';
+import NotificationIcon from '@material-ui/icons/Notifications';
+
+import { messaging } from '../store';
+
 const styles = theme => ({
-  snackbar: {
-    marginRight: theme.spacing.unit * 11.5,
-    '& > div': { justifyContent: 'center' },
+  avatar: {
+    marginRight: theme.spacing.unit * 1.5,
+    marginLeft: -theme.spacing.unit * 0.75,
+
+    color:
+      theme.palette.type === 'dark'
+        ? theme.palette.primary.main
+        : theme.palette.primary.light,
+    backgroundColor: theme.palette.primary.darkText,
+  },
+  type: {
+    '& *': {
+      color:
+        theme.palette.type === 'dark'
+          ? 'rgba(0,0,0,.87) !important'
+          : '#fff !important',
+    },
+  },
+  clipText: {
+    lineClamp: 2,
+    display: 'box',
+    boxOrient: 'vertical',
+    overflow: 'hidden',
   },
 });
+
 function PushNotifications(props) {
   const { classes } = props;
 
-  const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [snackbarMessage, setSnackbarMessage] = useState({});
 
   messaging.onMessage(function(payload) {
-    //console.log('Message received in PushNotifications ', payload);
-    console.log(
-      'Message received in PushNotifications ',
-      setSnackbarMessage(payload.notification.body)
-    );
-    // ...
+    console.log('Message received in PushNotifications ', payload);
+    setSnackbarMessage(payload.notification);
   });
+
   return (
     <Snackbar
       anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
-      open={snackbarMessage.length > 0}
+      open={snackbarMessage && (snackbarMessage.body || snackbarMessage.title)}
       autoHideDuration={3000}
       onClose={() => {
         setSnackbarMessage('');
       }}
-      message={snackbarMessage}
-      className={classes.snackbar}
+      message={
+        <Grid container alignItems="center">
+          <Grid item>
+            <Avatar className={classes.avatar}>
+              <NotificationIcon />
+            </Avatar>
+          </Grid>
+          <Grid item xs className={classes.type}>
+            <Typography variant="subtitle1">{snackbarMessage.title}</Typography>
+            <Typography variant="body2" className={classes.clipText}>
+              {snackbarMessage.body}
+            </Typography>
+          </Grid>
+        </Grid>
+      }
     />
   );
 }

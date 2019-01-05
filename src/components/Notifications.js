@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { withRouter } from 'react-router-dom';
-import InfiniteScroll from 'react-infinite-scroller';
+// import InfiniteScroll from 'react-infinite-scroller';
 import withStyles from '@material-ui/core/styles/withStyles';
 
+import CircularProgress from '@material-ui/core/CircularProgress';
+import Fade from '@material-ui/core/Fade';
 import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
 import Badge from '@material-ui/core/Badge';
-import CircularProgress from '@material-ui/core/CircularProgress';
 
 import Paper from '@material-ui/core/Paper';
 import Modal from '@material-ui/core/Modal';
@@ -21,7 +22,7 @@ import Typography from '@material-ui/core/Typography';
 
 import NotificationIcon from '@material-ui/icons/Notifications';
 import MessageIcon from '@material-ui/icons/Forum';
-import NoteIcon from '@material-ui/icons/Note';
+import NoteIcon from '@material-ui/icons/AlternateEmail';
 
 import useCollection from '../hooks/useCollection';
 import { COLLECTIONS } from '../constants/firestore';
@@ -32,8 +33,12 @@ import moment from 'moment';
 import { momentLocales } from '../constants/momentLocales';
 
 const styles = theme => ({
+  loader: {
+    color: 'rgba(255,255,255,.87)',
+    padding: theme.spacing.unit * 1.5,
+  },
   badge: {
-    backgroundColor: 'rgba(255,255,255,.87)',
+    backgroundColor: '#fff',
     color: theme.palette.primary.main,
     boxShadow: `0 0 0 2px ${theme.palette.primary.main}`,
   },
@@ -41,7 +46,7 @@ const styles = theme => ({
     borderRadius: theme.shape.roundBorderRadius,
     width: 360,
     outline: 'none',
-    maxHeight: 'calc(100vh - 96px)',
+    maxHeight: `calc(100vh - ${theme.spacing.unit * 3}px)`,
     position: 'absolute',
     bottom: theme.spacing.unit * 1.5,
     left: theme.spacing.unit * 9,
@@ -51,6 +56,12 @@ const styles = theme => ({
   timestamp: {
     color: theme.palette.text.secondary,
   },
+  listItemSecondary: {
+    lineClamp: 2,
+    display: 'box',
+    boxOrient: 'vertical',
+    overflow: 'hidden',
+  },
 });
 
 const getIcon = type => {
@@ -59,9 +70,11 @@ const getIcon = type => {
       return <MessageIcon />;
     case 'note':
       return <NoteIcon />;
+    case 'reminder':
+      return <NotificationIcon />;
 
     default:
-      return null;
+      return '?';
   }
 };
 
@@ -125,24 +138,31 @@ function Notifications(props) {
     }
   };
 
+  if (notificationsState.loading)
+    return <CircularProgress className={classes.loader} size={24} />;
+
   return (
     <React.Fragment>
-      <Tooltip title="Notifications" placement="right">
-        <IconButton
-          className={className}
-          onClick={() => {
-            setShowDialog(true);
-          }}
-        >
-          <Badge
-            badgeContent={unreadNotifications > 9 ? '9+' : unreadNotifications}
-            invisible={!(unreadNotifications > 0)}
-            classes={{ badge: classes.badge }}
+      <Fade in>
+        <Tooltip title="Notifications" placement="right">
+          <IconButton
+            className={className}
+            onClick={() => {
+              setShowDialog(true);
+            }}
           >
-            <NotificationIcon />
-          </Badge>
-        </IconButton>
-      </Tooltip>
+            <Badge
+              badgeContent={
+                unreadNotifications > 9 ? '9+' : unreadNotifications
+              }
+              invisible={!(unreadNotifications > 0)}
+              classes={{ badge: classes.badge }}
+            >
+              <NotificationIcon />
+            </Badge>
+          </IconButton>
+        </Tooltip>
+      </Fade>
       {showDialog && (
         <Modal open={showDialog} onClose={handleClose} disableAutoFocus>
           <Slide in={slideIn} direction="up">
@@ -178,7 +198,10 @@ function Notifications(props) {
                           </Grid>
                         }
                         secondary={x.body}
-                        classes={{ root: classes.listItemTextRoot }}
+                        classes={{
+                          root: classes.listItemTextRoot,
+                          secondary: classes.listItemSecondary,
+                        }}
                       />
                     </ListItem>
                   ))}
