@@ -30,10 +30,12 @@ const emojiButton = handleClick => (
     </IconButton>
   </Tooltip>
 );
-const fileButton = handleClick => (
+const fileButton = (handleClick, pickerToken, setPickerToken) => (
   <GooglePicker
     key="Google Picker"
     onChange={handleClick}
+    pickerToken={pickerToken}
+    setPickerToken={setPickerToken}
     spinnerSize={24}
     spinnerPadding={12}
   >
@@ -90,6 +92,8 @@ const ComposerActions = React.memo(props => {
   const [showReminderDialog, setShowReminderDialog] = useState(false);
   const returnKey = useKeyPress('Enter');
   const controlKey = useKeyPress('Control');
+
+  const [pickerToken, setPickerToken] = useState('');
 
   useEffect(
     () => {
@@ -149,7 +153,7 @@ const ComposerActions = React.memo(props => {
         eventButton(() => {
           setShowEventDialog(true);
         }),
-        fileButton(handleFile),
+        fileButton(handleFile, pickerToken, setPickerToken),
       ];
       break;
     case 'linkedin':
@@ -161,7 +165,7 @@ const ComposerActions = React.memo(props => {
         reminderButton(() => {
           setShowReminderDialog(true);
         }),
-        fileButton(handleFile),
+        fileButton(handleFile, pickerToken, setPickerToken),
         atButton(actions.at),
       ];
       break;
