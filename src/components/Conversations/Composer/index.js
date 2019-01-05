@@ -86,6 +86,8 @@ const styles = theme => ({
     minHeight: 100,
     position: 'relative',
     top: -2,
+    backgroundColor: '#fff',
+    boxShadow: '-16px -8px 0 #fff,16px -8px 0 #fff,-16px 0 0 #fff, 16px 0 #fff',
 
     '& .ql-container': { position: 'static' },
     '& .ql-editor': {
@@ -95,10 +97,6 @@ const styles = theme => ({
       fontSize: 16,
       '&.ql-blank::before': {
         fontStyle: 'normal',
-        color:
-          theme.palette.type === 'dark'
-            ? 'rgba(255,255,255,.4)'
-            : 'rgba(0,0,0,.4)',
       },
     },
     '& .ql-bubble .ql-tooltip': {
@@ -393,7 +391,6 @@ function Composer(props) {
           />
         ) : (
           <ReactQuill
-            autoFocus
             placeholder="Type your email here…"
             value={messageHtml}
             onChange={val => {

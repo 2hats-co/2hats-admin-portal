@@ -5,12 +5,10 @@ import Typography from '@material-ui/core/Typography';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 
-import ClientIcon from '@material-ui/icons/BusinessCenter';
-import CandidateIcon from '@material-ui/icons/School';
-
 import moment from 'moment';
 import { momentLocales } from '../../../constants/momentLocales';
 import withStyles from '@material-ui/core/styles/withStyles';
+import ConversationTypeIcon from '../ConversationTypeIcon';
 
 const styles = theme => ({
   root: {
@@ -82,12 +80,10 @@ function CandidateItem(props) {
             className={classes.primaryText}
           >
             <Grid item>
-              {data.type === 'client' && (
-                <ClientIcon className={classes.typeIcon} />
-              )}
-              {data.type === 'candidate' && (
-                <CandidateIcon className={classes.typeIcon} />
-              )}
+              <ConversationTypeIcon
+                type={data.type}
+                className={classes.typeIcon}
+              />
             </Grid>
             <Grid item xs>
               <Typography

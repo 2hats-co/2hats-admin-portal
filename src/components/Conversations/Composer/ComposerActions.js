@@ -39,7 +39,7 @@ const fileButton = handleClick => (
   >
     <Tooltip title="File">
       <IconButton>
-        <FileIcon />
+        <FileIcon style={{ transform: 'rotate(-45deg)' }} />
       </IconButton>
     </Tooltip>
   </GooglePicker>

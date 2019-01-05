@@ -12,8 +12,6 @@ import AddSubscriberIcon from '@material-ui/icons/GroupAdd';
 // import LinkIcon from '@material-ui/icons/Link';
 import BackIcon from '@material-ui/icons/ArrowBack';
 // import StarOutlineIcon from '@material-ui/icons/StarBorder';
-import ClientIcon from '@material-ui/icons/BusinessCenter';
-import CandidateIcon from '@material-ui/icons/School';
 import EmailIcon from '@material-ui/icons/Markunread';
 import LinkedInIcon from '../../../assets/icons/LinkedIn';
 
@@ -23,6 +21,7 @@ import LinkedInIcon from '../../../assets/icons/LinkedIn';
 // import FormControl from '@material-ui/core/FormControl';
 // import InputLabel from '@material-ui/core/InputLabel';
 
+import ConversationTypeIcon from '../ConversationTypeIcon';
 import ManageSubscribersDialog from './ManageSubscribersDialog';
 import { useWindowSize } from '../../../hooks/useWindowSize';
 import { copyToClipboard } from '../../../utilities';
@@ -68,12 +67,10 @@ function ConversationHeader(props) {
           <Grid item>
             <Grid container alignItems="flex-start">
               <Grid item>
-                {conversation.type === 'client' && (
-                  <ClientIcon className={classes.typeIcon} />
-                )}
-                {conversation.type === 'candidate' && (
-                  <CandidateIcon className={classes.typeIcon} />
-                )}
+                <ConversationTypeIcon
+                  type={conversation.type}
+                  className={classes.typeIcon}
+                />
               </Grid>
               <Grid item>
                 <Typography variant="h6">{conversation.displayName}</Typography>
