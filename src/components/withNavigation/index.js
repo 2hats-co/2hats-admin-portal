@@ -125,10 +125,6 @@ export default function withNavigation(WrappedComponent) {
     const showGloria = false;
     const [showSearch, setShowSearch] = useState(false);
     const [showUserDialog, setShowUserDialog] = useState(false);
-    const [showNotificationsDialog, setShowNotificationsDialog] = useState(
-      false
-    );
-
     const currentUser = useAuthedUser();
     const goTo = route => {
       history.push(route);

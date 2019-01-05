@@ -14,7 +14,7 @@ import BackIcon from '@material-ui/icons/ArrowBack';
 // import StarOutlineIcon from '@material-ui/icons/StarBorder';
 import EmailIcon from '@material-ui/icons/Markunread';
 import LinkedInIcon from '../../../assets/icons/LinkedIn';
-
+import BlockIcon from '@material-ui/icons/Block';
 // import MenuItem from '@material-ui/core/MenuItem';
 // import OutlinedInput from '@material-ui/core/OutlinedInput';
 // import Select from '@material-ui/core/Select';
@@ -25,6 +25,7 @@ import ConversationTypeIcon from '../ConversationTypeIcon';
 import ManageSubscribersDialog from './ManageSubscribersDialog';
 import { useWindowSize } from '../../../hooks/useWindowSize';
 import { copyToClipboard } from '../../../utilities';
+import { markAsSpam } from '../../../utilities/conversations';
 
 const styles = theme => ({
   root: {
@@ -74,6 +75,15 @@ function ConversationHeader(props) {
               </Grid>
               <Grid item>
                 <Typography variant="h6">{conversation.displayName}</Typography>
+              </Grid>
+              <Grid item>
+                <IconButton
+                  onClick={() => {
+                    markAsSpam(conversation.id);
+                  }}
+                >
+                  <BlockIcon />
+                </IconButton>
               </Grid>
             </Grid>
           </Grid>
