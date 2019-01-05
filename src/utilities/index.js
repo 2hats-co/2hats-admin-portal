@@ -87,3 +87,9 @@ export const randomGreeting = () => {
 
   return greetings[Math.floor(Math.random() * greetings.length)];
 };
+
+export const compareByGivenName = (a, b) => {
+  if (a.givenName < b.givenName) return -1;
+  if (a.givenName > b.givenName) return 1;
+  return 0;
+};

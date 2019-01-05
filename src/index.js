@@ -10,3 +10,6 @@ const App = Loadable({
 });
 ReactDOM.render(<App />, document.getElementById('root'));
 registerServiceWorker();
+
+if (window.location.hostname === 'localhost')
+  window.document.title = 'LOCAL 2hats Admin';

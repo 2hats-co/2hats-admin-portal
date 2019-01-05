@@ -21,12 +21,20 @@ export const markAsRead = async (adminId, conversationId) => {
       .update({ unreadAdmins: newUndreadAdmins });
   }
 };
+
 export const markAsSpam = async conversationId => {
   firestore
     .collection(COLLECTIONS.conversations)
     .doc(conversationId)
     .update({ type: 'spam' });
 };
+export const unmarkAsSpam = async conversationId => {
+  firestore
+    .collection(COLLECTIONS.conversations)
+    .doc(conversationId)
+    .update({ type: 'client' });
+};
+
 export const addNote = (adminId, conversationId, note, notifyList) => {
   if (!notifyList) notifyList = [];
   firestore

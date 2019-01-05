@@ -14,6 +14,7 @@ import ForumIcon from '@material-ui/icons/Forum';
 import UnreadIcon from '@material-ui/icons/Markunread';
 import ClientIcon from '@material-ui/icons/BusinessCenter';
 import CandidateIcon from '@material-ui/icons/School';
+import SpamIcon from '@material-ui/icons/Report';
 
 import InfiniteScroll from 'react-infinite-scroller';
 
@@ -30,6 +31,10 @@ const styles = theme => ({
   },
   tabs: {
     boxShadow: `0 -1px 0 ${theme.palette.divider} inset`,
+  },
+  tabLabelContainer: {
+    paddingLeft: theme.spacing.unit * 2,
+    paddingRight: theme.spacing.unit * 2,
   },
   noConvs: {
     height: '100%',
@@ -69,6 +74,11 @@ const clientFilter = {
   operator: '==',
   value: 'client',
 };
+const spamFilter = {
+  field: 'type',
+  operator: '==',
+  value: 'spam',
+};
 
 function ConversationsList(props) {
   const { classes, setSelectedConversation, selectedConversation, uid } = props;
@@ -92,6 +102,9 @@ function ConversationsList(props) {
           break;
         case 'client':
           setFilters([clientFilter]);
+          break;
+        case 'spam':
+          setFilters([spamFilter]);
           break;
         default:
           setFilters([subscriberFilter(uid)]);
@@ -153,7 +166,11 @@ function ConversationsList(props) {
           textColor="primary"
           fullWidth
         >
-          <Tab value="all" label="All" />
+          <Tab
+            value="all"
+            label="All"
+            classes={{ labelContainer: classes.tabLabelContainer }}
+          />
 
           <Tab
             value="unread"
@@ -162,6 +179,7 @@ function ConversationsList(props) {
                 <UnreadIcon />
               </Tooltip>
             }
+            classes={{ labelContainer: classes.tabLabelContainer }}
           />
 
           <Tab
@@ -171,6 +189,7 @@ function ConversationsList(props) {
                 <ClientIcon />
               </Tooltip>
             }
+            classes={{ labelContainer: classes.tabLabelContainer }}
           />
 
           <Tab
@@ -180,6 +199,17 @@ function ConversationsList(props) {
                 <CandidateIcon />
               </Tooltip>
             }
+            classes={{ labelContainer: classes.tabLabelContainer }}
+          />
+
+          <Tab
+            value="spam"
+            label={
+              <Tooltip title="Spam">
+                <SpamIcon />
+              </Tooltip>
+            }
+            classes={{ labelContainer: classes.tabLabelContainer }}
           />
         </Tabs>
       </Grid>

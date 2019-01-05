@@ -12,7 +12,7 @@ import PersonIcon from '@material-ui/icons/Person';
 import DropDownIcon from '@material-ui/icons/ArrowDropDown';
 
 import { AdminsContext } from '../contexts/AdminsContext';
-import { getInitials } from '../utilities';
+import { getInitials, compareByGivenName } from '../utilities';
 
 const styles = theme => ({
   buttonRoot: {
@@ -60,7 +60,9 @@ function AdminSelector(props) {
 
   if (context.admins) {
     const currentUser = context.admins.filter(x => x.id === selected)[0];
-    const displayedAdmins = context.admins.filter(x => !x.fired);
+    const displayedAdmins = context.admins
+      .filter(x => !x.fired)
+      .sort(compareByGivenName);
 
     const defaultPicker = (
       <Tooltip title={tooltip || 'Choose admin'}>
