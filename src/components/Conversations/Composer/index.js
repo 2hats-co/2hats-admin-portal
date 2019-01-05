@@ -83,11 +83,8 @@ const styles = theme => ({
     minHeight: 100,
   },
   quillEditor: {
-    minHeight: 100,
-    position: 'relative',
-    top: -2,
-    backgroundColor: '#fff',
-    boxShadow: '-16px -8px 0 #fff,16px -8px 0 #fff,-16px 0 0 #fff, 16px 0 #fff',
+    minHeight: 102,
+    marginTop: -2,
 
     '& .ql-container': { position: 'static' },
     '& .ql-editor': {
@@ -95,12 +92,14 @@ const styles = theme => ({
       padding: 0,
       fontFamily: theme.typography.fontFamily,
       fontSize: 16,
+      color: theme.palette.text.primary,
       '&.ql-blank::before': {
         fontStyle: 'normal',
+        color: theme.palette.text.disabled,
       },
     },
     '& .ql-bubble .ql-tooltip': {
-      transform: 'translateY(95px) translateX(15px)',
+      transform: 'translateY(60px) translateX(16px)',
       zIndex: 1,
     },
   },

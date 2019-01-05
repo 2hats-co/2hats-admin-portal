@@ -30,6 +30,7 @@ import UserDialog from '../UserDialog';
 import { getInitials } from '../../utilities';
 import metadata from '../../metadata.json';
 import { useAuthedUser } from '../../hooks/useAuthedUser';
+import DebugContext from '../../contexts/DebugContext';
 import { AdminsProvider } from '../../contexts/AdminsContext';
 
 const styles = theme => ({
@@ -131,6 +132,10 @@ export default function withNavigation(WrappedComponent) {
     };
     const path = location.pathname;
 
+    const [debug, setDebug] = useState(
+      window.location.hostname === 'localhost'
+    );
+
     let index = 0;
     for (let i = 0; i < navigationRoutes.length; i++) {
       if (path === navigationRoutes[i].route) index = i;
@@ -145,102 +150,106 @@ export default function withNavigation(WrappedComponent) {
     if (displayName) initials = getInitials(displayName);
     return (
       <AdminsProvider>
-        <Grid container wrap="nowrap" className={classes.root}>
-          <Slide in direction="right">
-            <React.Fragment>
-              <Grid item className={classes.leftNav}>
-                <Grid
-                  container
-                  style={{ height: '100vh' }}
-                  justify="center"
-                  alignContent="space-between"
-                >
-                  <Grid item>
-                    <Tooltip
-                      title={
-                        <React.Fragment>
-                          <b>Build {metadata.hash}</b>
-                          <div>{new Date(metadata.date).toLocaleString()}</div>
-                        </React.Fragment>
-                      }
-                      placement="right"
-                    >
-                      <img
-                        alt="2hats logo"
-                        src={showGloria ? gloria : logo}
-                        className={showGloria ? classes.gloria : classes.logo}
-                      />
-                    </Tooltip>
-                    <Tooltip title="Search candidates" placement="right">
-                      <IconButton
-                        className={classes.searchButton}
-                        onClick={() => {
-                          setShowSearch(true);
-                        }}
+        <DebugContext.Provider value={{ enabled: debug, setEnabled: setDebug }}>
+          <Grid container wrap="nowrap" className={classes.root}>
+            <Slide in direction="right">
+              <React.Fragment>
+                <Grid item className={classes.leftNav}>
+                  <Grid
+                    container
+                    style={{ height: '100vh' }}
+                    justify="center"
+                    alignContent="space-between"
+                  >
+                    <Grid item>
+                      <Tooltip
+                        title={
+                          <React.Fragment>
+                            <b>Build {metadata.hash}</b>
+                            <div>
+                              {new Date(metadata.date).toLocaleString()}
+                            </div>
+                          </React.Fragment>
+                        }
+                        placement="right"
                       >
-                        <SearchIcon />
-                      </IconButton>
-                    </Tooltip>
-                  </Grid>
-                  <Grid item>
-                    <NavigationItems
-                      goTo={goTo}
-                      currentLocation={path}
-                      selectedIndex={index}
-                      navigationRoutes={navigationRoutes}
-                    />
-                  </Grid>
-                  <Grid item style={{ textAlign: 'center' }}>
-                    <Notifications
-                      uid={uid}
-                      className={classes.notificationButton}
-                    />
-                    {currentUser && displayName && uid ? (
-                      <IconButton
-                        onClick={() => {
-                          setShowUserDialog(true);
-                        }}
-                      >
-                        <Avatar
-                          src={currentUser.avatarURL}
-                          className={classes.avatar}
+                        <img
+                          alt="2hats logo"
+                          src={showGloria ? gloria : logo}
+                          className={showGloria ? classes.gloria : classes.logo}
+                        />
+                      </Tooltip>
+                      <Tooltip title="Search candidates" placement="right">
+                        <IconButton
+                          className={classes.searchButton}
+                          onClick={() => {
+                            setShowSearch(true);
+                          }}
                         >
-                          {initials ? initials : null}
-                        </Avatar>
-                      </IconButton>
-                    ) : (
-                      <CircularProgress
-                        color="inherit"
-                        className={classes.avatarSpinner}
+                          <SearchIcon />
+                        </IconButton>
+                      </Tooltip>
+                    </Grid>
+                    <Grid item>
+                      <NavigationItems
+                        goTo={goTo}
+                        currentLocation={path}
+                        selectedIndex={index}
+                        navigationRoutes={navigationRoutes}
                       />
-                    )}
+                    </Grid>
+                    <Grid item style={{ textAlign: 'center' }}>
+                      <Notifications
+                        uid={uid}
+                        className={classes.notificationButton}
+                      />
+                      {currentUser && displayName && uid ? (
+                        <IconButton
+                          onClick={() => {
+                            setShowUserDialog(true);
+                          }}
+                        >
+                          <Avatar
+                            src={currentUser.avatarURL}
+                            className={classes.avatar}
+                          >
+                            {initials ? initials : null}
+                          </Avatar>
+                        </IconButton>
+                      ) : (
+                        <CircularProgress
+                          color="inherit"
+                          className={classes.avatarSpinner}
+                        />
+                      )}
+                    </Grid>
                   </Grid>
                 </Grid>
+              </React.Fragment>
+            </Slide>
+            <Fade in timeout={400}>
+              <Grid
+                item
+                xs
+                style={{ backgroundColor: theme.palette.background.paper }}
+              >
+                <WrappedComponent {...props} classes={null} />
               </Grid>
-            </React.Fragment>
-          </Slide>
-          <Fade in timeout={400}>
-            <Grid
-              item
-              xs
-              style={{ backgroundColor: theme.palette.background.paper }}
-            >
-              <WrappedComponent {...props} classes={null} />
-            </Grid>
-          </Fade>
-        </Grid>
+            </Fade>
+          </Grid>
 
-        {showSearch && (
-          <Search showSearch={showSearch} setShowSearch={setShowSearch} />
-        )}
-        {showUserDialog && (
-          <UserDialog
-            user={currentUser}
-            showDialog={showUserDialog}
-            setShowDialog={setShowUserDialog}
-            navigationRoutes={navigationRoutes}
-          />
-        )}
+          {showSearch && (
+            <Search showSearch={showSearch} setShowSearch={setShowSearch} />
+          )}
+          {showUserDialog && (
+            <UserDialog
+              user={currentUser}
+              showDialog={showUserDialog}
+              setShowDialog={setShowUserDialog}
+              navigationRoutes={navigationRoutes}
+            />
+          )}
+        </DebugContext.Provider>
       </AdminsProvider>
     );
   }

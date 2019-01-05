@@ -75,7 +75,7 @@ const styles = theme => ({
   listItem: {
     transition: 'background-color .2s',
     '&:hover': {
-      backgroundColor: theme.palette.divider,
+      backgroundColor: theme.palette.action.hover,
     },
   },
   listIcon: {

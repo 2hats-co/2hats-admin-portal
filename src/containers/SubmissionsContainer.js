@@ -56,6 +56,12 @@ const styles = theme => ({
     paddingLeft: 40 - 24,
     backgroundColor: theme.palette.background.default,
   },
+  submissionWrapper: {
+    overflowY: 'auto',
+    padding: 40,
+    maxWidth: 'none',
+    position: 'relative',
+  },
   card: {
     height: '100%',
     boxSizing: 'border-box',
@@ -189,7 +195,7 @@ function SumbissionsContainer(props) {
             <Grid
               item
               xs={template ? 8 : 12}
-              style={{ overflowY: 'auto', padding: 40, maxWidth: 'none' }}
+              className={classes.submissionWrapper}
             >
               <Submission
                 submission={submission}

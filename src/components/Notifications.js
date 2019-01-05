@@ -85,19 +85,17 @@ function Notifications(props) {
 
   const [showDialog, setShowDialog] = useState(false);
   const [slideIn, setSlideIn] = useState(true);
-  const [unreadNotificationsState, unreadNotificationsDispatch] = useCollection(
-    {
-      path: COLLECTIONS.notifications,
-      sort: { field: 'createdAt', direction: 'desc' },
-      filters: [
-        {
-          field: 'unreadSubscribers',
-          operator: 'array-contains',
-          value: uid,
-        },
-      ],
-    }
-  );
+  const [unreadNotificationsState] = useCollection({
+    path: COLLECTIONS.notifications,
+    sort: { field: 'createdAt', direction: 'desc' },
+    filters: [
+      {
+        field: 'unreadSubscribers',
+        operator: 'array-contains',
+        value: uid,
+      },
+    ],
+  });
   const unreadNotifications = unreadNotificationsState.documents
     ? unreadNotificationsState.documents.length
     : 0;
@@ -114,7 +112,7 @@ function Notifications(props) {
     ],
   });
   const notifications = notificationsState.documents;
-  console.log('notifications', notifications);
+  // console.log('notifications', notifications);
 
   const handleClose = () => {
     setSlideIn(false);

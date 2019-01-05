@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
+import classNames from 'classnames';
 
 import withStyles from '@material-ui/core/styles/withStyles';
 import Paper from '@material-ui/core/Paper';
@@ -25,6 +26,7 @@ import { randomGreeting, getInitials } from '../utilities';
 import { COLLECTIONS } from '../constants/firestore';
 import { updateProperties } from '../utilities/firestore';
 import { ORANGE_COLOR } from '../Theme';
+import DebugContext from '../contexts/DebugContext';
 
 const styles = theme => ({
   paperRoot: {
@@ -32,7 +34,7 @@ const styles = theme => ({
     width: 360,
     padding: theme.spacing.unit * 4,
     outline: 'none',
-    maxHeight: 'calc(100vh - 96px)',
+    maxHeight: 'calc(100vh - 88px)',
     position: 'absolute',
     bottom: theme.spacing.unit * 1.5,
     left: theme.spacing.unit * 9,
@@ -67,6 +69,10 @@ const styles = theme => ({
     marginTop: theme.spacing.unit * 3,
     paddingTop: theme.spacing.unit * 2,
     borderTop: `1px solid ${theme.palette.divider}`,
+  },
+  debugSection: {
+    textAlign: 'center',
+    marginBottom: -theme.spacing.unit,
   },
 
   routeDropdown: {
@@ -124,6 +130,8 @@ function UserDialog(props) {
   const [defaultRoute, setDefaultRoute] = useState(user.defaultRoute);
   const [snackbarMessage, setSnackbarMessage] = useState('');
 
+  const debugContext = useContext(DebugContext);
+
   const onClose = () => {
     setSlideIn(false);
     setTimeout(() => {
@@ -165,9 +173,11 @@ function UserDialog(props) {
                 <Typography variant="h4" className={classes.greeting}>
                   {greeting}, {user.givenName}!
                 </Typography>
-                <Typography variant="body2" className={classes.UID}>
-                  {user.UID}
-                </Typography>
+                {debugContext.enabled && (
+                  <Typography variant="body2" className={classes.UID}>
+                    {user.UID}
+                  </Typography>
+                )}
               </Grid>
 
               <Grid item className={classes.borderedSection}>
@@ -192,6 +202,26 @@ function UserDialog(props) {
                     ))}
                   </Select>
                 </Grid>
+              </Grid>
+
+              <Grid
+                item
+                className={classNames(
+                  classes.borderedSection,
+                  classes.debugSection
+                )}
+              >
+                <FormControlLabel
+                  control={
+                    <Switch
+                      checked={debugContext.enabled}
+                      onChange={e => {
+                        debugContext.setEnabled(!debugContext.enabled);
+                      }}
+                    />
+                  }
+                  label="Show debug info"
+                />
               </Grid>
 
               <Grid item className={classes.borderedSection}>

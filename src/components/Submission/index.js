@@ -11,7 +11,6 @@ import Fade from '@material-ui/core/Fade';
 import Chip from '@material-ui/core/Chip';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import Tooltip from '@material-ui/core/Tooltip';
-import IconButton from '@material-ui/core/IconButton';
 
 import amber from '@material-ui/core/colors/amber';
 import green from '@material-ui/core/colors/green';
@@ -21,13 +20,18 @@ import grey from '@material-ui/core/colors/grey';
 import CheckIcon from '@material-ui/icons/Check';
 import CloseIcon from '@material-ui/icons/Close';
 import PendingIcon from '@material-ui/icons/Schedule';
-import CodeIcon from '@material-ui/icons/Code';
 
 import EduExpCard from './EduExpCard';
+import DebugButton from '../DebugButton';
 import useDocument from '../../hooks/useDocument';
-import { copyToClipboard } from '../../utilities';
 
 const styles = theme => ({
+  debugButtons: {
+    position: 'absolute',
+    top: theme.spacing.unit,
+    right: theme.spacing.unit,
+  },
+
   avatar: {
     width: 56,
     height: 56,
@@ -36,14 +40,11 @@ const styles = theme => ({
   personIcon: {
     fontSize: 32,
   },
-  uidButton: {
-    position: 'relative',
-    top: -1,
-  },
   outcome: {
     textTransform: 'capitalize',
     textAlign: 'right',
     marginRight: theme.spacing.unit,
+    fontWeight: 500,
   },
   outcomeIcon: {
     backgroundColor: '#000',
@@ -59,6 +60,7 @@ const styles = theme => ({
   },
   bio: {
     maxWidth: 720,
+    marginTop: theme.spacing.unit,
   },
   block: {
     marginTop: theme.spacing.unit * 3,
@@ -66,11 +68,6 @@ const styles = theme => ({
   skillsHeading: {
     width: 56,
     marginRight: theme.spacing.unit / 2,
-  },
-  subtitle1: {
-    // marginTop: 40,
-    // marginBottom: 10,
-    // fontWeight: 700,
   },
   chip: {
     marginBottom: theme.spacing.unit,
@@ -158,6 +155,10 @@ function Submission(props) {
 
   return (
     <React.Fragment>
+      <div className={classes.debugButtons}>
+        <DebugButton title="Copy submission ID" toCopy={submission.id} />
+        <DebugButton toCopy={submission.UID} />
+      </div>
       <Grid container>
         <Grid item>
           {candidate && candidate.avatarURL ? (
@@ -172,38 +173,21 @@ function Submission(props) {
         </Grid>
 
         <Grid item xs>
-          <Grid container justify="space-between" alignItems="baseline">
-            <Grid item>
+          <Grid container alignItems="baseline" spacing={16}>
+            <Grid item xs>
               <Typography variant="h5">{submission.displayName}</Typography>
             </Grid>
             <Grid item>
-              <Grid container alignItems="baseline" spacing={16}>
-                <Grid item>
-                  <Tooltip title="Copy UID">
-                    <IconButton
-                      className={classes.uidButton}
-                      onClick={() => {
-                        copyToClipboard(submission.UID);
-                      }}
-                    >
-                      <CodeIcon fontSize="small" />
-                    </IconButton>
-                  </Tooltip>
-                </Grid>
+              <Typography variant="body1" className={classes.outcome}>
+                {submission.outcome}
+                {outcomeIcon}
+              </Typography>
+            </Grid>
 
-                <Grid item>
-                  <Typography variant="body1" className={classes.outcome}>
-                    {submission.outcome}
-                    {outcomeIcon}
-                  </Typography>
-                </Grid>
-
-                <Grid item>
-                  <Tooltip title={timestamp}>
-                    <Typography variant="body2">{timeString}</Typography>
-                  </Tooltip>
-                </Grid>
-              </Grid>
+            <Grid item>
+              <Tooltip title={timestamp}>
+                <Typography variant="body2">{timeString}</Typography>
+              </Tooltip>
             </Grid>
           </Grid>
 

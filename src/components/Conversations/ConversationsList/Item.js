@@ -60,7 +60,7 @@ const styles = theme => ({
   },
 });
 
-function CandidateItem(props) {
+function Item(props) {
   const { data, classes, selected, isUnread } = props;
   moment.updateLocale('en', momentLocales);
   return (
@@ -70,7 +70,7 @@ function CandidateItem(props) {
       button
       selected={selected}
       classes={{ root: classes.root, selected: classes.selectedItem }}
-      className={isUnread && classes.unread}
+      className={isUnread ? classes.unread : ''}
     >
       <ListItemText
         primary={
@@ -109,4 +109,4 @@ function CandidateItem(props) {
     </ListItem>
   );
 }
-export default withStyles(styles)(CandidateItem);
+export default withStyles(styles)(Item);

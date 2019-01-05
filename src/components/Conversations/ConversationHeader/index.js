@@ -23,6 +23,7 @@ import SpamIcon from '@material-ui/icons/Report';
 
 import ConversationTypeIcon from '../ConversationTypeIcon';
 import ManageSubscribersDialog from './ManageSubscribersDialog';
+import DebugButton from '../../DebugButton';
 import { useWindowSize } from '../../../hooks/useWindowSize';
 import { copyToClipboard } from '../../../utilities';
 import { markAsSpam, unmarkAsSpam } from '../../../utilities/conversations';
@@ -138,6 +139,11 @@ function ConversationHeader(props) {
             )}
           </Grid>
           <Grid item className={classes.actionButtons}>
+            <DebugButton
+              title="Copy conversation ID"
+              toCopy={conversation.id}
+            />
+            <DebugButton toCopy={conversation.UID} />
             <Tooltip title="Manage Subscribers">
               <IconButton
                 onClick={() => {
