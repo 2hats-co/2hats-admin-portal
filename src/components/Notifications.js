@@ -170,44 +170,41 @@ function Notifications(props) {
               <List>
                 {notifications &&
                   notifications.length > 0 &&
-                  notifications.map(x => {
-                    let body = x.body;
-                    if (body.length > 120) {
-                      body = body.slice(0, 70) + '...';
-                    }
-                    return (
-                      <ListItem
-                        key={x.id}
-                        button
-                        onClick={() => {
-                          handleClick(x.data);
-                        }}
-                      >
-                        <Avatar>{getIcon(x.data.type)}</Avatar>
-                        <ListItemText
-                          primary={
-                            <Grid
-                              container
-                              justify="space-between"
-                              alignItems="center"
+                  notifications.map(x => (
+                    <ListItem
+                      key={x.id}
+                      button
+                      onClick={() => {
+                        handleClick(x.data);
+                      }}
+                    >
+                      <Avatar>{getIcon(x.data.type)}</Avatar>
+                      <ListItemText
+                        primary={
+                          <Grid
+                            container
+                            justify="space-between"
+                            alignItems="center"
+                          >
+                            <Typography variant="subtitle1">
+                              {x.title}
+                            </Typography>
+                            <Typography
+                              variant="body2"
+                              className={classes.timestamp}
                             >
-                              <Typography variant="subtitle1">
-                                {x.title}
-                              </Typography>
-                              <Typography
-                                variant="body2"
-                                className={classes.timestamp}
-                              >
-                                {moment.unix(x.createdAt.seconds).fromNow()}
-                              </Typography>
-                            </Grid>
-                          }
-                          secondary={body}
-                          classes={{ root: classes.listItemTextRoot }}
-                        />
-                      </ListItem>
-                    );
-                  })}
+                              {moment.unix(x.createdAt.seconds).fromNow()}
+                            </Typography>
+                          </Grid>
+                        }
+                        secondary={x.body}
+                        classes={{
+                          root: classes.listItemTextRoot,
+                          secondary: classes.listItemSecondary,
+                        }}
+                      />
+                    </ListItem>
+                  ))}
               </List>
             </Paper>
           </Slide>
