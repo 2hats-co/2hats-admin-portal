@@ -71,6 +71,9 @@ const styles = theme => ({
     },
     '& $avatar': { top: -6 },
   },
+  bodyText: {
+    overflowWrap: 'break-word',
+  },
 
   firstOfIncoming: {
     '& .msg-body': { borderTopLeftRadius: theme.shape.roundBorderRadius },
@@ -174,6 +177,8 @@ const styles = theme => ({
     textAlign: 'left',
     padding: `0 ${theme.spacing.unit * 2}px`,
     borderRadius: theme.shape.roundBorderRadius * 0.8,
+    overflowWrap: 'break-word',
+
     '& p': { color: 'initial' },
     '& img': { maxWidth: '100%' },
   },
@@ -432,7 +437,11 @@ function Message(props) {
       );
       break;
     default:
-      bodyContent = <Typography variant="body2">{data.body}</Typography>;
+      bodyContent = (
+        <Typography variant="body2" className={classes.bodyText}>
+          {data.body}
+        </Typography>
+      );
       break;
   }
 

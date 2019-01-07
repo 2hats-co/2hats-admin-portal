@@ -146,7 +146,7 @@ const ComposerActions = React.memo(props => {
         eventButton(() => {
           setShowEventDialog(true);
         }),
-        fileButton(actions.file, pickerToken, setPickerToken),
+        //fileButton(actions.file, pickerToken, setPickerToken),
       ];
       break;
     case 'linkedin':

@@ -152,7 +152,7 @@ function Notifications(props) {
           >
             <Badge
               badgeContent={
-                unreadNotifications >= 50 ? '50+' : unreadNotifications
+                unreadNotifications >= 9 ? '9+' : unreadNotifications
               }
               invisible={!(unreadNotifications > 0)}
               classes={{ badge: classes.badge }}

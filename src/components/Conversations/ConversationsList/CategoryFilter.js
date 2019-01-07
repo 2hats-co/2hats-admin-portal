@@ -25,9 +25,9 @@ const styles = theme => ({
   },
 });
 
-function AdminSelector(props) {
-  const { classes, onSelect } = props;
-  const [selected, setSelected] = useState('');
+function CategoryFilter(props) {
+  const { classes, onSelect, selected, setSelected } = props;
+
   const [open, setOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
 
@@ -85,4 +85,4 @@ function AdminSelector(props) {
   );
 }
 
-export default withStyles(styles)(AdminSelector);
+export default withStyles(styles)(CategoryFilter);

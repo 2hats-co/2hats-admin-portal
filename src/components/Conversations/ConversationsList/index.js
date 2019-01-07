@@ -105,8 +105,11 @@ function ConversationsList(props) {
   const [hasMore, setHasMore] = useState(true);
   const [filter, setFilter] = useState('all');
   const [filters, setFilters] = useState([subscriberFilter(uid)]);
+  const [category, setCategory] = useState('');
+
   useEffect(
     () => {
+      setCategory('');
       switch (filter) {
         case 'unread':
           setFilters([unreadFilter(uid)]);
@@ -163,8 +166,13 @@ function ConversationsList(props) {
       <Grid item className={classes.adminSelectorWrapper}>
         <CategoryFilter
           onSelect={category => {
-            if (category) setFilters([categoryFilter(category)]);
+            if (category) {
+              setCategory(category);
+              setFilters([categoryFilter(category)]);
+            }
           }}
+          selected={category}
+          setSelected={setCategory}
         />
         <AdminSelector
           onSelect={uid => {
