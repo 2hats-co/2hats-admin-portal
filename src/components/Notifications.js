@@ -110,6 +110,7 @@ function Notifications(props) {
         value: uid,
       },
     ],
+    limit: 50,
   });
   const notifications = notificationsState.documents;
   // console.log('notifications', notifications);
@@ -151,7 +152,7 @@ function Notifications(props) {
           >
             <Badge
               badgeContent={
-                unreadNotifications > 9 ? '9+' : unreadNotifications
+                unreadNotifications >= 50 ? '50+' : unreadNotifications
               }
               invisible={!(unreadNotifications > 0)}
               classes={{ badge: classes.badge }}
