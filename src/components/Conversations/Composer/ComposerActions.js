@@ -138,13 +138,6 @@ const ComposerActions = React.memo(props => {
     setShowEmojiDialog(!showEmojiDialog);
   };
 
-  const handleFile = data => {
-    console.log('GooglePicker', data);
-    if (data.action === 'picked' && data.docs) {
-      data.docs.forEach((x, i) => {});
-    }
-  };
-
   let actionButtons;
   switch (composerType) {
     case 'email':
@@ -153,7 +146,7 @@ const ComposerActions = React.memo(props => {
         eventButton(() => {
           setShowEventDialog(true);
         }),
-        fileButton(handleFile, pickerToken, setPickerToken),
+        fileButton(actions.file, pickerToken, setPickerToken),
       ];
       break;
     case 'linkedin':
@@ -165,7 +158,7 @@ const ComposerActions = React.memo(props => {
         reminderButton(() => {
           setShowReminderDialog(true);
         }),
-        fileButton(handleFile, pickerToken, setPickerToken),
+        //fileButton(actions.file, pickerToken, setPickerToken),
         atButton(actions.at),
       ];
       break;

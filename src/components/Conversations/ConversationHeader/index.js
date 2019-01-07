@@ -1,6 +1,4 @@
-import React, {
-  useState, //useRef
-} from 'react';
+import React, { useState, useEffect } from 'react';
 
 import withStyles from '@material-ui/core/styles/withStyles';
 import Grid from '@material-ui/core/Grid';
@@ -15,18 +13,20 @@ import BackIcon from '@material-ui/icons/ArrowBack';
 import EmailIcon from '@material-ui/icons/Markunread';
 import LinkedInIcon from '../../../assets/icons/LinkedIn';
 import SpamIcon from '@material-ui/icons/Report';
-// import MenuItem from '@material-ui/core/MenuItem';
-// import OutlinedInput from '@material-ui/core/OutlinedInput';
-// import Select from '@material-ui/core/Select';
-// import FormControl from '@material-ui/core/FormControl';
-// import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import TextField from '@material-ui/core/TextField';
+import Select from '@material-ui/core/Select';
 
 import ConversationTypeIcon from '../ConversationTypeIcon';
 import ManageSubscribersDialog from './ManageSubscribersDialog';
 import DebugButton from '../../DebugButton';
 import { useWindowSize } from '../../../hooks/useWindowSize';
 import { copyToClipboard } from '../../../utilities';
-import { markAsSpam, unmarkAsSpam } from '../../../utilities/conversations';
+import {
+  markAsSpam,
+  unmarkAsSpam,
+  updateCategory,
+} from '../../../utilities/conversations';
 
 const styles = theme => ({
   root: {
@@ -41,9 +41,23 @@ const styles = theme => ({
     opacity: 0.87,
     color: theme.palette.text.primary,
   },
+
+  categoryDropdownWrapper: {
+    margin: 0,
+    marginLeft: theme.spacing.unit * 2,
+  },
+  categoryDropdown: {
+    paddingTop: theme.spacing.unit,
+    paddingBottom: theme.spacing.unit - 1,
+    paddingRight: theme.spacing.unit * 3,
+    fontSize: '.875rem',
+    minWidth: 100,
+  },
+
   linkedInButton: {
     color: `${theme.palette.text.secondary} !important`,
   },
+
   actionButtons: {
     position: 'relative',
     paddingLeft: theme.spacing.unit * 2,
@@ -67,7 +81,23 @@ function ConversationHeader(props) {
   const windowSize = useWindowSize();
 
   const { classes, conversation, closeConversation } = props;
+
+  console.log('conversation.category', conversation.category);
+
   const [showSubscriberDialog, setShowSubscriberDialog] = useState(false);
+  const [category, setCategory] = useState('');
+
+  useEffect(
+    () => {
+      setCategory(conversation.category ? conversation.category : 'none');
+    },
+    [conversation]
+  );
+
+  const handleChangeCategory = e => {
+    setCategory(e.target.value);
+    updateCategory(conversation.id, e.target.value);
+  };
 
   return (
     <React.Fragment>
@@ -82,35 +112,33 @@ function ConversationHeader(props) {
           )}
           <Grid item xs>
             <Grid container alignItems="flex-start">
-              <Grid item>
-                <ConversationTypeIcon
-                  type={conversation.type}
-                  className={classes.typeIcon}
-                />
-              </Grid>
-              <Grid item>
-                <Typography variant="h6">{conversation.displayName}</Typography>
-              </Grid>
-            </Grid>
-          </Grid>
-          {/* <Grid item>
-            <FormControl variant="outlined" className={classes.formControl}>
-              <InputLabel ref={InputLabelRef} htmlFor="outlined-tag">
-                Tag 
-              </InputLabel>
-              <Select
-                value={tag}
-                onChange={e => setTag(e.target.value)}
-                input={
-                  <OutlinedInput labelWidth={25} name="tag" id="outlined-tag" />
-                }
+              <ConversationTypeIcon
+                type={conversation.type}
+                className={classes.typeIcon}
+              />
+
+              <Typography variant="h6">{conversation.displayName}</Typography>
+
+              <TextField
+                select
+                InputProps={{
+                  disableUnderline: true,
+                  classes: { inputMarginDense: classes.categoryDropdown },
+                }}
+                margin="dense"
+                variant="filled"
+                value={category}
+                onChange={handleChangeCategory}
+                className={classes.categoryDropdownWrapper}
               >
+                <MenuItem value="none">No category</MenuItem>
                 <MenuItem value="futureNeed">Future Need</MenuItem>
                 <MenuItem value="generalCatchup">General Catchup</MenuItem>
                 <MenuItem value="partnerships">Partnerships</MenuItem>
-              </Select>
-            </FormControl>
-          </Grid> */}
+                <MenuItem value="randoms">Randoms</MenuItem>
+              </TextField>
+            </Grid>
+          </Grid>
           <Grid item>
             {conversation.channels.email && (
               <Tooltip

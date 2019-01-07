@@ -35,6 +35,13 @@ export const unmarkAsSpam = async conversationId => {
     .update({ type: 'client' });
 };
 
+export const updateCategory = async (conversationId, category) => {
+  firestore
+    .collection(COLLECTIONS.conversations)
+    .doc(conversationId)
+    .update({ category });
+};
+
 export const addNote = (adminId, conversationId, note, notifyList) => {
   if (!notifyList) notifyList = [];
   firestore

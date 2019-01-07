@@ -8,7 +8,7 @@ import { removeHtmlTags } from '../index';
  * @param {{subject:string,body:string}} email
  */
 export const sendEmail = async (conversationId, emailObject) => {
-  const { recipient, sender, email } = emailObject;
+  const { recipient, sender, email, attachments } = emailObject;
   const now = new Date();
   const gmailDoc = {
     conversationId,
@@ -20,6 +20,7 @@ export const sendEmail = async (conversationId, emailObject) => {
     },
     body: email.body,
     createdAt: now,
+    attachments,
   };
   const messageText = removeHtmlTags(email.body);
   const messageDoc = {
@@ -31,6 +32,7 @@ export const sendEmail = async (conversationId, emailObject) => {
     sentAt: now,
     type: 'email',
     cc: recipient.cc,
+    attachments,
   };
   const lastMessage = { ...messageDoc, body: messageText };
   console.log('gmailDoc', gmailDoc);

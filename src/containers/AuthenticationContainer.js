@@ -43,13 +43,14 @@ class AuthenticationContainer extends React.Component {
       );
     } else {
       return (
-        <LogoInCard width={350} height={260}>
+        <LogoInCard width={350} height={280}>
           <Grid
             container
             className={classes.root}
             alignItems="center"
             direction="column"
             justify="space-between"
+            wrap="nowrap"
           >
             <Typography variant="h6">Admin Portal</Typography>
             <GoogleButton
@@ -57,7 +58,18 @@ class AuthenticationContainer extends React.Component {
               action="Sign in"
               onClick={this.handleGoogleButton}
             />
-            <Typography variant="caption">Use your 2hats email</Typography>
+            <Grid item style={{ textAlign: 'center', marginTop: 8 }}>
+              <Typography variant="caption">Use your 2hats email</Typography>
+              <Typography variant="caption">
+                <a
+                  href="https://myaccount.google.com/permissions"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Reset your Google permissions
+                </a>
+              </Typography>
+            </Grid>
           </Grid>
         </LogoInCard>
       );

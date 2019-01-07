@@ -62,6 +62,7 @@ const styles = theme => ({
     marginLeft: theme.spacing.unit * 2,
     marginRight: theme.spacing.unit * 2,
   },
+
   templateDropdownWrapper: {
     position: 'relative',
     top: theme.spacing.unit / 2,
@@ -105,10 +106,12 @@ const styles = theme => ({
   },
   chipWrapper: {
     marginLeft: -theme.spacing.unit,
+    marginTop: theme.spacing.unit,
   },
-  // chipIcon: {
-  //   marginLeft: theme.spacing.unit,
-  // },
+  chipIcon: {
+    marginLeft: theme.spacing.unit * 1.5,
+    marginRight: -theme.spacing.unit / 2,
+  },
 });
 
 // const DUMMY_EVENTS = [
@@ -164,6 +167,7 @@ function Composer(props) {
     setTemplateIndex(-1);
     setCc('');
     setNotifyList('');
+    setAttachments([]);
   };
 
   useEffect(clearComposer, [conversation.id]);
@@ -171,7 +175,7 @@ function Composer(props) {
   const [emailSubject, setEmailSubject] = useState('');
   const [messageText, setMessageText] = useState('');
   const [messageHtml, setMessageHtml] = useState('');
-  // const [attachments, setAttachments] = useState([]);
+  const [attachments, setAttachments] = useState([]);
   const [cc, setCc] = useState('');
   const [templateIndex, setTemplateIndex] = useState(-1);
   const [notifyList, setNotifyList] = useState([]);
@@ -199,6 +203,13 @@ function Composer(props) {
         '@' + adminsContext.getAdmin(uid).givenName + ' ' + messageText;
       setMessageText(newText);
       setMessageHtml(newText);
+    }
+  };
+
+  const handleFile = data => {
+    console.log('GooglePicker', data);
+    if (data.action === 'picked' && data.docs) {
+      setAttachments([...attachments, ...data.docs]);
     }
   };
 
@@ -234,13 +245,16 @@ function Composer(props) {
   };
 
   const handleSendEmail = () => {
-    const email = { subject: emailSubject, body: messageHtml };
+    const email = {
+      subject: emailSubject,
+      body: messageHtml,
+    };
     const recipient = {
       email: conversation.channels.email,
       cc: cc.split(','),
     };
     const sender = { email: currentUser.email, id: currentUser.UID };
-    sendEmail(conversation.id, { recipient, email, sender });
+    sendEmail(conversation.id, { recipient, email, sender, attachments });
     clearComposer();
   };
 
@@ -357,12 +371,6 @@ function Composer(props) {
                   disableUnderline: true,
                   classes: { inputMarginDense: classes.templateDropdown },
                 }}
-                InputLabelProps={{
-                  classes: {
-                    root: classes.label,
-                    shrink: classes.shrinkedLabel,
-                  },
-                }}
                 margin="dense"
                 variant="filled"
                 value={templateIndex}
@@ -407,7 +415,7 @@ function Composer(props) {
                 [{ list: 'bullet' }],
 
                 [{ color: [] }, { background: [] }],
-                ['link', 'image'],
+                ['link'],
               ],
             }}
           />
@@ -431,12 +439,12 @@ function Composer(props) {
         />
       )}
 
-      {/* <div className={classes.chipWrapper}>
+      <div className={classes.chipWrapper}>
         {attachments.map((x, i) => (
           <Chip
-            key={i}
-            label={x.label}
-            icon={getChipIcon(x.type)}
+            key={x.id}
+            label={x.name}
+            icon={<img src={x.iconUrl} alt={x.mimeType} />}
             onDelete={() => {
               const newAttachments = attachments;
               newAttachments.splice(i, 1);
@@ -445,7 +453,7 @@ function Composer(props) {
             classes={{ icon: classes.chipIcon }}
           />
         ))}
-      </div> */}
+      </div>
 
       {composerType === 'note' && (
         <div className={classes.chipWrapper}>
@@ -475,6 +483,7 @@ function Composer(props) {
           linkedin: handleSendLinkedin,
           addText,
           at: handleAt,
+          file: handleFile,
         }}
         composerType={composerType}
         conversation={conversation}
