@@ -84,6 +84,7 @@ export const addReminder = (adminId, conversationId, data) => {
       sentAt: new Date(),
       type: 'reminder',
       data,
+      sent: false,
     });
 };
 
