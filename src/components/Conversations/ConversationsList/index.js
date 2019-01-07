@@ -20,6 +20,7 @@ import InfiniteScroll from 'react-infinite-scroller';
 
 import useCollection from '../../../hooks/useCollection';
 import AdminSelector from '../../AdminSelector';
+import CategoryFilter from './CategoryFilter';
 import Item from './Item';
 
 const styles = theme => ({
@@ -84,6 +85,11 @@ const notSpamFilter = {
   operator: '<',
   value: 'spam',
 };
+const categoryFilter = category => ({
+  field: 'category',
+  operator: '==',
+  value: category,
+});
 
 function ConversationsList(props) {
   const { classes, setSelectedConversation, selectedConversation, uid } = props;
@@ -155,6 +161,11 @@ function ConversationsList(props) {
   return (
     <Grid container direction="column" style={{ height: 'calc(100vh - 64px)' }}>
       <Grid item className={classes.adminSelectorWrapper}>
+        <CategoryFilter
+          onSelect={category => {
+            if (category) setFilters([categoryFilter(category)]);
+          }}
+        />
         <AdminSelector
           onSelect={uid => {
             setFilters([assigneeFilter(uid)]);

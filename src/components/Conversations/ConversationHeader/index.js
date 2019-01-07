@@ -15,7 +15,6 @@ import LinkedInIcon from '../../../assets/icons/LinkedIn';
 import SpamIcon from '@material-ui/icons/Report';
 import MenuItem from '@material-ui/core/MenuItem';
 import TextField from '@material-ui/core/TextField';
-import Select from '@material-ui/core/Select';
 
 import ConversationTypeIcon from '../ConversationTypeIcon';
 import ManageSubscribersDialog from './ManageSubscribersDialog';
@@ -27,6 +26,7 @@ import {
   unmarkAsSpam,
   updateCategory,
 } from '../../../utilities/conversations';
+import conversationCategories from '../../../constants/conversationCategories';
 
 const styles = theme => ({
   root: {
@@ -82,21 +82,19 @@ function ConversationHeader(props) {
 
   const { classes, conversation, closeConversation } = props;
 
-  console.log('conversation.category', conversation.category);
-
   const [showSubscriberDialog, setShowSubscriberDialog] = useState(false);
   const [category, setCategory] = useState('');
 
   useEffect(
     () => {
-      setCategory(conversation.category ? conversation.category : 'none');
+      setCategory(conversation.category ? conversation.category : '');
     },
     [conversation]
   );
 
   const handleChangeCategory = e => {
     setCategory(e.target.value);
-    updateCategory(conversation.id, e.target.value);
+    if (e.target.value) updateCategory(conversation.id, e.target.value);
   };
 
   return (
@@ -119,24 +117,28 @@ function ConversationHeader(props) {
 
               <Typography variant="h6">{conversation.displayName}</Typography>
 
-              <TextField
-                select
-                InputProps={{
-                  disableUnderline: true,
-                  classes: { inputMarginDense: classes.categoryDropdown },
-                }}
-                margin="dense"
-                variant="filled"
-                value={category}
-                onChange={handleChangeCategory}
-                className={classes.categoryDropdownWrapper}
-              >
-                <MenuItem value="none">No category</MenuItem>
-                <MenuItem value="futureNeed">Future Need</MenuItem>
-                <MenuItem value="generalCatchup">General Catchup</MenuItem>
-                <MenuItem value="partnerships">Partnerships</MenuItem>
-                <MenuItem value="randoms">Randoms</MenuItem>
-              </TextField>
+              {conversation.type === 'client' && (
+                <TextField
+                  select
+                  InputProps={{
+                    disableUnderline: true,
+                    classes: { inputMarginDense: classes.categoryDropdown },
+                  }}
+                  margin="dense"
+                  variant="filled"
+                  value={category}
+                  onChange={handleChangeCategory}
+                  className={classes.categoryDropdownWrapper}
+                  SelectProps={{ displayEmpty: true }}
+                >
+                  <MenuItem value="">No category</MenuItem>
+                  {conversationCategories.map(x => (
+                    <MenuItem key={x.value} value={x.value}>
+                      {x.label}
+                    </MenuItem>
+                  ))}
+                </TextField>
+              )}
             </Grid>
           </Grid>
           <Grid item>
