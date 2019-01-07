@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
 import withStyles from '@material-ui/core/styles/withStyles';
 import Dialog from '@material-ui/core/Dialog';
@@ -7,7 +7,6 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
-import List from '@material-ui/core/List';
 
 import CloseIcon from '@material-ui/icons/Close';
 
@@ -64,37 +63,11 @@ const styles = theme => ({
 function CampaignDetailsDialog(props) {
   const { classes, data, setShowDialog } = props;
 
-  const [hasMore, setHasMore] = useState(false);
-
   const [recentConnectionsState, recentConnectionsDispatch] = useCollection({
     path: `linkedinCampaigns/${data.id}/requests`,
     sort: { field: 'createdAt', direction: 'desc' },
   });
   const recentConnections = recentConnectionsState.documents;
-
-  useEffect(
-    () => {
-      if (
-        recentConnectionsState.loading ||
-        recentConnectionsState.limit === recentConnectionsState.cap
-      ) {
-        setHasMore(false);
-      } else {
-        setHasMore(
-          recentConnectionsState.documents.length ===
-            recentConnectionsState.limit
-        );
-      }
-    },
-    [recentConnectionsState]
-  );
-
-  const loadMore = () => {
-    if (hasMore) {
-      setHasMore(false);
-      recentConnectionsDispatch({ type: 'more' });
-    }
-  };
 
   return (
     <React.Fragment>

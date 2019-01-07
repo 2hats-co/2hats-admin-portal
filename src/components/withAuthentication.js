@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 
-import LoadingHat from '../../components/LoadingHat';
+import LoadingHat from '../components/LoadingHat';
 
-import { auth, initializePushNotifications } from '../../store';
-import AuthenticationContainer from '../../containers/AuthenticationContainer';
+import { auth, initializePushNotifications } from '../store';
+import AuthenticationContainer from '../containers/AuthenticationContainer';
 
 const withAuthentication = Component =>
   function WithAuthentication(props) {
