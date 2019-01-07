@@ -109,7 +109,7 @@ function ConversationsList(props) {
 
   useEffect(
     () => {
-      setCategory('');
+      if (filter) setCategory('');
       switch (filter) {
         case 'unread':
           setFilters([unreadFilter(uid)]);
@@ -123,8 +123,11 @@ function ConversationsList(props) {
         case 'spam':
           setFilters([spamFilter]);
           break;
-        default:
+        case 'all':
           setFilters([subscriberFilter(uid), notSpamFilter]);
+          break;
+        default:
+          break;
       }
     },
     [filter]
@@ -166,10 +169,10 @@ function ConversationsList(props) {
       <Grid item className={classes.adminSelectorWrapper}>
         <CategoryFilter
           onSelect={category => {
-            if (category) {
-              setCategory(category);
-              setFilters([categoryFilter(category)]);
-            }
+            if (category) setFilter('');
+            setCategory(category);
+            setFilters([categoryFilter(category)]);
+            if (!category) setFilter('all');
           }}
           selected={category}
           setSelected={setCategory}
