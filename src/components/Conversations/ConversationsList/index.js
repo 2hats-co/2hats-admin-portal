@@ -79,12 +79,20 @@ const spamFilter = {
   operator: '==',
   value: 'spam',
 };
+const notSpamFilter = {
+  field: 'type',
+  operator: '<',
+  value: 'spam',
+};
 
 function ConversationsList(props) {
   const { classes, setSelectedConversation, selectedConversation, uid } = props;
   const [conversationsState, conversationsDispatch] = useCollection({
     path: `conversations`,
-    sort: { field: 'lastMessage.sentAt', direction: 'desc' },
+    sort: [
+      { field: 'type', direction: 'asc' },
+      { field: 'lastMessage.sentAt', direction: 'desc' },
+    ],
     filters: [subscriberFilter(uid)],
   });
   const conversations = conversationsState.documents;
@@ -101,13 +109,13 @@ function ConversationsList(props) {
           setFilters([candidateFilter]);
           break;
         case 'client':
-          setFilters([clientFilter]);
+          setFilters([subscriberFilter(uid), clientFilter]);
           break;
         case 'spam':
           setFilters([spamFilter]);
           break;
         default:
-          setFilters([subscriberFilter(uid)]);
+          setFilters([subscriberFilter(uid), notSpamFilter]);
       }
     },
     [filter]

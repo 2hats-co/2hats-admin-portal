@@ -55,7 +55,13 @@ const useCollection = intialOverrides => {
       query = query.where(filter.field, filter.operator, filter.value);
     });
     if (sort) {
-      query = query.orderBy(sort.field, sort.direction);
+      if (Array.isArray(sort)) {
+        sort.forEach(order => {
+          query = query.orderBy(order.field, order.direction);
+        });
+      } else {
+        query = query.orderBy(sort.field, sort.direction);
+      }
     }
     query.limit(limit).onSnapshot(snapshot => {
       if (snapshot.docs.length > 0) {
