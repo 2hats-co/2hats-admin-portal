@@ -215,7 +215,7 @@ function ConversationsList(props) {
           <Tab
             value="client"
             label={
-              <Tooltip title="Clients">
+              <Tooltip title="Leads">
                 <ClientIcon />
               </Tooltip>
             }
