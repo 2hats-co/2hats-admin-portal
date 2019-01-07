@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { withRouter } from 'react-router-dom';
-// import InfiniteScroll from 'react-infinite-scroller';
 import withStyles from '@material-ui/core/styles/withStyles';
 
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -24,6 +23,7 @@ import NotificationIcon from '@material-ui/icons/Notifications';
 import MessageIcon from '@material-ui/icons/Forum';
 import NoteIcon from '@material-ui/icons/AlternateEmail';
 
+import ScrollyRolly from './ScrollyRolly';
 import useCollection from '../hooks/useCollection';
 import { COLLECTIONS } from '../constants/firestore';
 import { ROUTES } from '../constants/routes';
@@ -110,10 +110,8 @@ function Notifications(props) {
         value: uid,
       },
     ],
-    limit: 50,
   });
   const notifications = notificationsState.documents;
-  // console.log('notifications', notifications);
 
   const handleClose = () => {
     setSlideIn(false);
@@ -166,7 +164,45 @@ function Notifications(props) {
         <Modal open={showDialog} onClose={handleClose} disableAutoFocus>
           <Slide in={slideIn} direction="up">
             <Paper elevation={24} classes={{ root: classes.paperRoot }}>
-              <List>
+              <ScrollyRolly
+                dataState={notificationsState}
+                dataDispatch={notificationsDispatch}
+              >
+                {x => (
+                  <ListItem
+                    key={x.id}
+                    button
+                    onClick={() => {
+                      handleClick(x.data);
+                    }}
+                  >
+                    <Avatar>{getIcon(x.data.type)}</Avatar>
+                    <ListItemText
+                      primary={
+                        <Grid
+                          container
+                          justify="space-between"
+                          alignItems="center"
+                        >
+                          <Typography variant="subtitle1">{x.title}</Typography>
+                          <Typography
+                            variant="body2"
+                            className={classes.timestamp}
+                          >
+                            {moment.unix(x.createdAt.seconds).fromNow()}
+                          </Typography>
+                        </Grid>
+                      }
+                      secondary={x.body}
+                      classes={{
+                        root: classes.listItemTextRoot,
+                        secondary: classes.listItemSecondary,
+                      }}
+                    />
+                  </ListItem>
+                )}
+              </ScrollyRolly>
+              {/* <List>
                 {notifications &&
                   notifications.length > 0 &&
                   notifications.map(x => (
@@ -204,7 +240,7 @@ function Notifications(props) {
                       />
                     </ListItem>
                   ))}
-              </List>
+              </List> */}
             </Paper>
           </Slide>
         </Modal>

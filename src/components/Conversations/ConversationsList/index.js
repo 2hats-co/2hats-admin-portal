@@ -3,8 +3,6 @@ import withStyles from '@material-ui/core/styles/withStyles';
 
 import Grid from '@material-ui/core/Grid';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import LinearProgress from '@material-ui/core/LinearProgress';
-import List from '@material-ui/core/List';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
@@ -16,12 +14,11 @@ import ClientIcon from '@material-ui/icons/BusinessCenter';
 import CandidateIcon from '@material-ui/icons/School';
 import SpamIcon from '@material-ui/icons/Report';
 
-import InfiniteScroll from 'react-infinite-scroller';
-
 import useCollection from '../../../hooks/useCollection';
 import AdminSelector from '../../AdminSelector';
 import CategoryFilter from './CategoryFilter';
 import Item from './Item';
+import ScrollyRolly from '../../ScrollyRolly';
 
 const styles = theme => ({
   adminSelectorWrapper: {
@@ -102,7 +99,7 @@ function ConversationsList(props) {
     filters: [subscriberFilter(uid)],
   });
   const conversations = conversationsState.documents;
-  const [hasMore, setHasMore] = useState(true);
+
   const [filter, setFilter] = useState('all');
   const [filters, setFilters] = useState([subscriberFilter(uid)]);
   const [category, setCategory] = useState('');
@@ -139,18 +136,6 @@ function ConversationsList(props) {
     },
     [filters]
   );
-  useEffect(
-    () => {
-      setHasMore(true);
-    },
-    [conversationsState.documents]
-  );
-  const loadMore = num => {
-    if (hasMore) {
-      setHasMore(false);
-      conversationsDispatch({ type: 'more' });
-    }
-  };
 
   if (conversationsState.loading)
     return (
@@ -262,42 +247,26 @@ function ConversationsList(props) {
         </Grid>
       ) : (
         <Grid item xs style={{ overflowY: 'scroll' }}>
-          <InfiniteScroll
-            initialLoad={false}
-            pageStart={0}
-            //BROKEN
-            loadMore={() => {
-              loadMore();
-            }}
-            hasMore={hasMore}
-            loader={
-              conversationsState.loading ? (
-                <LinearProgress
-                  key="listLoader"
-                  className={classes.listLoader}
-                />
-              ) : null
-            }
-            useWindow={false}
-            threshold={100}
+          <ScrollyRolly
+            classes={{ listLoader: classes.listLoader }}
+            dataState={conversationsState}
+            dataDispatch={conversationsDispatch}
+            disablePadding
           >
-            <List disablePadding>
-              {conversations.map(x => (
-                <Item
-                  onClick={() => {
-                    setSelectedConversation(x);
-                  }}
-                  data={x}
-                  key={x.id}
-                  selected={
-                    selectedConversation && x.id === selectedConversation.id
-                  }
-                  isUnread={x.unreadAdmins.includes(uid)}
-                  // isStarred={x.isStarred}
-                />
-              ))}
-            </List>
-          </InfiniteScroll>
+            {data => (
+              <Item
+                onClick={() => {
+                  setSelectedConversation(data);
+                }}
+                data={data}
+                key={data.id}
+                selected={
+                  selectedConversation && data.id === selectedConversation.id
+                }
+                isUnread={data.unreadAdmins.includes(uid)}
+              />
+            )}
+          </ScrollyRolly>
         </Grid>
       )}
     </Grid>

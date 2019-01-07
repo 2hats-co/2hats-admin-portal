@@ -37,6 +37,9 @@ const styles = theme => ({
         : theme.palette.background.paper,
     borderLeft: `1px solid ${theme.palette.divider}`,
   },
+  messagesWrapper: {
+    overflow: 'hidden',
+  },
   composerContainer: {
     borderTop: `1px solid ${theme.palette.divider}`,
   },
@@ -133,7 +136,7 @@ function ConversationsContainer(props) {
                 conversation={selectedConversation}
               />
 
-              <Grid item xs style={{ overflowY: 'auto' }}>
+              <Grid item xs className={classes.messagesWrapper}>
                 <Messages conversation={selectedConversation} />
               </Grid>
               <Grid item className={classes.composerContainer}>

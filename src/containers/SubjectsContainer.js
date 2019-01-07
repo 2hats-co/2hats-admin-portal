@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import withNavigation from '../components/withNavigation';
 import { ROUTES } from '../constants/routes';
 
@@ -16,9 +16,7 @@ import SubjectItem from '../components/Subjects/SubjectItem';
 import useCollection from '../hooks/useCollection';
 import LoadingHat from '../components/LoadingHat';
 
-import InfiniteScroll from 'react-infinite-scroller';
-import LinearProgress from '@material-ui/core/LinearProgress';
-
+import ScrollyRolly from '../components/ScrollyRolly';
 import { COLLECTIONS } from '../constants/firestore';
 
 const styles = theme => ({
@@ -163,30 +161,11 @@ function SubjectsContainer(props) {
     collection = COLLECTIONS.clients;
   }
 
-  const [hasMore, setHasMore] = useState(false);
   const [subjectsState, subjectsDispatch] = useCollection({
     path: collection,
     sort: { field: 'createdAt', direction: 'desc' },
   });
   const subjects = subjectsState.documents;
-
-  useEffect(
-    () => {
-      if (subjectsState.loading || subjectsState.limit === subjectsState.cap) {
-        setHasMore(false);
-      } else {
-        setHasMore(subjectsState.documents.length === subjectsState.limit);
-      }
-    },
-    [subjectsState]
-  );
-
-  const loadMore = () => {
-    if (hasMore) {
-      setHasMore(false);
-      subjectsDispatch({ type: 'more' });
-    }
-  };
 
   const [snackbarContent, setSnackbarContent] = useState('');
   return (
@@ -238,14 +217,12 @@ function SubjectsContainer(props) {
             {subjectsState.loading ? (
               <LoadingHat message="Rounding up your subjects…" />
             ) : (
-              <InfiniteScroll
-                pageStart={0}
-                loadMore={loadMore}
-                hasMore={hasMore}
-                useWindow={false}
-                threshold={100}
+              <ScrollyRolly
+                dataState={subjectsState}
+                dataDispatch={subjectsDispatch}
+                disablePadding
               >
-                {subjects.map((x, i) => (
+                {(x, i) => (
                   <SubjectItem
                     key={i}
                     name={
@@ -264,8 +241,8 @@ function SubjectsContainer(props) {
                     // note={x.note}
                     // setSnackbarContent={setSnackbarContent}
                   />
-                ))}
-              </InfiniteScroll>
+                )}
+              </ScrollyRolly>
             )}
           </React.Fragment>
         </Grid>

@@ -45,7 +45,7 @@ function MarketingContainer(props) {
       <div className={classes.root}>
         <LocationIndicator
           title="Marketing"
-          showBorder
+          showShadow
           subRoutes={[
             { label: 'Lead Generation', value: ROUTES.marketingLeadGeneration },
             { label: 'Email', value: ROUTES.marketingEmail },

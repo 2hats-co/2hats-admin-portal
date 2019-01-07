@@ -13,8 +13,7 @@ import CloseIcon from '@material-ui/icons/Close';
 
 import ConnectionRequest from './ConnectionRequest';
 import useCollection from '../../../hooks/useCollection';
-import InfiniteScroll from 'react-infinite-scroller';
-import LinearProgress from '@material-ui/core/LinearProgress';
+import ScrollyRolly from '../../ScrollyRolly';
 
 const styles = theme => ({
   live: {
@@ -198,25 +197,14 @@ function CampaignDetailsDialog(props) {
             </Typography>
 
             <div className={classes.infiniteScrollWrapper}>
-              <InfiniteScroll
-                pageStart={0}
-                loadMore={loadMore}
-                hasMore={hasMore}
-                loader={
-                  <LinearProgress
-                    key="listLoader"
-                    className={classes.listLoader}
-                  />
-                }
-                useWindow={false}
-                threshold={100}
+              <ScrollyRolly
+                dataState={recentConnectionsState}
+                dataDispatch={recentConnectionsDispatch}
+                classes={{ listLoader: classes.listLoader }}
+                disablePadding
               >
-                <List classes={{ root: classes.listRoot }}>
-                  {recentConnections.map(data => (
-                    <ConnectionRequest key={data.fullName} data={data} />
-                  ))}
-                </List>
-              </InfiniteScroll>
+                {data => <ConnectionRequest key={data.fullName} data={data} />}
+              </ScrollyRolly>
             </div>
           </div>
         )}

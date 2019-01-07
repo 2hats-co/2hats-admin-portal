@@ -15,11 +15,13 @@ const styles = theme => ({
     paddingLeft: theme.spacing.unit * 3,
     height: 64,
   },
-  showBorder: {
-    // boxShadow: `0 -1px 0 ${theme.palette.divider} inset`,
+  showShadow: {
     boxShadow: theme.shadows[1],
     zIndex: 49,
     position: 'relative',
+  },
+  showBorder: {
+    boxShadow: `0 -1px 0 ${theme.palette.divider} inset`,
   },
   title: {
     lineHeight: '64px',
@@ -51,6 +53,7 @@ function LocationIndicator(props) {
     title,
     history,
     showBorder,
+    showShadow,
     altBg,
   } = props;
 
@@ -73,9 +76,11 @@ function LocationIndicator(props) {
     <Grid
       container
       alignItems="center"
-      className={
-        showBorder ? classNames(classes.root, classes.showBorder) : classes.root
-      }
+      className={classNames(
+        classes.root,
+        showShadow && classes.showShadow,
+        showBorder && classes.showBorder
+      )}
       style={altBg ? { backgroundColor: theme.palette.background.default } : {}}
     >
       <Typography variant="h6" className={classes.title}>

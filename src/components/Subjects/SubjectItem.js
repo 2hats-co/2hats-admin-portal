@@ -26,6 +26,7 @@ const styles = theme => ({
     margin: 0,
     padding: '0 18px',
     borderBottom: `1px solid ${theme.palette.divider}`,
+    width: '100%',
   },
   iconButton: {
     padding: 6,

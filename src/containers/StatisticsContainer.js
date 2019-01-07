@@ -193,7 +193,7 @@ function StatisticsContainer(props) {
 
         <Slide in direction="down">
           <React.Fragment>
-            <LocationIndicator title="Statistics" showBorder />
+            <LocationIndicator title="Statistics" showShadow />
             <TimeBar
               format={format}
               range={range}
