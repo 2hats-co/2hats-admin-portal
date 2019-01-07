@@ -22,7 +22,7 @@ import { ROUTES } from '../../constants/routes';
 import logo from '../../assets/logo/WhiteIcon.svg';
 import gloria from '../../assets/gloria.jpg';
 import NavigationItems from './NavigationItems';
-import withAuthentication from '../../utilities/Session/withAuthentication';
+import withAuthentication from '../withAuthentication';
 import Search from '../Search';
 import Notifications from '../Notifications';
 import UserDialog from '../UserDialog';

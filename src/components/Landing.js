@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { withRouter } from 'react-router-dom';
 import { ROUTES } from '../constants/routes';
-import withAuthentication from '../utilities/Session/withAuthentication';
+import withAuthentication from './withAuthentication';
 
 import LoadingHat from '../components/LoadingHat';
 import { useAuthedUser } from '../hooks/useAuthedUser';
