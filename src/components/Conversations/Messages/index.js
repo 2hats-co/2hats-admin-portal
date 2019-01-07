@@ -9,6 +9,8 @@ import moment from 'moment';
 import Message from './Message';
 import useCollection from '../../../hooks/useCollection';
 
+import sortBy from 'ramda/es/sortBy';
+import prop from 'ramda/es/prop';
 const styles = theme => ({
   root: {
     padding: theme.spacing.unit * 2,
@@ -17,7 +19,7 @@ const styles = theme => ({
     width: '100%',
   },
 });
-
+const sortBySentAt = sortBy(prop('sentAt'));
 const isSameType = (a, b) =>
   a.isIncoming === b.isIncoming &&
   a.type === b.type &&
@@ -32,7 +34,7 @@ function Messages(props) {
   const messagesEnd = useRef(null);
   const [messagesState, messagesDispatch] = useCollection({
     path: `conversations/${conversation.id}/messages`,
-    sort: { field: 'sentAt', direction: 'asc' },
+    sort: { field: 'sentAt', direction: 'desc' },
     limit: 100,
   });
 
@@ -46,8 +48,10 @@ function Messages(props) {
     [conversation.id]
   );
   const { documents } = messagesState;
-
-  const messages = documents;
+  let messages = null;
+  if (documents) {
+    messages = documents;
+  }
   useEffect(
     () => {
       if (messagesEnd.current) {
@@ -72,7 +76,7 @@ function Messages(props) {
   return (
     <div className={classes.root} ref={messagesRef}>
       {messages &&
-        messages.map((data, i) => (
+        sortBySentAt(messages).map((data, i) => (
           <Message
             key={data.id}
             data={data}
