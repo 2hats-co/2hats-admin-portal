@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import MailIcon from '@material-ui/icons/Mail';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import EventIcon from '@material-ui/icons/EventOutlined';
