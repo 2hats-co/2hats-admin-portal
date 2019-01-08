@@ -120,7 +120,7 @@ function TemplateGenerator(props) {
           UID: authedUser.UID,
           email: `${authedUser.givenName}@2hats.com`,
         };
-        const recipient = { UID: candidate.UID, email: candidate.email };
+        const recipient = { UID: candidate.id, email: candidate.email };
         const email = { subject: template.subject, body: emailBody };
         setEmail({ recipient, sender, email });
         setEmailReady(true);

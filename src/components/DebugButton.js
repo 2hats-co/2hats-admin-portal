@@ -13,7 +13,15 @@ function DebugButton(props) {
   const debugContext = useContext(DebugContext);
 
   return (
-    <Tooltip title={title || 'Copy UID'}>
+    <Tooltip
+      title={
+        <React.Fragment>
+          {title || 'Copy UID'}
+          <br />
+          {toCopy}
+        </React.Fragment>
+      }
+    >
       <IconButton
         className={className}
         onClick={() => {
