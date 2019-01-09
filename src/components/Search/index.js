@@ -7,25 +7,20 @@ import Paper from '@material-ui/core/Paper';
 import Modal from '@material-ui/core/Modal';
 
 import InputBase from '@material-ui/core/InputBase';
-import IconButton from '@material-ui/core/IconButton';
-import Tooltip from '@material-ui/core/Tooltip';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import Slide from '@material-ui/core/Slide';
 
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 
 import SearchIcon from '@material-ui/icons/Search';
-import PersonIcon from '@material-ui/icons/Person';
-import SubmissionIcon from '@material-ui/icons/DescriptionOutlined';
-import ConversationIcon from '@material-ui/icons/ChatOutlined';
-import ResumeIcon from '@material-ui/icons/Attachment';
 
+import SearchItem from './SearchItem';
 import { useSearch } from '../../hooks/useSearch';
 import { ROUTES } from '../../constants/routes';
+// import { sleep } from '../../utilities';
+// import last from 'ramda/es/last';
 
 const styles = theme => ({
   paperRoot: {
@@ -43,6 +38,20 @@ const styles = theme => ({
     color: theme.palette.text.primary,
     zIndex: -1,
     opacity: 0.5,
+  },
+  enterPrompt: {
+    position: 'absolute',
+    right: theme.spacing.unit * 2,
+    top: theme.spacing.unit * 2.5,
+    backgroundColor: theme.palette.getContrastText(
+      theme.palette.background.paper
+    ),
+    color: theme.palette.background.paper,
+    boxShadow: `0 0 ${theme.spacing.unit * 2}px ${theme.spacing.unit * 2}px ${
+      theme.palette.background.paper
+    }, ${theme.spacing.unit * 3}px 0 0 0 ${theme.palette.background.paper}`,
+    padding: `${theme.spacing.unit / 2}px ${theme.spacing.unit}px`,
+    borderRadius: theme.shape.borderRadius,
   },
   searchIcon: {
     fontSize: 28,
@@ -72,18 +81,6 @@ const styles = theme => ({
     maxHeight: 'calc(100vh - 96px - 64px)',
     overflowY: 'auto',
   },
-  listItem: {
-    transition: 'background-color .2s',
-    '&:hover': {
-      backgroundColor: theme.palette.action.hover,
-    },
-  },
-  listIcon: {
-    margin: 0,
-  },
-  secondaryAction: {
-    right: theme.spacing.unit,
-  },
   noResults: {
     paddingLeft: '40px !important',
     opacity: 0.67,
@@ -101,6 +98,35 @@ function Search(props) {
   const [hasMore, setHasMore] = useState(true);
   const [searchState, searchDispatch] = useSearch();
   const { results } = searchState;
+  // const [searching,setSearching] = use
+  // const [query, setQuery] = useState('');
+  // let queryHistory = [];
+  // const updateQuery = async () => {
+  //   console.log(queryHistory);
+  //   await sleep(3000);
+
+  //   if (last(queryHistory) !== searchState.search) {
+  //     searchDispatch({ search: last(queryHistory) });
+  //     setHasMore(true);
+  //     console.log('update query', last(queryHistory), searchState);
+  //   }
+  // };
+
+  // useEffect(
+  //   () => {
+  //     queryHistory.push(query);
+  //     updateQuery();
+  //   },
+  //   [query]
+  // );
+
+  const [showEnterPrompt, setShowEnterPrompt] = useState(false);
+
+  const updateQuery = query => {
+    searchDispatch({ search: query });
+    setHasMore(true);
+    setShowEnterPrompt(false);
+  };
 
   useEffect(
     () => {
@@ -143,46 +169,14 @@ function Search(props) {
   let resultItems = [];
   if (results.hits && results.hits.length > 0) {
     resultItems = results.hits.map((hit, i) => (
-      <ListItem key={i} className={classes.listItem}>
-        <ListItemIcon classes={{ root: classes.listIcon }}>
-          <PersonIcon />
-        </ListItemIcon>
-        <ListItemText primary={`${hit.firstName} ${hit.lastName}`} />
-        <ListItemSecondaryAction classes={{ root: classes.secondaryAction }}>
-          {hit.resume && (
-            <Tooltip title="Resume">
-              <IconButton
-                onClick={() => {
-                  window.open(hit.resume.downloadURL, '_blank');
-                }}
-              >
-                <ResumeIcon style={{ transform: 'rotate(-45deg)' }} />
-              </IconButton>
-            </Tooltip>
-          )}
-
-          {hit.status !== 'incomplete' && (
-            <Tooltip title="Submission">
-              <IconButton
-                onClick={() => {
-                  handleSubmissionRoute(hit);
-                }}
-              >
-                <SubmissionIcon />
-              </IconButton>
-            </Tooltip>
-          )}
-          <Tooltip title="Conversation">
-            <IconButton
-              onClick={() => {
-                handleConversationRoute(hit);
-              }}
-            >
-              <ConversationIcon />
-            </IconButton>
-          </Tooltip>
-        </ListItemSecondaryAction>
-      </ListItem>
+      <SearchItem
+        key={i}
+        hit={hit}
+        handleRoutes={{
+          submission: handleSubmissionRoute,
+          conversation: handleConversationRoute,
+        }}
+      />
     ));
   }
 
@@ -193,17 +187,24 @@ function Search(props) {
           <InputBase
             autoFocus
             className={classes.searchInput}
-            onChange={e => {
-              searchDispatch({ search: e.target.value });
-              setHasMore(true);
+            //onChange={e => {
+            //setQuery(e.target.value);
+            //}}
+            onKeyPress={e => {
+              if (e.key === 'Enter') updateQuery(e.target.value);
+              else if (!showEnterPrompt) setShowEnterPrompt(true);
             }}
             placeholder="Search candidates"
             startAdornment={<SearchIcon className={classes.searchIcon} />}
           />
-          {resultItems.length > 0 && (
-            <div className={classes.nbHits}>
-              {resultItems.length} of {results.nbHits} results
-            </div>
+          {showEnterPrompt ? (
+            <div className={classes.enterPrompt}>Press Enter to search</div>
+          ) : (
+            resultItems.length > 0 && (
+              <div className={classes.nbHits}>
+                {resultItems.length} of {results.nbHits} results
+              </div>
+            )
           )}
 
           <div className={classes.listWrapper}>
