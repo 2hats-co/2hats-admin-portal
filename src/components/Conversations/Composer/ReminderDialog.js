@@ -10,7 +10,6 @@ import DialogContent from '@material-ui/core/DialogContent';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Chip from '@material-ui/core/Chip';
-import Avatar from '@material-ui/core/Avatar';
 
 import LeftIcon from '@material-ui/icons/KeyboardArrowLeft';
 import RightIcon from '@material-ui/icons/KeyboardArrowRight';
@@ -24,11 +23,11 @@ import moment from 'moment';
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 
+import SuperAvatar from '../../SuperAvatar';
 import AdminSelector from '../../AdminSelector';
 import { AdminsContext } from '../../../contexts/AdminsContext';
 import { useAuthedUser } from '../../../hooks/useAuthedUser';
 import { addReminder } from '../../../utilities/conversations';
-import { getInitials } from '../../../utilities';
 
 const styles = theme => ({
   root: {
@@ -315,15 +314,7 @@ function ReminderDialog(props) {
                   <Chip
                     key={x}
                     avatar={
-                      admin.avatarURL ? (
-                        <Avatar src={admin.avatarURL} />
-                      ) : (
-                        <Avatar className={classes.avatar}>
-                          {getInitials(
-                            `${admin.givenName} ${admin.familyName}`
-                          )}
-                        </Avatar>
-                      )
+                      <SuperAvatar data={admin} className={classes.avatar} />
                     }
                     label={admin.givenName}
                     onDelete={() => {

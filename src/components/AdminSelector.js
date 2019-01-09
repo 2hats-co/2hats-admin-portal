@@ -11,8 +11,9 @@ import Avatar from '@material-ui/core/Avatar';
 import PersonIcon from '@material-ui/icons/Person';
 import DropDownIcon from '@material-ui/icons/ArrowDropDown';
 
+import SuperAvatar from './SuperAvatar';
 import { AdminsContext } from '../contexts/AdminsContext';
-import { getInitials, compareByGivenName } from '../utilities';
+import { compareByGivenName } from '../utilities';
 
 const styles = theme => ({
   buttonRoot: {
@@ -72,15 +73,7 @@ function AdminSelector(props) {
           className={className}
         >
           {currentUser ? (
-            currentUser.avatarURL ? (
-              <Avatar src={currentUser.avatarURL} />
-            ) : (
-              <Avatar>
-                {getInitials(
-                  `${currentUser.givenName} ${currentUser.familyName}`
-                )}
-              </Avatar>
-            )
+            <SuperAvatar data={currentUser} />
           ) : (
             <Avatar>
               <PersonIcon />
@@ -129,13 +122,7 @@ function AdminSelector(props) {
             ))}
           {displayedAdmins.map(x => (
             <MenuItem key={x.id} value={x.id}>
-              {x.avatarURL ? (
-                <Avatar className={classes.avatar} src={x.avatarURL} />
-              ) : (
-                <Avatar className={classes.avatar}>
-                  {getInitials(`${x.givenName} ${x.familyName}`)}
-                </Avatar>
-              )}
+              <SuperAvatar data={x} className={classes.avatar} />
               {x.givenName} {x.familyName}
             </MenuItem>
           ))}

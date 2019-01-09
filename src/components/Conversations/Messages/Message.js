@@ -11,11 +11,11 @@ import PersonIcon from '@material-ui/icons/Person';
 import { isOnlyEmojis } from '../../../utilities/emoji';
 import moment from 'moment';
 import { momentLocales } from '../../../constants/momentLocales';
-// import timestamp from 'time-stamp';
 
-//import { getInitials } from '../../../utilities';
 import { AdminsContext } from '../../../contexts/AdminsContext';
 import { bodyFormator } from './body';
+import SuperAvatar from '../../SuperAvatar';
+
 const styles = theme => ({
   root: {
     '& p, & h6': { textAlign: 'left' },
@@ -300,16 +300,7 @@ function Message(props) {
       {!isIncoming &&
         lastOfType &&
         (sender ? (
-          <Tooltip title={sender.givenName}>
-            {sender.avatarURL ? (
-              <Avatar className={classes.avatar} src={sender.avatarURL} />
-            ) : (
-              <Avatar className={classes.avatar}>
-                {sender.givenName[0]}
-                {sender.familyName[0]}
-              </Avatar>
-            )}
-          </Tooltip>
+          <SuperAvatar data={sender} className={classes.avatar} tooltip />
         ) : (
           <Avatar className={classes.avatar}>
             <PersonIcon />

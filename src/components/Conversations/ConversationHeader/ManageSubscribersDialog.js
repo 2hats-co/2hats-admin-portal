@@ -12,7 +12,6 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
-import Avatar from '@material-ui/core/Avatar';
 import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/Button';
 
@@ -23,8 +22,7 @@ import { setAssignee } from '../../../utilities/conversations';
 import Button from '@material-ui/core/Button';
 
 import IntegrationReactSelect from '../../IntegrationReactSelect';
-
-import { getInitials } from '../../../utilities';
+import SuperAvatar from '../../SuperAvatar';
 import { AdminsConsumer } from '../../../contexts/AdminsContext';
 import { updateProperties } from '../../../utilities/firestore';
 import { COLLECTIONS } from '../../../constants/firestore';
@@ -110,13 +108,7 @@ function ManageSubscribersDialog(props) {
                   {subscribedAdmins.map((x, i) => (
                     <ListItem key={i} disableGutters>
                       <ListItemAvatar>
-                        {x.avatarURL ? (
-                          <Avatar src={x.avatarURL} />
-                        ) : (
-                          <Avatar>
-                            {getInitials(`${x.givenName} ${x.familyName}`)}
-                          </Avatar>
-                        )}
+                        <SuperAvatar data={x} />
                       </ListItemAvatar>
                       <ListItemText
                         primary={`${x.givenName} ${x.familyName} ${

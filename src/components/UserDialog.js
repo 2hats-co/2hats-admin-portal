@@ -8,7 +8,6 @@ import Slide from '@material-ui/core/Slide';
 
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import Avatar from '@material-ui/core/Avatar';
 
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -22,7 +21,8 @@ import Fade from '@material-ui/core/Fade';
 import Snackbar from '@material-ui/core/Snackbar';
 
 import { ChromePicker } from 'react-color';
-import { randomGreeting, getInitials } from '../utilities';
+import SuperAvatar from './SuperAvatar';
+import { randomGreeting } from '../utilities';
 import { COLLECTIONS } from '../constants/firestore';
 import { updateProperties } from '../utilities/firestore';
 import { ORANGE_COLOR } from '../Theme';
@@ -158,8 +158,6 @@ function UserDialog(props) {
     setSnackbarMessage('Saved default route!');
   };
 
-  const initials = getInitials(`${user.givenName} ${user.familyName}`);
-
   return (
     <React.Fragment>
       <Modal open={showDialog} onClose={onClose} disableAutoFocus>
@@ -167,9 +165,7 @@ function UserDialog(props) {
           <Paper elevation={24} classes={{ root: classes.paperRoot }}>
             <Grid container direction="column" justify="center">
               <Grid item className={classes.header}>
-                <Avatar src={user.avatarURL} className={classes.avatar}>
-                  {initials ? initials : null}
-                </Avatar>
+                <SuperAvatar data={user} className={classes.avatar} />
                 <Typography variant="h4" className={classes.greeting}>
                   {greeting}, {user.givenName}!
                 </Typography>

@@ -4,7 +4,6 @@ import { withRouter } from 'react-router-dom';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
-import Avatar from '@material-ui/core/Avatar';
 import Tooltip from '@material-ui/core/Tooltip';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Slide from '@material-ui/core/Slide';
@@ -26,8 +25,8 @@ import withAuthentication from '../withAuthentication';
 import Search from '../Search';
 import Notifications from '../Notifications';
 import UserDialog from '../UserDialog';
+import SuperAvatar from '../SuperAvatar';
 
-import { getInitials } from '../../utilities';
 import metadata from '../../metadata.json';
 import { useAuthedUser } from '../../hooks/useAuthedUser';
 import DebugContext from '../../contexts/DebugContext';
@@ -146,8 +145,6 @@ export default function withNavigation(WrappedComponent) {
       }
     }
 
-    let initials;
-    if (displayName) initials = getInitials(displayName);
     return (
       <AdminsProvider>
         <DebugContext.Provider value={{ enabled: debug, setEnabled: setDebug }}>
@@ -209,12 +206,10 @@ export default function withNavigation(WrappedComponent) {
                             setShowUserDialog(true);
                           }}
                         >
-                          <Avatar
-                            src={currentUser.avatarURL}
+                          <SuperAvatar
+                            data={currentUser}
                             className={classes.avatar}
-                          >
-                            {initials ? initials : null}
-                          </Avatar>
+                          />
                         </IconButton>
                       ) : (
                         <CircularProgress
