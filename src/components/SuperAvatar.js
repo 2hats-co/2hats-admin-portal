@@ -9,8 +9,8 @@ function SuperAvatar(props) {
 
   let name;
   if (data.displayName) name = data.displayName;
-  if (data.givenName) name = `${data.givenName} ${data.familyName}`;
-  if (data.firstName) name = `${data.firstName} ${data.lastName}`;
+  else if (data.givenName) name = `${data.givenName} ${data.familyName}`;
+  else if (data.firstName) name = `${data.firstName} ${data.lastName}`;
 
   const avatar = data.avatarURL ? (
     <Avatar className={className} src={data.avatarURL} />

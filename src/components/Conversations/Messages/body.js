@@ -1,4 +1,12 @@
 import React from 'react';
+
+import ExpansionPanel from '@material-ui/core/ExpansionPanel';
+import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
+import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
+import Chip from '@material-ui/core/Chip';
+
 import MailIcon from '@material-ui/icons/Mail';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import EventIcon from '@material-ui/icons/EventOutlined';
@@ -7,21 +15,22 @@ import DetailsIcon from '@material-ui/icons/Notes';
 import LocationIcon from '@material-ui/icons/LocationOnOutlined';
 import AttendeesIcon from '@material-ui/icons/PeopleOutlined';
 import ReminderIcon from '@material-ui/icons/NotificationsOutlined';
-import ExpansionPanel from '@material-ui/core/ExpansionPanel';
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
+import AttachmentIcon from '@material-ui/icons/Attachment';
+
 import classNames from 'classnames';
 import moment from 'moment';
 
-export const bodyFormator = args => {
-  const { data, classes, adminsContext } = args;
+const FAKE_ATTACHMENTS = [
+  { fileName: 'a', url: 'google.com', contentType: 'image/png' },
+  { fileName: 'b', url: 'apple.com', contentType: 'image/jpeg' },
+];
 
-  let bodyContent;
+const MessageBody = props => {
+  const { classes, data, adminsContext } = props;
+
   switch (data.type) {
     case 'email':
-      bodyContent = (
+      return (
         <ExpansionPanel classes={{ root: classes.expansionRoot }}>
           <ExpansionPanelSummary
             expandIcon={<ExpandMoreIcon />}
@@ -46,23 +55,40 @@ export const bodyFormator = args => {
               className={classes.renderedHTML}
               dangerouslySetInnerHTML={{ __html: data.body }}
             />
+            {data.attachments && (
+              <div className={classes.emailAttachments}>
+                {data.attachments.map(x => (
+                  <Chip
+                    key={x.url}
+                    label={x.fileName}
+                    icon={
+                      <AttachmentIcon style={{ transform: 'rotate(-45deg)' }} />
+                    }
+                    variant="outlined"
+                    component="a"
+                    href={x.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    clickable
+                  />
+                ))}
+              </div>
+            )}
           </ExpansionPanelDetails>
         </ExpansionPanel>
       );
-      break;
     case 'activity':
-      bodyContent = (
+      return (
         <div
           className={classes.renderedHTML}
           dangerouslySetInnerHTML={{ __html: data.body }}
         />
       );
-      break;
     case 'event':
       const startTime = moment(data.data.start.dateTime);
       const endTime = moment(data.data.end.dateTime);
 
-      bodyContent = (
+      return (
         <ExpansionPanel classes={{ root: classes.expansionRoot }}>
           <ExpansionPanelSummary
             expandIcon={<ExpandMoreIcon />}
@@ -147,9 +173,8 @@ export const bodyFormator = args => {
           </ExpansionPanelDetails>
         </ExpansionPanel>
       );
-      break;
     case 'reminder':
-      bodyContent = (
+      return (
         <Grid container>
           <Grid item>
             <ReminderIcon className={classes.reminderIcon} />
@@ -179,14 +204,13 @@ export const bodyFormator = args => {
           )}
         </Grid>
       );
-      break;
     default:
-      bodyContent = (
+      return (
         <Typography variant="body2" className={classes.bodyText}>
           {data.body}
         </Typography>
       );
-      break;
   }
-  return bodyContent;
 };
+
+export default MessageBody;

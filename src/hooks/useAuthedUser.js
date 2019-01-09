@@ -20,6 +20,7 @@ export function useAuthedUser() {
             setCurrentUser({
               UID: authUser.uid,
               givenName: authUser.displayName.split(' ')[0],
+              displayName: authUser.displayName,
               isLoading: true,
               email: authUser.email,
             });

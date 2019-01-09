@@ -13,7 +13,7 @@ import moment from 'moment';
 import { momentLocales } from '../../../constants/momentLocales';
 
 import { AdminsContext } from '../../../contexts/AdminsContext';
-import { bodyFormator } from './body';
+import MessageBody from './body';
 import SuperAvatar from '../../SuperAvatar';
 
 const styles = theme => ({
@@ -146,6 +146,7 @@ const styles = theme => ({
   },
   emailExpansionDetails: {
     padding: `0 ${theme.spacing.unit}px ${theme.spacing.unit}px`,
+    flexDirection: 'column',
   },
   expansionSummaryExpanded: {},
   expansionSummaryContent: {
@@ -166,9 +167,13 @@ const styles = theme => ({
     padding: `0 ${theme.spacing.unit * 2}px`,
     borderRadius: theme.shape.roundBorderRadius * 0.8,
     overflowWrap: 'break-word',
+    boxSizing: 'border-box',
 
     '& p': { color: 'initial' },
     '& img': { maxWidth: '100%' },
+  },
+  emailAttachments: {
+    marginTop: theme.spacing.unit,
   },
 
   activity: {
@@ -262,8 +267,6 @@ function Message(props) {
   const adminsContext = useContext(AdminsContext);
   const sender = data.senderId && adminsContext.getAdmin(data.senderId);
 
-  let bodyContent = bodyFormator({ adminsContext, classes, data });
-
   return (
     <div
       className={classNames(
@@ -294,7 +297,11 @@ function Message(props) {
         enterDelay={1000}
       >
         <div className={classNames(classes.body, 'msg-body')}>
-          {bodyContent}
+          <MessageBody
+            classes={classes}
+            adminsContext={adminsContext}
+            data={data}
+          />
         </div>
       </Tooltip>
       {!isIncoming &&
