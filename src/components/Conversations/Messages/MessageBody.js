@@ -26,19 +26,22 @@ import classNames from 'classnames';
 import moment from 'moment';
 
 const getIcon = mime => {
-  const type = mime.replace(/\/(.)*/g, '');
-  switch (type) {
-    case 'text':
-      return <TextIcon />;
-    case 'image':
-      return <ImageIcon />;
-    case 'audio':
-      return <AudioIcon />;
-    case 'video':
-      return <VideoIcon />;
-    default:
-      return <AttachmentIcon style={{ transform: 'rotate(-45deg)' }} />;
+  if (mime) {
+    const type = mime.replace(/\/(.)*/g, '');
+    switch (type) {
+      case 'text':
+        return <TextIcon />;
+      case 'image':
+        return <ImageIcon />;
+      case 'audio':
+        return <AudioIcon />;
+      case 'video':
+        return <VideoIcon />;
+      default:
+        return <AttachmentIcon style={{ transform: 'rotate(-45deg)' }} />;
+    }
   }
+  return null;
 };
 
 const MessageBody = props => {
@@ -47,6 +50,8 @@ const MessageBody = props => {
   // console.log(data.attachments);
   switch (data.type) {
     case 'email':
+      const emailHTML = data.html || data.body;
+
       return (
         <ExpansionPanel classes={{ root: classes.expansionRoot }}>
           <ExpansionPanelSummary
@@ -70,7 +75,11 @@ const MessageBody = props => {
           >
             <div
               className={classes.renderedHTML}
-              dangerouslySetInnerHTML={{ __html: data.html }}
+              dangerouslySetInnerHTML={{
+                __html: emailHTML
+                  .replace(/<style[\s\S]*?<\/style>/g, '')
+                  .replace(/<script[\s\S]*?<\/script>/g, ''),
+              }}
             />
             {data.attachments && (
               <div className={classes.emailAttachments}>

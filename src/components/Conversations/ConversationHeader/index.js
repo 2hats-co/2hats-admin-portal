@@ -174,7 +174,7 @@ function ConversationHeader(props) {
               toCopy={conversation.id}
             />
             <DebugButton toCopy={conversation.UID} />
-            <Tooltip title="Manage Subscribers">
+            <Tooltip title="Manage subscribers">
               <IconButton
                 onClick={() => {
                   setShowSubscriberDialog(true);
