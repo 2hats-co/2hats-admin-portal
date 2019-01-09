@@ -15,6 +15,11 @@ import DetailsIcon from '@material-ui/icons/Notes';
 import LocationIcon from '@material-ui/icons/LocationOnOutlined';
 import AttendeesIcon from '@material-ui/icons/PeopleOutlined';
 import ReminderIcon from '@material-ui/icons/NotificationsOutlined';
+
+import TextIcon from '@material-ui/icons/InsertDriveFile';
+import ImageIcon from '@material-ui/icons/Image';
+import AudioIcon from '@material-ui/icons/Audiotrack';
+import VideoIcon from '@material-ui/icons/Videocam';
 import AttachmentIcon from '@material-ui/icons/Attachment';
 
 import classNames from 'classnames';
@@ -25,9 +30,26 @@ const FAKE_ATTACHMENTS = [
   { fileName: 'b', url: 'apple.com', contentType: 'image/jpeg' },
 ];
 
+const getIcon = mime => {
+  const type = mime.replace(/\/(.)*/g, '');
+  switch (type) {
+    case 'text':
+      return <TextIcon />;
+    case 'image':
+      return <ImageIcon />;
+    case 'audio':
+      return <AudioIcon />;
+    case 'video':
+      return <VideoIcon />;
+    default:
+      return <AttachmentIcon style={{ transform: 'rotate(-45deg)' }} />;
+  }
+};
+
 const MessageBody = props => {
   const { classes, data, adminsContext } = props;
 
+  // console.log(data.attachments);
   switch (data.type) {
     case 'email':
       return (
@@ -61,15 +83,14 @@ const MessageBody = props => {
                   <Chip
                     key={x.url}
                     label={x.fileName}
-                    icon={
-                      <AttachmentIcon style={{ transform: 'rotate(-45deg)' }} />
-                    }
+                    icon={getIcon(x.contentType)}
                     variant="outlined"
                     component="a"
                     href={x.url}
                     target="_blank"
                     rel="noopener noreferrer"
                     clickable
+                    classes={{ icon: classes.attachmentIcon }}
                   />
                 ))}
               </div>
