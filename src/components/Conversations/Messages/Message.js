@@ -13,7 +13,7 @@ import moment from 'moment';
 import { momentLocales } from '../../../constants/momentLocales';
 
 import { AdminsContext } from '../../../contexts/AdminsContext';
-import MessageBody from './body';
+import MessageBody from './MessageBody';
 import SuperAvatar from '../../SuperAvatar';
 
 const styles = theme => ({
