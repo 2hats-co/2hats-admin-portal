@@ -27,6 +27,9 @@ const styles = theme => ({
         ? theme.palette.background.default
         : theme.palette.background.paper,
   },
+  locationIndicator: {
+    zIndex: 10,
+  },
   count: {
     position: 'absolute',
     top: theme.spacing.unit * 2.25,
@@ -34,8 +37,9 @@ const styles = theme => ({
     zIndex: 50,
   },
   filterContainer: {
-    marginTop: '20px',
-    padding: '0 24px 8px',
+    padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit * 3}px`,
+    boxShadow: theme.shadows[1],
+    zIndex: 9,
   },
   clearFilterButton: {
     padding: 0,
@@ -173,8 +177,9 @@ function SubjectsContainer(props) {
       <Grid container direction="column" wrap="nowrap" className={classes.root}>
         <Grid item>
           <LocationIndicator
-            title="aiPhoneBook.ml.biz.ru"
+            classes={{ root: classes.locationIndicator }}
             showBorder
+            title="Directory"
             subRoutes={[
               { label: 'Clients', value: ROUTES.clients },
               { label: 'Candidates', value: ROUTES.candidates },
@@ -222,26 +227,16 @@ function SubjectsContainer(props) {
                 dataDispatch={subjectsDispatch}
                 disablePadding
               >
-                {(x, i) => (
-                  <SubjectItem
-                    key={i}
-                    name={
-                      x.displayName
-                        ? x.displayName
-                        : `${x.firstName} ${x.lastName}`
-                    }
-                    tags={[
-                      { type: 'leads', label: 'opportunity' },
-                      { type: 'stage', label: 'cv' },
-                    ]}
-                    // email={x.email}
-                    // phone={x.phone}
-                    // industry={x.industry}
-                    // tags={x.tags}
-                    // note={x.note}
-                    // setSnackbarContent={setSnackbarContent}
-                  />
-                )}
+                {(x, i) => {
+                  //console.log(x);
+                  return (
+                    <SubjectItem
+                      key={x.id}
+                      data={x}
+                      setSnackbarContent={setSnackbarContent}
+                    />
+                  );
+                }}
               </ScrollyRolly>
             )}
           </React.Fragment>
