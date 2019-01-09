@@ -20,11 +20,6 @@ import AttachmentIcon from '@material-ui/icons/Attachment';
 import classNames from 'classnames';
 import moment from 'moment';
 
-const FAKE_ATTACHMENTS = [
-  { fileName: 'a', url: 'google.com', contentType: 'image/png' },
-  { fileName: 'b', url: 'apple.com', contentType: 'image/jpeg' },
-];
-
 const MessageBody = props => {
   const { classes, data, adminsContext } = props;
 
@@ -53,7 +48,7 @@ const MessageBody = props => {
           >
             <div
               className={classes.renderedHTML}
-              dangerouslySetInnerHTML={{ __html: data.body }}
+              dangerouslySetInnerHTML={{ __html: data.html }}
             />
             {data.attachments && (
               <div className={classes.emailAttachments}>
