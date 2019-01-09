@@ -173,7 +173,10 @@ const styles = theme => ({
     '& img': { maxWidth: '100%' },
   },
   emailAttachments: {
-    marginTop: theme.spacing.unit,
+    '& > *': { marginTop: theme.spacing.unit },
+  },
+  attachmentIcon: {
+    marginLeft: theme.spacing.unit,
   },
 
   activity: {
@@ -276,13 +279,18 @@ function Message(props) {
           (isIncoming ? classes.firstOfIncoming : classes.firstOfYour),
         lastOfType &&
           (isIncoming ? classes.lastOfIncoming : classes.lastOfYour),
+        (data.type === 'linkedin' ||
+          data.type === 'note' ||
+          data.type === 'activity') &&
+          data.body &&
+          isOnlyEmojis(data.body) &&
+          classes.emojiMessage,
         data.type === 'linkedin' && classes.linkedin,
         data.type === 'note' && classes.note,
         data.type === 'email' && classes.email,
         data.type === 'activity' && classes.activity,
         data.type === 'event' && classes.event,
-        data.type === 'reminder' && classes.reminder,
-        data.body && isOnlyEmojis(data.body) && classes.emojiMessage
+        data.type === 'reminder' && classes.reminder
       )}
     >
       <Tooltip

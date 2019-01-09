@@ -108,7 +108,16 @@ function SumbissionsContainer(props) {
     <div className={classes.locationIndicatorWrapper}>
       <LocationIndicator
         title="Submissions"
-        subRoutes={[ROUTES.pending, ROUTES.rejected, ROUTES.accepted]}
+        subRoutes={
+          location.pathname === ROUTES.submissions
+            ? [
+                ROUTES.pending,
+                ROUTES.rejected,
+                ROUTES.accepted,
+                { label: 'Submission', value: ROUTES.submissions },
+              ]
+            : [ROUTES.pending, ROUTES.rejected, ROUTES.accepted]
+        }
         altBg
       />
     </div>
@@ -131,7 +140,7 @@ function SumbissionsContainer(props) {
   }
 
   if (submission.complete) {
-    console.log(submission);
+    // console.log(submission);
     return (
       <div style={{ overflow: 'hidden' }}>
         {locationIndicator} <Done />

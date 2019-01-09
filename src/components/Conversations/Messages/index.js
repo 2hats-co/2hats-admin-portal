@@ -78,7 +78,7 @@ function Messages(props) {
     () => {
       if (messages && messages[0]) {
         if (firstMessage.id !== messages[0].id) {
-          console.log(messages[0]);
+          // console.log(messages[0]);
           setFirstMessage(messages[0]);
         }
       }
