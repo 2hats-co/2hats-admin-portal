@@ -9,6 +9,7 @@ import moment from 'moment';
 import Message from './Message';
 import useCollection from '../../../hooks/useCollection';
 import ScrollyRolly from '../../ScrollyRolly';
+import ForumIcon from '@material-ui/icons/Forum';
 
 import sortBy from 'ramda/es/sortBy';
 import prop from 'ramda/es/prop';
@@ -43,8 +44,8 @@ const isSameType = (a, b) =>
   a.type === b.type &&
   a.sentBy === b.sentBy &&
   a.senderId === b.senderId &&
-  moment(a.sentAt.seconds * 1000).fromNow() ===
-    moment(b.sentAt.seconds * 1000).fromNow();
+  moment.unix(a.sentAt.seconds).fromNow() ===
+    moment.unix(b.sentAt.seconds).fromNow();
 
 function Messages(props) {
   const { classes, conversation } = props;
@@ -75,9 +76,11 @@ function Messages(props) {
   const [firstMessage, setFirstMessage] = useState({ id: '' });
   useEffect(
     () => {
-      if (messages && firstMessage.id !== messages[0].id) {
-        console.log(messages[0]);
-        setFirstMessage(messages[0]);
+      if (messages && messages[0]) {
+        if (firstMessage.id !== messages[0].id) {
+          console.log(messages[0]);
+          setFirstMessage(messages[0]);
+        }
       }
     },
     [messages]
@@ -112,16 +115,16 @@ function Messages(props) {
         disablePadding
         reverse
         classes={{ listLoader: classes.listLoader }}
+        NoneIcon={ForumIcon}
+        noneText="Start a conversation…"
       >
-        {(data, i) => (
+        {(data, i, arr) => (
           <Message
             key={data.id}
             data={data}
-            firstOfType={i > 0 ? !isSameType(messages[i - 1], data) : true}
+            firstOfType={i > 0 ? !isSameType(arr[i - 1], data) : true}
             lastOfType={
-              i < messages.length - 1
-                ? !isSameType(messages[i + 1], data)
-                : true
+              i < arr.length - 1 ? !isSameType(arr[i + 1], data) : true
             }
           />
         )}
