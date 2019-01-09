@@ -19,7 +19,7 @@ import { sendEmail } from '../utilities/email/send';
 import { ROUTES } from '../constants/routes';
 import Loadable from 'react-loadable';
 //import LoadingHat from '../components/LoadingHat';
-//import { useWindowSize } from '../hooks/useWindowSize';
+//importuseWindowSize from '../hooks/useWindowSize';
 // const TemplateGenerator = Loadable({
 //   loader: () =>
 //     import('../components/TemplateGenerator' /* webpackChunkName: "TemplateGenerator" */),
