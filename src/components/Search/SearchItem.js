@@ -29,7 +29,7 @@ const styles = theme => ({
   listIcon: {
     margin: 0,
     marginTop: theme.spacing.unit / 4,
-    color: theme.palette.primary.main,
+    // color: theme.palette.primary.main,
   },
   secondaryAction: {
     right: theme.spacing.unit,

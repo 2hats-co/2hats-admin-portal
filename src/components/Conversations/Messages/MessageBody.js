@@ -16,7 +16,7 @@ import LocationIcon from '@material-ui/icons/LocationOnOutlined';
 import AttendeesIcon from '@material-ui/icons/PeopleOutlined';
 import ReminderIcon from '@material-ui/icons/NotificationsOutlined';
 
-import TextIcon from '@material-ui/icons/InsertDriveFile';
+import TextIcon from '@material-ui/icons/Description';
 import ImageIcon from '@material-ui/icons/Image';
 import AudioIcon from '@material-ui/icons/Audiotrack';
 import VideoIcon from '@material-ui/icons/Videocam';
