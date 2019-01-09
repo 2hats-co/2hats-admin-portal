@@ -72,7 +72,7 @@ function ScrollyRolly(props) {
         isReverse={reverse || false}
       >
         <List disablePadding={disablePadding || false}>
-          {sortedDocs.length < 0 ? (
+          {sortedDocs.length > 0 ? (
             sortedDocs.map(props.children)
           ) : (
             <Grid
