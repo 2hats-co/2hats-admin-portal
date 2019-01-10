@@ -38,7 +38,10 @@ const styles = theme => ({
   },
   filterContainer: {
     padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit * 3}px`,
-    boxShadow: theme.shadows[1],
+    boxShadow:
+      theme.palette.type !== 'dark'
+        ? theme.shadows[1]
+        : `0 0 0 1px ${theme.palette.divider}`,
     zIndex: 9,
   },
   clearFilterButton: {
@@ -228,7 +231,7 @@ function SubjectsContainer(props) {
                 disablePadding
               >
                 {(x, i) => {
-                  //console.log(x);
+                  console.log(x);
                   return (
                     <SubjectItem
                       key={x.id}

@@ -189,8 +189,11 @@ function generateTheme(theme, themeColor) {
     ...baseTheme,
     palette: {
       ...baseTheme.palette,
-      background: { default: '#222' },
-      divider: 'rgba(0,0,0,.67)',
+      background: {
+        default: '#111',
+        paper: '#333',
+      },
+      // divider: 'rgba(0,0,0,.67)',
       type: 'dark',
     },
     overrides: {

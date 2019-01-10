@@ -6,13 +6,13 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
-import Avatar from '@material-ui/core/Avatar';
+// import Avatar from '@material-ui/core/Avatar';
 import Chip from '@material-ui/core/Chip';
 
 import LinkedInIcon from '../../assets/icons/LinkedIn';
 import MailIcon from '@material-ui/icons/MailOutline';
 import PhoneIcon from '@material-ui/icons/Phone';
-import PersonIcon from '@material-ui/icons/Person';
+// import PersonIcon from '@material-ui/icons/Person';
 
 import SuperAvatar from '../SuperAvatar';
 import { TAG_COLORS } from '../../constants/tags';
@@ -52,15 +52,7 @@ function SubjectItem(props) {
   const name = data.displayName
     ? data.displayName
     : `${data.firstName} ${data.lastName}`;
-  const {
-    linkedin,
-    email,
-    phoneNumber,
-    industry,
-    tags,
-    note,
-    avatarURL,
-  } = data;
+  const { linkedin, email, phoneNumber, industry, tags, note } = data;
 
   const tagChips =
     tags &&
