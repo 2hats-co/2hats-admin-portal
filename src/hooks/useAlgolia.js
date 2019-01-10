@@ -34,7 +34,7 @@ function useAlgolia() {
     limit: 20,
     prevLimit: 20,
   });
-  const index = createAlgoliaIndex(ALGOLIA_INDEX.candidates);
+  const index = createAlgoliaIndex(ALGOLIA_INDEX.users);
   useEffect(
     () => {
       const {

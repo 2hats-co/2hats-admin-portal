@@ -17,7 +17,8 @@ import ResumeIcon from '@material-ui/icons/Attachment';
 
 import ConversationTypeIcon from '../Conversations/ConversationTypeIcon';
 import { flattenSearchHighlight } from '../../utilities/objects';
-
+import groupBy from 'ramda/es/groupBy';
+import map from 'ramda/es/map';
 const styles = theme => ({
   listItem: {
     alignItems: 'flex-start',
@@ -43,27 +44,47 @@ const styles = theme => ({
     color: theme.palette.text.secondary,
   },
 });
+const byField = groupBy(function(snippet) {
+  return snippet.field;
+});
+const removeField = x => x.map(i => i.value);
 
 function SearchItem(props) {
   const { classes, hit, handleRoutes } = props;
 
-  const highlighted = flattenSearchHighlight(hit._snippetResult).map(x => (
-    <Grid key={x[0]} container alignItems="baseline">
-      <Grid item>
-        <Typography variant="caption" className={classes.highlightType}>
-          {/*x[0].replace(/(.[0-9]+)*.value/g, '')*/}
-          {x[0].replace(/\.(.)*/g, '').replace(/([A-Z])/g, ' $1')}
-        </Typography>
+  const highlighted = flattenSearchHighlight(hit._snippetResult).map(x => {
+    return (
+      <Grid key={x[0]} container alignItems="baseline">
+        <Grid item>
+          <Typography variant="caption" className={classes.highlightType}>
+            {/*x[0].replace(/(.[0-9]+)*.value/g, '')*/}
+            {x[0].split('.')[0]}
+            {
+              //x[0].replace(/\.(.)*/g, '').replace(/([A-Z])/g, ' $1')
+            }
+          </Typography>
+        </Grid>
+        <Grid item xs>
+          <Typography
+            variant="body2"
+            dangerouslySetInnerHTML={{ __html: x[1] }}
+          />
+        </Grid>
       </Grid>
-      <Grid item xs>
-        <Typography
-          variant="body2"
-          dangerouslySetInnerHTML={{ __html: x[1] }}
-        />
-      </Grid>
-    </Grid>
-  ));
+    );
+  });
+  const snippetKeyValuesPairs = flattenSearchHighlight(hit._snippetResult).map(
+    x => {
+      const field = x[0].split('.')[0];
+      const value = x[1];
+      return { field, value };
+    }
+  );
 
+  console.log(
+    'snippetGroups',
+    map(removeField, byField(snippetKeyValuesPairs))
+  );
   return (
     <ListItem className={classes.listItem}>
       <ListItemIcon classes={{ root: classes.listIcon }}>
