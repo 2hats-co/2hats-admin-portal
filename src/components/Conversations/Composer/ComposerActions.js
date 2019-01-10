@@ -10,7 +10,7 @@ import SendIcon from '@material-ui/icons/Send';
 import DoneIcon from '@material-ui/icons/Done';
 import AtIcon from '@material-ui/icons/AlternateEmail';
 import EmojiIcon from '@material-ui/icons/InsertEmoticon';
-// import FileIcon from '@material-ui/icons/Attachment';
+import FileIcon from '@material-ui/icons/Attachment';
 import EventIcon from '@material-ui/icons/EventOutlined';
 import ReminderIcon from '@material-ui/icons/NotificationsOutlined';
 import GroupIcon from '@material-ui/icons/Group';
@@ -20,7 +20,7 @@ import EventDialog from './EventDialog';
 import ReminderDialog from './ReminderDialog';
 import useKeyPress from '../../../hooks/useKeypress';
 
-// import GooglePicker from '../../GooglePicker';
+import GooglePicker from '../../GooglePicker';
 import AdminSelector from '../../AdminSelector';
 
 const emojiButton = handleClick => (
@@ -30,22 +30,22 @@ const emojiButton = handleClick => (
     </IconButton>
   </Tooltip>
 );
-// const fileButton = (handleClick, pickerToken, setPickerToken) => (
-//   <GooglePicker
-//     key="Google Picker"
-//     onChange={handleClick}
-//     pickerToken={pickerToken}
-//     setPickerToken={setPickerToken}
-//     spinnerSize={24}
-//     spinnerPadding={12}
-//   >
-//     <Tooltip title="File">
-//       <IconButton>
-//         <FileIcon style={{ transform: 'rotate(-45deg)' }} />
-//       </IconButton>
-//     </Tooltip>
-//   </GooglePicker>
-// );
+const fileButton = (handleClick, pickerToken, setPickerToken) => (
+  <GooglePicker
+    key="Google Picker"
+    onChange={handleClick}
+    pickerToken={pickerToken}
+    setPickerToken={setPickerToken}
+    spinnerSize={24}
+    spinnerPadding={12}
+  >
+    <Tooltip title="File">
+      <IconButton>
+        <FileIcon style={{ transform: 'rotate(-45deg)' }} />
+      </IconButton>
+    </Tooltip>
+  </GooglePicker>
+);
 const eventButton = handleClick => (
   <Tooltip title="Event" key="event">
     <IconButton onClick={handleClick}>
@@ -93,7 +93,7 @@ const ComposerActions = React.memo(props => {
   const returnKey = useKeyPress('Enter');
   const controlKey = useKeyPress('Control');
 
-  // const [pickerToken, setPickerToken] = useState('');
+  const [pickerToken, setPickerToken] = useState('');
 
   useEffect(
     () => {
@@ -146,7 +146,7 @@ const ComposerActions = React.memo(props => {
         eventButton(() => {
           setShowEventDialog(true);
         }),
-        //fileButton(actions.file, pickerToken, setPickerToken),
+        fileButton(actions.file, pickerToken, setPickerToken),
       ];
       break;
     case 'linkedin':
@@ -158,7 +158,7 @@ const ComposerActions = React.memo(props => {
         reminderButton(() => {
           setShowReminderDialog(true);
         }),
-        //fileButton(actions.file, pickerToken, setPickerToken),
+        fileButton(actions.file, pickerToken, setPickerToken),
         atButton(actions.at),
       ];
       break;

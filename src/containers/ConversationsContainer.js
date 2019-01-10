@@ -23,7 +23,7 @@ import { createConversation } from '../utilities/conversations';
 const Composer = Loadable({
   loader: () =>
     import('../components/Conversations/Composer' /* webpackChunkName: "MessagesComposer" */),
-  loading: () => <LoadingHat message="Serving up your messages…" />,
+  loading: () => <LoadingHat altBg message="Serving up your messages…" />,
 });
 
 const styles = theme => ({
@@ -149,6 +149,7 @@ function ConversationsContainer(props) {
           ) : location.search.indexOf('?id=') > -1 ||
             location.search.indexOf('?uid=') > -1 ? (
             <LoadingHat
+              altBg
               message={
                 <React.Fragment>
                   Finding and/or creating conversation, depending on whether

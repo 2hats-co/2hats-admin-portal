@@ -71,6 +71,7 @@ function GooglePicker(props) {
       );
 
       const picker = new window.google.picker.PickerBuilder()
+        .enableFeature(window.google.picker.Feature.MULTISELECT_ENABLED)
         .addView(docsView)
         .addView(uploadView)
         .setOAuthToken(pickerToken)

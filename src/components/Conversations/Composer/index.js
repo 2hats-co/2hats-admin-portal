@@ -30,6 +30,7 @@ import {
   makeEmail,
   personaliseElements,
 } from '../../../utilities/email/templateGenerator';
+import { CLOUD_FUNCTIONS, callable } from '../../../firebase/functions';
 
 const styles = theme => ({
   root: {
@@ -254,7 +255,22 @@ function Composer(props) {
       cc: cc.split(','),
     };
     const sender = { email: currentUser.email, id: currentUser.UID };
-    sendEmail(conversation.id, { recipient, email, sender, attachments });
+    if (attachments.length === 0) {
+      sendEmail(conversation.id, { recipient, email, sender, attachments });
+    } else {
+      const attachmentIds = attachments.map(x => x.id);
+      callable(
+        CLOUD_FUNCTIONS.grantDrivePermissions,
+        { attachmentIds, UID: currentUser.UID },
+        () => {
+          console.log('Set permissions for ', attachmentIds);
+          sendEmail(conversation.id, { recipient, email, sender, attachments });
+        },
+        () => {
+          console.log('Failed to set permissions for ', attachmentIds);
+        }
+      );
+    }
     clearComposer();
   };
 
