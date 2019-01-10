@@ -94,7 +94,7 @@ function ConversationHeader(props) {
 
   const handleChangeCategory = e => {
     setCategory(e.target.value);
-    if (e.target.value) updateCategory(conversation.id, e.target.value);
+    if (e.target.value) updateCategory(conversation, e.target.value);
   };
 
   return (

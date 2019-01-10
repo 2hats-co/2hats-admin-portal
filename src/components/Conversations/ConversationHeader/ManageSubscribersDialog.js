@@ -118,26 +118,30 @@ function ManageSubscribersDialog(props) {
                       />
                       <ListItemSecondaryAction>
                         <Tooltip title={`Make ${x.givenName} the owner`}>
-                          <IconButton
-                            disabled={x.id === conversation.assignee}
-                            onClick={() => {
-                              setAssignee(x.id, conversation.id);
-                            }}
-                            className={classes.iconButton}
-                          >
-                            <AssigneeIcon />
-                          </IconButton>
+                          <span>
+                            <IconButton
+                              disabled={x.id === conversation.assignee}
+                              onClick={() => {
+                                setAssignee(x.id, conversation);
+                              }}
+                              className={classes.iconButton}
+                            >
+                              <AssigneeIcon />
+                            </IconButton>
+                          </span>
                         </Tooltip>
                         <Tooltip title={`Unsubscribe ${x.givenName}`}>
-                          <IconButton
-                            disabled={x.id === conversation.assignee}
-                            onClick={() => {
-                              handleRemoveSubscriber(x.id);
-                            }}
-                            className={classes.iconButton}
-                          >
-                            <RemoveIcon />
-                          </IconButton>
+                          <span>
+                            <IconButton
+                              disabled={x.id === conversation.assignee}
+                              onClick={() => {
+                                handleRemoveSubscriber(x.id);
+                              }}
+                              className={classes.iconButton}
+                            >
+                              <RemoveIcon />
+                            </IconButton>
+                          </span>
                         </Tooltip>
                       </ListItemSecondaryAction>
                     </ListItem>

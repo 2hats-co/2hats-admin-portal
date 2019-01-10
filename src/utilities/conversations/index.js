@@ -35,11 +35,30 @@ export const unmarkAsSpam = async conversationId => {
     .update({ type: 'client' });
 };
 
-export const updateCategory = async (conversationId, category) => {
+export const updateCategory = async (conversation, category) => {
   firestore
     .collection(COLLECTIONS.conversations)
-    .doc(conversationId)
+    .doc(conversation.id)
     .update({ category });
+
+  let collectionRef;
+  switch (conversation.type) {
+    case 'candidate':
+      collectionRef = firestore.collection(COLLECTIONS.candidates);
+      break;
+
+    case 'client':
+      collectionRef = firestore.collection(COLLECTIONS.clients);
+      break;
+
+    default:
+      break;
+  }
+  if (collectionRef) {
+    collectionRef.doc(conversation.UID).update({ category });
+  } else {
+    alert('its broken talk to thidney');
+  }
 };
 
 export const addNote = (adminId, conversationId, note, notifyList) => {
@@ -88,11 +107,29 @@ export const addReminder = (adminId, conversationId, data) => {
     });
 };
 
-export const setAssignee = (adminId, conversationId) => {
+export const setAssignee = async (adminId, conversation) => {
   firestore
     .collection(COLLECTIONS.conversations)
-    .doc(conversationId)
+    .doc(conversation.id)
     .update({ assignee: adminId });
+  let collectionRef;
+  switch (conversation.type) {
+    case 'candidate':
+      collectionRef = firestore.collection(COLLECTIONS.candidates);
+      break;
+
+    case 'client':
+      collectionRef = firestore.collection(COLLECTIONS.clients);
+      break;
+
+    default:
+      break;
+  }
+  if (collectionRef) {
+    collectionRef.doc(conversation.UID).update({ assignee: adminId });
+  } else {
+    alert('its broken talk to thidney');
+  }
 };
 
 export const createConversation = async (uid, assignee) => {
