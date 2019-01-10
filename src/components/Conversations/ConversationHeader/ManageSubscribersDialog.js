@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import withStyles from '@material-ui/core/styles/withStyles';
 import Dialog from '@material-ui/core/Dialog';
@@ -44,6 +44,13 @@ function ManageSubscribersDialog(props) {
   const { classes, showDialog, conversation, setShowDialog } = props;
   const [subscribersUIDs, setSubscribersUIDs] = useState(
     conversation.subscribedAdmins
+  );
+
+  useEffect(
+    () => {
+      setSubscribersUIDs(conversation.subscribedAdmins);
+    },
+    [conversation]
   );
 
   const handleClose = () => {
