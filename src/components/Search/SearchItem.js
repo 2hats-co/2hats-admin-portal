@@ -11,11 +11,11 @@ import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 
-import PersonIcon from '@material-ui/icons/Person';
 import SubmissionIcon from '@material-ui/icons/DescriptionOutlined';
 import ConversationIcon from '@material-ui/icons/ChatOutlined';
 import ResumeIcon from '@material-ui/icons/Attachment';
 
+import ConversationTypeIcon from '../Conversations/ConversationTypeIcon';
 import { flattenSearchHighlight } from '../../utilities/objects';
 
 const styles = theme => ({
@@ -67,7 +67,7 @@ function SearchItem(props) {
   return (
     <ListItem className={classes.listItem}>
       <ListItemIcon classes={{ root: classes.listIcon }}>
-        <PersonIcon />
+        <ConversationTypeIcon type={hit.type} />
       </ListItemIcon>
       <ListItemText
         primary={

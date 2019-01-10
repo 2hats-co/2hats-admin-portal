@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import withNavigation from '../components/withNavigation';
 import { ROUTES } from '../constants/routes';
 
@@ -11,6 +11,7 @@ import FilterIcon from '@material-ui/icons/FilterList';
 import Typography from '@material-ui/core/Typography';
 
 import LocationIndicator from '../components/LocationIndicator';
+import AdminSelector from '../components/AdminSelector';
 import Filter from '../components/Subjects/Filter';
 import SubjectItem from '../components/Subjects/SubjectItem';
 import useCollection from '../hooks/useCollection';
@@ -46,7 +47,7 @@ const styles = theme => ({
   },
   clearFilterButton: {
     padding: 0,
-    marginRight: theme.spacing.unit * 2,
+    marginRight: theme.spacing.unit,
     width: 36,
     height: 36,
   },
@@ -134,7 +135,7 @@ const CANIDIDATE_FILTERS = [
 const CLIENT_FILTERS = [
   {
     title: 'Assignee',
-    values: ['Pending', 'Scheduled', 'Placed', 'Cancelled'],
+    type: 'admin',
   },
   {
     title: 'Submission Status II',
@@ -158,6 +159,17 @@ const CLIENT_FILTERS = [
     ],
   },
 ];
+
+const assigneeFilter = (currentFilters, uid) => {
+  let filters = currentFilters.filter(x => x.field !== 'assignee');
+  filters.push({
+    field: 'assignee',
+    operator: '==',
+    value: uid,
+  });
+  return filters;
+};
+
 function SubjectsContainer(props) {
   const { classes, theme, route } = props;
 
@@ -168,14 +180,29 @@ function SubjectsContainer(props) {
     collection = COLLECTIONS.clients;
   }
 
+  const [queryFilters, setQueryFilters] = useState([]);
   const [subjectsState, subjectsDispatch] = useCollection({
     path: collection,
     sort: { field: 'createdAt', direction: 'desc' },
+    filters: queryFilters,
   });
   const subjects = subjectsState.documents;
 
+  useEffect(
+    () => {
+      subjectsDispatch({ filters: queryFilters });
+    },
+    [queryFilters]
+  );
+  console.log(subjectsState);
+
   const [snackbarContent, setSnackbarContent] = useState('');
-  return (
+  return subjectsState.loading ? (
+    <LoadingHat
+      message="Rounding up your subjects…"
+      altBg={theme.palette.type !== 'dark'}
+    />
+  ) : (
     <React.Fragment>
       <Grid container direction="column" wrap="nowrap" className={classes.root}>
         <Grid item>
@@ -194,55 +221,66 @@ function SubjectsContainer(props) {
         </Grid>
 
         <Grid item className={classes.filterContainer}>
-          <Tooltip title="Clear all filters">
-            <IconButton
-              className={classes.clearFilterButton}
-              style={
-                true
-                  ? {
-                      backgroundColor: theme.palette.primary.main,
-                      color: '#fff',
-                    }
-                  : null
+          <Grid container alignItems="center">
+            <Tooltip title="Clear all filters">
+              <IconButton
+                className={classes.clearFilterButton}
+                style={
+                  true
+                    ? {
+                        backgroundColor: theme.palette.primary.main,
+                        color: '#fff',
+                      }
+                    : null
+                }
+              >
+                <FilterIcon />
+              </IconButton>
+            </Tooltip>
+            {filters.map((x, i) => {
+              switch (x.type) {
+                case 'admin':
+                  return (
+                    <AdminSelector
+                      key={i}
+                      tooltip={x.title}
+                      onSelect={val => {
+                        if (val)
+                          setQueryFilters(assigneeFilter(queryFilters, val));
+                      }}
+                    />
+                  );
+                default:
+                  return (
+                    <Filter
+                      key={i}
+                      title={x.title}
+                      type={x.type}
+                      values={x.values}
+                      searchValues={x.searchValues}
+                    />
+                  );
               }
-            >
-              <FilterIcon />
-            </IconButton>
-          </Tooltip>
-          {filters.map((x, i) => (
-            <Filter
-              key={i}
-              title={x.title}
-              type={x.type}
-              values={x.values}
-              searchValues={x.searchValues}
-            />
-          ))}
+            })}
+          </Grid>
         </Grid>
 
         <Grid item xs className={classes.subjectListContainer}>
-          <React.Fragment>
-            {subjectsState.loading ? (
-              <LoadingHat message="Rounding up your subjects…" />
-            ) : (
-              <ScrollyRolly
-                dataState={subjectsState}
-                dataDispatch={subjectsDispatch}
-                disablePadding
-              >
-                {(x, i) => {
-                  console.log(x);
-                  return (
-                    <SubjectItem
-                      key={x.id}
-                      data={x}
-                      setSnackbarContent={setSnackbarContent}
-                    />
-                  );
-                }}
-              </ScrollyRolly>
-            )}
-          </React.Fragment>
+          <ScrollyRolly
+            dataState={subjectsState}
+            dataDispatch={subjectsDispatch}
+            disablePadding
+          >
+            {(x, i) => {
+              return (
+                <SubjectItem
+                  key={x.id}
+                  data={x}
+                  setSnackbarContent={setSnackbarContent}
+                />
+              );
+            }}
+          </ScrollyRolly>
         </Grid>
       </Grid>
       <Snackbar

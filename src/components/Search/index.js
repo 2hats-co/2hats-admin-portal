@@ -21,6 +21,7 @@ import { useSearch } from '../../hooks/useSearch';
 import { ROUTES } from '../../constants/routes';
 // import { sleep } from '../../utilities';
 // import last from 'ramda/es/last';
+import gloria from '../../assets/gloria.jpg';
 
 const styles = theme => ({
   webRoot: {
@@ -38,6 +39,23 @@ const styles = theme => ({
     outline: 'none',
     maxHeight: 'calc(100vh - 96px)',
     overflow: 'hidden',
+  },
+  algloria: {
+    userSelect: 'none',
+    position: 'absolute',
+    top: theme.spacing.unit * 6,
+    left: theme.spacing.unit * 8 + 1,
+    fontSize: 12,
+    fontStyle: 'italic',
+    color: theme.palette.text.secondary,
+
+    '& img': {
+      width: 14,
+      height: 14,
+      borderRadius: '50%',
+      marginLeft: theme.spacing.unit / 2,
+      verticalAlign: 'bottom',
+    },
   },
   nbHits: {
     position: 'absolute',
@@ -183,7 +201,7 @@ function Search(props) {
               if (e.key === 'Enter') updateQuery(e.target.value);
               else if (!showEnterPrompt) setShowEnterPrompt(true);
             }}
-            placeholder="Search candidates"
+            placeholder="Search users"
             startAdornment={<SearchIcon className={classes.searchIcon} />}
           />
           {showEnterPrompt ? (
@@ -195,7 +213,12 @@ function Search(props) {
               </div>
             )
           )}
-          {}
+          {!showEnterPrompt && (
+            <div className={classes.algloria}>
+              powered by Algloria
+              <img src={gloria} alt="Algloria" />
+            </div>
+          )}
 
           <div className={classes.listWrapper}>
             <InfiniteScroll

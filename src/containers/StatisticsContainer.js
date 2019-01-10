@@ -32,7 +32,7 @@ import LocationIndicator from '../components/LocationIndicator';
 import ChartEditor from '../components/Statistics/ChartEditor';
 
 import { COLLECTIONS } from '../constants/firestore';
-import { sleep } from '../utilities';
+// import { sleep } from '../utilities';
 import useWindowSize from '../hooks/useWindowSize';
 
 const styles = theme => ({

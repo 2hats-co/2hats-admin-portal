@@ -65,6 +65,11 @@ const LoadingHat = props => (
     justify="center"
     alignItems="center"
     className={props.classes.root}
+    style={
+      props.altBg
+        ? { backgroundColor: props.theme.palette.background.paper }
+        : {}
+    }
     wrap="nowrap"
   >
     <img
@@ -83,4 +88,4 @@ const LoadingHat = props => (
   </Grid>
 );
 
-export default withStyles(styles)(LoadingHat);
+export default withStyles(styles, { withTheme: TextTrackCue })(LoadingHat);

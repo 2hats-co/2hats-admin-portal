@@ -106,7 +106,7 @@ const navigationRoutes = [
   {
     label: 'Subjects',
     icon: <SupervisorAccountIcon />,
-    route: ROUTES.candidates,
+    route: ROUTES.clients,
     subRoutes: [ROUTES.clients, ROUTES.candidates, ROUTES.subjects],
     incomplete: true,
   },
@@ -176,7 +176,7 @@ export default function withNavigation(WrappedComponent) {
                           className={showGloria ? classes.gloria : classes.logo}
                         />
                       </Tooltip>
-                      <Tooltip title="Search candidates" placement="right">
+                      <Tooltip title="Search users" placement="right">
                         <IconButton
                           className={classes.searchButton}
                           onClick={() => {

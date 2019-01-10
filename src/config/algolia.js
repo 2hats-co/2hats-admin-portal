@@ -2,6 +2,7 @@ import algoliasearch from 'algoliasearch';
 
 export const ALGOLIA_INDEX = {
   candidates: 'candidate_search',
+  users: 'users',
 };
 
 export const createAlgoliaIndex = (indexName => {
