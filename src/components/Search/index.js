@@ -15,7 +15,7 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 
 import SearchIcon from '@material-ui/icons/Search';
-
+import useWindowSize from '../../hooks/useWindowSize';
 import SearchItem from './SearchItem';
 import { useSearch } from '../../hooks/useSearch';
 import { ROUTES } from '../../constants/routes';
@@ -23,10 +23,18 @@ import { ROUTES } from '../../constants/routes';
 // import last from 'ramda/es/last';
 
 const styles = theme => ({
-  paperRoot: {
+  webRoot: {
     borderRadius: theme.shape.roundBorderRadius,
     width: 664,
     margin: '48px auto 0',
+    outline: 'none',
+    maxHeight: 'calc(100vh - 96px)',
+    overflow: 'hidden',
+  },
+  mobileRoot: {
+    borderRadius: theme.shape.roundBorderRadius,
+    width: 'calc(100% - 0px)',
+    margin: '18px auto 0',
     outline: 'none',
     maxHeight: 'calc(100vh - 96px)',
     overflow: 'hidden',
@@ -98,29 +106,8 @@ function Search(props) {
   const [hasMore, setHasMore] = useState(true);
   const [searchState, searchDispatch] = useSearch();
   const { results } = searchState;
-  // const [searching,setSearching] = use
-  // const [query, setQuery] = useState('');
-  // let queryHistory = [];
-  // const updateQuery = async () => {
-  //   console.log(queryHistory);
-  //   await sleep(3000);
-
-  //   if (last(queryHistory) !== searchState.search) {
-  //     searchDispatch({ search: last(queryHistory) });
-  //     setHasMore(true);
-  //     console.log('update query', last(queryHistory), searchState);
-  //   }
-  // };
-
-  // useEffect(
-  //   () => {
-  //     queryHistory.push(query);
-  //     updateQuery();
-  //   },
-  //   [query]
-  // );
-
   const [showEnterPrompt, setShowEnterPrompt] = useState(false);
+  const windowSize = useWindowSize();
 
   const updateQuery = query => {
     searchDispatch({ search: query });
@@ -183,13 +170,15 @@ function Search(props) {
   return (
     <Modal open={showSearch} onClose={handleClose} disableAutoFocus>
       <Slide in={slideIn} direction="down">
-        <Paper elevation={24} classes={{ root: classes.paperRoot }}>
+        <Paper
+          elevation={24}
+          classes={{
+            root: windowSize.isMobile ? classes.mobileRoot : classes.webRoot,
+          }}
+        >
           <InputBase
             autoFocus
             className={classes.searchInput}
-            //onChange={e => {
-            //setQuery(e.target.value);
-            //}}
             onKeyPress={e => {
               if (e.key === 'Enter') updateQuery(e.target.value);
               else if (!showEnterPrompt) setShowEnterPrompt(true);
@@ -206,6 +195,7 @@ function Search(props) {
               </div>
             )
           )}
+          {}
 
           <div className={classes.listWrapper}>
             <InfiniteScroll

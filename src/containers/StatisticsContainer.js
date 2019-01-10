@@ -12,6 +12,7 @@ import Snackbar from '@material-ui/core/Snackbar';
 import EditIcon from '@material-ui/icons/Edit';
 import IconButton from '@material-ui/core/IconButton';
 import AddIcon from '@material-ui/icons/Add';
+import SaveIcon from '@material-ui/icons/Save';
 
 import TrackerLineChart from '../components/Statistics/TrackerLineChart';
 import TrackerBarChart from '../components/Statistics/TrackerBarChart';
@@ -32,7 +33,7 @@ import ChartEditor from '../components/Statistics/ChartEditor';
 
 import { COLLECTIONS } from '../constants/firestore';
 import { sleep } from '../utilities';
-import { useWindowSize } from '../hooks/useWindowSize';
+import useWindowSize from '../hooks/useWindowSize';
 
 const styles = theme => ({
   root: {
@@ -108,9 +109,9 @@ function StatisticsContainer(props) {
   const charts = chartsState.documents;
   const [layout, setLayout] = useState([]);
   const [layoutShouldUpdate, setLayoutShouldUpdate] = useState(false);
-  const [layoutLastUpdate, setLayoutLastUpdate] = useState(
-    new Date().getTime()
-  );
+  // const [layoutLastUpdate, setLayoutLastUpdate] = useState(
+  //   new Date().getTime()
+  // );
   const [snackbarMessage, setSnackbarMessage] = useState('');
 
   const [showDialog, setShowDialog] = useState(false);
@@ -125,32 +126,26 @@ function StatisticsContainer(props) {
   });
 
   const handleSaveLayout = async () => {
-    const now = new Date().getTime();
-    const millsSinceLastUpdate = now - layoutLastUpdate;
-    const millsDelay = 5000;
-    if (layoutShouldUpdate && millsSinceLastUpdate > millsDelay) {
-      setLayoutLastUpdate(now);
-      console.log('updating');
-      await sleep(millsDelay);
-      layout.forEach(chartLayout => {
-        let newLayout = { ...chartLayout };
-        delete newLayout.i;
-        firestore
-          .collection(COLLECTIONS.admins)
-          .doc(uid)
-          .collection(COLLECTIONS.charts)
-          .doc(chartLayout.i)
-          .update({ layout: newLayout });
-      });
-      setSnackbarMessage('Saved layout');
-    }
+    // const now = new Date().getTime();
+    // const millsSinceLastUpdate = now - layoutLastUpdate;
+    // const millsDelay = 5000;
+    //   if (layoutShouldUpdate && millsSinceLastUpdate > millsDelay) {
+    //  setLayoutLastUpdate(now);
+    // console.log('updating');
+    // await sleep(millsDelay);
+    layout.forEach(chartLayout => {
+      let newLayout = { ...chartLayout };
+      delete newLayout.i;
+      firestore
+        .collection(COLLECTIONS.admins)
+        .doc(uid)
+        .collection(COLLECTIONS.charts)
+        .doc(chartLayout.i)
+        .update({ layout: newLayout });
+    });
+    setSnackbarMessage('Saved layout');
+    setLayoutShouldUpdate(false);
   };
-  useEffect(
-    () => {
-      handleSaveLayout();
-    },
-    [layout]
-  );
 
   useEffect(
     () => {
@@ -181,15 +176,25 @@ function StatisticsContainer(props) {
           setChartToEdit={setChartToEdit}
         />
 
-        <Fab
-          className={classes.addButton}
-          color="primary"
-          onClick={() => {
-            setShowDialog(true);
-          }}
-        >
-          <AddIcon />
-        </Fab>
+        {layoutShouldUpdate ? (
+          <Fab
+            className={classes.addButton}
+            color="primary"
+            onClick={handleSaveLayout}
+          >
+            <SaveIcon />
+          </Fab>
+        ) : (
+          <Fab
+            className={classes.addButton}
+            color="primary"
+            onClick={() => {
+              setShowDialog(true);
+            }}
+          >
+            <AddIcon />
+          </Fab>
+        )}
 
         <Slide in direction="down">
           <React.Fragment>

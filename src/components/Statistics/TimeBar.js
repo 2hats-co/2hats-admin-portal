@@ -14,7 +14,7 @@ import { DatePicker } from 'material-ui-pickers';
 import moment from 'moment';
 import NativeSelect from '@material-ui/core/NativeSelect';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
-import { useWindowSize } from '../../hooks/useWindowSize';
+import useWindowSize from '../../hooks/useWindowSize';
 
 const styles = theme => ({
   root: {

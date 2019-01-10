@@ -16,7 +16,7 @@ import ConversationHeader from '../components/Conversations/ConversationHeader';
 import Messages from '../components/Conversations/Messages';
 import Loadable from 'react-loadable';
 import LoadingHat from '../components/LoadingHat';
-import { useWindowSize } from '../hooks/useWindowSize';
+import useWindowSize from '../hooks/useWindowSize';
 import useDocument from '../hooks/useDocument';
 import { getfirstIdOfQuery } from '../utilities/firestore';
 import { createConversation } from '../utilities/conversations';

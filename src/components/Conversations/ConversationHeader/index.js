@@ -19,7 +19,7 @@ import TextField from '@material-ui/core/TextField';
 import ConversationTypeIcon from '../ConversationTypeIcon';
 import ManageSubscribersDialog from './ManageSubscribersDialog';
 import DebugButton from '../../DebugButton';
-import { useWindowSize } from '../../../hooks/useWindowSize';
+import useWindowSize from '../../../hooks/useWindowSize';
 import { copyToClipboard } from '../../../utilities';
 import {
   markAsSpam,

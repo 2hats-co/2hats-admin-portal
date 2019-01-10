@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react';
 
-export function useWindowSize() {
+function useWindowSize() {
   const isClient = typeof window === 'object';
 
   function getSize() {
     return {
       width: isClient ? window.innerWidth : undefined,
-      isMobile: isClient ? (window.innerWidth < 670) : undefined,
-      height: isClient ? window.innerHeight : undefined
+      isMobile: isClient ? window.innerWidth < 670 : undefined,
+      height: isClient ? window.innerHeight : undefined,
     };
   }
 
@@ -17,7 +17,7 @@ export function useWindowSize() {
     if (!isClient) {
       return false;
     }
-    
+
     function handleResize() {
       setWindowSize(getSize());
     }
@@ -28,3 +28,4 @@ export function useWindowSize() {
 
   return windowSize;
 }
+export default useWindowSize;
