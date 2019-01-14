@@ -9,13 +9,13 @@ import Fab from '@material-ui/core/Fab';
 import SendIcon from '@material-ui/icons/Send';
 import DoneIcon from '@material-ui/icons/Done';
 import AtIcon from '@material-ui/icons/AlternateEmail';
-import EmojiIcon from '@material-ui/icons/InsertEmoticon';
+// import EmojiIcon from '@material-ui/icons/InsertEmoticon';
 import FileIcon from '@material-ui/icons/Attachment';
 import EventIcon from '@material-ui/icons/EventOutlined';
 import ReminderIcon from '@material-ui/icons/NotificationsOutlined';
 import GroupIcon from '@material-ui/icons/Group';
 
-import EmojiDialog from './EmojiDialog';
+// import EmojiDialog from './EmojiDialog';
 import EventDialog from './EventDialog';
 import ReminderDialog from './ReminderDialog';
 import useKeyPress from '../../../hooks/useKeypress';
@@ -23,13 +23,13 @@ import useKeyPress from '../../../hooks/useKeypress';
 import GooglePicker from '../../GooglePicker';
 import AdminSelector from '../../AdminSelector';
 
-const emojiButton = handleClick => (
-  <Tooltip title="Emoji" key="emoji">
-    <IconButton onClick={handleClick}>
-      <EmojiIcon />
-    </IconButton>
-  </Tooltip>
-);
+// const emojiButton = handleClick => (
+//   <Tooltip title="Emoji" key="emoji">
+//     <IconButton onClick={handleClick}>
+//       <EmojiIcon />
+//     </IconButton>
+//   </Tooltip>
+// );
 const fileButton = (handleClick, pickerToken, setPickerToken) => (
   <GooglePicker
     key="Google Picker"
@@ -87,7 +87,7 @@ const styles = theme => ({
 const ComposerActions = React.memo(props => {
   const { classes, composerType, actions, conversation } = props;
 
-  const [showEmojiDialog, setShowEmojiDialog] = useState(false);
+  // const [showEmojiDialog, setShowEmojiDialog] = useState(false);
   const [showEventDialog, setShowEventDialog] = useState(false);
   const [showReminderDialog, setShowReminderDialog] = useState(false);
   const returnKey = useKeyPress('Enter');
@@ -134,15 +134,15 @@ const ComposerActions = React.memo(props => {
       break;
   }
 
-  const handleEmoji = () => {
-    setShowEmojiDialog(!showEmojiDialog);
-  };
+  // const handleEmoji = () => {
+  //   setShowEmojiDialog(!showEmojiDialog);
+  // };
 
   let actionButtons;
   switch (composerType) {
     case 'email':
       actionButtons = [
-        emojiButton(handleEmoji),
+        // emojiButton(handleEmoji),
         eventButton(() => {
           setShowEventDialog(true);
         }),
@@ -150,11 +150,13 @@ const ComposerActions = React.memo(props => {
       ];
       break;
     case 'linkedin':
-      actionButtons = [emojiButton(handleEmoji)];
+      actionButtons = [
+        // emojiButton(handleEmoji)
+      ];
       break;
     case 'note':
       actionButtons = [
-        emojiButton(handleEmoji),
+        // emojiButton(handleEmoji),
         reminderButton(() => {
           setShowReminderDialog(true);
         }),
@@ -186,10 +188,10 @@ const ComposerActions = React.memo(props => {
         </Grid>
       </Grid>
 
-      <EmojiDialog
+      {/* <EmojiDialog
         showDialog={showEmojiDialog}
         setShowDialog={setShowEmojiDialog}
-      />
+      /> */}
       <EventDialog
         showDialog={showEventDialog}
         setShowDialog={setShowEventDialog}

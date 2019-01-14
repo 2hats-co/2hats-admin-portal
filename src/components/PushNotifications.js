@@ -50,7 +50,9 @@ function PushNotifications(props) {
   return (
     <Snackbar
       anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
-      open={snackbarMessage && (snackbarMessage.body || snackbarMessage.title)}
+      open={
+        !!snackbarMessage && !!(snackbarMessage.body || snackbarMessage.title)
+      }
       autoHideDuration={3000}
       onClose={() => {
         setSnackbarMessage('');

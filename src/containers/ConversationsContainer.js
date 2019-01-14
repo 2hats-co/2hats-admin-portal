@@ -56,7 +56,7 @@ const styles = theme => ({
   },
 });
 function ConversationsContainer(props) {
-  const { classes, uid, location } = props;
+  const { classes, uid, location, history } = props;
   const currentUserId = uid;
   const windowSize = useWindowSize();
 
@@ -113,6 +113,7 @@ function ConversationsContainer(props) {
                   dispatchConversation({
                     path: `conversations/${conversation.id}`,
                   });
+                  history.push(`/conversations?id=${conversation.id}`);
                 }}
               />
             </Grid>

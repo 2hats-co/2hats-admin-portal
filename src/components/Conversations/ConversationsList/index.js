@@ -74,7 +74,7 @@ const clientFilter = {
 };
 const spamFilter = {
   field: 'type',
-  operator: '==',
+  operator: '>=',
   value: 'spam',
 };
 const notSpamFilter = {
@@ -96,7 +96,7 @@ function ConversationsList(props) {
       { field: 'type', direction: 'asc' },
       { field: 'lastMessage.sentAt', direction: 'desc' },
     ],
-    filters: [subscriberFilter(uid)],
+    filters: [],
   });
   const conversations = conversationsState.documents;
 
