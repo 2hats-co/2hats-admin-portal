@@ -27,7 +27,7 @@ import {
   updateCategory,
 } from '../../../utilities/conversations';
 import conversationCategories from '../../../constants/conversationCategories';
-
+import EmailDialog from './EmailDialog';
 const styles = theme => ({
   root: {
     padding: `${theme.spacing.unit}px ${theme.spacing.unit * 1.5}px ${
@@ -83,6 +83,7 @@ function ConversationHeader(props) {
   const { classes, conversation, closeConversation } = props;
 
   const [showSubscriberDialog, setShowSubscriberDialog] = useState(false);
+  const [showEmailDialog, setShowEmailDialog] = useState(false);
   const [category, setCategory] = useState('');
 
   useEffect(
@@ -142,7 +143,7 @@ function ConversationHeader(props) {
             </Grid>
           </Grid>
           <Grid item>
-            {conversation.channels.email && (
+            {conversation.channels.email ? (
               <Tooltip
                 onClick={() => {
                   copyToClipboard(conversation.channels.email);
@@ -152,6 +153,21 @@ function ConversationHeader(props) {
                     <b>{conversation.channels.email}</b>
                     <br />
                     (Click to copy)
+                  </React.Fragment>
+                }
+              >
+                <IconButton>
+                  <EmailIcon />
+                </IconButton>
+              </Tooltip>
+            ) : (
+              <Tooltip
+                onClick={() => {
+                  setShowEmailDialog(true);
+                }}
+                title={
+                  <React.Fragment>
+                    <b>add email</b>
                   </React.Fragment>
                 }
               >
@@ -201,7 +217,11 @@ function ConversationHeader(props) {
           </Grid>
         </Grid>
       </Grid>
-
+      <EmailDialog
+        conversation={conversation}
+        showDialog={showEmailDialog}
+        setShowDialog={setShowEmailDialog}
+      />
       <ManageSubscribersDialog
         conversation={conversation}
         showDialog={showSubscriberDialog}

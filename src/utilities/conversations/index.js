@@ -22,6 +22,12 @@ export const markAsRead = async (adminId, conversationId) => {
   }
 };
 
+export const updateConversation = async (conversationId, data) => {
+  firestore
+    .collection(COLLECTIONS.conversations)
+    .doc(conversationId)
+    .update(data);
+};
 export const markAsSpam = async conversationId => {
   firestore
     .collection(COLLECTIONS.conversations)
