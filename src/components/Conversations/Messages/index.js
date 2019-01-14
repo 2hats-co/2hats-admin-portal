@@ -7,6 +7,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import moment from 'moment';
 
 import Message from './Message';
+import EventDialog from '../Composer/EventDialog';
 import useCollection from '../../../hooks/useCollection';
 import ScrollyRolly from '../../ScrollyRolly';
 import ForumIcon from '@material-ui/icons/Forum';
@@ -94,6 +95,14 @@ function Messages(props) {
     [firstMessage]
   );
 
+  const [showEventDialog, setShowEventDialog] = useState(false);
+  const [eventMessageData, setEventMessageData] = useState({});
+
+  const handleEditEvent = messageData => {
+    setShowEventDialog(true);
+    setEventMessageData(messageData);
+  };
+
   if (messagesState.loading)
     return (
       <Grid
@@ -126,6 +135,7 @@ function Messages(props) {
             lastOfType={
               i < arr.length - 1 ? !isSameType(arr[i + 1], data) : true
             }
+            editEvent={handleEditEvent}
           />
         )}
       </ScrollyRolly>
@@ -134,6 +144,14 @@ function Messages(props) {
         className={classes.messagesEnd}
         ref={messagesEnd}
       />
+      {showEventDialog && (
+        <EventDialog
+          showDialog={showEventDialog}
+          setShowDialog={setShowEventDialog}
+          conversation={conversation}
+          messageData={eventMessageData}
+        />
+      )}
     </div>
   );
 }

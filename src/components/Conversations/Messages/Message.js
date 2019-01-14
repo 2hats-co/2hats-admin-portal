@@ -5,8 +5,10 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import Typography from '@material-ui/core/Typography';
 import Avatar from '@material-ui/core/Avatar';
 import Tooltip from '@material-ui/core/Tooltip';
+import IconButton from '@material-ui/core/IconButton';
 
 import PersonIcon from '@material-ui/icons/Person';
+import EditIcon from '@material-ui/icons/Edit';
 
 import { isOnlyEmojis } from '../../../utilities/emoji';
 import moment from 'moment';
@@ -144,10 +146,18 @@ const styles = theme => ({
     right: 0,
     '$yourMessage &': { color: theme.palette.primary.darkText },
   },
+  editButton: {
+    position: 'absolute',
+    top: -theme.spacing.unit / 2,
+    right: theme.spacing.unit * 4,
+    paddingRight: `${theme.spacing.unit * 1.5}px !important`,
+    '$yourMessage &': { color: theme.palette.primary.darkText },
+  },
   emailExpansionDetails: {
     padding: `0 ${theme.spacing.unit}px ${theme.spacing.unit}px`,
     flexDirection: 'column',
   },
+  expansionExpanded: { marginBottom: 0 },
   expansionSummaryExpanded: {},
   expansionSummaryContent: {
     margin: `${theme.spacing.unit}px 0`,
@@ -258,7 +268,7 @@ const styles = theme => ({
 });
 
 function Message(props) {
-  const { data, classes, firstOfType, lastOfType } = props;
+  const { data, classes, firstOfType, lastOfType, editEvent } = props;
   moment.updateLocale('en', momentLocales);
 
   const timestamp = moment(data.sentAt.seconds * 1000).format(
@@ -310,6 +320,16 @@ function Message(props) {
             adminsContext={adminsContext}
             data={data}
           />
+          {data.type === 'event' && (
+            <IconButton
+              className={classes.editButton}
+              onClick={() => {
+                editEvent(data);
+              }}
+            >
+              <EditIcon />
+            </IconButton>
+          )}
         </div>
       </Tooltip>
       {!isIncoming &&

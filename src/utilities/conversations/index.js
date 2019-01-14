@@ -97,6 +97,18 @@ export const addEvent = (adminId, conversationId, event) => {
       data: event,
     });
 };
+export const updateEvent = (adminId, conversationId, messageId, event) => {
+  firestore
+    .collection(COLLECTIONS.conversations)
+    .doc(conversationId)
+    .collection(COLLECTIONS.messages)
+    .doc(messageId)
+    .update({
+      editorId: adminId,
+      updatedAt: new Date(),
+      data: event,
+    });
+};
 
 export const addReminder = (adminId, conversationId, data) => {
   firestore

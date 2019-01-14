@@ -28,7 +28,7 @@ import ToggleButton from '@material-ui/lab/ToggleButton';
 import CustomIcon from '@material-ui/icons/Build';
 
 import { useAuthedUser } from '../../../hooks/useAuthedUser';
-import { addEvent } from '../../../utilities/conversations';
+import { addEvent, updateEvent } from '../../../utilities/conversations';
 import clone from 'ramda/es/clone';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 const styles = theme => ({
@@ -73,24 +73,47 @@ const styles = theme => ({
 const STREET_ADDRESS = '66-68 Devonshire St, Surry Hills NSW 2010, Australia';
 
 function EventDialog(props) {
-  const { classes, showDialog, setShowDialog, conversation } = props;
+  const {
+    classes,
+    showDialog,
+    setShowDialog,
+    conversation,
+    messageData,
+  } = props;
   const displayName = conversation.displayName;
 
-  const initialData = {
-    summary: '',
-    description: '',
-    location: STREET_ADDRESS,
-    start: {
-      dateTime: moment(), // needs to be converted to ISO string on output
-      timeZone: 'Australia/Sydney',
-    },
-    end: {
-      dateTime: moment().add(30, 'm'), // needs to be converted to ISO string on output
-      duration: 30, // needs to be removed on output
-      timeZone: 'Australia/Sydney',
-    },
-    attendees: [conversation.channels.email],
-  };
+  const initialData = messageData
+    ? {
+        ...messageData.data,
+        attendees: messageData.data.attendees.map(x => x.email),
+        start: {
+          ...messageData.data.start,
+          dateTime: moment(messageData.data.start.dateTime),
+        },
+        end: {
+          ...messageData.data.end,
+          dateTime: moment(messageData.data.end.dateTime),
+          duration: moment(messageData.data.end.dateTime).diff(
+            moment(messageData.data.start.dateTime),
+            'minutes'
+          ),
+        },
+      }
+    : {
+        summary: '',
+        description: '',
+        location: STREET_ADDRESS,
+        start: {
+          dateTime: moment(), // needs to be converted to ISO string on output
+          timeZone: 'Australia/Sydney',
+        },
+        end: {
+          dateTime: moment().add(30, 'm'), // needs to be converted to ISO string on output
+          duration: 30, // needs to be removed on output
+          timeZone: 'Australia/Sydney',
+        },
+        attendees: [conversation.channels.email],
+      };
 
   const [customDuration, setCustomDuration] = useState(false);
   const [data, setData] = useState(initialData);
@@ -181,7 +204,10 @@ function EventDialog(props) {
     );
     outData.start.dateTime = data.start.dateTime.toISOString(true);
     outData.end.dateTime = data.end.dateTime.toISOString(true);
-    addEvent(currentUser.UID, conversation.id, outData);
+
+    if (messageData)
+      updateEvent(currentUser.UID, conversation.id, messageData.id, outData);
+    else addEvent(currentUser.UID, conversation.id, outData);
     resetForm();
     handleClose();
   };
@@ -192,7 +218,7 @@ function EventDialog(props) {
       onClose={handleClose}
       classes={{ paper: classes.root }}
     >
-      <DialogTitle>Add Calendar Event</DialogTitle>
+      <DialogTitle>{messageData ? 'Update' : 'Add'} Calendar Event</DialogTitle>
 
       <DialogContent>
         <div className={classes.block}>
@@ -436,7 +462,7 @@ function EventDialog(props) {
           variant="contained"
           disabled={disableAdd}
         >
-          Add
+          {messageData ? 'Update' : 'Add'}
         </Button>
       </DialogActions>
     </Dialog>

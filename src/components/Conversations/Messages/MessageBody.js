@@ -114,7 +114,12 @@ const MessageBody = props => {
       const endTime = moment(data.data.end.dateTime);
 
       return (
-        <ExpansionPanel classes={{ root: classes.expansionRoot }}>
+        <ExpansionPanel
+          classes={{
+            root: classes.expansionRoot,
+            expanded: classes.expansionExpanded,
+          }}
+        >
           <ExpansionPanelSummary
             expandIcon={<ExpandMoreIcon />}
             classes={{
