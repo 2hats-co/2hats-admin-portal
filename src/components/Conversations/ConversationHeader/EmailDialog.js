@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import withStyles from '@material-ui/core/styles/withStyles';
 import Dialog from '@material-ui/core/Dialog';
@@ -9,7 +9,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 
 import Button from '@material-ui/core/Button';
 
-import { updateConversation } from '../../../utilities/conversations/index';
+import { updateConversation } from '../../../utilities/conversations';
 import TextField from '@material-ui/core/TextField';
 
 const styles = theme => ({
@@ -28,10 +28,14 @@ const styles = theme => ({
 function EmailDialog(props) {
   const { classes, showDialog, conversation, setShowDialog } = props;
 
-  const handleClose = email => {
-    let channels = conversation.channels;
-    channels[email] = email;
-    updateConversation(conversation.id, channels);
+  const [email, setEmail] = useState('');
+
+  const addEmail = () => {
+    const channels = { ...conversation.channels, email };
+    updateConversation(conversation.id, { channels });
+    handleClose();
+  };
+  const handleClose = () => {
     setShowDialog(false);
   };
 
@@ -41,18 +45,28 @@ function EmailDialog(props) {
       onClose={handleClose}
       classes={{ paper: classes.root }}
     >
-      <DialogTitle>Set Email</DialogTitle>
+      <DialogTitle>Set email</DialogTitle>
 
       <DialogContent>
         <TextField
-          label="email"
+          label="Email"
           onKeyPress={e => {
-            if (e.key === 'Enter') handleClose(e.target.value);
+            if (e.key === 'Enter') addEmail();
           }}
+          value={email}
+          onChange={e => {
+            setEmail(e.target.value);
+          }}
+          fullWidth
+          autoFocus
         />
       </DialogContent>
 
-      <DialogActions />
+      <DialogActions>
+        <Button variant="contained" color="primary" onClick={addEmail}>
+          Done
+        </Button>
+      </DialogActions>
     </Dialog>
   );
 }

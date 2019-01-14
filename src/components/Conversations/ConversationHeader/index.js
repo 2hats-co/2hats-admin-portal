@@ -11,6 +11,7 @@ import AddSubscriberIcon from '@material-ui/icons/GroupAdd';
 import BackIcon from '@material-ui/icons/ArrowBack';
 // import StarOutlineIcon from '@material-ui/icons/StarBorder';
 import EmailIcon from '@material-ui/icons/Markunread';
+import AddIcon from '@material-ui/icons/Add';
 import LinkedInIcon from '../../../assets/icons/LinkedIn';
 import SpamIcon from '@material-ui/icons/Report';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -28,6 +29,7 @@ import {
 } from '../../../utilities/conversations';
 import conversationCategories from '../../../constants/conversationCategories';
 import EmailDialog from './EmailDialog';
+
 const styles = theme => ({
   root: {
     padding: `${theme.spacing.unit}px ${theme.spacing.unit * 1.5}px ${
@@ -52,6 +54,19 @@ const styles = theme => ({
     paddingRight: theme.spacing.unit * 3,
     fontSize: '.875rem',
     minWidth: 100,
+  },
+
+  emailAdd: {
+    position: 'absolute',
+    bottom: theme.spacing.unit * 0.75,
+    right: theme.spacing.unit * 0.75,
+
+    backgroundColor:
+      theme.palette.type === 'dark'
+        ? theme.palette.background.default
+        : theme.palette.background.paper,
+    borderRadius: '50%',
+    fontSize: 18,
   },
 
   linkedInButton: {
@@ -165,23 +180,30 @@ function ConversationHeader(props) {
                 onClick={() => {
                   setShowEmailDialog(true);
                 }}
-                title={
-                  <React.Fragment>
-                    <b>add email</b>
-                  </React.Fragment>
-                }
+                title="Set email"
               >
                 <IconButton>
                   <EmailIcon />
+                  <AddIcon className={classes.emailAdd} />
                 </IconButton>
               </Tooltip>
             )}
             {conversation.channels.linkedin && (
-              //<Tooltip title={conversation.channels.email}>
-              <IconButton disabled className={classes.linkedInButton}>
-                <LinkedInIcon />
-              </IconButton>
-              //</Tooltip>
+              <Tooltip title="Open LinkedIn thread (as Gloria)">
+                <IconButton
+                  className={classes.linkedInButton}
+                  component="a"
+                  href={
+                    'https://www.linkedin.com/messaging/thread/' +
+                    conversation.channels.linkedin.threadId
+                  }
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  disabled={!conversation.channels.linkedin.threadId}
+                >
+                  <LinkedInIcon />
+                </IconButton>
+              </Tooltip>
             )}
           </Grid>
           <Grid item className={classes.actionButtons}>
