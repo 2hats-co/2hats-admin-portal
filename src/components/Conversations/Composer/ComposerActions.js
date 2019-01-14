@@ -6,7 +6,8 @@ import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import Fab from '@material-ui/core/Fab';
 
-import SendIcon from '@material-ui/icons/Send';
+import EmailIcon from '@material-ui/icons/Email';
+import LinkedInIcon from '../../../assets/icons/LinkedIn';
 import DoneIcon from '@material-ui/icons/Done';
 import AtIcon from '@material-ui/icons/AlternateEmail';
 // import EmojiIcon from '@material-ui/icons/InsertEmoticon';
@@ -18,6 +19,7 @@ import GroupIcon from '@material-ui/icons/Group';
 // import EmojiDialog from './EmojiDialog';
 import EventDialog from './EventDialog';
 import ReminderDialog from './ReminderDialog';
+import EmailWarning from './EmailWarning';
 import useKeyPress from '../../../hooks/useKeypress';
 
 import GooglePicker from '../../GooglePicker';
@@ -85,7 +87,14 @@ const styles = theme => ({
 });
 
 const ComposerActions = React.memo(props => {
-  const { classes, composerType, actions, conversation } = props;
+  const {
+    classes,
+    composerType,
+    actions,
+    conversation,
+    emailValid,
+    disableFab,
+  } = props;
 
   // const [showEmojiDialog, setShowEmojiDialog] = useState(false);
   const [showEventDialog, setShowEventDialog] = useState(false);
@@ -94,6 +103,15 @@ const ComposerActions = React.memo(props => {
   const controlKey = useKeyPress('Control');
 
   const [pickerToken, setPickerToken] = useState('');
+
+  const [showEmailWarning, setShowEmailWarning] = useState(false);
+  const handleEmailWarningNo = () => {
+    setShowEmailWarning(false);
+  };
+  const handleEmailWarningYes = () => {
+    actions.email();
+    setShowEmailWarning(false);
+  };
 
   useEffect(
     () => {
@@ -108,7 +126,7 @@ const ComposerActions = React.memo(props => {
     case 'email':
       fabContent = (
         <React.Fragment>
-          <SendIcon />
+          <EmailIcon />
           Send email
         </React.Fragment>
       );
@@ -116,7 +134,7 @@ const ComposerActions = React.memo(props => {
     case 'linkedin':
       fabContent = (
         <React.Fragment>
-          <SendIcon />
+          <LinkedInIcon />
           Send message
         </React.Fragment>
       );
@@ -160,7 +178,7 @@ const ComposerActions = React.memo(props => {
         reminderButton(() => {
           setShowReminderDialog(true);
         }),
-        fileButton(actions.file, pickerToken, setPickerToken),
+        // fileButton(actions.file, pickerToken, setPickerToken),
         atButton(actions.at),
       ];
       break;
@@ -178,8 +196,15 @@ const ComposerActions = React.memo(props => {
           <Grid item>
             <Fab
               variant="extended"
-              onClick={actions[composerType]}
+              onClick={
+                composerType !== 'email' || emailValid
+                  ? actions[composerType]
+                  : () => {
+                      setShowEmailWarning(true);
+                    }
+              }
               color="primary"
+              disabled={disableFab}
             >
               {' '}
               {fabContent}{' '}
@@ -201,6 +226,11 @@ const ComposerActions = React.memo(props => {
         showDialog={showReminderDialog}
         setShowDialog={setShowReminderDialog}
         conversation={conversation}
+      />
+      <EmailWarning
+        showDialog={showEmailWarning}
+        handleNo={handleEmailWarningNo}
+        handleYes={handleEmailWarningYes}
       />
     </React.Fragment>
   );

@@ -348,6 +348,7 @@ function Composer(props) {
               <Grid container spacing={8}>
                 <Grid item xs={6}>
                   <TextField
+                    autoFocus
                     value={emailSubject}
                     onChange={e => {
                       setEmailSubject(e.target.value);
@@ -503,6 +504,8 @@ function Composer(props) {
         }}
         composerType={composerType}
         conversation={conversation}
+        emailValid={composerType === 'email' && emailSubject.length > 0}
+        disableFab={messageText.length <= 0}
       />
     </div>
   );
