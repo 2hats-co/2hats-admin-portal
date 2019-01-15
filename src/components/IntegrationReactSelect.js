@@ -244,6 +244,12 @@ function IntegrationReactSelect(props) {
 IntegrationReactSelect.propTypes = {
   classes: PropTypes.object.isRequired,
   theme: PropTypes.object.isRequired,
+  placeholder: PropTypes.string,
+  label: PropTypes.string,
+  autoFocus: PropTypes.bool,
+  changeHandler: PropTypes.func.isRequired,
+  suggestions: PropTypes.array.isRequired,
+  value: PropTypes.any.isRequired,
 };
 
 export default withStyles(styles, { withTheme: true })(IntegrationReactSelect);

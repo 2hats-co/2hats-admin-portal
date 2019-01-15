@@ -1,19 +1,18 @@
 import React, { useState } from 'react';
 
-//import CampaignEditor from './CampaignEditor';
 import CampaignCard from './CampaignCard';
 import LoadingHat from '../../LoadingHat';
 import useCollection from '../../../hooks/useCollection';
 import { firestore } from '../../../store';
 import { COLLECTIONS } from '../../../constants/firestore';
+import linkedinCampaignFields from '../../../constants/forms/linkedinCampaign';
+import Loadable from 'react-loadable';
 
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
-import Loadable from 'react-loadable';
 
-const CampaignEditor = Loadable({
-  loader: () =>
-    import('./CampaignEditor' /* webpackChunkName: "CampaignEditor" */),
+const Form = Loadable({
+  loader: () => import('../../Form' /* webpackChunkName: "Form" */),
   loading: LoadingHat,
 });
 
@@ -47,10 +46,10 @@ function LinkedinCampaigns(props) {
     });
     setShowEditor(false);
   };
-  const updateCampaign = data => {
+  const updateCampaign = (data, id) => {
     firestore
       .collection(COLLECTIONS.linkedinCampaigns)
-      .doc(data.id)
+      .doc(id)
       .update({
         ...data,
         needsToRun: false,
@@ -79,18 +78,19 @@ function LinkedinCampaigns(props) {
             }}
           />
         ))}
-        <CampaignEditor
-          open={showEditor}
-          campaign={campaign}
+        <Form
           action={campaign ? 'update' : 'create'}
           actions={{
             create: createCampaign,
-            update: updateCampaign,
+            update: data => updateCampaign(data, campaign.id),
             close: () => {
               setCampaign(null);
               setShowEditor(false);
             },
           }}
+          open={showEditor}
+          data={linkedinCampaignFields(campaign)}
+          formTitle={campaign ? campaign.query : 'Campaign'}
         />
         <Fab
           style={{
