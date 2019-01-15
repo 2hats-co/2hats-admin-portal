@@ -19,4 +19,8 @@ export const ROUTES = {
 
   marketingLeadGeneration: '/marketingLeadGeneration',
   marketingEmail: '/marketingEmail',
+
+  jobsManager: '/contentManager/jobs',
+  assessmentsManager: '/contentManager/assessments',
+  coursesManager: '/contentManager/courses',
 };

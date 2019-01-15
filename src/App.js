@@ -49,6 +49,12 @@ const MarketingContainer = Loadable({
   loading: LoadingHat,
 });
 
+const ContentManagerContainer = Loadable({
+  loader: () =>
+    import('./containers/ContentManagerContainer' /* webpackChunkName: "ContentManagerContainer" */),
+  loading: LoadingHat,
+});
+
 function App() {
   const currentUser = useAuthedUser();
 
@@ -142,6 +148,22 @@ function App() {
               exact
               path={ROUTES.accepted}
               component={() => <SubmissionsContainer />}
+            />
+
+            <Route
+              exact
+              path={ROUTES.jobsManager}
+              component={() => <ContentManagerContainer />}
+            />
+            <Route
+              exact
+              path={ROUTES.coursesManager}
+              component={() => <ContentManagerContainer />}
+            />
+            <Route
+              exact
+              path={ROUTES.assessmentsManager}
+              component={() => <ContentManagerContainer />}
             />
             <Route exact path={'/'} component={() => <Landing />} />
             <Route component={() => <div>404</div>} />

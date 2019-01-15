@@ -19,4 +19,6 @@ export const COLLECTIONS = {
   linkedinMessageQueue: 'linkedinMessageQueue',
   gmailOutbox: 'gmailOutbox',
   notifications: 'notifications',
+  '👩🏿‍🎨': '👩🏿‍🎨',
+  jobs: 'jobs',
 };

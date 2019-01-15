@@ -15,6 +15,7 @@ import DescriptionIcon from '@material-ui/icons/Description';
 import StatisticsIcon from '@material-ui/icons/InsertChart';
 import ConversationsIcon from '@material-ui/icons/Forum';
 import MarketingIcon from '../../assets/icons/Bullhorn';
+import JobsIcon from '@material-ui/icons/PregnantWoman';
 
 import { ROUTES } from '../../constants/routes';
 
@@ -115,6 +116,17 @@ const navigationRoutes = [
     icon: <MarketingIcon />,
     route: ROUTES.marketingLeadGeneration,
     subRoutes: [ROUTES.marketingLeadGeneration, ROUTES.marketingEmail],
+  },
+  {
+    label: 'Content Manager',
+    icon: <JobsIcon />,
+    route: ROUTES.jobsManager,
+    subRoutes: [
+      ROUTES.jobsManager,
+      ROUTES.coursesManager,
+      ROUTES.assessmentsManager,
+    ],
+    incomplete: true,
   },
 ];
 

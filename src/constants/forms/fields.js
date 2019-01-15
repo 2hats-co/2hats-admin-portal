@@ -1,5 +1,6 @@
 const FIELDS = {
   textField: 'TEXT_FIELD',
+  textFieldNumber: 'TEXT_FIELD_NUMBER',
   textFieldPassword: 'TEXT_FIELD_PASSWORD',
   textFieldMultiline: 'TEXT_FIELD_MULTILINE',
 
@@ -8,9 +9,12 @@ const FIELDS = {
   autocomplete: 'AUTOCOMPLETE',
   autocompleteMulti: 'AUTOCOMPLETE_MULTI',
   autocompleteFreeText: 'AUTOCOMPLETE_FREE_TEXT',
+  autocompleteMultiFreeText: 'AUTOCOMPLETE_MULTI_FREE_TEXT',
 
   dropzone: 'DROPZONE',
   slider: 'SLIDER',
+
+  date: 'DATE_PICKER',
 };
 
 export default FIELDS;

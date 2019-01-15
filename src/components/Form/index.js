@@ -13,14 +13,25 @@ import Chip from '@material-ui/core/Chip';
 import Slider from '@material-ui/lab/Slider';
 import Typography from '@material-ui/core/Typography';
 import FormHelperText from '@material-ui/core/FormHelperText';
+import InputAdornment from '@material-ui/core/InputAdornment';
 
+import LeftIcon from '@material-ui/icons/KeyboardArrowLeft';
+import RightIcon from '@material-ui/icons/KeyboardArrowRight';
+// import DateIcon from '@material-ui/icons/EventOutlined';
+// import TimeIcon from '@material-ui/icons/AccessTime';
 import AddIcon from '@material-ui/icons/Add';
 
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import remove from 'ramda/es/remove';
+import map from 'ramda/es/map';
 import IntegrationReactSelect from '../IntegrationReactSelect';
 import FIELDS from '../../constants/forms/fields';
+
+import { MuiPickersUtilsProvider } from 'material-ui-pickers';
+import MomentUtils from '@date-io/moment';
+import { DatePicker } from 'material-ui-pickers';
+import moment from 'moment';
 
 const styles = theme => ({
   paperRoot: {
@@ -29,16 +40,11 @@ const styles = theme => ({
   capitalise: {
     '&::first-letter': { textTransform: 'uppercase' },
   },
-  addButton: {
-    marginRight: -theme.spacing.unit * 2,
-    marginBottom: -theme.spacing.unit,
-    '&::first-letter': { textTransform: 'uppercase' },
+  textFieldWithAdornment: {
+    paddingRight: 0,
   },
   chip: {
     marginTop: theme.spacing.unit,
-  },
-  messageBox: {
-    marginTop: theme.spacing.unit * 2,
   },
   sliderWrapper: {
     marginRight: theme.spacing.unit * 3,
@@ -48,6 +54,16 @@ const styles = theme => ({
     color: theme.palette.text.secondary,
   },
 });
+
+const reactSelectValueFormatter = x => {
+  if (Array.isArray(x)) {
+    if (x[0].label && x[0].value) return x.map(y => y.value);
+  } else if (x.label && x.value) {
+    return x.value;
+  } else {
+    return x;
+  }
+};
 
 /* eslint-disable no-sequences */
 const initialValuesReducer = (obj, item) => (
@@ -84,7 +100,8 @@ function Form(props) {
           .filter(k => k.indexOf('-temp') === -1)
           .map(k => Object.assign({}, { [k]: values[k] }))
           .reduce((res, o) => Object.assign(res, o), {});
-        actions[action](outputValues);
+
+        actions[action](map(reactSelectValueFormatter, outputValues));
       }}
       validationSchema={yup.object().shape(data.reduce(validationReducer, {}))}
     >
@@ -106,12 +123,12 @@ function Form(props) {
           setValues({ ...values, [list]: newList });
         };
         const handleAddToList = (list, item) => {
+          if (!values[item]) return;
           const currentList = Array.isArray(values[list]) ? values[list] : [];
           const newItem = values[item].toLowerCase().trim();
 
           if (newItem.length > 0 && !currentList.includes(newItem)) {
             const newList = currentList.concat([newItem]);
-            console.log(newList);
             setValues({ ...values, [list]: newList, [item]: '' });
           } else {
             setValues({ ...values, [item]: '' });
@@ -140,13 +157,21 @@ function Form(props) {
                   {data.map((x, i) => {
                     switch (x.type) {
                       case FIELDS.textField:
+                      case FIELDS.textFieldNumber:
                         return (
                           <Grid item key={x.name}>
                             <TextField
                               label={x.label}
                               id={x.name}
-                              type="text"
+                              type={
+                                x.type === FIELDS.textFieldNumber
+                                  ? 'number'
+                                  : 'text'
+                              }
                               onChange={handleChange}
+                              variant="filled"
+                              margin="dense"
+                              InputProps={{ disableUnderline: true }}
                               fullWidth
                               value={values[x.name]}
                               placeholder={x.placeholder}
@@ -164,6 +189,9 @@ function Form(props) {
                               id={x.name}
                               type="password"
                               onChange={handleChange}
+                              variant="filled"
+                              margin="dense"
+                              InputProps={{ disableUnderline: true }}
                               fullWidth
                               value={values[x.name]}
                               placeholder={x.placeholder}
@@ -177,7 +205,6 @@ function Form(props) {
                         return (
                           <Grid item key={x.name}>
                             <TextField
-                              className={classes.messageBox}
                               multiline
                               fullWidth
                               rows={5}
@@ -185,8 +212,9 @@ function Form(props) {
                               id={x.name}
                               onChange={handleChange}
                               value={values[x.name]}
-                              variant="outlined"
+                              variant="filled"
                               margin="dense"
+                              InputProps={{ disableUnderline: true }}
                               error={errors[x.name] && touched[x.name]}
                               helperText={touched[x.name] && errors[x.name]}
                             />
@@ -196,42 +224,49 @@ function Form(props) {
                       case FIELDS.chipFreeText:
                         return (
                           <Grid item key={x.name}>
-                            <Grid container alignItems="flex-end">
-                              <Grid item xs>
-                                <TextField
-                                  id={`${x.name}-temp`}
-                                  type="text"
-                                  onChange={handleChange}
-                                  fullWidth
-                                  value={values[`${x.name}-temp`] || ''}
-                                  label={x.label}
-                                  onKeyPress={e => {
-                                    if (e.key === 'Enter') {
-                                      handleAddToList(x.name, `${x.name}-temp`);
-                                    }
-                                  }}
-                                  error={errors[x.name] && touched[x.name]}
-                                  helperText={touched[x.name] && errors[x.name]}
-                                />
-                              </Grid>
-                              <Grid item>
-                                <IconButton
-                                  className={classes.addButton}
-                                  onClick={() => {
-                                    handleAddToList(x.name, `${x.name}-temp`);
-                                  }}
-                                >
-                                  <AddIcon fontSize="small" />
-                                </IconButton>
-                              </Grid>
-                            </Grid>
+                            <TextField
+                              id={`${x.name}-temp`}
+                              type="text"
+                              onChange={handleChange}
+                              variant="filled"
+                              margin="dense"
+                              fullWidth
+                              value={values[`${x.name}-temp`] || ''}
+                              label={x.label}
+                              onKeyPress={e => {
+                                if (e.key === 'Enter') {
+                                  handleAddToList(x.name, `${x.name}-temp`);
+                                }
+                              }}
+                              error={errors[x.name] && touched[x.name]}
+                              helperText={touched[x.name] && errors[x.name]}
+                              InputProps={{
+                                disableUnderline: true,
+                                endAdornment: (
+                                  <InputAdornment position="end">
+                                    <IconButton
+                                      onClick={() => {
+                                        handleAddToList(
+                                          x.name,
+                                          `${x.name}-temp`
+                                        );
+                                      }}
+                                    >
+                                      <AddIcon fontSize="small" />
+                                    </IconButton>
+                                  </InputAdornment>
+                                ),
+                                classes: {
+                                  adornedEnd: classes.textFieldWithAdornment,
+                                },
+                              }}
+                            />
                             {values[x.name] &&
                               values[x.name].map((y, i) => (
                                 <Chip
                                   key={i}
                                   label={y}
                                   className={classes.chip}
-                                  variant="outlined"
                                   onDelete={() => {
                                     handleDeleteFromList(x.name, i);
                                   }}
@@ -277,17 +312,57 @@ function Form(props) {
                         );
 
                       case FIELDS.autocomplete:
+                      case FIELDS.autocompleteMulti:
+                      case FIELDS.autocompleteFreeText:
+                      case FIELDS.autocompleteMultiFreeText:
                         return (
                           <Grid item key={x.name}>
                             <IntegrationReactSelect
-                              placeholder="Select item…"
+                              placeholder={x.placeholder || 'Select item…'}
                               suggestions={x.suggestions}
                               changeHandler={data => {
-                                console.log(data);
+                                setValues({
+                                  ...values,
+                                  [x.name]: data,
+                                });
                               }}
                               value={values[x.name]}
+                              label={x.label}
+                              isMulti={x.type.indexOf('MULTI') > -1}
+                              creatable={x.type.indexOf('FREE_TEXT') > -1}
                             />
                             {validator(x.name)}
+                          </Grid>
+                        );
+
+                      case FIELDS.date:
+                        return (
+                          <Grid item key={x.name}>
+                            <MuiPickersUtilsProvider utils={MomentUtils}>
+                              <DatePicker
+                                label={x.label}
+                                value={
+                                  values[x.name]
+                                    ? moment(values[x.name], 'D/MM/YYYY')
+                                    : moment()
+                                }
+                                onChange={dt => {
+                                  setValues({
+                                    ...values,
+                                    [x.name]: dt.format('D/MM/YYYY'),
+                                  });
+                                }}
+                                leftArrowIcon={<LeftIcon />}
+                                rightArrowIcon={<RightIcon />}
+                                format="D/MM/YYYY"
+                                showTodayButton
+                                className={classes.dateTimePicker}
+                                variant="filled"
+                                margin="dense"
+                                fullWidth
+                                InputProps={{ disableUnderline: true }}
+                              />
+                            </MuiPickersUtilsProvider>
                           </Grid>
                         );
 

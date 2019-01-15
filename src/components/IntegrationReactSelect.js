@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import Select from 'react-select';
+import CreatableSelect from 'react-select/lib/Creatable';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Typography from '@material-ui/core/Typography';
 import NoSsr from '@material-ui/core/NoSsr';
@@ -11,6 +12,7 @@ import Chip from '@material-ui/core/Chip';
 import Avatar from '@material-ui/core/Avatar';
 import MenuItem from '@material-ui/core/MenuItem';
 import CancelIcon from '@material-ui/icons/Cancel';
+import DropdownIcon from '@material-ui/icons/KeyboardArrowDown';
 import { emphasize } from '@material-ui/core/styles/colorManipulator';
 
 const styles = theme => ({
@@ -19,7 +21,12 @@ const styles = theme => ({
   },
   input: {
     display: 'flex',
-    padding: 0,
+    // padding: 0,
+    paddingLeft: theme.spacing.unit * 1.5,
+    paddingRight: theme.spacing.unit * 0.75,
+  },
+  collapseInput: {
+    paddingTop: theme.spacing.unit * 0.75,
   },
   valueContainer: {
     display: 'flex',
@@ -46,19 +53,26 @@ const styles = theme => ({
     fontSize: 16,
   },
   placeholder: {
-    position: 'absolute',
-    left: 2,
+    userSelect: 'none',
     fontSize: 16,
+    position: 'absolute',
+    left: theme.spacing.unit * 1.5,
   },
   paper: {
     position: 'absolute',
-    zIndex: 1,
+    zIndex: 9,
     marginTop: theme.spacing.unit,
     left: 0,
     right: 0,
+    top: theme.spacing.unit * 5,
   },
   divider: {
     height: theme.spacing.unit * 2,
+  },
+  dropdownIndicator: {
+    opacity: 0.33,
+    padding: 0,
+    paddingLeft: theme.spacing.unit / 2,
   },
 });
 
@@ -82,10 +96,17 @@ function Control(props) {
   return (
     <TextField
       fullWidth
+      variant="filled"
+      margin="dense"
       InputProps={{
+        disableUnderline: true,
         inputComponent,
         inputProps: {
-          className: props.selectProps.classes.input,
+          className: classNames(
+            props.selectProps.classes.input,
+            !props.selectProps.textFieldProps.label &&
+              props.selectProps.classes.collapseInput
+          ),
           inputRef: props.innerRef,
           children: props.children,
           ...props.innerProps,
@@ -154,6 +175,7 @@ function MultiValue(props) {
       })}
       onDelete={props.removeProps.onClick}
       deleteIcon={<CancelIcon {...props.removeProps} />}
+      variant="outlined"
     />
   );
 }
@@ -166,6 +188,12 @@ function Menu(props) {
   );
 }
 
+function DropdownIndicator(props) {
+  return (
+    <DropdownIcon className={props.selectProps.classes.dropdownIndicator} />
+  );
+}
+
 const components = {
   Control,
   Menu,
@@ -175,6 +203,7 @@ const components = {
   Placeholder,
   SingleValue,
   ValueContainer,
+  DropdownIndicator,
 };
 
 function IntegrationReactSelect(props) {
@@ -188,6 +217,8 @@ function IntegrationReactSelect(props) {
     suggestions,
     value,
     //intialValue,
+    isMulti,
+    creatable,
   } = props;
 
   const selectStyles = {
@@ -199,6 +230,30 @@ function IntegrationReactSelect(props) {
       },
     }),
   };
+
+  if (creatable)
+    return (
+      <div className={classes.root}>
+        <NoSsr>
+          <CreatableSelect
+            classes={classes}
+            styles={selectStyles}
+            options={suggestions}
+            components={components}
+            onChange={changeHandler}
+            placeholder={placeholder}
+            textFieldProps={{
+              label,
+              InputLabelProps: { shrink: true },
+              autoFocus,
+            }}
+            value={value}
+            isMulti={isMulti}
+          />
+        </NoSsr>
+      </div>
+    );
+
   return (
     <div className={classes.root}>
       <NoSsr>
@@ -215,6 +270,7 @@ function IntegrationReactSelect(props) {
             autoFocus,
           }}
           value={value}
+          isMulti={isMulti}
         />
       </NoSsr>
     </div>

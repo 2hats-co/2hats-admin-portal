@@ -64,3 +64,7 @@ export const getfirstIdOfQuery = async (collectionPath, filters) => {
     return results.docs[0].id;
   }
 };
+
+export const createDoc = (collection, docData) => {
+  firestore.collection(collection).add(docData);
+};
