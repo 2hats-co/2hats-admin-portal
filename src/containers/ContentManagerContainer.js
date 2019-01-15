@@ -56,7 +56,7 @@ function ContentManagerContainer(props) {
 
   moment.updateLocale('en', momentLocales);
 
-  const [showDialog, setShowDialog] = useState(false);
+  const [showDialog, setShowDialog] = useState(true);
 
   let fields = [];
   let formTitle = '';

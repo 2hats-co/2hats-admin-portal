@@ -46,6 +46,14 @@ const jobFields = initialData => {
       value: initialData['endDate'],
       // validation: yup.string(),
     },
+    {
+      type: FIELDS.dropzone,
+      name: 'image',
+      label: 'Cover image',
+      value: initialData['image'],
+      mimeTypes: 'image/*',
+      // validation: yup.string(),
+    },
   ];
 };
 

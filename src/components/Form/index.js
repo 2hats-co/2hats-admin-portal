@@ -14,12 +14,14 @@ import Slider from '@material-ui/lab/Slider';
 import Typography from '@material-ui/core/Typography';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import InputAdornment from '@material-ui/core/InputAdornment';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 import LeftIcon from '@material-ui/icons/KeyboardArrowLeft';
 import RightIcon from '@material-ui/icons/KeyboardArrowRight';
 // import DateIcon from '@material-ui/icons/EventOutlined';
 // import TimeIcon from '@material-ui/icons/AccessTime';
 import AddIcon from '@material-ui/icons/Add';
+import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 
 import { Formik } from 'formik';
 import * as yup from 'yup';
@@ -27,11 +29,13 @@ import remove from 'ramda/es/remove';
 import map from 'ramda/es/map';
 import IntegrationReactSelect from '../IntegrationReactSelect';
 import FIELDS from '../../constants/forms/fields';
+import { blobImageUploader } from '../../utilities/imageUploader';
 
 import { MuiPickersUtilsProvider } from 'material-ui-pickers';
 import MomentUtils from '@date-io/moment';
 import { DatePicker } from 'material-ui-pickers';
 import moment from 'moment';
+import Dropzone from 'react-dropzone';
 
 const styles = theme => ({
   paperRoot: {
@@ -50,8 +54,35 @@ const styles = theme => ({
     marginRight: theme.spacing.unit * 3,
   },
   sectionTitle: {
-    marginLeft: theme.spacing.unit,
+    marginLeft: theme.spacing.unit * 1.5,
     color: theme.palette.text.secondary,
+  },
+
+  dropzone: {
+    borderRadius: theme.shape.borderRadius,
+    borderColor: theme.palette.divider,
+    borderStyle: 'dashed',
+    borderWidth: theme.spacing.unit / 2,
+    padding: theme.spacing.unit * 2,
+    paddingBottom: theme.spacing.unit * 3,
+    textAlign: 'center',
+    minHeight: theme.spacing.unit * 12,
+    cursor: 'pointer',
+
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'column',
+  },
+  uploadIcon: {
+    fontSize: theme.spacing.unit * 8,
+    color: theme.palette.text.primary,
+  },
+  dropzoneButton: { marginTop: theme.spacing.unit / 2 },
+  fileChipWrapper: { textAlign: 'center' },
+  fileChip: {
+    marginTop: theme.spacing.unit / 2,
+    cursor: 'pointer',
   },
 });
 
@@ -60,6 +91,13 @@ const reactSelectValueFormatter = x => {
     if (x[0].label && x[0].value) return x.map(y => y.value);
   } else if (x.label && x.value) {
     return x.value;
+  } else {
+    return x;
+  }
+};
+const uploadedFilesFormatter = x => {
+  if (x.name && x.url) {
+    return x.url;
   } else {
     return x;
   }
@@ -101,7 +139,16 @@ function Form(props) {
           .map(k => Object.assign({}, { [k]: values[k] }))
           .reduce((res, o) => Object.assign(res, o), {});
 
-        actions[action](map(reactSelectValueFormatter, outputValues));
+        const reactSelectFormattedValues = map(
+          reactSelectValueFormatter,
+          outputValues
+        );
+        const uploadedFilesFormattedValues = map(
+          uploadedFilesFormatter,
+          reactSelectFormattedValues
+        );
+
+        actions[action](uploadedFilesFormattedValues);
       }}
       validationSchema={yup.object().shape(data.reduce(validationReducer, {}))}
     >
@@ -363,6 +410,70 @@ function Form(props) {
                                 InputProps={{ disableUnderline: true }}
                               />
                             </MuiPickersUtilsProvider>
+                          </Grid>
+                        );
+
+                      case FIELDS.dropzone:
+                        return (
+                          <Grid item key={x.name}>
+                            <Typography
+                              variant="caption"
+                              className={classes.sectionTitle}
+                            >
+                              {x.label}
+                            </Typography>
+                            <Dropzone
+                              onDrop={files => {
+                                setValues({
+                                  ...values,
+                                  [x.name]: { name: files[0].name },
+                                });
+                                blobImageUploader(files[0], (url, name) => {
+                                  setValues({
+                                    ...values,
+                                    [x.name]: { name, url },
+                                  });
+                                });
+                              }}
+                              accept={x.mimeTypes || ''}
+                              className={classes.dropzone}
+                            >
+                              <CloudUploadIcon className={classes.uploadIcon} />
+                              <Typography variant="body1">
+                                Drag a file here or
+                              </Typography>
+                              <Button
+                                color="primary"
+                                variant="outlined"
+                                className={classes.dropzoneButton}
+                                size="small"
+                              >
+                                Click to upload a {x.label.toLowerCase()}
+                              </Button>
+                            </Dropzone>
+                            {values[x.name] && (
+                              <div className={classes.fileChipWrapper}>
+                                <Chip
+                                  component="a"
+                                  href={values[x.name]['url']}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  label={values[x.name]['name']}
+                                  onDelete={() =>
+                                    setValues({
+                                      ...values,
+                                      [x.name]: null,
+                                    })
+                                  }
+                                  className={classes.fileChip}
+                                  avatar={
+                                    !values[x.name].url && (
+                                      <CircularProgress size={32} />
+                                    )
+                                  }
+                                />
+                              </div>
+                            )}
                           </Grid>
                         );
 

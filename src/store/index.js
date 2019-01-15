@@ -2,6 +2,7 @@ import firebase from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
 import 'firebase/functions';
+import 'firebase/storage';
 import 'firebase/messaging';
 import { productionConfig, stagingConfig } from '../config/firebase';
 import { COLLECTIONS } from '../constants/firestore';
@@ -17,6 +18,7 @@ if (process.env.REACT_APP_ENV === 'PRODUCTION') {
 export const messaging = firebase.messaging();
 export const auth = firebase.auth();
 export const firestore = firebase.firestore();
+export const firebaseStorage = firebase.storage().ref();
 
 export function initializePushNotifications() {
   const uid = auth.currentUser.uid;
