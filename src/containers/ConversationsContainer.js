@@ -109,7 +109,6 @@ function ConversationsContainer(props) {
                 uid={uid}
                 selectedConversation={selectedConversation}
                 setSelectedConversation={conversation => {
-                  //console.log(conversation.id);
                   dispatchConversation({
                     path: `conversations/${conversation.id}`,
                   });

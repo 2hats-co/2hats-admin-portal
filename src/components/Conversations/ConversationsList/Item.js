@@ -5,6 +5,9 @@ import Typography from '@material-ui/core/Typography';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 
+import IncomingIcon from '@material-ui/icons/Inbox';
+import OutgoingIcon from '@material-ui/icons/Reply';
+
 import moment from 'moment';
 import { momentLocales } from '../../../constants/momentLocales';
 import withStyles from '@material-ui/core/styles/withStyles';
@@ -35,6 +38,13 @@ const styles = theme => ({
       boxShadow: `0 0 0 4px ${theme.palette.primary.main}`,
       borderRadius: '50%',
     },
+  },
+  messageFlowIcon: {
+    position: 'absolute',
+    color: theme.palette.text.disabled,
+    fontSize: 18,
+    top: theme.spacing.unit * 4.5,
+    left: theme.spacing.unit * 1.75,
   },
 
   listItemTextRoot: {
@@ -84,6 +94,11 @@ function Item(props) {
                 type={data.type}
                 className={classes.typeIcon}
               />
+              {data.lastMessage.isIncoming ? (
+                <IncomingIcon className={classes.messageFlowIcon} />
+              ) : (
+                <OutgoingIcon className={classes.messageFlowIcon} />
+              )}
             </Grid>
             <Grid item xs>
               <Typography
