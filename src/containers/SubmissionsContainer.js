@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import {withNavigation} from '../components/withNavigation';
+import withNavigation from '../components/withNavigation';
 import withStyles from '@material-ui/core/styles/withStyles';
 import green from '@material-ui/core/colors/green';
 
@@ -10,141 +10,237 @@ import Snackbar from '@material-ui/core/Snackbar';
 import { useSubmission } from '../hooks/useSubmission';
 
 import LocationIndicator from '../components/LocationIndicator';
-import Done from '../components/Done';
+//import Done from '../components/Done';
 import Submission from '../components/Submission';
-import ScreeningForm from '../components/ScreeningForm';
-import FeedbackForm from '../components/FeedbackForm';
+import ScreeningForm from '../components/Submission/ScreeningForm';
+import FeedbackForm from '../components/Submission/FeedbackForm';
 import TemplateGenerator from '../components/TemplateGenerator';
-import {sendEmail} from '../utilities/email/send'
+import { sendEmail } from '../utilities/email/send';
+import { ROUTES } from '../constants/routes';
+import Loadable from 'react-loadable';
+//import LoadingHat from '../components/LoadingHat';
+//importuseWindowSize from '../hooks/useWindowSize';
+// const TemplateGenerator = Loadable({
+//   loader: () =>
+//     import('../components/TemplateGenerator' /* webpackChunkName: "TemplateGenerator" */),
+//   loading: CircularProgress,
+// });
+// const FeedbackForm = Loadable({
+//   loader: () =>
+//     import('../components/FeedbackForm' /* webpackChunkName: "FeedbackForm" */),
+//   loading: CircularProgress,
+// });
+// const ScreeningForm = Loadable({
+//   loader: () =>
+//     import('../components/ScreeningForm' /* webpackChunkName: "ScreeningForm" */),
+//   loading: CircularProgress,
+// });
+const Done = Loadable({
+  loader: () =>
+    import('../components/Done' /* webpackChunkName: "Submissions-Done" */),
+  loading: CircularProgress,
+});
+// const Submission = Loadable({
+//   loader: () =>
+//     import('../components/Submission' /* webpackChunkName: "Submission" */),
+//   loading: LoadingHat,
+// });
 
 // import Search from '../components/Search'
 const styles = theme => ({
-    card: {
-        height: '100%',
-        overflowY: 'scroll',
-        boxSizing: 'border-box',
-        padding: 40,
-        background: '#fff',
-        boxShadow: '0 0 10px rgba(0,0,0,.1), 0 30px 60px -15px rgba(0,0,0,.125), 0 60px 80px -20px rgba(0,0,0,.1), 0 50px 100px -30px rgba(0,0,0,.15), 0 40px 120px -5px rgba(0,0,0,.15)',
-        borderRadius: '0 10px 0 0',
-        zIndex: 2,
+  root: {
+    backgroundColor: theme.palette.background.default,
+    height: 'calc(100vh - 64px)',
+  },
+  locationIndicatorWrapper: {
+    paddingLeft: 40 - 24,
+    backgroundColor: theme.palette.background.default,
+  },
+  submissionWrapper: {
+    overflowY: 'auto',
+    padding: 40,
+    maxWidth: 'none',
+    position: 'relative',
+  },
+  card: {
+    height: '100%',
+    boxSizing: 'border-box',
+    overflow: 'hidden',
+    background: theme.palette.background.paper,
+    boxShadow: theme.shadows[16],
+    borderRadius: '0 10px 0 0',
+    zIndex: 2,
+  },
+  successSnackbar: {
+    '& > div': {
+      backgroundColor: green[600],
     },
-    successSnackbar: {
-        '& > div': {
-            backgroundColor: green[600],
-        },
-    },
+  },
 });
 
 function SumbissionsContainer(props) {
-    const { classes, location, history } = props;
+  const { classes, location, history } = props;
 
-    const [template, setTemplate] = useState(null);
-    const [smartLink, setSmartLink] = useState(null);
+  const [template, setTemplate] = useState(null);
+  const [smartLink, setSmartLink] = useState(null);
 
-    const currentRoute = location.pathname.replace('/','')
-    const [submissionState, submissionDispatch] = useSubmission(currentRoute);
-    const submission = submissionState.submission;
+  const currentRoute = location.pathname.replace('/', '');
+  const [submissionState, submissionDispatch] = useSubmission(currentRoute);
+  const submission = submissionState.submission;
 
-    useEffect(() => {
-        if (!submission && location.search.indexOf('?uid=') > -1) {
-            const uid = location.search.replace('?uid=','')
-            submissionDispatch({uid});
+  useEffect(
+    () => {
+      if (location.search.indexOf('?uid=') > -1) {
+        const uid = location.search.replace('?uid=', '');
+        submissionDispatch({ uid });
+      }
+      //return () => {};
+    },
+    [location.search]
+  );
+
+  const [email, setEmail] = useState(null);
+  const [emailReady, setEmailReady] = useState(false);
+
+  const [showSnackbar, setShowSnackbar] = useState(false);
+
+  const locationIndicator = (
+    <div className={classes.locationIndicatorWrapper}>
+      <LocationIndicator
+        title="Submissions"
+        subRoutes={
+          location.pathname === ROUTES.submissions
+            ? [
+                ROUTES.pending,
+                ROUTES.rejected,
+                ROUTES.accepted,
+                { label: 'Submission', value: ROUTES.submissions },
+              ]
+            : [ROUTES.pending, ROUTES.rejected, ROUTES.accepted]
         }
-    }, [submission, location.search]);
+        altBg
+      />
+    </div>
+  );
 
-    const [email, setEmail] = useState(null);
-    const [emailReady, setEmailReady] = useState(false);
-
-    const [showSnackbar, setShowSnackbar] = useState(false);
-
-    const locationIndicator = <Grid container direction='row'><LocationIndicator
-                                title="Submissions"
-                                subRoutes={['/pending', '/rejected', '/accepted']}
-                            /> 
-                            </Grid>;
-
-    if (!submission) {
-        return <React.Fragment>
-            { locationIndicator }
-            <Grid container justify="center" alignItems="center" style={{ height: 'calc(100vh - 64px)' }}>
-                <CircularProgress size={64} />
-            </Grid>
-        </React.Fragment>;
-    }
-
-    if (submission.complete) {
-        console.log(submission)
-        return <React.Fragment> { locationIndicator } <Done /> </React.Fragment>
-    }
-
-    const handleSendEmail = () => {
-        sendEmail(email);
-        setShowSnackbar(true);
-        setTemplate(null);
-        setEmailReady(false);
-    };
-
-    let rightPanel;
-    switch (submission.outcome) {
-        case 'pending':
-        case 'disqualified':
-            rightPanel = <ScreeningForm
-                            submission={submission}
-                            setTemplate={setTemplate}
-                            submissionDispatch={submissionDispatch}
-                            handleSendEmail={handleSendEmail}
-                            emailReady={emailReady}
-                            setEmailReady={setEmailReady}
-                        />;
-            break;
-        case 'rejected':
-        case 'accepted':
-            rightPanel = <FeedbackForm
-                submission={submission}
-                setTemplate={setTemplate}
-                setSmartLink={setSmartLink}
-                submissionDispatch={submissionDispatch}
-                handleSendEmail={handleSendEmail}
-                emailReady={emailReady}
-                location={location}
-                history={history}
-            />;
-    }
-
-    return(<React.Fragment>
-        { locationIndicator }
-        <Grid container style={{ height: 'calc(100vh - 64px)' }}>
-            <Grid item xs className={classes.card}>
-                <Submission
-                    submission={submission}
-                    listType={location.pathname.split('/')[1]}
-                    extraPadding={template !== null}
-                />
-                { template &&
-                    <TemplateGenerator
-                        template={template}
-                        recipientUID={submission.UID}
-                        smartLink={smartLink}
-                        setEmail= {setEmail}
-                        setEmailReady={setEmailReady}
-                    />
-                }
-            </Grid>
-            <Grid item style={{width:400, overflowY:'scroll'}}>
-                { rightPanel }
-            </Grid>
+  if (submissionState.loading) {
+    return (
+      <React.Fragment>
+        {locationIndicator}
+        <Grid
+          container
+          justify="center"
+          alignItems="center"
+          style={{ height: 'calc(100vh - 64px)' }}
+        >
+          <CircularProgress size={64} />
         </Grid>
+      </React.Fragment>
+    );
+  }
 
-        <Snackbar
-            className={classes.successSnackbar}
-            anchorOrigin={{ vertical:'bottom', horizontal:'center' }}
-            open={showSnackbar}
-            autoHideDuration={1500}
-            onClose={() => { setShowSnackbar(false) }}
-            message={<span id="message-id">Sent email!</span>}
+  if (submission.complete) {
+    // console.log(submission);
+    return (
+      <div style={{ overflow: 'hidden' }}>
+        {locationIndicator} <Done />
+      </div>
+    );
+  }
+
+  const handleSendEmail = () => {
+    sendEmail(email);
+    setShowSnackbar(true);
+    setTemplate(null);
+    setEmailReady(false);
+  };
+
+  let rightPanel;
+  switch (submission.outcome) {
+    case 'pending':
+    case 'disqualified':
+      rightPanel = (
+        <ScreeningForm
+          submission={submission}
+          setTemplate={setTemplate}
+          setSmartLink={setSmartLink}
+          submissionDispatch={submissionDispatch}
+          handleSendEmail={handleSendEmail}
+          emailReady={emailReady}
+          setEmailReady={setEmailReady}
         />
-    </React.Fragment>);
+      );
+      break;
+    case 'rejected':
+    case 'accepted':
+      rightPanel = (
+        <FeedbackForm
+          submission={submission}
+          setTemplate={setTemplate}
+          setSmartLink={setSmartLink}
+          submissionDispatch={submissionDispatch}
+          handleSendEmail={handleSendEmail}
+          emailReady={emailReady}
+          location={location}
+          history={history}
+        />
+      );
+      break;
+    default:
+      rightPanel = null;
+  }
+
+  return (
+    <React.Fragment>
+      {locationIndicator}
+      <Grid container className={classes.root} wrap="nowrap">
+        <Grid item xs className={classes.card}>
+          <Grid
+            container
+            direction="column"
+            wrap="nowrap"
+            style={{ height: '100%' }}
+          >
+            <Grid
+              item
+              xs={template ? 8 : 12}
+              className={classes.submissionWrapper}
+            >
+              <Submission
+                submission={submission}
+                listType={location.pathname.split('/')[1]}
+              />
+            </Grid>
+            {template && (
+              <Grid item xs={4} style={{ maxWidth: 'none' }}>
+                <TemplateGenerator
+                  template={template}
+                  recipientUID={submission.UID}
+                  smartLink={smartLink}
+                  setEmail={setEmail}
+                  setEmailReady={setEmailReady}
+                />
+              </Grid>
+            )}
+          </Grid>
+        </Grid>
+        <Grid item style={{ width: 400, overflowY: 'auto' }}>
+          {rightPanel}
+        </Grid>
+      </Grid>
+
+      <Snackbar
+        className={classes.successSnackbar}
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+        open={showSnackbar}
+        autoHideDuration={1500}
+        onClose={() => {
+          setShowSnackbar(false);
+        }}
+        message={<span id="message-id">Sent email!</span>}
+      />
+    </React.Fragment>
+  );
 }
 
 export default withNavigation(withStyles(styles)(SumbissionsContainer));

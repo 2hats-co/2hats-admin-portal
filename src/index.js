@@ -1,14 +1,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
-import {configureStore} from './store';
-import { Provider } from 'react-redux';
+import Loadable from 'react-loadable';
+import LoadingHat from './components/LoadingHat';
 import registerServiceWorker from './registerServiceWorker';
-
-const store = configureStore();
-ReactDOM.render(
-    <Provider store={store}>
-        <App />
-      </Provider>, document.getElementById('root'));
+const App = Loadable({
+  loader: () => import('./App' /* webpackChunkName: "App" */),
+  loading: LoadingHat,
+});
+ReactDOM.render(<App />, document.getElementById('root'));
 registerServiceWorker();
+
+if (window.location.hostname === 'localhost')
+  window.document.title = 'LOCAL 2hats Admin';

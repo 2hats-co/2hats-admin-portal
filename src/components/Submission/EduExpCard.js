@@ -1,61 +1,50 @@
-import React from "react";
-import PropTypes from "prop-types";
-import withStyles from "@material-ui/core/styles/withStyles";
+import React from 'react';
+import withStyles from '@material-ui/core/styles/withStyles';
 
-
-import Typography from "@material-ui/core/Typography";
-import Card from "@material-ui/core/Card";
-import Grid from "@material-ui/core/Grid";
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
 
 const styles = theme => ({
-  root:{
-
+  root: {
+    marginTop: theme.spacing.unit,
+    '& + &': {
+      marginTop: theme.spacing.unit * 2,
+      paddingTop: theme.spacing.unit * 2,
+      borderTop: `1px solid ${theme.palette.divider}`,
+    },
   },
 });
+
 function EduExpCard(props) {
-  const {classes, title, key, label, description, startDate, endDate} = props;
+  const { classes, title, key, label, description, startDate, endDate } = props;
+
   return (
-    <div key ={key} className={classes.root}>
-      <Grid container 
-      direction="column" 
-      alignItems="flex-start" 
+    <div key={key} className={classes.root}>
+      <Typography variant="body1" style={{ fontWeight: 700 }}>
+        {title}
+      </Typography>
+
+      <Grid
+        container
+        direction="row"
+        alignItems="center"
+        justify="space-between"
       >
-      <Grid container 
-      direction="row" 
-      alignItems="center" 
-      justify="space-between"
-      style={{minHeight:48}}>
-          <Grid item xs={8} sm={9}>
-          <Typography variant='subheading' style={{paddingTop:5}}>{title}</Typography>
-          </Grid>
+        <Grid item xs={7}>
+          <Typography variant="body1">{label ? label : '—'}</Typography>
         </Grid>
-        <Grid container direction="row" alignItems="center" justify="space-between">
-            <Grid item xs={7} sm={8}>
-              <Typography variant="body1" style={{fontWeight:700}}>{label}</Typography>
-            </Grid>
-            <Grid item xs={5} sm={4}>
-              <Typography variant="body1" 
-              style={{textAlign:'right'}}>
-                {startDate} - {endDate}
-              </Typography>
-            </Grid>
-        </Grid>
-        <Grid item xs={12} style={{paddingLeft:0,paddingRight:0}}>
-        <Typography variant="body1" style={{whiteSpace:'pre-wrap'}}>{description}</Typography>
+        <Grid item xs={5}>
+          <Typography variant="body2" style={{ textAlign: 'right' }}>
+            {startDate} – {endDate}
+          </Typography>
         </Grid>
       </Grid>
+
+      <Typography variant="body2" style={{ whiteSpace: 'pre-wrap' }}>
+        {description}
+      </Typography>
     </div>
   );
 }
-
-EduExpCard.propTypes = {
-  title: PropTypes.string.isRequired,
-  label: PropTypes.string,
-  default: PropTypes.string,
-  placeholder: PropTypes.string,
-  numberOfLines: PropTypes.number,
-  characterLimit: PropTypes.number,
-  classes: PropTypes.object.isRequired
-};
 
 export default withStyles(styles)(EduExpCard);
