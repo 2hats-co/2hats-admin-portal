@@ -14,10 +14,6 @@ import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
 import Chip from '@material-ui/core/Chip';
 
-import LeftIcon from '@material-ui/icons/KeyboardArrowLeft';
-import RightIcon from '@material-ui/icons/KeyboardArrowRight';
-import DateIcon from '@material-ui/icons/EventOutlined';
-import TimeIcon from '@material-ui/icons/AccessTime';
 import AddIcon from '@material-ui/icons/Add';
 
 import { MuiPickersUtilsProvider } from 'material-ui-pickers';
@@ -347,10 +343,6 @@ function EventDialog(props) {
               onChange={dt => {
                 updateData('start', { ...data.start, dateTime: dt });
               }}
-              leftArrowIcon={<LeftIcon />}
-              rightArrowIcon={<RightIcon />}
-              dateRangeIcon={<DateIcon />}
-              timeIcon={<TimeIcon />}
               format="D/MM/YYYY hh:mm a"
               showTodayButton
               className={classes.dateTimePicker}

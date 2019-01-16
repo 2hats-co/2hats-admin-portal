@@ -16,10 +16,6 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-import LeftIcon from '@material-ui/icons/KeyboardArrowLeft';
-import RightIcon from '@material-ui/icons/KeyboardArrowRight';
-import DateIcon from '@material-ui/icons/EventOutlined';
-import TimeIcon from '@material-ui/icons/AccessTime';
 import AddIcon from '@material-ui/icons/Add';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 
@@ -40,8 +36,29 @@ import Dropzone from 'react-dropzone';
 
 const styles = theme => ({
   paperRoot: {
-    width: 600,
+    width: `calc(100% - ${theme.spacing.unit * 4}px)`,
+    maxWidth: 600,
+    margin: theme.spacing.unit * 2,
+    maxHeight: `calc(100% - ${theme.spacing.unit * 4}px)`,
   },
+
+  dialogTitle: {
+    paddingTop: theme.spacing.unit * 2.5,
+    paddingBottom: theme.spacing.unit * 2,
+    position: 'relative',
+    '&::after': {
+      content: '""',
+      display: 'block',
+      height: 1,
+      position: 'absolute',
+      background: theme.palette.divider,
+      bottom: 0,
+      left: theme.spacing.unit * 3,
+      right: theme.spacing.unit * 3,
+    },
+  },
+  wrapperGrid: { marginTop: theme.spacing.unit * 2 },
+
   capitalise: {
     '&::first-letter': { textTransform: 'uppercase' },
   },
@@ -58,7 +75,7 @@ const styles = theme => ({
   },
 
   sectionTitle: {
-    marginLeft: theme.spacing.unit * 1.5,
+    marginLeft: theme.spacing.unit,
   },
 
   dropzone: {
@@ -86,6 +103,20 @@ const styles = theme => ({
   fileChip: {
     marginTop: theme.spacing.unit / 2,
     cursor: 'pointer',
+  },
+
+  dialogActions: {
+    position: 'relative',
+    '&::before': {
+      content: '""',
+      display: 'block',
+      height: 1,
+      position: 'absolute',
+      background: theme.palette.divider,
+      top: -theme.spacing.unit,
+      left: theme.spacing.unit * 2.5,
+      right: theme.spacing.unit * 2.5,
+    },
   },
 });
 
@@ -214,12 +245,20 @@ function Form(props) {
               onClose={actions.close}
               classes={{ paper: classes.paperRoot }}
             >
-              <DialogTitle className={classes.capitalise}>
+              <DialogTitle
+                className={classes.capitalise}
+                classes={{ root: classes.dialogTitle }}
+              >
                 {action} {formTitle}
               </DialogTitle>
 
               <DialogContent>
-                <Grid container direction="column" spacing={8}>
+                <Grid
+                  container
+                  direction="column"
+                  spacing={8}
+                  className={classes.wrapperGrid}
+                >
                   {data.map((x, i) => {
                     switch (x.type) {
                       case FIELDS.textField:
@@ -412,8 +451,9 @@ function Form(props) {
                               label={x.label}
                               isMulti={x.type.indexOf('MULTI') > -1}
                               creatable={x.type.indexOf('FREE_TEXT') > -1}
+                              error={errors[x.name] && touched[x.name]}
+                              helperText={touched[x.name] && errors[x.name]}
                             />
-                            {validator(x.name)}
                           </Grid>
                         );
 
@@ -434,8 +474,6 @@ function Form(props) {
                                     [x.name]: dt.format(momentFormats.date),
                                   });
                                 }}
-                                leftArrowIcon={<LeftIcon />}
-                                rightArrowIcon={<RightIcon />}
                                 format={momentFormats.date}
                                 showTodayButton
                                 className={classes.dateTimePicker}
@@ -470,10 +508,6 @@ function Form(props) {
                                     [x.name]: dt.format(momentFormats.dateTime),
                                   });
                                 }}
-                                leftArrowIcon={<LeftIcon />}
-                                rightArrowIcon={<RightIcon />}
-                                dateRangeIcon={<DateIcon />}
-                                timeIcon={<TimeIcon />}
                                 format={momentFormats.dateTime}
                                 showTodayButton
                                 className={classes.dateTimePicker}
@@ -569,7 +603,7 @@ function Form(props) {
                 </Grid>
               </DialogContent>
 
-              <DialogActions>
+              <DialogActions classes={{ root: classes.dialogActions }}>
                 <Button onClick={actions.close} color="primary">
                   Cancel
                 </Button>

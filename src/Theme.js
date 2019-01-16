@@ -188,6 +188,9 @@ function generateTheme(theme, themeColor) {
       MuiCardActionArea: {
         focusHighlight: { opacity: '0 !important' },
       },
+      MuiIconButton: {
+        label: { fontFamily: FONT_STACK },
+      },
     },
   };
 

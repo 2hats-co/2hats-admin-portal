@@ -5,9 +5,6 @@ import Grid from '@material-ui/core/Grid';
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 
-import LeftIcon from '@material-ui/icons/KeyboardArrowLeft';
-import RightIcon from '@material-ui/icons/KeyboardArrowRight';
-
 import { MuiPickersUtilsProvider } from 'material-ui-pickers';
 import MomentUtils from '@date-io/moment';
 import { DatePicker } from 'material-ui-pickers';
@@ -190,8 +187,6 @@ function TimeBar(props) {
                     onChange={dt => {
                       setStart(dt);
                     }}
-                    leftArrowIcon={<LeftIcon />}
-                    rightArrowIcon={<RightIcon />}
                     showTodayButton
                     className={classes.datePicker}
                   />
@@ -203,8 +198,6 @@ function TimeBar(props) {
                     onChange={dt => {
                       setEnd(dt);
                     }}
-                    leftArrowIcon={<LeftIcon />}
-                    rightArrowIcon={<RightIcon />}
                     showTodayButton
                     className={classes.datePicker}
                   />

@@ -11,10 +11,7 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Chip from '@material-ui/core/Chip';
 
-import LeftIcon from '@material-ui/icons/KeyboardArrowLeft';
-import RightIcon from '@material-ui/icons/KeyboardArrowRight';
 import DateIcon from '@material-ui/icons/EventOutlined';
-import TimeIcon from '@material-ui/icons/AccessTime';
 
 import { MuiPickersUtilsProvider } from 'material-ui-pickers';
 import MomentUtils from '@date-io/moment';
@@ -288,10 +285,6 @@ function ReminderDialog(props) {
                 console.log(dt);
                 setDt(dt);
               }}
-              leftArrowIcon={<LeftIcon />}
-              rightArrowIcon={<RightIcon />}
-              dateRangeIcon={<DateIcon />}
-              timeIcon={<TimeIcon />}
               showTodayButton
               TextFieldComponent={() => null}
             />

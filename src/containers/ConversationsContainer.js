@@ -149,20 +149,7 @@ function ConversationsContainer(props) {
             </Grid>
           ) : location.search.indexOf('?id=') > -1 ||
             location.search.indexOf('?uid=') > -1 ? (
-            <LoadingHat
-              altBg
-              message={
-                <React.Fragment>
-                  Finding and/or creating conversation, depending on whether
-                  this user already has a conversation recorded in the system…
-                  <br />
-                  <br />
-                  Thank you for your patience and understanding.
-                  <br />
-                  Have a great day.
-                </React.Fragment>
-              }
-            />
+            <LoadingHat altBg message="Finding and/or creating conversation…" />
           ) : (
             <Grid
               container
