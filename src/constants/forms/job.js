@@ -59,6 +59,13 @@ const jobFields = initialData => {
       validation: yup.string().required('Pay is required'),
     },
     {
+      type: FIELDS.textField,
+      name: 'commitment',
+      label: 'Commitment',
+      value: initialData['commitment'],
+      validation: yup.string().required('commitment is required'),
+    },
+    {
       type: FIELDS.dropzone,
       name: 'image',
       label: 'Cover image',
