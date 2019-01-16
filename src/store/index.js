@@ -21,23 +21,25 @@ export const firestore = firebase.firestore();
 export const firebaseStorage = firebase.storage().ref();
 export const functions = firebase.app().functions('asia-northeast1');
 export function initializePushNotifications() {
-  const uid = auth.currentUser.uid;
-  messaging
-    .requestPermission()
-    .then(() => {
-      return messaging.getToken();
-    })
-    .then(token => {
-      firestore
-        .collection(COLLECTIONS.admins)
-        .doc(uid)
-        .update({ FCMToken: token });
-    })
-    .catch(error => {
-      if (error.code === 'messaging/permission-blocked') {
-        alert('Please Unblock Notification Request Manually');
-      } else {
-        console.log('Error Occurred', error);
-      }
-    });
+  if (process.env.REACT_APP_ENV === 'PRODUCTION') {
+    const uid = auth.currentUser.uid;
+    messaging
+      .requestPermission()
+      .then(() => {
+        return messaging.getToken();
+      })
+      .then(token => {
+        firestore
+          .collection(COLLECTIONS.admins)
+          .doc(uid)
+          .update({ FCMToken: token });
+      })
+      .catch(error => {
+        if (error.code === 'messaging/permission-blocked') {
+          alert('Please Unblock Notification Request Manually');
+        } else {
+          console.log('Error Occurred', error);
+        }
+      });
+  }
 }

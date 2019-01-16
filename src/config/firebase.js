@@ -9,7 +9,8 @@ export const stagingConfig = {
   databaseURL: `https://${STAGING_PROJECT_NAME}.firebaseio.com`,
   projectId: STAGING_PROJECT_NAME,
   storageBucket: `${STAGING_PROJECT_NAME}.appspot.com`,
-  //messagingSenderId: '1045443129080',
+  messagingSenderId: '188089188588',
+  gcm_sender_id: '188089188588',
 };
 export const productionConfig = {
   apiKey: production2hatsKey,
