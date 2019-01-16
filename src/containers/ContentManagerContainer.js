@@ -21,7 +21,9 @@ import { momentLocales } from '../constants/momentLocales';
 import withNavigation from '../components/withNavigation';
 import Form from '../components/Form';
 import courseFields from '../constants/forms/course';
+import assessmentFields from '../constants/forms/assessment';
 import jobFields from '../constants/forms/job';
+import eventFields from '../constants/forms/event';
 //import LinkedinCampaigns from '../components/Marketing/LinkedinCampaigns';
 // import Loadable from 'react-loadable';
 // import LoadingHat from '../components/LoadingHat';
@@ -60,14 +62,27 @@ function ContentManagerContainer(props) {
 
   let fields = [];
   let formTitle = '';
+  let collection = '';
   switch (path) {
     case ROUTES.jobsManager:
       fields = jobFields();
       formTitle = 'Job';
+      collection = COLLECTIONS.jobs;
       break;
     case ROUTES.coursesManager:
       fields = courseFields();
       formTitle = 'Course';
+      collection = COLLECTIONS.courses;
+      break;
+    case ROUTES.assessmentsManager:
+      fields = assessmentFields();
+      formTitle = 'Assessment';
+      collection = COLLECTIONS.assessments;
+      break;
+    case ROUTES.eventsManager:
+      fields = eventFields();
+      formTitle = 'Event';
+      collection = COLLECTIONS.events;
       break;
     default:
       break;
@@ -83,6 +98,7 @@ function ContentManagerContainer(props) {
             { label: 'Jobs', value: ROUTES.jobsManager },
             { label: 'Courses', value: ROUTES.coursesManager },
             { label: 'Assessments', value: ROUTES.assessmentsManager },
+            { label: 'Events', value: ROUTES.eventsManager },
           ]}
         />
         <Fab
@@ -99,7 +115,7 @@ function ContentManagerContainer(props) {
           action="create"
           actions={{
             create: data => {
-              createDoc(COLLECTIONS.jobs, data);
+              createDoc(collection, data);
               setShowDialog(false);
             },
             close: () => {

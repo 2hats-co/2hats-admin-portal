@@ -15,6 +15,8 @@ const FIELDS = {
   slider: 'SLIDER',
 
   date: 'DATE_PICKER',
+  dateTime: 'DATE_TIME_PICKER',
+  time: 'TIME_PICKER',
 };
 
 export default FIELDS;

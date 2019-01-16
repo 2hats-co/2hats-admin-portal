@@ -23,4 +23,5 @@ export const ROUTES = {
   jobsManager: '/contentManager/jobs',
   assessmentsManager: '/contentManager/assessments',
   coursesManager: '/contentManager/courses',
+  eventsManager: '/contentManager/events',
 };

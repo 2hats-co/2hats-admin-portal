@@ -21,4 +21,7 @@ export const COLLECTIONS = {
   notifications: 'notifications',
   '👩🏿‍🎨': '👩🏿‍🎨',
   jobs: 'jobs',
+  courses: 'courses',
+  assessments: 'assessments',
+  events: 'events',
 };

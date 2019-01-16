@@ -18,8 +18,8 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 
 import LeftIcon from '@material-ui/icons/KeyboardArrowLeft';
 import RightIcon from '@material-ui/icons/KeyboardArrowRight';
-// import DateIcon from '@material-ui/icons/EventOutlined';
-// import TimeIcon from '@material-ui/icons/AccessTime';
+import DateIcon from '@material-ui/icons/EventOutlined';
+import TimeIcon from '@material-ui/icons/AccessTime';
 import AddIcon from '@material-ui/icons/Add';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 
@@ -33,7 +33,8 @@ import { blobImageUploader } from '../../utilities/imageUploader';
 
 import { MuiPickersUtilsProvider } from 'material-ui-pickers';
 import MomentUtils from '@date-io/moment';
-import { DatePicker } from 'material-ui-pickers';
+import { DatePicker, DateTimePicker } from 'material-ui-pickers';
+import { momentFormats } from '../../constants/momentLocales';
 import moment from 'moment';
 import Dropzone from 'react-dropzone';
 
@@ -50,12 +51,14 @@ const styles = theme => ({
   chip: {
     marginTop: theme.spacing.unit,
   },
+
+  sliderSectionWrapper: { margin: `${theme.spacing.unit}px 0` },
   sliderWrapper: {
     marginRight: theme.spacing.unit * 3,
   },
+
   sectionTitle: {
     marginLeft: theme.spacing.unit * 1.5,
-    color: theme.palette.text.secondary,
   },
 
   dropzone: {
@@ -185,7 +188,9 @@ function Form(props) {
         const validator = name =>
           errors[name] &&
           touched[name] && (
-            <FormHelperText error>{errors[name]}</FormHelperText>
+            <FormHelperText error className={classes.sectionTitle}>
+              {errors[name]}
+            </FormHelperText>
           );
 
         return (
@@ -324,10 +329,19 @@ function Form(props) {
 
                       case FIELDS.slider:
                         return (
-                          <Grid item key={x.name}>
+                          <Grid
+                            item
+                            key={x.name}
+                            className={classes.sliderSectionWrapper}
+                          >
                             <Typography
                               variant="caption"
                               className={classes.sectionTitle}
+                              color={
+                                errors[x.name] && touched[x.name]
+                                  ? 'error'
+                                  : 'textSecondary'
+                              }
                             >
                               {x.label}
                             </Typography>
@@ -350,7 +364,10 @@ function Form(props) {
                               </Grid>
                               <Grid item>
                                 <Typography variant="subtitle2">
-                                  {values[x.name]}
+                                  {x.step < 0.999
+                                    ? values[x.name].toFixed(1)
+                                    : values[x.name]}{' '}
+                                  {x.units}
                                 </Typography>
                               </Grid>
                             </Grid>
@@ -365,7 +382,11 @@ function Form(props) {
                         return (
                           <Grid item key={x.name}>
                             <IntegrationReactSelect
-                              placeholder={x.placeholder || 'Select item…'}
+                              placeholder={
+                                x.placeholder || x.type.indexOf('MULTI') > -1
+                                  ? 'Select multiple items…'
+                                  : 'Select item…'
+                              }
                               suggestions={x.suggestions}
                               changeHandler={data => {
                                 setValues({
@@ -390,18 +411,54 @@ function Form(props) {
                                 label={x.label}
                                 value={
                                   values[x.name]
-                                    ? moment(values[x.name], 'D/MM/YYYY')
+                                    ? moment(values[x.name], momentFormats.date)
                                     : moment()
                                 }
                                 onChange={dt => {
                                   setValues({
                                     ...values,
-                                    [x.name]: dt.format('D/MM/YYYY'),
+                                    [x.name]: dt.format(momentFormats.date),
                                   });
                                 }}
                                 leftArrowIcon={<LeftIcon />}
                                 rightArrowIcon={<RightIcon />}
-                                format="D/MM/YYYY"
+                                format={momentFormats.date}
+                                showTodayButton
+                                className={classes.dateTimePicker}
+                                variant="filled"
+                                margin="dense"
+                                fullWidth
+                                InputProps={{ disableUnderline: true }}
+                              />
+                            </MuiPickersUtilsProvider>
+                          </Grid>
+                        );
+
+                      case FIELDS.dateTime:
+                        return (
+                          <Grid item key={x.name}>
+                            <MuiPickersUtilsProvider utils={MomentUtils}>
+                              <DateTimePicker
+                                label={x.label}
+                                value={
+                                  values[x.name]
+                                    ? moment(
+                                        values[x.name],
+                                        momentFormats.dateTime
+                                      )
+                                    : moment()
+                                }
+                                onChange={dt => {
+                                  setValues({
+                                    ...values,
+                                    [x.name]: dt.format(momentFormats.dateTime),
+                                  });
+                                }}
+                                leftArrowIcon={<LeftIcon />}
+                                rightArrowIcon={<RightIcon />}
+                                dateRangeIcon={<DateIcon />}
+                                timeIcon={<TimeIcon />}
+                                format={momentFormats.dateTime}
                                 showTodayButton
                                 className={classes.dateTimePicker}
                                 variant="filled"
@@ -419,6 +476,11 @@ function Form(props) {
                             <Typography
                               variant="caption"
                               className={classes.sectionTitle}
+                              color={
+                                errors[x.name] && touched[x.name]
+                                  ? 'error'
+                                  : 'textSecondary'
+                              }
                             >
                               {x.label}
                             </Typography>
@@ -428,12 +490,16 @@ function Form(props) {
                                   ...values,
                                   [x.name]: { name: files[0].name },
                                 });
-                                blobImageUploader(files[0], (url, name) => {
-                                  setValues({
-                                    ...values,
-                                    [x.name]: { name, url },
-                                  });
-                                });
+                                blobImageUploader(
+                                  files[0],
+                                  x.path,
+                                  (url, name) => {
+                                    setValues({
+                                      ...values,
+                                      [x.name]: { name, url },
+                                    });
+                                  }
+                                );
                               }}
                               accept={x.mimeTypes || ''}
                               className={classes.dropzone}
@@ -474,6 +540,7 @@ function Form(props) {
                                 />
                               </div>
                             )}
+                            {validator(x.name)}
                           </Grid>
                         );
 

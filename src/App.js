@@ -165,6 +165,11 @@ function App() {
               path={ROUTES.assessmentsManager}
               component={() => <ContentManagerContainer />}
             />
+            <Route
+              exact
+              path={ROUTES.eventsManager}
+              component={() => <ContentManagerContainer />}
+            />
             <Route exact path={'/'} component={() => <Landing />} />
             <Route component={() => <div>404</div>} />
           </Switch>

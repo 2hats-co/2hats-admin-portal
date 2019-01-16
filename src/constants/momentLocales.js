@@ -16,3 +16,9 @@ export const momentLocales = {
     yy: '%d y',
   },
 };
+
+export const momentFormats = {
+  date: 'D/MM/YYYY',
+  time: 'h:mm a',
+  dateTime: 'D/MM/YYYY h:mm a',
+};

@@ -36,7 +36,7 @@ const styles = theme => ({
     overflow: 'hidden',
   },
   chip: {
-    margin: `${theme.spacing.unit / 2}px ${theme.spacing.unit / 4}px`,
+    marginRight: `${theme.spacing.unit / 2}px !important`,
   },
   chipFocused: {
     backgroundColor: emphasize(
@@ -58,6 +58,7 @@ const styles = theme => ({
     position: 'absolute',
     left: theme.spacing.unit * 1.5,
   },
+
   paper: {
     position: 'absolute',
     zIndex: 9,
@@ -66,13 +67,19 @@ const styles = theme => ({
     right: 0,
     top: theme.spacing.unit * 5,
   },
-  divider: {
-    height: theme.spacing.unit * 2,
+  menuPushedDown: {
+    top: theme.spacing.unit * 7,
   },
+
   dropdownIndicator: {
-    opacity: 0.33,
+    color: theme.palette.text.secondary,
     padding: 0,
     paddingLeft: theme.spacing.unit / 2,
+  },
+
+  clearIndicator: {
+    color: theme.palette.text.secondary,
+    marginRight: theme.spacing.unit / 2,
   },
 });
 
@@ -182,7 +189,14 @@ function MultiValue(props) {
 
 function Menu(props) {
   return (
-    <Paper className={props.selectProps.classes.paper} {...props.innerProps}>
+    <Paper
+      className={classNames(
+        props.selectProps.classes.paper,
+        props.selectProps.textFieldProps.label &&
+          props.selectProps.classes.menuPushedDown
+      )}
+      {...props.innerProps}
+    >
       {props.children}
     </Paper>
   );
@@ -192,6 +206,10 @@ function DropdownIndicator(props) {
   return (
     <DropdownIcon className={props.selectProps.classes.dropdownIndicator} />
   );
+}
+
+function ClearIndicator(props) {
+  return <CancelIcon className={props.selectProps.classes.clearIndicator} />;
 }
 
 const components = {
@@ -204,6 +222,8 @@ const components = {
   SingleValue,
   ValueContainer,
   DropdownIndicator,
+  ClearIndicator,
+  IndicatorSeparator: null,
 };
 
 function IntegrationReactSelect(props) {
@@ -276,26 +296,6 @@ function IntegrationReactSelect(props) {
     </div>
   );
 }
-
-/*
-<div className={classes.divider} />
-          <Select
-            classes={classes}
-            styles={selectStyles}
-            textFieldProps={{
-              label: 'Label',
-              InputLabelProps: {
-                shrink: true,
-              },
-            }}
-            options={suggestions}
-            components={components}
-            value={this.state.multi}
-            onChange={this.handleChange('multi')}
-            placeholder="Select multiple countries"
-            isMulti
-          />
-          */
 
 IntegrationReactSelect.propTypes = {
   classes: PropTypes.object.isRequired,
