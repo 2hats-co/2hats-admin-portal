@@ -13,6 +13,8 @@ import Avatar from '@material-ui/core/Avatar';
 import MenuItem from '@material-ui/core/MenuItem';
 import CancelIcon from '@material-ui/icons/Cancel';
 import DropdownIcon from '@material-ui/icons/KeyboardArrowDown';
+import IconButton from '@material-ui/core/IconButton';
+import Grow from '@material-ui/core/Grow';
 import { emphasize } from '@material-ui/core/styles/colorManipulator';
 
 const styles = theme => ({
@@ -34,9 +36,12 @@ const styles = theme => ({
     flex: 1,
     alignItems: 'center',
     overflow: 'hidden',
+    minHeight: theme.spacing.unit * 3.5,
   },
   chip: {
     marginRight: `${theme.spacing.unit / 2}px !important`,
+    height: theme.spacing.unit * 3.5,
+    '& svg': { marginRight: theme.spacing.unit / 4 },
   },
   chipFocused: {
     backgroundColor: emphasize(
@@ -59,27 +64,17 @@ const styles = theme => ({
     left: theme.spacing.unit * 1.5,
   },
 
+  menuWrapper: { position: 'relative' },
   paper: {
     position: 'absolute',
     zIndex: 9,
-    marginTop: theme.spacing.unit,
     left: 0,
     right: 0,
-    top: theme.spacing.unit * 5,
-  },
-  menuPushedDown: {
-    top: theme.spacing.unit * 7,
   },
 
-  dropdownIndicator: {
-    color: theme.palette.text.secondary,
+  indicatorButton: {
+    marginLeft: theme.spacing.unit / 2,
     padding: 0,
-    paddingLeft: theme.spacing.unit / 2,
-  },
-
-  clearIndicator: {
-    color: theme.palette.text.secondary,
-    marginRight: theme.spacing.unit / 2,
   },
 });
 
@@ -189,27 +184,37 @@ function MultiValue(props) {
 
 function Menu(props) {
   return (
-    <Paper
-      className={classNames(
-        props.selectProps.classes.paper,
-        props.selectProps.textFieldProps.label &&
-          props.selectProps.classes.menuPushedDown
-      )}
-      {...props.innerProps}
-    >
-      {props.children}
-    </Paper>
+    <div className={props.selectProps.classes.menuWrapper}>
+      <Grow in style={{ transformOrigin: '50% 0' }}>
+        <Paper
+          className={props.selectProps.classes.paper}
+          elevation={8}
+          {...props.innerProps}
+        >
+          {props.children}
+        </Paper>
+      </Grow>
+    </div>
   );
 }
 
 function DropdownIndicator(props) {
   return (
-    <DropdownIcon className={props.selectProps.classes.dropdownIndicator} />
+    <IconButton className={props.selectProps.classes.indicatorButton}>
+      <DropdownIcon />
+    </IconButton>
   );
 }
 
 function ClearIndicator(props) {
-  return <CancelIcon className={props.selectProps.classes.clearIndicator} />;
+  return (
+    <IconButton
+      onClick={props.clearValue}
+      className={props.selectProps.classes.indicatorButton}
+    >
+      <CancelIcon />
+    </IconButton>
+  );
 }
 
 const components = {
@@ -239,6 +244,8 @@ function IntegrationReactSelect(props) {
     //intialValue,
     isMulti,
     creatable,
+    error,
+    helperText,
   } = props;
 
   const selectStyles = {
@@ -288,6 +295,8 @@ function IntegrationReactSelect(props) {
             label,
             InputLabelProps: { shrink: true },
             autoFocus,
+            error,
+            helperText,
           }}
           value={value}
           isMulti={isMulti}
@@ -306,6 +315,8 @@ IntegrationReactSelect.propTypes = {
   changeHandler: PropTypes.func.isRequired,
   suggestions: PropTypes.array.isRequired,
   value: PropTypes.any.isRequired,
+  error: PropTypes.bool,
+  helperText: PropTypes.node,
 };
 
 export default withStyles(styles, { withTheme: true })(IntegrationReactSelect);

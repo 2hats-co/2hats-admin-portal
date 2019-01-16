@@ -18,24 +18,30 @@ const useDocument = intialOverrides => {
   });
   const setDocumentListner = () => {
     documentDispatch({ prevPath: documentState.path });
-    firestore.doc(documentState.path).onSnapshot(snapshot => {
-      if (snapshot.exists) {
-        const data = snapshot.data();
-        const id = snapshot.id;
-        const doc = { ...data, id };
-        documentDispatch({
-          doc,
-          loading: false,
-        });
-      }
-    });
+    const unsubscribe = firestore
+      .doc(documentState.path)
+      .onSnapshot(snapshot => {
+        if (snapshot.exists) {
+          const data = snapshot.data();
+          const id = snapshot.id;
+          const doc = { ...data, id };
+          documentDispatch({
+            doc,
+            loading: false,
+          });
+        }
+      });
+    documentDispatch({ unsubscribe });
   };
   useEffect(
     () => {
-      const { path, prevPath } = documentState;
-      if (path && path !== prevPath) setDocumentListner();
+      const { path, prevPath, unsubscribe } = documentState;
+      if (path && path !== prevPath) {
+        if (unsubscribe) unsubscribe();
+        setDocumentListner();
+      }
       return () => {
-        if (path) firestore.doc(path).onSnapshot(() => {});
+        if (unsubscribe) unsubscribe();
       };
     },
     [documentState]
