@@ -41,7 +41,7 @@ const useCollection = intialOverrides => {
       collectionState.prevPath &&
       collectionState.path !== collectionState.prevPath
     ) {
-      firestore.collection(collectionState.prevPath).onSnapshot(() => {});
+      collectionState.unsubscribe();
     }
     //updates prev values
     collectionDispatch({
@@ -63,7 +63,7 @@ const useCollection = intialOverrides => {
         query = query.orderBy(sort.field, sort.direction);
       }
     }
-    query.limit(limit).onSnapshot(snapshot => {
+    const unsubscribe = query.limit(limit).onSnapshot(snapshot => {
       if (snapshot.docs.length > 0) {
         const documents = snapshot.docs.map(doc => {
           const data = doc.data();
@@ -81,6 +81,7 @@ const useCollection = intialOverrides => {
         });
       }
     });
+    collectionDispatch({ unsubscribe });
   };
   useEffect(
     () => {
@@ -92,6 +93,7 @@ const useCollection = intialOverrides => {
         prevPath,
         path,
         sort,
+        unsubscribe,
       } = collectionState;
       if (
         !equals(prevFilters, filters) ||
@@ -101,7 +103,9 @@ const useCollection = intialOverrides => {
         getDocuments(filters, limit, sort);
       }
       return () => {
-        if (path) firestore.collection(path).onSnapshot(() => {});
+        if (unsubscribe) {
+          collectionState.unsubscribe();
+        }
       };
     },
     [collectionState.filters, collectionState.limit, collectionState.path]
