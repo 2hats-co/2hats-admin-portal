@@ -15,6 +15,13 @@ const courseFields = initialData => {
         .required('Required'),
     },
     {
+      type: FIELDS.textField,
+      name: 'title',
+      label: 'Title',
+      value: initialData['title'],
+      validation: yup.string().required('Required'),
+    },
+    {
       type: FIELDS.textFieldMultiline,
       name: 'description',
       label: 'Description',

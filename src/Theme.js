@@ -1,5 +1,6 @@
 import createMuiTheme from '@material-ui/core/styles/createMuiTheme';
 
+const FONT_STACK = '"Helvetica Neue", Roboto, Arial, sans-serif';
 const ORANGE_COLOR = 'hsl(15, 88%, 55%)'; // #f15a29
 // const ORANGE_DARK_TEXT = 'hsl(15, 90%, 40%)';
 // const ORANGE_LIGHT = 'hsl(15, 88%, 95%)';
@@ -57,7 +58,7 @@ function generateTheme(theme, themeColor) {
     },
     typography: {
       useNextVariants: true,
-      fontFamily: '"Helvetica Neue", Roboto, Arial, sans-serif',
+      fontFamily: FONT_STACK,
       h3: { fontWeight: 500 },
       h4: { fontWeight: 500 },
       h5: { fontWeight: 500 },
@@ -179,6 +180,13 @@ function generateTheme(theme, themeColor) {
       },
       MuiInputAdornment: {
         positionStart: { marginBottom: 2 },
+      },
+      MuiLink: {
+        root: { fontFamily: FONT_STACK },
+        button: { fontFamily: FONT_STACK },
+      },
+      MuiCardActionArea: {
+        focusHighlight: { opacity: '0 !important' },
       },
     },
   };

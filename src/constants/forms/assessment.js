@@ -5,15 +5,6 @@ const assessmentFields = initialData => {
   if (!initialData) initialData = {};
   return [
     {
-      type: FIELDS.dropzone,
-      name: 'image',
-      label: 'Cover image',
-      value: initialData['image'],
-      mimeTypes: 'image/*',
-      path: 'studentPortal/',
-      validation: yup.string().url('Not a valid URL'),
-    },
-    {
       type: FIELDS.autocompleteFreeText,
       name: 'category',
       label: 'Category',
@@ -68,6 +59,21 @@ const assessmentFields = initialData => {
         .of(yup.string().url('Invalid URL'))
         .min(1)
         .required('Required'),
+    },
+    {
+      type: FIELDS.dropzone,
+      name: 'image',
+      label: 'Cover image',
+      value: initialData['image'],
+      mimeTypes: 'image/*',
+      path: 'studentPortal/',
+      validation: yup.object().shape({
+        name: yup.string().required(),
+        url: yup
+          .string()
+          .url('Invalid URL')
+          .required(),
+      }),
     },
   ];
 };

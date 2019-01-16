@@ -91,7 +91,8 @@ const styles = theme => ({
 
 const reactSelectValueFormatter = x => {
   if (Array.isArray(x)) {
-    if (x[0].label && x[0].value) return x.map(y => y.value);
+    if (x[0] && x[0].label && x[0].value) return x.map(y => y.value);
+    else return x;
   } else if (x.label && x.value) {
     return x.value;
   } else {
@@ -99,7 +100,7 @@ const reactSelectValueFormatter = x => {
   }
 };
 const uploadedFilesFormatter = x => {
-  if (x.name && x.url) {
+  if (x && x.name && x.url) {
     return x.url;
   } else {
     return x;
@@ -189,7 +190,9 @@ function Form(props) {
           errors[name] &&
           touched[name] && (
             <FormHelperText error className={classes.sectionTitle}>
-              {errors[name]}
+              {typeof errors[name] === 'object'
+                ? JSON.stringify(errors[name])
+                : errors[name]}
             </FormHelperText>
           );
 
@@ -227,7 +230,7 @@ function Form(props) {
                               fullWidth
                               value={values[x.name]}
                               placeholder={x.placeholder}
-                              error={errors[x.name] && touched[x.name]}
+                              error={!!(errors[x.name] && touched[x.name])}
                               helperText={touched[x.name] && errors[x.name]}
                             />
                           </Grid>
@@ -247,7 +250,7 @@ function Form(props) {
                               fullWidth
                               value={values[x.name]}
                               placeholder={x.placeholder}
-                              error={errors[x.name] && touched[x.name]}
+                              error={!!(errors[x.name] && touched[x.name])}
                               helperText={touched[x.name] && errors[x.name]}
                             />
                           </Grid>
@@ -267,7 +270,7 @@ function Form(props) {
                               variant="filled"
                               margin="dense"
                               InputProps={{ disableUnderline: true }}
-                              error={errors[x.name] && touched[x.name]}
+                              error={!!(errors[x.name] && touched[x.name])}
                               helperText={touched[x.name] && errors[x.name]}
                             />
                           </Grid>
@@ -290,7 +293,7 @@ function Form(props) {
                                   handleAddToList(x.name, `${x.name}-temp`);
                                 }
                               }}
-                              error={errors[x.name] && touched[x.name]}
+                              error={!!(errors[x.name] && touched[x.name])}
                               helperText={touched[x.name] && errors[x.name]}
                               InputProps={{
                                 disableUnderline: true,
@@ -412,7 +415,7 @@ function Form(props) {
                                 value={
                                   values[x.name]
                                     ? moment(values[x.name], momentFormats.date)
-                                    : moment()
+                                    : null
                                 }
                                 onChange={dt => {
                                   setValues({
@@ -429,8 +432,10 @@ function Form(props) {
                                 margin="dense"
                                 fullWidth
                                 InputProps={{ disableUnderline: true }}
+                                error={!!(errors[x.name] && touched[x.name])}
                               />
                             </MuiPickersUtilsProvider>
+                            {validator(x.name)}
                           </Grid>
                         );
 
@@ -446,7 +451,7 @@ function Form(props) {
                                         values[x.name],
                                         momentFormats.dateTime
                                       )
-                                    : moment()
+                                    : null
                                 }
                                 onChange={dt => {
                                   setValues({
@@ -465,8 +470,10 @@ function Form(props) {
                                 margin="dense"
                                 fullWidth
                                 InputProps={{ disableUnderline: true }}
+                                error={!!(errors[x.name] && touched[x.name])}
                               />
                             </MuiPickersUtilsProvider>
+                            {validator(x.name)}
                           </Grid>
                         );
 
@@ -532,10 +539,10 @@ function Form(props) {
                                     })
                                   }
                                   className={classes.fileChip}
-                                  avatar={
-                                    !values[x.name].url && (
+                                  icon={
+                                    !values[x.name].url ? (
                                       <CircularProgress size={32} />
-                                    )
+                                    ) : null
                                   }
                                 />
                               </div>

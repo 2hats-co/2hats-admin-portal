@@ -20,6 +20,7 @@ export const auth = firebase.auth();
 export const firestore = firebase.firestore();
 export const firebaseStorage = firebase.storage().ref();
 export const functions = firebase.app().functions('asia-northeast1');
+//export const functions = firebase.functions();
 export function initializePushNotifications() {
   if (process.env.REACT_APP_ENV === 'PRODUCTION') {
     const uid = auth.currentUser.uid;

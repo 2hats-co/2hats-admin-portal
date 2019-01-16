@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-//import withNavigation from '../components/withNavigation';
 
 import withStyles from '@material-ui/core/styles/withStyles';
 // import Typography from '@material-ui/core/Typography';
@@ -9,35 +8,23 @@ import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 
 import LocationIndicator from '../components/LocationIndicator';
-//import TemplateEditor from '../components/Marketing/TemplateEditor';
 
 import { ROUTES } from '../constants/routes';
 import { COLLECTIONS } from '../constants/firestore';
 import { createDoc } from '../utilities/firestore';
+import useCollection from '../hooks/useCollection';
 
 import moment from 'moment';
 import { momentLocales } from '../constants/momentLocales';
 
 import withNavigation from '../components/withNavigation';
+import OneCard from '../components/OneCard';
+
 import Form from '../components/Form';
 import courseFields from '../constants/forms/course';
 import assessmentFields from '../constants/forms/assessment';
 import jobFields from '../constants/forms/job';
 import eventFields from '../constants/forms/event';
-//import LinkedinCampaigns from '../components/Marketing/LinkedinCampaigns';
-// import Loadable from 'react-loadable';
-// import LoadingHat from '../components/LoadingHat';
-
-// const LinkedinCampaigns = Loadable({
-//   loader: () =>
-//     import('../components/Marketing/LinkedinCampaigns' /* webpackChunkName: "LinkedinCampaigns" */),
-//   loading: LoadingHat,
-// });
-// const TemplateEditor = Loadable({
-//   loader: () =>
-//     import('../components/Marketing/TemplateEditor' /* webpackChunkName: "TemplateEditor" */),
-//   loading: LoadingHat,
-// });
 
 const styles = theme => ({
   root: {
@@ -58,7 +45,7 @@ function ContentManagerContainer(props) {
 
   moment.updateLocale('en', momentLocales);
 
-  const [showDialog, setShowDialog] = useState(true);
+  const [showDialog, setShowDialog] = useState(false);
 
   let fields = [];
   let formTitle = '';
@@ -88,6 +75,12 @@ function ContentManagerContainer(props) {
       break;
   }
 
+  const [dataState, dataDispatch] = useCollection({
+    path: collection,
+  });
+  const docs = dataState.documents;
+  console.log(docs);
+
   return (
     <Fade in>
       <div className={classes.root}>
@@ -101,6 +94,20 @@ function ContentManagerContainer(props) {
             { label: 'Events', value: ROUTES.eventsManager },
           ]}
         />
+
+        {docs &&
+          docs.map(x => (
+            <OneCard
+              key={x.id}
+              title={x.title}
+              secondaryText={x.description || x.roleDescription}
+              primaryAction="Do nothing"
+              route={`#${x.id}`}
+              image={x.image}
+              video={x.videoUrl}
+            />
+          ))}
+
         <Fab
           className={classes.fab}
           color="primary"
@@ -115,6 +122,7 @@ function ContentManagerContainer(props) {
           action="create"
           actions={{
             create: data => {
+              console.log(collection, data);
               createDoc(collection, data);
               setShowDialog(false);
             },
