@@ -106,6 +106,13 @@ const uploadedFilesFormatter = x => {
     return x;
   }
 };
+const youtubeUrlFormatter = x => {
+  if (typeof x === 'string' && x.includes('youtube.com')) {
+    return x.replace('watch?v=', 'embed/').split('&')[0];
+  } else {
+    return x;
+  }
+};
 
 /* eslint-disable no-sequences */
 const initialValuesReducer = (obj, item) => (
@@ -151,8 +158,12 @@ function Form(props) {
           uploadedFilesFormatter,
           reactSelectFormattedValues
         );
+        const youtubeUrlFormatted = map(
+          youtubeUrlFormatter,
+          uploadedFilesFormattedValues
+        );
 
-        actions[action](uploadedFilesFormattedValues);
+        actions[action](youtubeUrlFormatted);
       }}
       validationSchema={yup.object().shape(data.reduce(validationReducer, {}))}
     >

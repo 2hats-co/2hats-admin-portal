@@ -122,7 +122,6 @@ function ContentManagerContainer(props) {
           action="create"
           actions={{
             create: data => {
-              console.log(collection, data);
               createDoc(collection, data);
               setShowDialog(false);
             },
