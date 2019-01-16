@@ -1,6 +1,6 @@
 // import { auth } from '../store';
 import { uploader } from './firebaseStorage';
-import Pica from 'pica';
+import Pica from './pica';
 const pica = Pica();
 var img = new Image();
 var canvas = document.createElement('canvas');
