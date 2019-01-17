@@ -74,7 +74,7 @@ const clientFilter = {
 };
 const spamFilter = {
   field: 'type',
-  operator: '>=',
+  operator: '==',
   value: 'spam',
 };
 const notSpamFilter = {
@@ -82,6 +82,8 @@ const notSpamFilter = {
   operator: '<',
   value: 'spam',
 };
+const orderbyLastMessage = { field: 'lastMessage.sentAt', direction: 'desc' };
+const orderByType = { field: 'type', direction: 'asc' };
 const categoryFilter = category => ({
   field: 'category',
   operator: '==',
@@ -92,16 +94,14 @@ function ConversationsList(props) {
   const { classes, setSelectedConversation, selectedConversation, uid } = props;
   const [conversationsState, conversationsDispatch] = useCollection({
     path: `conversations`,
-    sort: [
-      { field: 'type', direction: 'asc' },
-      { field: 'lastMessage.sentAt', direction: 'desc' },
-    ],
+    sort: [orderByType, orderbyLastMessage],
     filters: [],
   });
   const conversations = conversationsState.documents;
 
   const [filter, setFilter] = useState('all');
   const [filters, setFilters] = useState([subscriberFilter(uid)]);
+  const [sorts, setSorts] = useState([orderByType, orderbyLastMessage]);
   const [category, setCategory] = useState('');
 
   useEffect(
@@ -109,18 +109,23 @@ function ConversationsList(props) {
       if (filter) setCategory('');
       switch (filter) {
         case 'unread':
+          setSorts([orderByType, orderbyLastMessage]);
           setFilters([unreadFilter(uid)]);
           break;
         case 'candidate':
+          setSorts([orderbyLastMessage]);
           setFilters([candidateFilter]);
           break;
         case 'client':
+          setSorts([orderbyLastMessage]);
           setFilters([subscriberFilter(uid), clientFilter]);
           break;
         case 'spam':
+          setSorts([orderbyLastMessage]);
           setFilters([spamFilter]);
           break;
         case 'all':
+          setSorts([orderByType, orderbyLastMessage]);
           setFilters([subscriberFilter(uid), notSpamFilter]);
           break;
         default:
@@ -132,7 +137,7 @@ function ConversationsList(props) {
 
   useEffect(
     () => {
-      conversationsDispatch({ filters: filters });
+      conversationsDispatch({ filters: filters, sort: sorts });
     },
     [filters]
   );
