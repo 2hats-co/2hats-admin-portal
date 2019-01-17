@@ -1,5 +1,9 @@
 import FIELDS from './fields';
 import * as yup from 'yup';
+import ASSESSMENT_CATEGORIES, {
+  SUBMISSION_TYPES,
+} from '../studentPortal/assessmentCategories';
+import SKILLS from '../studentPortal/skills';
 
 const assessmentFields = initialData => {
   if (!initialData) initialData = {};
@@ -8,16 +12,16 @@ const assessmentFields = initialData => {
       type: FIELDS.autocompleteFreeText,
       name: 'category',
       label: 'Category',
-      suggestions: ['ds', 'sdf', 'sdfd'].map(x => ({ value: x, label: x })),
-      value: initialData['category'],
+      suggestions: ASSESSMENT_CATEGORIES,
+      value: SKILLS.filter(x => x.value === initialData['category']),
       validation: yup.string().required('Category is required'),
     },
     {
       type: FIELDS.autocomplete,
       name: 'skillAssociated',
       label: 'Skill associated',
-      value: initialData['skillAssociated'],
-      suggestions: ['ds', 'sdf', 'sdfd'].map(x => ({ value: x, label: x })),
+      value: SKILLS.filter(x => x.value === initialData['skillAssociated']),
+      suggestions: SKILLS,
       validation: yup.string().required('Skill is required'),
     },
     {
@@ -44,21 +48,45 @@ const assessmentFields = initialData => {
     },
     {
       type: FIELDS.textFieldMultiline,
-      name: 'description',
-      label: 'Description',
-      value: initialData['description'],
+      name: 'companyDescription',
+      label: 'Company information',
+      value: initialData['companyDescription'],
       validation: yup.string().required('Required'),
+    },
+    {
+      type: FIELDS.textFieldMultiline,
+      name: 'jobDescription',
+      label: 'Your job',
+      value: initialData['jobDescription'],
+      validation: yup.string().required('Required'),
+    },
+    {
+      type: FIELDS.chipFreeText,
+      name: 'taskInstructions',
+      label: 'Task instructions',
+      value: initialData['taskInstructions'],
+      validation: yup
+        .array()
+        .of(yup.string())
+        .min(1)
+        .required('Required'),
+    },
+    {
+      type: FIELDS.autocomplete,
+      name: 'submissionType',
+      label: 'Submission type',
+      value: SUBMISSION_TYPES.filter(
+        x => x.value === initialData['skillAssociated']
+      ),
+      suggestions: SUBMISSION_TYPES,
+      validation: yup.string().required('Submission type is required'),
     },
     {
       type: FIELDS.chipFreeText,
       name: 'links',
       label: 'Links to education sources to support the task completion',
       value: initialData['links'] || [],
-      validation: yup
-        .array()
-        .of(yup.string().url('Invalid URL'))
-        .min(1)
-        .required('Required'),
+      validation: yup.array().of(yup.string().url('Invalid URL')),
     },
     {
       type: FIELDS.dropzone,

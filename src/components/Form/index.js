@@ -17,7 +17,7 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 import AddIcon from '@material-ui/icons/Add';
-import CloudUploadIcon from '@material-ui/icons/CloudUpload';
+import CloudUploadIcon from '@material-ui/icons/CloudUploadOutlined';
 
 import { Formik } from 'formik';
 import * as yup from 'yup';
@@ -57,7 +57,7 @@ const styles = theme => ({
       right: theme.spacing.unit * 3,
     },
   },
-  wrapperGrid: { marginTop: theme.spacing.unit * 2 },
+  wrapperGrid: { marginTop: theme.spacing.unit },
 
   capitalise: {
     '&::first-letter': { textTransform: 'uppercase' },
@@ -65,8 +65,9 @@ const styles = theme => ({
   textFieldWithAdornment: {
     paddingRight: 0,
   },
+  chipsWrapper: { marginTop: -theme.spacing.unit / 2 },
   chip: {
-    marginTop: theme.spacing.unit,
+    marginTop: theme.spacing.unit / 2,
   },
 
   sliderSectionWrapper: { margin: `${theme.spacing.unit}px 0` },
@@ -96,7 +97,7 @@ const styles = theme => ({
   },
   uploadIcon: {
     fontSize: theme.spacing.unit * 8,
-    color: theme.palette.text.primary,
+    color: theme.palette.text.secondary,
   },
   dropzoneButton: { marginTop: theme.spacing.unit / 2 },
   fileChipWrapper: { textAlign: 'center' },
@@ -130,13 +131,13 @@ const reactSelectValueFormatter = x => {
     return x;
   }
 };
-const uploadedFilesFormatter = x => {
-  if (x && x.name && x.url) {
-    return x.url;
-  } else {
-    return x;
-  }
-};
+// const uploadedFilesFormatter = x => {
+//   if (x && x.name && x.url) {
+//     return x.url;
+//   } else {
+//     return x;
+//   }
+// };
 const youtubeUrlFormatter = x => {
   if (typeof x === 'string' && x.includes('youtube.com')) {
     return x.replace('watch?v=', 'embed/').split('&')[0];
@@ -185,13 +186,13 @@ function Form(props) {
           reactSelectValueFormatter,
           outputValues
         );
-        const uploadedFilesFormattedValues = map(
+        /* const uploadedFilesFormattedValues = map(
           uploadedFilesFormatter,
           reactSelectFormattedValues
-        );
+        ); */
         const youtubeUrlFormatted = map(
           youtubeUrlFormatter,
-          uploadedFilesFormattedValues
+          reactSelectFormattedValues
         );
 
         actions[action](youtubeUrlFormatted);
@@ -218,7 +219,7 @@ function Form(props) {
         const handleAddToList = (list, item) => {
           if (!values[item]) return;
           const currentList = Array.isArray(values[list]) ? values[list] : [];
-          const newItem = values[item].toLowerCase().trim();
+          const newItem = values[item].trim();
 
           if (newItem.length > 0 && !currentList.includes(newItem)) {
             const newList = currentList.concat([newItem]);
@@ -366,17 +367,19 @@ function Form(props) {
                                 },
                               }}
                             />
-                            {values[x.name] &&
-                              values[x.name].map((y, i) => (
-                                <Chip
-                                  key={i}
-                                  label={y}
-                                  className={classes.chip}
-                                  onDelete={() => {
-                                    handleDeleteFromList(x.name, i);
-                                  }}
-                                />
-                              ))}
+                            <div className={classes.chipsWrapper}>
+                              {values[x.name] &&
+                                values[x.name].map((y, i) => (
+                                  <Chip
+                                    key={i}
+                                    label={y}
+                                    className={classes.chip}
+                                    onDelete={() => {
+                                      handleDeleteFromList(x.name, i);
+                                    }}
+                                  />
+                                ))}
+                            </div>
                           </Grid>
                         );
 

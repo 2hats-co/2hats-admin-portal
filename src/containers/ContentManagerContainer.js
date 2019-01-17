@@ -18,6 +18,7 @@ import moment from 'moment';
 import { momentLocales } from '../constants/momentLocales';
 
 import withNavigation from '../components/withNavigation';
+import EditOneCard from '../components/OneCard/EditOneCard';
 import OneCard from '../components/OneCard';
 
 import Form from '../components/Form';
@@ -52,22 +53,22 @@ function ContentManagerContainer(props) {
   let collection = '';
   switch (path) {
     case ROUTES.jobsManager:
-      fields = jobFields();
+      fields = jobFields;
       formTitle = 'Job';
       collection = COLLECTIONS.jobs;
       break;
     case ROUTES.coursesManager:
-      fields = courseFields();
+      fields = courseFields;
       formTitle = 'Course';
       collection = COLLECTIONS.courses;
       break;
     case ROUTES.assessmentsManager:
-      fields = assessmentFields();
+      fields = assessmentFields;
       formTitle = 'Assessment';
       collection = COLLECTIONS.assessments;
       break;
     case ROUTES.eventsManager:
-      fields = eventFields();
+      fields = eventFields;
       formTitle = 'Event';
       collection = COLLECTIONS.events;
       break;
@@ -75,11 +76,11 @@ function ContentManagerContainer(props) {
       break;
   }
 
-  const [dataState, dataDispatch] = useCollection({
+  const [dataState] = useCollection({
     path: collection,
   });
   const docs = dataState.documents;
-  console.log(docs);
+  // console.log(docs);
 
   return (
     <Fade in>
@@ -97,15 +98,26 @@ function ContentManagerContainer(props) {
 
         {docs &&
           docs.map(x => (
-            <OneCard
+            <EditOneCard
+              data={x}
+              fields={fields}
               key={x.id}
-              title={x.title}
-              secondaryText={x.description || x.roleDescription}
-              primaryAction="Do nothing"
-              route={`#${x.id}`}
-              image={x.image}
-              video={x.videoUrl}
-            />
+              collection={collection}
+            >
+              <OneCard
+                title={x.title}
+                secondaryText={
+                  x.description || x.roleDescription || x.companyDescription
+                }
+                tertiaryText={
+                  collection === COLLECTIONS.assessments && x.taskInstructions
+                }
+                primaryAction="Do nothing"
+                route={`#${x.id}`}
+                image={x.image.url}
+                video={x.videoUrl}
+              />
+            </EditOneCard>
           ))}
 
         <Fab
@@ -130,7 +142,7 @@ function ContentManagerContainer(props) {
             },
           }}
           open={showDialog}
-          data={fields}
+          data={fields()}
           formTitle={formTitle}
         />
       </div>
