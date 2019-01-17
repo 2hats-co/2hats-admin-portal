@@ -114,7 +114,7 @@ function ContentManagerContainer(props) {
                 }
                 primaryAction="Do nothing"
                 route={`#${x.id}`}
-                image={x.image.url}
+                image={x.image && x.image.url}
                 video={x.videoUrl}
               />
             </EditOneCard>
