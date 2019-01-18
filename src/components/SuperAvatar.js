@@ -5,7 +5,7 @@ import PersonIcon from '@material-ui/icons/Person';
 import { getInitials } from '../utilities';
 
 function SuperAvatar(props) {
-  const { className, data, tooltip } = props;
+  const { className, data, tooltip, noInitialsIcon } = props;
 
   let name;
   if (data.displayName) name = data.displayName;
@@ -16,7 +16,7 @@ function SuperAvatar(props) {
     <Avatar className={className} src={data.avatarURL} />
   ) : (
     <Avatar className={className}>
-      {name ? getInitials(name) : <PersonIcon />}
+      {name ? getInitials(name) : noInitialsIcon || <PersonIcon />}
     </Avatar>
   );
 

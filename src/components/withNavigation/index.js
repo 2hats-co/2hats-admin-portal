@@ -16,11 +16,13 @@ import StatisticsIcon from '@material-ui/icons/InsertChart';
 import ConversationsIcon from '@material-ui/icons/Forum';
 import MarketingIcon from '../../assets/icons/Bullhorn';
 import JobsIcon from '@material-ui/icons/PregnantWoman';
+import WarningIcon from '@material-ui/icons/Warning';
 
 import { ROUTES } from '../../constants/routes';
 
 import logo from '../../assets/logo/WhiteIcon.svg';
-import gloria from '../../assets/gloria.jpg';
+// import gloria from '../../assets/gloria.jpg';
+import LoadingHat from '../LoadingHat';
 import NavigationItems from './NavigationItems';
 import Search from '../Search';
 import Notifications from '../Notifications';
@@ -55,16 +57,16 @@ const styles = theme => ({
     userDrag: 'none',
     userSelect: 'none',
   },
-  gloria: {
-    width: 34,
-    height: 34,
-    margin: '0 auto',
-    padding: '15px 0',
-    display: 'block',
-    userDrag: 'none',
-    userSelect: 'none',
-    transform: 'scale(2)',
-  },
+  // gloria: {
+  //   width: 34,
+  //   height: 34,
+  //   margin: '0 auto',
+  //   padding: '15px 0',
+  //   display: 'block',
+  //   userDrag: 'none',
+  //   userSelect: 'none',
+  //   transform: 'scale(2)',
+  // },
   searchButton: {
     color: 'rgba(255,255,255,.87)',
   },
@@ -132,11 +134,11 @@ const navigationRoutes = [
 export default function withNavigation(WrappedComponent) {
   function WithNavigation(props) {
     const { history, classes, theme, displayName, uid, location } = props;
-    // const showGloria = useKeypress('g');
-    const showGloria = false;
+
     const [showSearch, setShowSearch] = useState(false);
     const [showUserDialog, setShowUserDialog] = useState(false);
     const currentUser = useAuthedUser();
+
     const goTo = route => {
       history.push(route);
     };
@@ -156,108 +158,113 @@ export default function withNavigation(WrappedComponent) {
       }
     }
 
-    return (
-      <AdminsProvider>
-        <DebugContext.Provider value={{ enabled: debug, setEnabled: setDebug }}>
-          <Grid container wrap="nowrap" className={classes.root}>
-            <Slide in direction="right">
-              <React.Fragment>
-                <Grid item className={classes.leftNav}>
-                  <Grid
-                    container
-                    style={{ height: '100vh' }}
-                    justify="center"
-                    alignContent="space-between"
-                  >
-                    <Grid item>
-                      <Tooltip
-                        title={
-                          <React.Fragment>
-                            <b>Build {metadata.hash}</b>
-                            <div>
-                              {new Date(metadata.date).toLocaleString()}
-                            </div>
-                          </React.Fragment>
-                        }
-                        placement="right"
-                      >
-                        <img
-                          alt="2hats logo"
-                          src={showGloria ? gloria : logo}
-                          className={showGloria ? classes.gloria : classes.logo}
-                        />
-                      </Tooltip>
-                      <Tooltip title="Search users" placement="right">
-                        <IconButton
-                          className={classes.searchButton}
-                          onClick={() => {
-                            setShowSearch(true);
-                          }}
+    if (currentUser && displayName && uid)
+      return (
+        <AdminsProvider>
+          <DebugContext.Provider
+            value={{ enabled: debug, setEnabled: setDebug }}
+          >
+            <Grid container wrap="nowrap" className={classes.root}>
+              <Slide in direction="right">
+                <React.Fragment>
+                  <Grid item className={classes.leftNav}>
+                    <Grid
+                      container
+                      style={{ height: '100vh' }}
+                      justify="center"
+                      alignContent="space-between"
+                    >
+                      <Grid item>
+                        <Tooltip
+                          title={
+                            <React.Fragment>
+                              <b>Build {metadata.hash}</b>
+                              <div>
+                                {new Date(metadata.date).toLocaleString()}
+                              </div>
+                            </React.Fragment>
+                          }
+                          placement="right"
                         >
-                          <SearchIcon />
-                        </IconButton>
-                      </Tooltip>
-                    </Grid>
-                    <Grid item>
-                      <NavigationItems
-                        goTo={goTo}
-                        currentLocation={path}
-                        selectedIndex={index}
-                        navigationRoutes={navigationRoutes}
-                      />
-                    </Grid>
-                    <Grid item style={{ textAlign: 'center' }}>
-                      <Notifications
-                        uid={uid}
-                        className={classes.notificationButton}
-                      />
-                      {currentUser && displayName && uid ? (
-                        <IconButton
-                          onClick={() => {
-                            setShowUserDialog(true);
-                          }}
-                        >
-                          <SuperAvatar
-                            data={currentUser}
-                            className={classes.avatar}
+                          <img
+                            alt="2hats logo"
+                            src={logo}
+                            className={classes.logo}
                           />
-                        </IconButton>
-                      ) : (
-                        <CircularProgress
-                          color="inherit"
-                          className={classes.avatarSpinner}
+                        </Tooltip>
+                        <Tooltip title="Search users" placement="right">
+                          <IconButton
+                            className={classes.searchButton}
+                            onClick={() => {
+                              setShowSearch(true);
+                            }}
+                          >
+                            <SearchIcon />
+                          </IconButton>
+                        </Tooltip>
+                      </Grid>
+                      <Grid item>
+                        <NavigationItems
+                          goTo={goTo}
+                          currentLocation={path}
+                          selectedIndex={index}
+                          navigationRoutes={navigationRoutes}
                         />
-                      )}
+                      </Grid>
+                      <Grid item style={{ textAlign: 'center' }}>
+                        <Notifications
+                          uid={uid}
+                          className={classes.notificationButton}
+                        />
+                        {currentUser && displayName && uid ? (
+                          <IconButton
+                            onClick={() => {
+                              setShowUserDialog(true);
+                            }}
+                          >
+                            <SuperAvatar
+                              data={currentUser}
+                              className={classes.avatar}
+                              noInitialsIcon={<WarningIcon />}
+                            />
+                          </IconButton>
+                        ) : (
+                          <CircularProgress
+                            color="inherit"
+                            className={classes.avatarSpinner}
+                          />
+                        )}
+                      </Grid>
                     </Grid>
                   </Grid>
+                </React.Fragment>
+              </Slide>
+              <Fade in timeout={400}>
+                <Grid
+                  item
+                  xs
+                  style={{ backgroundColor: theme.palette.background.paper }}
+                >
+                  <WrappedComponent {...props} classes={null} />
                 </Grid>
-              </React.Fragment>
-            </Slide>
-            <Fade in timeout={400}>
-              <Grid
-                item
-                xs
-                style={{ backgroundColor: theme.palette.background.paper }}
-              >
-                <WrappedComponent {...props} classes={null} />
-              </Grid>
-            </Fade>
-          </Grid>
+              </Fade>
+            </Grid>
 
-          {showSearch && (
-            <Search showSearch={showSearch} setShowSearch={setShowSearch} />
-          )}
-          {showUserDialog && (
-            <UserDialog
-              user={currentUser}
-              showDialog={showUserDialog}
-              setShowDialog={setShowUserDialog}
-              navigationRoutes={navigationRoutes}
-            />
-          )}
-        </DebugContext.Provider>
-      </AdminsProvider>
-    );
+            {showSearch && (
+              <Search showSearch={showSearch} setShowSearch={setShowSearch} />
+            )}
+            {showUserDialog && (
+              <UserDialog
+                user={currentUser}
+                showDialog={showUserDialog}
+                setShowDialog={setShowUserDialog}
+                navigationRoutes={navigationRoutes}
+              />
+            )}
+          </DebugContext.Provider>
+        </AdminsProvider>
+      );
+    else return <LoadingHat message="Looking for your data…" />;
   }
   return withRouter(withStyles(styles, { withTheme: true })(WithNavigation));
 }
