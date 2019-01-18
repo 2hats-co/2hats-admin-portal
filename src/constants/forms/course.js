@@ -32,8 +32,23 @@ const courseFields = initialData => {
         .min(1)
         .required('Skills are required'),
     },
+    // {
+    //   type: FIELDS.slider,
+    //   name: 'duration',
+    //   label: 'Duration',
+    //   value: initialData['duration'],
+    //   units: 'h',
+    //   min: 0.5,
+    //   max: 20,
+    //   step: 0.5,
+    //   validation: yup
+    //     .number()
+    //     .min(0.5)
+    //     .max(20)
+    //     .required('Duration is required'),
+    // },
     {
-      type: FIELDS.slider,
+      type: FIELDS.textField,
       name: 'duration',
       label: 'Duration',
       value: initialData['duration'],
@@ -41,11 +56,7 @@ const courseFields = initialData => {
       min: 0.5,
       max: 20,
       step: 0.5,
-      validation: yup
-        .number()
-        .min(0.5)
-        .max(20)
-        .required('Duration is required'),
+      validation: yup.string().required('Duration is required'),
     },
   ];
 };

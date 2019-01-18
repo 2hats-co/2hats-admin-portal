@@ -29,20 +29,31 @@ const assessmentFields = initialData => {
       suggestions: ['ds', 'sdf', 'sdfd'].map(x => ({ value: x, label: x })),
       validation: yup.string().required('Skill is required'),
     },
+    // {
+    //   type: FIELDS.slider,
+    //   name: 'duration',
+    //   label: 'Duration',
+    //   value: initialData['duration'],
+    //   units: 'mins',
+    //   min: 5,
+    //   max: 100,
+    //   step: 5,
+    //   validation: yup
+    //     .number()
+    //     .min(5)
+    //     .max(100)
+    //     .required('Duration is required'),
+    // },
     {
-      type: FIELDS.slider,
+      type: FIELDS.textField,
       name: 'duration',
       label: 'Duration',
       value: initialData['duration'],
-      units: 'mins',
-      min: 5,
-      max: 100,
-      step: 5,
-      validation: yup
-        .number()
-        .min(5)
-        .max(100)
-        .required('Duration is required'),
+      units: 'h',
+      min: 0.5,
+      max: 20,
+      step: 0.5,
+      validation: yup.string().required('Duration is required'),
     },
     {
       type: FIELDS.textField,
