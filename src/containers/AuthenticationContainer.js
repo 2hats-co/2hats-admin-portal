@@ -7,7 +7,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import LogoInCard from '../components/LogoInCard';
 import GoogleButton from '../components/Auth/GoogleButton';
 // import { CLOUD_FUNCTIONS, callable } from '../firebase/functions';
-
+//
 const styles = theme => ({
   root: {
     height: 110,

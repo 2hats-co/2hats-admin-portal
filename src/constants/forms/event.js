@@ -5,15 +5,6 @@ const jobFields = initialData => {
   if (!initialData) initialData = {};
   return [
     {
-      type: FIELDS.dropzone,
-      name: 'image',
-      label: 'Cover image',
-      value: initialData['image'],
-      mimeTypes: 'image/*',
-      path: 'studentPortal/',
-      validation: yup.string().url('Not a valid URL'),
-    },
-    {
       type: FIELDS.textField,
       name: 'title',
       label: 'Event title',
@@ -47,6 +38,21 @@ const jobFields = initialData => {
       label: 'Registration end date',
       value: initialData['registrationEndDate'],
       validation: yup.string().required('Required'),
+    },
+    {
+      type: FIELDS.dropzone,
+      name: 'image',
+      label: 'Cover image',
+      value: initialData['image'],
+      mimeTypes: 'image/*',
+      path: 'studentPortal/',
+      validation: yup.object().shape({
+        name: yup.string().required(),
+        url: yup
+          .string()
+          .url('Invalid URL')
+          .required(),
+      }),
     },
   ];
 };

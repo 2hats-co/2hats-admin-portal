@@ -19,26 +19,28 @@ export const messaging = firebase.messaging();
 export const auth = firebase.auth();
 export const firestore = firebase.firestore();
 export const firebaseStorage = firebase.storage().ref();
-
-export function initializePushNotifications() {
-  const uid = auth.currentUser.uid;
-  messaging
-    .requestPermission()
-    .then(() => {
-      return messaging.getToken();
-    })
-    .then(token => {
-      firestore
-        .collection(COLLECTIONS.admins)
-        .doc(uid)
-        .update({ FCMToken: token });
-    })
-    .catch(error => {
-      if (error.code === 'messaging/permission-blocked') {
-        alert('Please Unblock Notification Request Manually');
-      } else {
-        console.log('Error Occurred', error);
-      }
-    });
-}
 export const functions = firebase.app().functions('asia-northeast1');
+//export const functions = firebase.functions();
+export function initializePushNotifications() {
+  if (process.env.REACT_APP_ENV === 'PRODUCTION') {
+    const uid = auth.currentUser.uid;
+    messaging
+      .requestPermission()
+      .then(() => {
+        return messaging.getToken();
+      })
+      .then(token => {
+        firestore
+          .collection(COLLECTIONS.admins)
+          .doc(uid)
+          .update({ FCMToken: token });
+      })
+      .catch(error => {
+        if (error.code === 'messaging/permission-blocked') {
+          alert('Please Unblock Notification Request Manually');
+        } else {
+          console.log('Error Occurred', error);
+        }
+      });
+  }
+}
