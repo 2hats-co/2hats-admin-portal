@@ -6,21 +6,15 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
 import Grid from '@material-ui/core/Grid';
-import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
-import Chip from '@material-ui/core/Chip';
-
-import Typography from '@material-ui/core/Typography';
 import FormHelperText from '@material-ui/core/FormHelperText';
-import InputAdornment from '@material-ui/core/InputAdornment';
-import AddIcon from '@material-ui/icons/Add';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import remove from 'ramda/es/remove';
 import map from 'ramda/es/map';
 import FIELDS from '../../constants/forms/fields';
 import Text from './Fields/Text';
+import TextItems from './Fields/TextItems';
 import Slider from './Fields/Slider';
 import Date from './Fields/Date';
 import DateTime from './Fields/DateTime';
@@ -55,18 +49,6 @@ const styles = theme => ({
 
   capitalise: {
     '&::first-letter': { textTransform: 'uppercase' },
-  },
-  textFieldWithAdornment: {
-    paddingRight: 0,
-  },
-  chipsWrapper: { marginTop: -theme.spacing.unit / 2 },
-  chip: {
-    marginTop: theme.spacing.unit / 2,
-  },
-
-  sliderSectionWrapper: { margin: `${theme.spacing.unit}px 0` },
-  sliderWrapper: {
-    marginRight: theme.spacing.unit * 3,
   },
 
   sectionTitle: {
@@ -158,7 +140,6 @@ function Form(props) {
       {formikProps => {
         const {
           values,
-          handleChange,
           handleSubmit,
           setValues,
           errors,
@@ -243,58 +224,13 @@ function Form(props) {
 
                       case FIELDS.chipFreeText:
                         return (
-                          <Grid item key={x.name}>
-                            <TextField
-                              id={`${x.name}-temp`}
-                              type="text"
-                              onChange={handleChange}
-                              variant="filled"
-                              margin="dense"
-                              fullWidth
-                              value={values[`${x.name}-temp`] || ''}
-                              label={x.label}
-                              onKeyPress={e => {
-                                if (e.key === 'Enter') {
-                                  handleAddToList(x.name, `${x.name}-temp`);
-                                }
-                              }}
-                              error={!!(errors[x.name] && touched[x.name])}
-                              helperText={touched[x.name] && errors[x.name]}
-                              InputProps={{
-                                disableUnderline: true,
-                                endAdornment: (
-                                  <InputAdornment position="end">
-                                    <IconButton
-                                      onClick={() => {
-                                        handleAddToList(
-                                          x.name,
-                                          `${x.name}-temp`
-                                        );
-                                      }}
-                                    >
-                                      <AddIcon fontSize="small" />
-                                    </IconButton>
-                                  </InputAdornment>
-                                ),
-                                classes: {
-                                  adornedEnd: classes.textFieldWithAdornment,
-                                },
-                              }}
-                            />
-                            <div className={classes.chipsWrapper}>
-                              {values[x.name] &&
-                                values[x.name].map((y, i) => (
-                                  <Chip
-                                    key={i}
-                                    label={y}
-                                    className={classes.chip}
-                                    onDelete={() => {
-                                      handleDeleteFromList(x.name, i);
-                                    }}
-                                  />
-                                ))}
-                            </div>
-                          </Grid>
+                          <TextItems
+                            label={x.label}
+                            name={x.name}
+                            formikProps={formikProps}
+                            handleAddToList={handleAddToList}
+                            handleDeleteFromList={handleDeleteFromList}
+                          />
                         );
 
                       case FIELDS.slider:
