@@ -3,41 +3,46 @@ import React, { useRef, useState, useEffect } from 'react';
 import EmailEditor from 'react-email-editor';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-import { sendEmail } from '../../utilities/email/send';
+import Tooltip from '@material-ui/core/Tooltip';
+import { sendEmail } from '../../../utilities/email/send';
 
-import { createTemplate } from '../../utilities/email/templates';
-import { useAuthedUser } from '../../hooks/useAuthedUser';
-import IntegrationReactSelect from '../IntegrationReactSelect';
-import { globalReplace } from '../../utilities';
-import useDocument from '../../hooks/useDocument';
+import {
+  updateTemplate,
+  setTemplateBase,
+  useEmailTemplate,
+  TEMPLATE_BASE,
+} from '../../../utilities/email/templates';
+import { useAuthedUser } from '../../../hooks/useAuthedUser';
+import IntegrationReactSelect from '../../IntegrationReactSelect';
+import { globalReplace } from '../../../utilities';
 function TemplateEditor(props) {
+  const { template, setTemplate } = props;
   const editor = useRef(null);
   const currentUser = useAuthedUser();
-  const [subject, setSubject] = useState('');
-  const [email, setEmail] = useState('');
-  const [template, templateDispatch] = useDocument({
-    path: 'emailTemplates/HqLfBhP3NcmZipgrhYEx',
-  });
+  const [subject, setSubject] = useState(template.subject || '');
+  const [email, setEmail] = useState('test');
+  const templateBase = useEmailTemplate(template.id);
+  console.log(templateBase);
   useEffect(
     () => {
-      if (template.doc) {
-        const loadedDesign = JSON.parse(template.doc.design);
+      if (templateBase) {
+        const loadedDesign = JSON.parse(templateBase.design);
         editor.current.loadDesign(loadedDesign);
         console.log(loadedDesign);
       }
     },
-    [template.doc]
+    [templateBase]
   );
-
+  if (!currentUser) return <p>loadin</p>;
   const replaceables = [
-    { label: '{{firstName}}', value: 'shams' },
-    { label: '{{lastName}}', value: 'Mosowi' },
+    { label: '{{firstName}}', value: currentUser.givenName },
+    { label: '{{lastName}}', value: currentUser.FamilyName },
   ];
-  const addTemplate = () => {
+  const handleSetTemplateBase = () => {
     editor.current.exportHtml(data => {
       const { design, html } = data;
-      createTemplate({
-        label: 'templatest',
+      setTemplateBase({
+        label: 'Template Base',
         html,
         design,
         subject,
@@ -45,7 +50,21 @@ function TemplateEditor(props) {
       });
     });
   };
-  const sendTest = () => {
+  const handleSave = () => {
+    editor.current.exportHtml(data => {
+      const { design, html } = data;
+      updateTemplate({
+        docId: template.id,
+        label: 'test Label',
+        type: 'manual',
+        html,
+        design,
+        subject,
+        keys: replaceables.map(x => x.label),
+      });
+    });
+  };
+  const handleSendTest = () => {
     editor.current.exportHtml(data => {
       const { design, html } = data;
       const senderEmail = email.split('@')[0] + '@hats.com';
@@ -55,9 +74,10 @@ function TemplateEditor(props) {
         body = globalReplace(body, r.label, r.value);
         emailSubject = globalReplace(emailSubject, r.label, r.value);
       });
+      console.log('email', currentUser.email);
       sendEmail({
         email: { subject: emailSubject, body: body },
-        recipient: { UID: '234253235', email: 'shams.mosowi@gmail.com' },
+        recipient: { UID: '234253235', email: currentUser.email },
         sender: { UID: currentUser.UID, email: senderEmail },
       });
       // console.log('exportHtml', html, design);
@@ -87,19 +107,17 @@ function TemplateEditor(props) {
       <IntegrationReactSelect
         placeholder="select replacable tags"
         suggestions={replaceables}
-        changeHandler={data => {
-          console.log(data);
-        }}
+        changeHandler={data => {}}
         //value={values[x.name]}
         label="tags"
         isMulti={true}
       />
-      <EmailEditor ref={editor} minHeight="600px" />
-      <Button onClick={sendTest} variant="contained" color="primary">
+      <EmailEditor ref={editor} minHeight="400px" />
+      <Button onClick={handleSendTest} variant="contained" color="primary">
         Send Test
       </Button>
-      <Button onClick={addTemplate} variant="contained" color="primary">
-        Create Template
+      <Button onClick={handleSave} variant="contained" color="primary">
+        Save Template
       </Button>
     </div>
   );
