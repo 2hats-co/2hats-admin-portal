@@ -10,29 +10,23 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
 import Chip from '@material-ui/core/Chip';
-import Slider from '@material-ui/lab/Slider';
+
 import Typography from '@material-ui/core/Typography';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import InputAdornment from '@material-ui/core/InputAdornment';
-import CircularProgress from '@material-ui/core/CircularProgress';
-
 import AddIcon from '@material-ui/icons/Add';
-import CloudUploadIcon from '@material-ui/icons/CloudUploadOutlined';
-
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import remove from 'ramda/es/remove';
 import map from 'ramda/es/map';
-import IntegrationReactSelect from '../IntegrationReactSelect';
 import FIELDS from '../../constants/forms/fields';
-import { blobImageUploader } from '../../utilities/imageUploader';
-
-import { MuiPickersUtilsProvider } from 'material-ui-pickers';
-import MomentUtils from '@date-io/moment';
-import { DatePicker, DateTimePicker } from 'material-ui-pickers';
-import { momentFormats } from '../../constants/momentLocales';
-import moment from 'moment';
-import Dropzone from 'react-dropzone';
+import Text from './Fields/Text';
+import Slider from './Fields/Slider';
+import Date from './Fields/Date';
+import DateTime from './Fields/DateTime';
+import Uploader from './Fields/Uploader';
+import Multiline from './Fields/Multiline';
+import Select from './Fields/Select';
 
 const styles = theme => ({
   paperRoot: {
@@ -79,33 +73,6 @@ const styles = theme => ({
     marginLeft: theme.spacing.unit,
   },
 
-  dropzone: {
-    borderRadius: theme.shape.borderRadius,
-    borderColor: theme.palette.divider,
-    borderStyle: 'dashed',
-    borderWidth: theme.spacing.unit / 2,
-    padding: theme.spacing.unit * 2,
-    paddingBottom: theme.spacing.unit * 3,
-    textAlign: 'center',
-    minHeight: theme.spacing.unit * 12,
-    cursor: 'pointer',
-
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    flexDirection: 'column',
-  },
-  uploadIcon: {
-    fontSize: theme.spacing.unit * 8,
-    color: theme.palette.text.secondary,
-  },
-  dropzoneButton: { marginTop: theme.spacing.unit / 2 },
-  fileChipWrapper: { textAlign: 'center' },
-  fileChip: {
-    marginTop: theme.spacing.unit / 2,
-    cursor: 'pointer',
-  },
-
   dialogActions: {
     position: 'relative',
     '&::before': {
@@ -131,13 +98,6 @@ const reactSelectValueFormatter = x => {
     return x;
   }
 };
-// const uploadedFilesFormatter = x => {
-//   if (x && x.name && x.url) {
-//     return x.url;
-//   } else {
-//     return x;
-//   }
-// };
 const youtubeUrlFormatter = x => {
   if (typeof x === 'string' && x.includes('youtube.com')) {
     return x.replace('watch?v=', 'embed/').split('&')[0];
@@ -186,10 +146,6 @@ function Form(props) {
           reactSelectValueFormatter,
           outputValues
         );
-        /* const uploadedFilesFormattedValues = map(
-          uploadedFilesFormatter,
-          reactSelectFormattedValues
-        ); */
         const youtubeUrlFormatted = map(
           youtubeUrlFormatter,
           reactSelectFormattedValues
@@ -264,67 +220,25 @@ function Form(props) {
                     switch (x.type) {
                       case FIELDS.textField:
                       case FIELDS.textFieldNumber:
-                        return (
-                          <Grid item key={x.name}>
-                            <TextField
-                              label={x.label}
-                              id={x.name}
-                              type={
-                                x.type === FIELDS.textFieldNumber
-                                  ? 'number'
-                                  : 'text'
-                              }
-                              onChange={handleChange}
-                              variant="filled"
-                              margin="dense"
-                              InputProps={{ disableUnderline: true }}
-                              fullWidth
-                              value={values[x.name]}
-                              placeholder={x.placeholder}
-                              error={!!(errors[x.name] && touched[x.name])}
-                              helperText={touched[x.name] && errors[x.name]}
-                            />
-                          </Grid>
-                        );
-
                       case FIELDS.textFieldPassword:
                         return (
-                          <Grid item key={x.name}>
-                            <TextField
-                              label={x.label}
-                              id={x.name}
-                              type="password"
-                              onChange={handleChange}
-                              variant="filled"
-                              margin="dense"
-                              InputProps={{ disableUnderline: true }}
-                              fullWidth
-                              value={values[x.name]}
-                              placeholder={x.placeholder}
-                              error={!!(errors[x.name] && touched[x.name])}
-                              helperText={touched[x.name] && errors[x.name]}
-                            />
-                          </Grid>
+                          <Text
+                            type={x.type}
+                            formikProps={formikProps}
+                            label={x.label}
+                            name={x.name}
+                            placeholder={x.placeholder}
+                          />
                         );
-
                       case FIELDS.textFieldMultiline:
                         return (
-                          <Grid item key={x.name}>
-                            <TextField
-                              multiline
-                              fullWidth
-                              rows={5}
-                              label={x.label}
-                              id={x.name}
-                              onChange={handleChange}
-                              value={values[x.name]}
-                              variant="filled"
-                              margin="dense"
-                              InputProps={{ disableUnderline: true }}
-                              error={!!(errors[x.name] && touched[x.name])}
-                              helperText={touched[x.name] && errors[x.name]}
-                            />
-                          </Grid>
+                          <Multiline
+                            type={x.type}
+                            formikProps={formikProps}
+                            label={x.label}
+                            name={x.name}
+                            placeholder={x.placeholder}
+                          />
                         );
 
                       case FIELDS.chipFreeText:
@@ -385,50 +299,16 @@ function Form(props) {
 
                       case FIELDS.slider:
                         return (
-                          <Grid
-                            item
-                            key={x.name}
-                            className={classes.sliderSectionWrapper}
-                          >
-                            <Typography
-                              variant="caption"
-                              className={classes.sectionTitle}
-                              color={
-                                errors[x.name] && touched[x.name]
-                                  ? 'error'
-                                  : 'textSecondary'
-                              }
-                            >
-                              {x.label}
-                            </Typography>
-                            <Grid container alignItems="center">
-                              <Grid item xs className={classes.sliderWrapper}>
-                                <Slider
-                                  classes={{ container: classes.slider }}
-                                  onChange={(e, v) => {
-                                    setValues({
-                                      ...values,
-                                      [x.name]: v,
-                                    });
-                                  }}
-                                  id={x.name}
-                                  value={values[x.name]}
-                                  min={x.min}
-                                  max={x.max}
-                                  step={x.step}
-                                />
-                              </Grid>
-                              <Grid item>
-                                <Typography variant="subtitle2">
-                                  {x.step < 0.999
-                                    ? values[x.name].toFixed(1)
-                                    : values[x.name]}{' '}
-                                  {x.units}
-                                </Typography>
-                              </Grid>
-                            </Grid>
-                            {validator(x.name)}
-                          </Grid>
+                          <Slider
+                            name={x.name}
+                            label={x.label}
+                            min={x.min}
+                            max={x.max}
+                            step={x.step}
+                            units={x.units}
+                            formikProps={formikProps}
+                            validator={validator}
+                          />
                         );
 
                       case FIELDS.autocomplete:
@@ -437,166 +317,49 @@ function Form(props) {
                       case FIELDS.autocompleteMultiFreeText:
                         return (
                           <Grid item key={x.name}>
-                            <IntegrationReactSelect
-                              placeholder={
-                                x.placeholder || x.type.indexOf('MULTI') > -1
-                                  ? 'Select multiple items…'
-                                  : 'Select item…'
-                              }
+                            <Select
+                              placeholder={x.placeholder}
                               suggestions={x.suggestions}
-                              changeHandler={data => {
-                                setValues({
-                                  ...values,
-                                  [x.name]: data,
-                                });
-                              }}
-                              value={values[x.name]}
+                              name={x.name}
                               label={x.label}
-                              isMulti={x.type.indexOf('MULTI') > -1}
-                              creatable={x.type.indexOf('FREE_TEXT') > -1}
-                              error={errors[x.name] && touched[x.name]}
-                              helperText={touched[x.name] && errors[x.name]}
+                              type={x.type}
+                              formikProps={formikProps}
                             />
                           </Grid>
                         );
 
                       case FIELDS.date:
                         return (
-                          <Grid item key={x.name}>
-                            <MuiPickersUtilsProvider utils={MomentUtils}>
-                              <DatePicker
-                                label={x.label}
-                                value={
-                                  values[x.name]
-                                    ? moment(values[x.name], momentFormats.date)
-                                    : null
-                                }
-                                onChange={dt => {
-                                  setValues({
-                                    ...values,
-                                    [x.name]: dt.format(momentFormats.date),
-                                  });
-                                }}
-                                format={momentFormats.date}
-                                showTodayButton
-                                className={classes.dateTimePicker}
-                                variant="filled"
-                                margin="dense"
-                                fullWidth
-                                InputProps={{ disableUnderline: true }}
-                                error={!!(errors[x.name] && touched[x.name])}
-                              />
-                            </MuiPickersUtilsProvider>
-                            {validator(x.name)}
-                          </Grid>
+                          <Date
+                            name={x.name}
+                            label={x.label}
+                            type={x.type}
+                            formikProps={formikProps}
+                            validator={validator}
+                          />
                         );
 
                       case FIELDS.dateTime:
                         return (
-                          <Grid item key={x.name}>
-                            <MuiPickersUtilsProvider utils={MomentUtils}>
-                              <DateTimePicker
-                                label={x.label}
-                                value={
-                                  values[x.name]
-                                    ? moment(
-                                        values[x.name],
-                                        momentFormats.dateTime
-                                      )
-                                    : null
-                                }
-                                onChange={dt => {
-                                  setValues({
-                                    ...values,
-                                    [x.name]: dt.format(momentFormats.dateTime),
-                                  });
-                                }}
-                                format={momentFormats.dateTime}
-                                showTodayButton
-                                className={classes.dateTimePicker}
-                                variant="filled"
-                                margin="dense"
-                                fullWidth
-                                InputProps={{ disableUnderline: true }}
-                                error={!!(errors[x.name] && touched[x.name])}
-                              />
-                            </MuiPickersUtilsProvider>
-                            {validator(x.name)}
-                          </Grid>
+                          <DateTime
+                            name={x.name}
+                            label={x.label}
+                            type={x.type}
+                            formikProps={formikProps}
+                            validator={validator}
+                          />
                         );
 
                       case FIELDS.dropzone:
                         return (
-                          <Grid item key={x.name}>
-                            <Typography
-                              variant="caption"
-                              className={classes.sectionTitle}
-                              color={
-                                errors[x.name] && touched[x.name]
-                                  ? 'error'
-                                  : 'textSecondary'
-                              }
-                            >
-                              {x.label}
-                            </Typography>
-                            <Dropzone
-                              onDrop={files => {
-                                setValues({
-                                  ...values,
-                                  [x.name]: { name: files[0].name },
-                                });
-                                blobImageUploader(
-                                  files[0],
-                                  x.path,
-                                  (url, name) => {
-                                    setValues({
-                                      ...values,
-                                      [x.name]: { name, url },
-                                    });
-                                  }
-                                );
-                              }}
-                              accept={x.mimeTypes || ''}
-                              className={classes.dropzone}
-                            >
-                              <CloudUploadIcon className={classes.uploadIcon} />
-                              <Typography variant="body1">
-                                Drag a file here or
-                              </Typography>
-                              <Button
-                                color="primary"
-                                variant="outlined"
-                                className={classes.dropzoneButton}
-                                size="small"
-                              >
-                                Click to upload a {x.label.toLowerCase()}
-                              </Button>
-                            </Dropzone>
-                            {values[x.name] && (
-                              <div className={classes.fileChipWrapper}>
-                                <Chip
-                                  component="a"
-                                  href={values[x.name]['url']}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  label={values[x.name]['name']}
-                                  onDelete={() =>
-                                    setValues({
-                                      ...values,
-                                      [x.name]: null,
-                                    })
-                                  }
-                                  className={classes.fileChip}
-                                  icon={
-                                    !values[x.name].url ? (
-                                      <CircularProgress size={32} />
-                                    ) : null
-                                  }
-                                />
-                              </div>
-                            )}
-                            {validator(x.name)}
-                          </Grid>
+                          <Uploader
+                            formikProps={formikProps}
+                            label={x.label}
+                            name={x.name}
+                            path={x.path}
+                            mimeTypes={x.mimeTypes}
+                            validator={validator}
+                          />
                         );
 
                       default:

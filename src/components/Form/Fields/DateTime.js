@@ -3,7 +3,7 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import Grid from '@material-ui/core/Grid';
 import { MuiPickersUtilsProvider } from 'material-ui-pickers';
 import MomentUtils from '@date-io/moment';
-import { DatePicker, DateTimePicker } from 'material-ui-pickers';
+import { DateTimePicker } from 'material-ui-pickers';
 import { momentFormats } from '../../../constants/momentLocales';
 import moment from 'moment';
 
@@ -12,22 +12,24 @@ const styles = theme => ({
     marginRight: theme.spacing.unit,
   },
 });
-const Date = props => {
+const DateTime = props => {
   const { label, name, formikProps, classes, validator } = props;
   const { setValues, values, errors, touched } = formikProps;
   return (
     <Grid item key={name}>
       <MuiPickersUtilsProvider utils={MomentUtils}>
-        <DatePicker
+        <DateTimePicker
           label={label}
-          value={values[name] ? moment(values[name], momentFormats.date) : null}
+          value={
+            values[name] ? moment(values[name], momentFormats.dateTime) : null
+          }
           onChange={dt => {
             setValues({
               ...values,
-              [name]: dt.format(momentFormats.date),
+              [name]: dt.format(momentFormats.dateTime),
             });
           }}
-          format={momentFormats.date}
+          format={momentFormats.dateTime}
           showTodayButton
           className={classes.dateTimePicker}
           variant="filled"
@@ -41,4 +43,4 @@ const Date = props => {
     </Grid>
   );
 };
-export default withStyles(styles)(Date);
+export default withStyles(styles)(DateTime);

@@ -2,16 +2,8 @@ import React from 'react';
 import Grid from '@material-ui/core/Grid';
 import IntegrationReactSelect from '../../IntegrationReactSelect';
 const Select = props => {
-  const {
-    name,
-    label,
-    placeholder,
-    suggestions,
-    type,
-    values,
-    setValues,
-    validator,
-  } = props;
+  const { label, name, type, placeholder, suggestions, formikProps } = props;
+  const { setValues, values, errors, touched } = formikProps;
   return (
     <Grid item key={name}>
       <IntegrationReactSelect
@@ -31,8 +23,9 @@ const Select = props => {
         label={label}
         isMulti={type.indexOf('MULTI') > -1}
         creatable={type.indexOf('FREE_TEXT') > -1}
+        error={errors[name] && touched[name]}
+        helperText={touched[name] && errors[name]}
       />
-      {validator(name)}
     </Grid>
   );
 };
