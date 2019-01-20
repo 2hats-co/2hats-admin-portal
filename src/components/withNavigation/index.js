@@ -34,6 +34,7 @@ import { useAuthedUser } from '../../hooks/useAuthedUser';
 import DebugContext from '../../contexts/DebugContext';
 import { AdminsProvider } from '../../contexts/AdminsContext';
 
+import withAuthentication from '../withAuthentication';
 const styles = theme => ({
   root: {
     backgroundColor: theme.palette.background.default,
@@ -266,5 +267,7 @@ export default function withNavigation(WrappedComponent) {
       );
     else return <LoadingHat message="Looking for your data…" />;
   }
-  return withRouter(withStyles(styles, { withTheme: true })(WithNavigation));
+  return withAuthentication(
+    withRouter(withStyles(styles, { withTheme: true })(WithNavigation))
+  );
 }

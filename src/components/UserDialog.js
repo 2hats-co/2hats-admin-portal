@@ -27,7 +27,7 @@ import { COLLECTIONS } from '../constants/firestore';
 import { updateProperties } from '../utilities/firestore';
 import { ORANGE_COLOR } from '../Theme';
 import DebugContext from '../contexts/DebugContext';
-
+import { auth } from '../store';
 const styles = theme => ({
   paperRoot: {
     borderRadius: theme.shape.roundBorderRadius,
@@ -157,7 +157,9 @@ function UserDialog(props) {
     updateProperties(COLLECTIONS.admins, user.UID, { defaultRoute: val });
     setSnackbarMessage('Saved default route!');
   };
-
+  const handleLogout = () => {
+    auth.signOut();
+  };
   return (
     <React.Fragment>
       <Modal open={showDialog} onClose={onClose} disableAutoFocus>
@@ -281,6 +283,7 @@ function UserDialog(props) {
               </Grid>
 
               <Grid item className={classes.themeButtons}>
+                <Button onClick={handleLogout}>logout</Button>
                 <Button
                   onClick={updateTheme}
                   color="primary"
