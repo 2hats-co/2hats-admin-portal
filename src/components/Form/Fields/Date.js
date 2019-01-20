@@ -3,7 +3,7 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import Grid from '@material-ui/core/Grid';
 import { MuiPickersUtilsProvider } from 'material-ui-pickers';
 import MomentUtils from '@date-io/moment';
-import { DatePicker, DateTimePicker } from 'material-ui-pickers';
+import { DatePicker } from 'material-ui-pickers';
 import { momentFormats } from '../../../constants/momentLocales';
 import moment from 'moment';
 
