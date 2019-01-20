@@ -5,7 +5,8 @@ import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 //import Tooltip from '@material-ui/core/Tooltip';
 import { sendEmail } from '../../../utilities/email/send';
-
+import Form from '../../Form';
+import emailTemplate from '../../../constants/forms/emailTemplate';
 import {
   updateTemplate,
   setTemplateBase,
@@ -21,104 +22,72 @@ function TemplateEditor(props) {
   const currentUser = useAuthedUser();
   const [subject, setSubject] = useState(template.subject || '');
   const [email, setEmail] = useState('test');
-  const templateBase = useEmailTemplate(template.id);
-  console.log(templateBase);
   useEffect(
     () => {
-      if (templateBase) {
-        const loadedDesign = JSON.parse(templateBase.design);
+      if (editor.current) {
+        const loadedDesign = JSON.parse(template.design);
         editor.current.loadDesign(loadedDesign);
         console.log(loadedDesign);
       }
     },
-    [templateBase]
+    [editor.current]
   );
   if (!currentUser) return <p>loadin</p>;
   const replaceables = [
     { label: '{{firstName}}', value: currentUser.givenName },
     { label: '{{lastName}}', value: currentUser.FamilyName },
   ];
-  // const handleSetTemplateBase = () => {
-  //   editor.current.exportHtml(data => {
-  //     const { design, html } = data;
-  //     setTemplateBase({
-  //       label: 'Template Base',
-  //       html,
-  //       design,
-  //       subject,
-  //       keys: replaceables.map(x => x.label),
-  //     });
-  //   });
-  // };
-  const handleSave = () => {
+  const handleSave = formData => {
     editor.current.exportHtml(data => {
       const { design, html } = data;
+      const { type, label, keys, subject, senderEmail } = formData;
+      const formatedEmail = senderEmail.split('@')[0] + '@hats.com';
       updateTemplate({
         docId: template.id,
-        label: 'test Label',
-        type: 'manual',
+        label,
+        type,
         html,
         design,
         subject,
-        keys: replaceables.map(x => x.label),
+        senderEmail: formatedEmail,
+        keys,
       });
     });
   };
   const handleSendTest = () => {
-    editor.current.exportHtml(data => {
+    /* editor.current.exportHtml(data => {
       const { design, html } = data;
-      const senderEmail = email.split('@')[0] + '@hats.com';
+
       let emailSubject = subject;
       let body = html;
       replaceables.forEach(r => {
         body = globalReplace(body, r.label, r.value);
         emailSubject = globalReplace(emailSubject, r.label, r.value);
       });
-      console.log('email', currentUser.email);
       sendEmail({
         email: { subject: emailSubject, body: body },
         recipient: { UID: '234253235', email: currentUser.email },
         sender: { UID: currentUser.UID, email: senderEmail },
       });
-      // console.log('exportHtml', html, design);
-    });
+    });*/
   };
-
+  console.log(template);
+  console.log(emailTemplate(template));
   return (
     <div>
-      <TextField
-        type="text"
-        variant="filled"
-        value={email}
-        label="email (@hats.com)"
-        onChange={e => {
-          setEmail(e.target.value);
-        }}
-      />
-      <TextField
-        type="text"
-        variant="filled"
-        value={subject}
-        label="subject"
-        onChange={e => {
-          setSubject(e.target.value);
-        }}
-      />
-      <IntegrationReactSelect
-        placeholder="select replacable tags"
-        suggestions={replaceables}
-        changeHandler={data => {}}
-        //value={values[x.name]}
-        label="tags"
-        isMulti={true}
-      />
-      <EmailEditor ref={editor} minHeight="400px" />
-      <Button onClick={handleSendTest} variant="contained" color="primary">
-        Send Test
-      </Button>
-      <Button onClick={handleSave} variant="contained" color="primary">
-        Save Template
-      </Button>
+      {<EmailEditor ref={editor} minHeight="400px" />}
+      <div style={{ width: '50%' }}>
+        <Form
+          justForm
+          action="save"
+          actions={{
+            save: data => {
+              handleSave(data);
+            },
+          }}
+          data={emailTemplate(template)}
+        />
+      </div>
     </div>
   );
 }

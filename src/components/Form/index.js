@@ -278,6 +278,7 @@ function Form(props) {
             {action.substr(1)}
           </Button>
         );
+
         return (
           <form onSubmit={handleSubmit}>
             {justForm ? (

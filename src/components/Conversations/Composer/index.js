@@ -208,7 +208,6 @@ function Composer(props) {
   };
 
   const handleFile = data => {
-    console.log('GooglePicker', data);
     if (data.action === 'picked' && data.docs) {
       setAttachments([...attachments, ...data.docs]);
     }

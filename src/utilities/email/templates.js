@@ -45,19 +45,29 @@ export const useEmailTemplate = id => {
   return templateDoc.doc;
 };
 export const updateTemplate = async templateObject => {
-  const { docId, label, html, design, subject, keys, type } = templateObject;
+  const {
+    docId,
+    label,
+    html,
+    design,
+    subject,
+    keys,
+    type,
+    senderEmail,
+  } = templateObject;
 
-  const TemplateDoc = {
+  const templateDoc = {
     label,
     type,
     html,
     design: JSON.stringify(design),
     subject,
     keys,
+    senderEmail,
     updatedAt: new Date(),
   };
   return await firestore
     .collection(COLLECTIONS.emailTemplates)
     .doc(docId)
-    .update(TemplateDoc);
+    .update(templateDoc);
 };
