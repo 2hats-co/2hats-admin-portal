@@ -97,7 +97,7 @@ const validationReducer = (obj, item) => (
 );
 
 function Form(props) {
-  const { classes, action, actions, open, data, formTitle } = props;
+  const { classes, action, actions, open, data, formTitle, justForm } = props;
 
   let initialValues = data.reduce(initialValuesReducer, {});
   let hasNewData = true;
@@ -173,131 +173,141 @@ function Form(props) {
                 : errors[name]}
             </FormHelperText>
           );
+        const Fields = (
+          <Grid
+            container
+            direction="column"
+            spacing={8}
+            className={classes.wrapperGrid}
+          >
+            {data.map((x, i) => {
+              switch (x.type) {
+                case FIELDS.textField:
+                case FIELDS.textFieldNumber:
+                case FIELDS.textFieldPassword:
+                case FIELDS.textFieldMultiline:
+                  return (
+                    <Text
+                      type={x.type}
+                      formikProps={formikProps}
+                      label={x.label}
+                      name={x.name}
+                      placeholder={x.placeholder}
+                    />
+                  );
 
+                case FIELDS.chipFreeText:
+                  return (
+                    <TextItems
+                      label={x.label}
+                      name={x.name}
+                      formikProps={formikProps}
+                      handleAddToList={handleAddToList}
+                      handleDeleteFromList={handleDeleteFromList}
+                    />
+                  );
+
+                case FIELDS.slider:
+                  return (
+                    <Slider
+                      name={x.name}
+                      label={x.label}
+                      min={x.min}
+                      max={x.max}
+                      step={x.step}
+                      units={x.units}
+                      formikProps={formikProps}
+                      validator={validator}
+                    />
+                  );
+
+                case FIELDS.autocomplete:
+                case FIELDS.autocompleteMulti:
+                case FIELDS.autocompleteFreeText:
+                case FIELDS.autocompleteMultiFreeText:
+                  return (
+                    <Select
+                      placeholder={x.placeholder}
+                      suggestions={x.suggestions}
+                      name={x.name}
+                      label={x.label}
+                      type={x.type}
+                      formikProps={formikProps}
+                    />
+                  );
+
+                case FIELDS.date:
+                case FIELDS.dateTime:
+                  return (
+                    <DateTime
+                      name={x.name}
+                      label={x.label}
+                      type={x.type}
+                      formikProps={formikProps}
+                      validator={validator}
+                    />
+                  );
+
+                case FIELDS.dropzone:
+                  return (
+                    <Uploader
+                      formikProps={formikProps}
+                      label={x.label}
+                      name={x.name}
+                      path={x.path}
+                      mimeTypes={x.mimeTypes}
+                      validator={validator}
+                    />
+                  );
+
+                default:
+                  return null;
+              }
+            })}
+          </Grid>
+        );
+        const PrimaryButton = (
+          <Button
+            onClick={handleSubmit}
+            color="primary"
+            variant="contained"
+            type="submit"
+            classes={{ label: classes.capitalise }}
+          >
+            {action[0].toUpperCase()}
+            {action.substr(1)}
+          </Button>
+        );
         return (
           <form onSubmit={handleSubmit}>
-            <Dialog
-              open={open}
-              onClose={actions.close}
-              classes={{ paper: classes.paperRoot }}
-            >
-              <DialogTitle
-                className={classes.capitalise}
-                classes={{ root: classes.dialogTitle }}
+            {justForm ? (
+              <Grid container>
+                {Fields}
+                {PrimaryButton}
+              </Grid>
+            ) : (
+              <Dialog
+                open={open}
+                onClose={actions.close}
+                classes={{ paper: classes.paperRoot }}
               >
-                {action} {formTitle}
-              </DialogTitle>
-
-              <DialogContent>
-                <Grid
-                  container
-                  direction="column"
-                  spacing={8}
-                  className={classes.wrapperGrid}
+                <DialogTitle
+                  className={classes.capitalise}
+                  classes={{ root: classes.dialogTitle }}
                 >
-                  {data.map((x, i) => {
-                    switch (x.type) {
-                      case FIELDS.textField:
-                      case FIELDS.textFieldNumber:
-                      case FIELDS.textFieldPassword:
-                      case FIELDS.textFieldMultiline:
-                        return (
-                          <Text
-                            type={x.type}
-                            formikProps={formikProps}
-                            label={x.label}
-                            name={x.name}
-                            placeholder={x.placeholder}
-                          />
-                        );
+                  {action} {formTitle}
+                </DialogTitle>
 
-                      case FIELDS.chipFreeText:
-                        return (
-                          <TextItems
-                            label={x.label}
-                            name={x.name}
-                            formikProps={formikProps}
-                            handleAddToList={handleAddToList}
-                            handleDeleteFromList={handleDeleteFromList}
-                          />
-                        );
+                <DialogContent>{Fields}</DialogContent>
 
-                      case FIELDS.slider:
-                        return (
-                          <Slider
-                            name={x.name}
-                            label={x.label}
-                            min={x.min}
-                            max={x.max}
-                            step={x.step}
-                            units={x.units}
-                            formikProps={formikProps}
-                            validator={validator}
-                          />
-                        );
-
-                      case FIELDS.autocomplete:
-                      case FIELDS.autocompleteMulti:
-                      case FIELDS.autocompleteFreeText:
-                      case FIELDS.autocompleteMultiFreeText:
-                        return (
-                          <Select
-                            placeholder={x.placeholder}
-                            suggestions={x.suggestions}
-                            name={x.name}
-                            label={x.label}
-                            type={x.type}
-                            formikProps={formikProps}
-                          />
-                        );
-
-                      case FIELDS.date:
-                      case FIELDS.dateTime:
-                        return (
-                          <DateTime
-                            name={x.name}
-                            label={x.label}
-                            type={x.type}
-                            formikProps={formikProps}
-                            validator={validator}
-                          />
-                        );
-
-                      case FIELDS.dropzone:
-                        return (
-                          <Uploader
-                            formikProps={formikProps}
-                            label={x.label}
-                            name={x.name}
-                            path={x.path}
-                            mimeTypes={x.mimeTypes}
-                            validator={validator}
-                          />
-                        );
-
-                      default:
-                        return null;
-                    }
-                  })}
-                </Grid>
-              </DialogContent>
-
-              <DialogActions classes={{ root: classes.dialogActions }}>
-                <Button onClick={actions.close} color="primary">
-                  Cancel
-                </Button>
-                <Button
-                  onClick={handleSubmit}
-                  color="primary"
-                  variant="contained"
-                  type="submit"
-                  classes={{ label: classes.capitalise }}
-                >
-                  {action[0].toUpperCase()}
-                  {action.substr(1)}
-                </Button>
-              </DialogActions>
-            </Dialog>
+                <DialogActions classes={{ root: classes.dialogActions }}>
+                  <Button onClick={actions.close} color="primary">
+                    Cancel
+                  </Button>
+                  {PrimaryButton}
+                </DialogActions>
+              </Dialog>
+            )}
           </form>
         );
       }}
