@@ -3,14 +3,14 @@ import React, { useRef, useState, useEffect } from 'react';
 import EmailEditor from 'react-email-editor';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-import Tooltip from '@material-ui/core/Tooltip';
+//import Tooltip from '@material-ui/core/Tooltip';
 import { sendEmail } from '../../../utilities/email/send';
 
 import {
   updateTemplate,
   setTemplateBase,
   useEmailTemplate,
-  TEMPLATE_BASE,
+  //  TEMPLATE_BASE,
 } from '../../../utilities/email/templates';
 import { useAuthedUser } from '../../../hooks/useAuthedUser';
 import IntegrationReactSelect from '../../IntegrationReactSelect';
@@ -38,18 +38,18 @@ function TemplateEditor(props) {
     { label: '{{firstName}}', value: currentUser.givenName },
     { label: '{{lastName}}', value: currentUser.FamilyName },
   ];
-  const handleSetTemplateBase = () => {
-    editor.current.exportHtml(data => {
-      const { design, html } = data;
-      setTemplateBase({
-        label: 'Template Base',
-        html,
-        design,
-        subject,
-        keys: replaceables.map(x => x.label),
-      });
-    });
-  };
+  // const handleSetTemplateBase = () => {
+  //   editor.current.exportHtml(data => {
+  //     const { design, html } = data;
+  //     setTemplateBase({
+  //       label: 'Template Base',
+  //       html,
+  //       design,
+  //       subject,
+  //       keys: replaceables.map(x => x.label),
+  //     });
+  //   });
+  // };
   const handleSave = () => {
     editor.current.exportHtml(data => {
       const { design, html } = data;

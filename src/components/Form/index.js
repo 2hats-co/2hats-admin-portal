@@ -16,10 +16,8 @@ import FIELDS from '../../constants/forms/fields';
 import Text from './Fields/Text';
 import TextItems from './Fields/TextItems';
 import Slider from './Fields/Slider';
-import Date from './Fields/Date';
 import DateTime from './Fields/DateTime';
 import Uploader from './Fields/Uploader';
-import Multiline from './Fields/Multiline';
 import Select from './Fields/Select';
 
 const styles = theme => ({
@@ -202,18 +200,9 @@ function Form(props) {
                       case FIELDS.textField:
                       case FIELDS.textFieldNumber:
                       case FIELDS.textFieldPassword:
-                        return (
-                          <Text
-                            type={x.type}
-                            formikProps={formikProps}
-                            label={x.label}
-                            name={x.name}
-                            placeholder={x.placeholder}
-                          />
-                        );
                       case FIELDS.textFieldMultiline:
                         return (
-                          <Multiline
+                          <Text
                             type={x.type}
                             formikProps={formikProps}
                             label={x.label}
@@ -252,29 +241,17 @@ function Form(props) {
                       case FIELDS.autocompleteFreeText:
                       case FIELDS.autocompleteMultiFreeText:
                         return (
-                          <Grid item key={x.name}>
-                            <Select
-                              placeholder={x.placeholder}
-                              suggestions={x.suggestions}
-                              name={x.name}
-                              label={x.label}
-                              type={x.type}
-                              formikProps={formikProps}
-                            />
-                          </Grid>
-                        );
-
-                      case FIELDS.date:
-                        return (
-                          <Date
+                          <Select
+                            placeholder={x.placeholder}
+                            suggestions={x.suggestions}
                             name={x.name}
                             label={x.label}
                             type={x.type}
                             formikProps={formikProps}
-                            validator={validator}
                           />
                         );
 
+                      case FIELDS.date:
                       case FIELDS.dateTime:
                         return (
                           <DateTime
