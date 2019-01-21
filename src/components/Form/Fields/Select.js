@@ -5,7 +5,7 @@ const Select = props => {
   const { label, name, type, placeholder, suggestions, formikProps } = props;
   const { setValues, values, errors, touched } = formikProps;
   return (
-    <Grid item key={name}>
+    <Grid item>
       <IntegrationReactSelect
         placeholder={
           placeholder || type.indexOf('MULTI') > -1

@@ -17,7 +17,7 @@ const DateTime = props => {
   const { label, name, formikProps, classes, validator, type } = props;
   const { setValues, values, errors, touched } = formikProps;
   return (
-    <Grid item key={name}>
+    <Grid item>
       <MuiPickersUtilsProvider utils={MomentUtils}>
         {type === FIELDS.dateTime ? (
           <DateTimePicker

@@ -22,7 +22,6 @@ export const sendEmail = async (conversationId, emailObject) => {
     createdAt: now,
     attachments,
   };
-  const messageText = removeHtmlTags(email.body);
   const messageDoc = {
     body: email.body,
     subject: email.subject,
@@ -34,8 +33,10 @@ export const sendEmail = async (conversationId, emailObject) => {
     cc: recipient.cc,
     attachments,
   };
+
+  const messageText = removeHtmlTags(email.body.split('</head>')[1]);
   const lastMessage = { ...messageDoc, body: messageText };
-  console.log('gmailDoc', gmailDoc);
+  //console.log('gmailDoc', gmailDoc);
   //uncommenting will send out emails
   await firestore
     .collection(COLLECTIONS.conversations)

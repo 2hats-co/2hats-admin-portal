@@ -36,7 +36,12 @@ const emailTemplateFields = initialData => {
         label: v,
         value: v,
       })),
-      suggestions: ['{{firstName}}', '{{lastName}}'].map(x => ({
+      suggestions: [
+        '{{firstName}}',
+        '{{lastName}}',
+        '{{senderName}}',
+        '{{senderTitle}}',
+      ].map(x => ({
         value: x,
         label: x,
       })),

@@ -61,6 +61,10 @@ const styles = theme => ({
     boxOrient: 'vertical',
     overflow: 'hidden',
   },
+  unread: {
+    color: theme.palette.common.white,
+    backgroundColor: theme.palette.primary.main,
+  },
 });
 
 const getIcon = type => {
@@ -175,7 +179,13 @@ function Notifications(props) {
                       handleClick(x.data);
                     }}
                   >
-                    <Avatar>{getIcon(x.data.type)}</Avatar>
+                    <Avatar
+                      className={
+                        x.unreadSubscribers.includes(uid) ? classes.unread : ''
+                      }
+                    >
+                      {getIcon(x.data.type)}
+                    </Avatar>
                     <ListItemText
                       primary={
                         <Grid

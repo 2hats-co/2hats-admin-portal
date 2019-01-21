@@ -24,7 +24,7 @@ const Slider = props => {
   } = props;
   const { setValues, values, errors, touched } = formikProps;
   return (
-    <Grid item key={name} className={classes.sliderSectionWrapper}>
+    <Grid item className={classes.sliderSectionWrapper}>
       <Typography
         variant="caption"
         className={classes.sectionTitle}
