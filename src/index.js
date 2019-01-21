@@ -1,14 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-//import Loadable from 'react-loadable';
-//import LoadingHat from './components/LoadingHat';
+import Loadable from 'react-loadable';
+import LoadingHat from './components/LoadingHat';
 import registerServiceWorker from './registerServiceWorker';
-import App from './App';
-// const App = Loadable({
-//   loader: () => import('./App' /* webpackChunkName: "App" */),
-//   loading: LoadingHat,
-// });
+// import App from './App';
+const App = Loadable({
+  loader: () => import('./App' /* webpackChunkName: "App" */),
+  loading: LoadingHat,
+});
 ReactDOM.render(<App />, document.getElementById('root'));
 registerServiceWorker();
 
