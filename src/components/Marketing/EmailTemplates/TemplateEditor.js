@@ -55,7 +55,7 @@ function TemplateEditor(props) {
     });
   };
   const handleSendTest = () => {
-    /* editor.current.exportHtml(data => {
+    editor.current.exportHtml(data => {
       const { design, html } = data;
 
       let emailSubject = subject;
@@ -67,16 +67,15 @@ function TemplateEditor(props) {
       sendEmail({
         email: { subject: emailSubject, body: body },
         recipient: { UID: '234253235', email: currentUser.email },
-        sender: { UID: currentUser.UID, email: senderEmail },
+        sender: { UID: currentUser.UID, email: template.senderEmail },
       });
-    });*/
+    });
   };
-  console.log(template);
   console.log(emailTemplate(template));
   return (
     <div>
       {<EmailEditor ref={editor} minHeight="400px" />}
-      <div style={{ width: '50%' }}>
+      <div style={{ maxWidth: 500 }}>
         <Form
           justForm
           action="save"
@@ -87,6 +86,7 @@ function TemplateEditor(props) {
           }}
           data={emailTemplate(template)}
         />
+        <Button onClick={handleSendTest}>Send test</Button>
       </div>
     </div>
   );

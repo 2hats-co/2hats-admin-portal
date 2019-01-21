@@ -115,12 +115,6 @@ const styles = theme => ({
   },
 });
 
-// const DUMMY_EVENTS = [
-//   { type: 'reminder', label: '12/12/2018 3:48 pm' },
-//   { type: 'file', label: 'resume.pdf', link: 'google.com' },
-//   { type: 'event', label: 'Meeting at 12/12/2018 3:48 pm' },
-// ];
-
 const CANDIDATE_TEMPLATES = [
   templatesObject.outsideDemographic,
   templatesObject.outsideIndusty,
@@ -243,7 +237,6 @@ function Composer(props) {
       clearComposer();
     }
   };
-
   const handleSendEmail = () => {
     const email = {
       subject: emailSubject,
