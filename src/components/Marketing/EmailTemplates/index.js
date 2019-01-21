@@ -10,13 +10,21 @@ import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import TemplateEditor from './TemplateEditor';
 function EmailTemplates(props) {
+  const { location, history } = props;
+
   const [templatesState /*templatesDispatch*/] = useCollection({
     path: COLLECTIONS.emailTemplates,
   });
-  const [template, setTemplate] = useState(null);
-  const { location, history } = props;
-  useEffect(() => {}, [location.search]);
   const templates = templatesState.documents;
+
+  const [template, setTemplate] = useState(null);
+  useEffect(
+    () => {
+      if (!location.search) setTemplate(null);
+    },
+    [location.search]
+  );
+
   if (template) return <TemplateEditor template={template} />;
   if (templates)
     return (
