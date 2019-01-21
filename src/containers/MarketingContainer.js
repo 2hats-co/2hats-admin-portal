@@ -1,12 +1,9 @@
-import React from 'react';
-//import withNavigation from '../components/withNavigation';
+import React, { Suspense, lazy } from 'react';
 
 import withStyles from '@material-ui/core/styles/withStyles';
-// import Typography from '@material-ui/core/Typography';
 import Fade from '@material-ui/core/Fade';
 
 import LocationIndicator from '../components/LocationIndicator';
-//import TemplateEditor from '../components/Marketing/TemplateEditor';
 
 import { ROUTES } from '../constants/routes';
 
@@ -14,19 +11,15 @@ import moment from 'moment';
 import { momentLocales } from '../constants/momentLocales';
 
 import withNavigation from '../components/withNavigation';
-//import LinkedinCampaigns from '../components/Marketing/LinkedinCampaigns';
-import Loadable from 'react-loadable';
 import LoadingHat from '../components/LoadingHat';
-const LinkedinCampaigns = Loadable({
-  loader: () =>
-    import('../components/Marketing/LinkedinCampaigns' /* webpackChunkName: "LinkedinCampaigns" */),
-  loading: LoadingHat,
-});
-const EmailTemplates = Loadable({
-  loader: () =>
-    import('../components/Marketing/EmailTemplates' /* webpackChunkName: "TemplateEditor" */),
-  loading: LoadingHat,
-});
+
+const LinkedinCampaigns = lazy(() =>
+  import('../components/Marketing/LinkedinCampaigns' /* webpackChunkName: "LinkedinCampaigns" */)
+);
+const EmailTemplates = lazy(() =>
+  import('../components/Marketing/EmailTemplates' /* webpackChunkName: "EmailTemplates" */)
+);
+
 const styles = theme => ({
   root: {
     backgroundColor: theme.palette.background.default,
@@ -43,19 +36,24 @@ function MarketingContainer(props) {
   return (
     <Fade in>
       <div className={classes.root}>
-        <LocationIndicator
-          title="Marketing"
-          showShadow
-          subRoutes={[
-            { label: 'Lead Generation', value: ROUTES.marketingLeadGeneration },
-            { label: 'Email', value: ROUTES.marketingEmail },
-          ]}
-        />
-        {location.pathname === '/marketingLeadGeneration' ? (
-          <LinkedinCampaigns />
-        ) : (
-          <EmailTemplates />
-        )}
+        <Suspense fallback={<LoadingHat />}>
+          <LocationIndicator
+            title="Marketing"
+            showShadow
+            subRoutes={[
+              {
+                label: 'Lead Generation',
+                value: ROUTES.marketingLeadGeneration,
+              },
+              { label: 'Email', value: ROUTES.marketingEmail },
+            ]}
+          />
+          {location.pathname === '/marketingLeadGeneration' ? (
+            <LinkedinCampaigns />
+          ) : (
+            <EmailTemplates />
+          )}
+        </Suspense>
       </div>
     </Fade>
   );

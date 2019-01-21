@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, Suspense, lazy } from 'react';
 
 import CampaignCard from './CampaignCard';
 import LoadingHat from '../../LoadingHat';
@@ -6,15 +6,11 @@ import useCollection from '../../../hooks/useCollection';
 import { firestore } from '../../../store';
 import { COLLECTIONS } from '../../../constants/firestore';
 import linkedinCampaignFields from '../../../constants/forms/linkedinCampaign';
-import Loadable from 'react-loadable';
 
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 
-const Form = Loadable({
-  loader: () => import('../../Form' /* webpackChunkName: "Form" */),
-  loading: LoadingHat,
-});
+const Form = lazy(() => import('../../Form' /* webpackChunkName: "Form" */));
 
 const runCampaign = id => {
   firestore
@@ -78,20 +74,22 @@ function LinkedinCampaigns(props) {
             }}
           />
         ))}
-        <Form
-          action={campaign ? 'update' : 'create'}
-          actions={{
-            create: createCampaign,
-            update: data => updateCampaign(data, campaign.id),
-            close: () => {
-              setCampaign(null);
-              setShowEditor(false);
-            },
-          }}
-          open={showEditor}
-          data={linkedinCampaignFields(campaign)}
-          formTitle={campaign ? campaign.query : 'Campaign'}
-        />
+        <Suspense fallback={<LoadingHat message="Forming it up!" />}>
+          <Form
+            action={campaign ? 'update' : 'create'}
+            actions={{
+              create: createCampaign,
+              update: data => updateCampaign(data, campaign.id),
+              close: () => {
+                setCampaign(null);
+                setShowEditor(false);
+              },
+            }}
+            open={showEditor}
+            data={linkedinCampaignFields(campaign)}
+            formTitle={campaign ? campaign.query : 'Campaign'}
+          />
+        </Suspense>
         <Fab
           style={{
             position: 'absolute',

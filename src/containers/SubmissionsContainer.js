@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense, lazy } from 'react';
 import withNavigation from '../components/withNavigation';
 import withStyles from '@material-ui/core/styles/withStyles';
 import green from '@material-ui/core/colors/green';
@@ -10,41 +10,25 @@ import Snackbar from '@material-ui/core/Snackbar';
 import { useSubmission } from '../hooks/useSubmission';
 
 import LocationIndicator from '../components/LocationIndicator';
-//import Done from '../components/Done';
-import Submission from '../components/Submission';
-import ScreeningForm from '../components/Submission/ScreeningForm';
-import FeedbackForm from '../components/Submission/FeedbackForm';
-import TemplateGenerator from '../components/TemplateGenerator';
 import { sendEmail } from '../utilities/email/send';
 import { ROUTES } from '../constants/routes';
-import Loadable from 'react-loadable';
-//import LoadingHat from '../components/LoadingHat';
-//importuseWindowSize from '../hooks/useWindowSize';
-// const TemplateGenerator = Loadable({
-//   loader: () =>
-//     import('../components/TemplateGenerator' /* webpackChunkName: "TemplateGenerator" */),
-//   loading: CircularProgress,
-// });
-// const FeedbackForm = Loadable({
-//   loader: () =>
-//     import('../components/FeedbackForm' /* webpackChunkName: "FeedbackForm" */),
-//   loading: CircularProgress,
-// });
-// const ScreeningForm = Loadable({
-//   loader: () =>
-//     import('../components/ScreeningForm' /* webpackChunkName: "ScreeningForm" */),
-//   loading: CircularProgress,
-// });
-const Done = Loadable({
-  loader: () =>
-    import('../components/Done' /* webpackChunkName: "Submissions-Done" */),
-  loading: CircularProgress,
-});
-// const Submission = Loadable({
-//   loader: () =>
-//     import('../components/Submission' /* webpackChunkName: "Submission" */),
-//   loading: LoadingHat,
-// });
+import LoadingHat from '../components/LoadingHat';
+
+const Done = lazy(() =>
+  import('../components/Done' /* webpackChunkName: "Done" */)
+);
+const Submission = lazy(() =>
+  import('../components/Submission' /* webpackChunkName: "Submission" */)
+);
+const ScreeningForm = lazy(() =>
+  import('../components/Submission/ScreeningForm' /* webpackChunkName: "ScreeningForm" */)
+);
+const FeedbackForm = lazy(() =>
+  import('../components/Submission/FeedbackForm' /* webpackChunkName: "FeedbackForm" */)
+);
+const TemplateGenerator = lazy(() =>
+  import('../components/TemplateGenerator' /* webpackChunkName: "TemplateGenerator" */)
+);
 
 // import Search from '../components/Search'
 const styles = theme => ({
@@ -193,39 +177,41 @@ function SumbissionsContainer(props) {
     <React.Fragment>
       {locationIndicator}
       <Grid container className={classes.root} wrap="nowrap">
-        <Grid item xs className={classes.card}>
-          <Grid
-            container
-            direction="column"
-            wrap="nowrap"
-            style={{ height: '100%' }}
-          >
+        <Suspense fallback={<LoadingHat />}>
+          <Grid item xs className={classes.card}>
             <Grid
-              item
-              xs={template ? 8 : 12}
-              className={classes.submissionWrapper}
+              container
+              direction="column"
+              wrap="nowrap"
+              style={{ height: '100%' }}
             >
-              <Submission
-                submission={submission}
-                listType={location.pathname.split('/')[1]}
-              />
-            </Grid>
-            {template && (
-              <Grid item xs={4} style={{ maxWidth: 'none' }}>
-                <TemplateGenerator
-                  template={template}
-                  recipientUID={submission.UID}
-                  smartLink={smartLink}
-                  setEmail={setEmail}
-                  setEmailReady={setEmailReady}
+              <Grid
+                item
+                xs={template ? 8 : 12}
+                className={classes.submissionWrapper}
+              >
+                <Submission
+                  submission={submission}
+                  listType={location.pathname.split('/')[1]}
                 />
               </Grid>
-            )}
+              {template && (
+                <Grid item xs={4} style={{ maxWidth: 'none' }}>
+                  <TemplateGenerator
+                    template={template}
+                    recipientUID={submission.UID}
+                    smartLink={smartLink}
+                    setEmail={setEmail}
+                    setEmailReady={setEmailReady}
+                  />
+                </Grid>
+              )}
+            </Grid>
           </Grid>
-        </Grid>
-        <Grid item style={{ width: 400, overflowY: 'auto' }}>
-          {rightPanel}
-        </Grid>
+          <Grid item style={{ width: 400, overflowY: 'auto' }}>
+            {rightPanel}
+          </Grid>
+        </Suspense>
       </Grid>
 
       <Snackbar

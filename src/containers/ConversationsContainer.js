@@ -1,7 +1,4 @@
-import React, {
-  //useState,
-  useEffect,
-} from 'react';
+import React, { useEffect, Suspense, lazy } from 'react';
 import withNavigation from '../components/withNavigation';
 import withStyles from '@material-ui/core/styles/withStyles';
 
@@ -14,17 +11,15 @@ import Fade from '@material-ui/core/Fade';
 import ConversationsList from '../components/Conversations/ConversationsList';
 import ConversationHeader from '../components/Conversations/ConversationHeader';
 import Messages from '../components/Conversations/Messages';
-import Loadable from 'react-loadable';
 import LoadingHat from '../components/LoadingHat';
 import useWindowSize from '../hooks/useWindowSize';
 import useDocument from '../hooks/useDocument';
 import { getfirstIdOfQuery } from '../utilities/firestore';
 import { createConversation } from '../utilities/conversations';
-const Composer = Loadable({
-  loader: () =>
-    import('../components/Conversations/Composer' /* webpackChunkName: "MessagesComposer" */),
-  loading: () => <LoadingHat altBg message="Serving up your messages…" />,
-});
+
+const Composer = lazy(() =>
+  import('../components/Conversations/Composer' /* webpackChunkName: "Composer" */)
+);
 
 const styles = theme => ({
   messagesContainer: {
@@ -139,10 +134,14 @@ function ConversationsContainer(props) {
                 <Messages conversation={selectedConversation} />
               </Grid>
               <Grid item className={classes.composerContainer}>
-                <Composer
-                  conversation={selectedConversation}
-                  channels={selectedConversation.channels}
-                />
+                <Suspense
+                  fallback={<LoadingHat message="Getting your controls…" />}
+                >
+                  <Composer
+                    conversation={selectedConversation}
+                    channels={selectedConversation.channels}
+                  />
+                </Suspense>
               </Grid>
             </Grid>
           ) : location.search.indexOf('?id=') > -1 ||
