@@ -74,6 +74,21 @@ const emailTemplateFields = initialData => {
       value: initialData['subject'],
       validation: yup.string().required('Required'),
     },
+    {
+      type: FIELDS.slider,
+      name: 'delay',
+      label: 'Delay',
+      value: initialData['delay'],
+      units: 'days',
+      min: 0,
+      max: 20,
+      step: 1,
+      validation: yup
+        .number()
+        .min(0)
+        .max(20)
+        .required('Delay is required'),
+    },
   ];
 };
 

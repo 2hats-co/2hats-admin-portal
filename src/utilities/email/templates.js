@@ -54,6 +54,7 @@ export const updateTemplate = async templateObject => {
     keys,
     type,
     senderEmail,
+    delay,
   } = templateObject;
 
   const templateDoc = {
@@ -63,6 +64,7 @@ export const updateTemplate = async templateObject => {
     design: JSON.stringify(design),
     subject,
     keys,
+    delay,
     senderEmail,
     updatedAt: new Date(),
   };

@@ -40,13 +40,14 @@ function TemplateEditor(props) {
   const handleSave = formData => {
     editor.current.exportHtml(data => {
       const { design, html } = data;
-      const { type, label, keys, subject, senderEmail } = formData;
+      const { type, label, keys, subject, delay, senderEmail } = formData;
       const formatedEmail = senderEmail.split('@')[0] + '@hats.com';
       updateTemplate({
         docId: template.id,
         label,
         type,
         html,
+        delay,
         design,
         subject,
         senderEmail: formatedEmail,
