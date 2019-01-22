@@ -24,4 +24,5 @@ export const COLLECTIONS = {
   courses: 'courses',
   assessments: 'assessments',
   events: 'events',
+  emailTemplates: 'emailTemplates',
 };

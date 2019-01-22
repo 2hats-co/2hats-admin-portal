@@ -126,13 +126,6 @@ function StatisticsContainer(props) {
   });
 
   const handleSaveLayout = async () => {
-    // const now = new Date().getTime();
-    // const millsSinceLastUpdate = now - layoutLastUpdate;
-    // const millsDelay = 5000;
-    //   if (layoutShouldUpdate && millsSinceLastUpdate > millsDelay) {
-    //  setLayoutLastUpdate(now);
-    // console.log('updating');
-    // await sleep(millsDelay);
     layout.forEach(chartLayout => {
       let newLayout = { ...chartLayout };
       delete newLayout.i;
@@ -149,7 +142,6 @@ function StatisticsContainer(props) {
 
   useEffect(
     () => {
-      console.log('charts', charts);
       if (charts) {
         const layout = charts.map(chart => ({
           i: chart.id,
@@ -158,7 +150,6 @@ function StatisticsContainer(props) {
           w: chart.layout.w,
           h: chart.layout.h,
         }));
-        console.log('layout', layout);
         setLayout(layout);
       }
     },

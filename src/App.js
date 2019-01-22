@@ -12,7 +12,7 @@ import StatisticsContainer from './containers/StatisticsContainer';
 //containers
 import Loadable from 'react-loadable';
 import PushNotifications from './components/PushNotifications';
-
+import withAuthentication from './components/withAuthentication';
 // const StatisticsContainer = Loadable({
 //   loader: () =>
 //     import('./containers/StatisticsContainer' /* webpackChunkName: "StatisticsContainer" */),
@@ -55,7 +55,7 @@ const ContentManagerContainer = Loadable({
   loading: LoadingHat,
 });
 
-function App() {
+function App(props) {
   const currentUser = useAuthedUser();
 
   if (currentUser && currentUser.isLoading) return <LoadingHat />;
@@ -92,85 +92,89 @@ function App() {
             <Route
               exact
               path={ROUTES.auth}
-              component={() => <AuthenticationContainer />}
+              component={() => <AuthenticationContainer {...props} />}
             />
             <Route
               exact
               path={ROUTES.stats}
-              component={() => <StatisticsContainer />}
+              component={() => <StatisticsContainer {...props} />}
             />
             <Route
               exact
               path={ROUTES.subjects}
-              component={() => <SubjectsContainer />}
+              component={() => <SubjectsContainer {...props} />}
             />
             <Route
               exact
               path={ROUTES.candidates}
-              component={() => <SubjectsContainer route={ROUTES.candidates} />}
+              component={() => (
+                <SubjectsContainer route={ROUTES.candidates} {...props} />
+              )}
             />
             <Route
               exact
               path={ROUTES.clients}
-              component={() => <SubjectsContainer route={ROUTES.clients} />}
+              component={() => (
+                <SubjectsContainer route={ROUTES.clients} {...props} />
+              )}
             />
             <Route
               exact
               path={ROUTES.conversations}
-              component={() => <ConversationsContainer />}
+              component={() => <ConversationsContainer {...props} />}
             />
             <Route
               exact
               path={ROUTES.submissions}
-              component={() => <SubmissionsContainer />}
+              component={() => <SubmissionsContainer {...props} />}
             />
             <Route
               exact
               path={ROUTES.marketingLeadGeneration}
-              component={() => <MarketingContainer />}
+              component={() => <MarketingContainer {...props} />}
             />
             <Route
               exact
               path={ROUTES.marketingEmail}
-              component={() => <MarketingContainer />}
+              component={() => <MarketingContainer {...props} />}
             />
             <Route
               exact
               path={ROUTES.pending}
-              component={() => <SubmissionsContainer />}
+              component={() => <SubmissionsContainer {...props} />}
             />
             <Route
               exact
               path={ROUTES.rejected}
-              component={() => <SubmissionsContainer />}
+              component={() => <SubmissionsContainer {...props} />}
             />
             <Route
               exact
               path={ROUTES.accepted}
-              component={() => <SubmissionsContainer />}
+              component={() => <SubmissionsContainer {...props} />}
             />
 
             <Route
               exact
-              path={ROUTES.jobsManager}
-              component={() => <ContentManagerContainer />}
+              path={ROUTES.jobsManager || ROUTES.coursesManager}
+              component={() => <ContentManagerContainer {...props} />}
             />
             <Route
               exact
               path={ROUTES.coursesManager}
-              component={() => <ContentManagerContainer />}
+              component={() => <ContentManagerContainer {...props} />}
             />
             <Route
               exact
               path={ROUTES.assessmentsManager}
-              component={() => <ContentManagerContainer />}
+              component={() => <ContentManagerContainer {...props} />}
             />
             <Route
               exact
               path={ROUTES.eventsManager}
-              component={() => <ContentManagerContainer />}
+              component={() => <ContentManagerContainer {...props} />}
             />
-            <Route exact path={'/'} component={() => <Landing />} />
+            <Route exact path={'/'} component={() => <Landing {...props} />} />
             <Route component={() => <div>404</div>} />
           </Switch>
         </div>

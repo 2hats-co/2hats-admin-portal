@@ -22,9 +22,9 @@ const LinkedinCampaigns = Loadable({
     import('../components/Marketing/LinkedinCampaigns' /* webpackChunkName: "LinkedinCampaigns" */),
   loading: LoadingHat,
 });
-const TemplateEditor = Loadable({
+const EmailTemplates = Loadable({
   loader: () =>
-    import('../components/Marketing/TemplateEditor' /* webpackChunkName: "TemplateEditor" */),
+    import('../components/Marketing/EmailTemplates' /* webpackChunkName: "TemplateEditor" */),
   loading: LoadingHat,
 });
 const styles = theme => ({
@@ -54,7 +54,7 @@ function MarketingContainer(props) {
         {location.pathname === '/marketingLeadGeneration' ? (
           <LinkedinCampaigns />
         ) : (
-          <TemplateEditor />
+          <EmailTemplates />
         )}
       </div>
     </Fade>

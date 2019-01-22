@@ -20,12 +20,6 @@ export const updateAdminSubCollectionProps = (
     .doc(docId)
     .update({ ...properties });
 };
-export const deleteDoc = (collection, docId) => {
-  firestore
-    .collection(collection)
-    .doc(docId)
-    .delete();
-};
 
 export const generateSmartKey = (uid, route) => {
   const smartKey = makeId(36);
@@ -67,4 +61,10 @@ export const getfirstIdOfQuery = async (collectionPath, filters) => {
 
 export const createDoc = (collection, docData) => {
   firestore.collection(collection).add(docData);
+};
+export const deleteDoc = (collection, docId) => {
+  firestore
+    .collection(collection)
+    .doc(docId)
+    .delete();
 };

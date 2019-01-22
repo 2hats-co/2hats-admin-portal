@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import assoc from 'ramda/es/assoc';
 export function useAuthedUser() {
   const [currentUser, setCurrentUser] = useState(null);
+  let unsubscribe;
   const handleGetAuthedUser = async uid => {
     const user = await firestore
       .collection(COLLECTIONS.admins)
@@ -15,19 +16,33 @@ export function useAuthedUser() {
   useEffect(
     () => {
       if (!currentUser) {
-        auth.onAuthStateChanged(authUser => {
+        unsubscribe = auth.onAuthStateChanged(authUser => {
           if (authUser) {
-            setCurrentUser({
-              UID: authUser.uid,
-              givenName: authUser.displayName.split(' ')[0],
-              displayName: authUser.displayName,
-              isLoading: true,
-              email: authUser.email,
-            });
+            if (authUser.displayName) {
+              setCurrentUser({
+                UID: authUser.uid,
+                givenName: authUser.displayName.split(' ')[0] || '',
+                displayName: authUser.displayName,
+                isLoading: true,
+                email: authUser.email,
+              });
+            } else {
+              setCurrentUser({
+                UID: authUser.uid,
+                givenName: ':(',
+                displayName: ':(--',
+                isLoading: true,
+                email: authUser.email,
+              });
+            }
+
             handleGetAuthedUser(authUser.uid);
           }
         });
       }
+      return () => {
+        if (unsubscribe) unsubscribe();
+      };
     },
     [currentUser]
   );

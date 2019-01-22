@@ -78,7 +78,6 @@ function ConversationsContainer(props) {
       if (conversationId) {
         dispatchConversation({ path: `conversations/${conversationId}` });
       } else {
-        console.log('creating conversation');
         const conversationId = await createConversation(uid, currentUserId);
         dispatchConversation({ path: `conversations/${conversationId}` });
       }

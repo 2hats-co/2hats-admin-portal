@@ -42,7 +42,7 @@ function GoogleButton(props) {
     setCID(GOOGLE_CID_STAGING);
   }
   const handleRouting = route => {
-    this.props.history.replace(route);
+    props.history.replace(route);
   };
   const handleGoogleAuthFail = error => {
     console.log('google auth fail', error);

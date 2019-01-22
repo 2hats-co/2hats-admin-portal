@@ -140,7 +140,6 @@ function SumbissionsContainer(props) {
   }
 
   if (submission.complete) {
-    // console.log(submission);
     return (
       <div style={{ overflow: 'hidden' }}>
         {locationIndicator} <Done />

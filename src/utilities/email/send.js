@@ -10,7 +10,6 @@ import { COLLECTIONS } from '../../constants/firestore';
 export const sendEmail = async emailObject => {
   const { recipient, sender, email } = emailObject;
 
-  debugger;
   const commDoc = {
     UID: recipient.UID,
     candidateEmail: recipient.email,
@@ -21,5 +20,6 @@ export const sendEmail = async emailObject => {
     body: email.body,
     createdAt: new Date(),
   };
+
   return await firestore.collection(COLLECTIONS.communications).add(commDoc);
 };

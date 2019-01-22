@@ -9,11 +9,11 @@ const withAuthentication = Component =>
   function WithAuthentication(props) {
     const [loading, setLoading] = useState(true);
     const [authedUser, setAuthedUser] = useState(null);
-
+    let unsubscribe;
     useEffect(
       () => {
         if (!authedUser && loading) {
-          auth.onAuthStateChanged(authUser => {
+          unsubscribe = auth.onAuthStateChanged(authUser => {
             if (authUser) {
               initializePushNotifications();
               setAuthedUser(authUser);
@@ -24,10 +24,7 @@ const withAuthentication = Component =>
             }
           });
           return () => {
-            var unsubscribe = auth.onAuthStateChanged(function(user) {
-              // handle it
-            });
-            unsubscribe();
+            if (unsubscribe) unsubscribe();
           };
         }
       },

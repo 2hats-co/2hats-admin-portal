@@ -1,7 +1,7 @@
 import { firestore } from '../store';
 import { useEffect, useReducer } from 'react';
 import equals from 'ramda/es/equals';
-const CAP = 50;
+const CAP = 500;
 
 const collectionReducer = (prevState, newProps) => {
   if (newProps.type) {
