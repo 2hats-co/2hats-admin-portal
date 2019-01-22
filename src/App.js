@@ -11,9 +11,10 @@ import SubmissionsContainer from './containers/SubmissionsContainer';
 //containers
 import PushNotifications from './components/PushNotifications';
 
-const StatisticsContainer = lazy(() =>
-  import('./containers/StatisticsContainer' /* webpackChunkName: "StatisticsContainer" */)
-);
+import StatisticsContainer from './containers/StatisticsContainer';
+// const StatisticsContainer = lazy(() =>
+//   import('./containers/StatisticsContainer' /* webpackChunkName: "StatisticsContainer" */)
+// );
 const SubjectsContainer = lazy(() =>
   import('./containers/SubjectsContainer' /* webpackChunkName: "SubjectsContainer" */)
 );

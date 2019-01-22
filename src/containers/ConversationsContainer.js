@@ -1,4 +1,7 @@
-import React, { useEffect, Suspense, lazy } from 'react';
+import React, {
+  useEffect,
+  //Suspense, //lazy
+} from 'react';
 import withNavigation from '../components/withNavigation';
 import withStyles from '@material-ui/core/styles/withStyles';
 
@@ -17,9 +20,10 @@ import useDocument from '../hooks/useDocument';
 import { getfirstIdOfQuery } from '../utilities/firestore';
 import { createConversation } from '../utilities/conversations';
 
-const Composer = lazy(() =>
-  import('../components/Conversations/Composer' /* webpackChunkName: "Composer" */)
-);
+import Composer from '../components/Conversations/Composer';
+// const Composer = lazy(() =>
+//   import('../components/Conversations/Composer' /* webpackChunkName: "Composer" */)
+// );
 
 const styles = theme => ({
   messagesContainer: {
@@ -134,14 +138,14 @@ function ConversationsContainer(props) {
                 <Messages conversation={selectedConversation} />
               </Grid>
               <Grid item className={classes.composerContainer}>
-                <Suspense
+                {/* <Suspense
                   fallback={<LoadingHat message="Getting your controls…" />}
-                >
-                  <Composer
-                    conversation={selectedConversation}
-                    channels={selectedConversation.channels}
-                  />
-                </Suspense>
+                > */}
+                <Composer
+                  conversation={selectedConversation}
+                  channels={selectedConversation.channels}
+                />
+                {/* </Suspense> */}
               </Grid>
             </Grid>
           ) : location.search.indexOf('?id=') > -1 ||
