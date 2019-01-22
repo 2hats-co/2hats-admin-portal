@@ -1,6 +1,9 @@
 import FIELDS from './fields';
 import * as yup from 'yup';
 
+import SKILLS from '../studentPortal/skills';
+import ASSESSMENT_CATEGORIES from '../studentPortal/assessmentCategories';
+
 const jobFields = initialData => {
   if (!initialData) initialData = {};
   return [
@@ -29,8 +32,8 @@ const jobFields = initialData => {
       type: FIELDS.autocompleteMulti,
       name: 'skillsRequired',
       label: 'Skills required',
-      value: initialData['skillsRequired'],
-      suggestions: ['ds', 'sdf', 'sdfd'].map(x => ({ value: x, label: x })),
+      value: SKILLS.filter(x => x.value === initialData['skillAssociated']),
+      suggestions: SKILLS,
       validation: yup
         .array()
         .min(1)
@@ -40,8 +43,10 @@ const jobFields = initialData => {
       type: FIELDS.autocompleteFreeText,
       name: 'industry',
       label: 'Industry',
-      suggestions: ['ds', 'sdf', 'sdfd'].map(x => ({ value: x, label: x })),
-      value: initialData['industry'],
+      suggestions: ASSESSMENT_CATEGORIES,
+      value: ASSESSMENT_CATEGORIES.filter(
+        x => x.value === initialData['category']
+      ),
       validation: yup.string().required('Industry is required'),
     },
     {

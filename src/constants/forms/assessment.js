@@ -13,7 +13,9 @@ const assessmentFields = initialData => {
       name: 'category',
       label: 'Category',
       suggestions: ASSESSMENT_CATEGORIES,
-      value: SKILLS.filter(x => x.value === initialData['category']),
+      value: ASSESSMENT_CATEGORIES.filter(
+        x => x.value === initialData['category']
+      ),
       validation: yup.string().required('Category is required'),
     },
     {

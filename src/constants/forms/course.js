@@ -1,6 +1,8 @@
 import FIELDS from './fields';
 import * as yup from 'yup';
 
+import SKILLS from '../studentPortal/skills';
+
 const courseFields = initialData => {
   if (!initialData) initialData = {};
   return [
@@ -32,8 +34,8 @@ const courseFields = initialData => {
       type: FIELDS.autocompleteMulti,
       name: 'skillsAssociated',
       label: 'Skills associated',
-      value: initialData['skillsAssociated'],
-      suggestions: ['ds', 'sdf', 'sdfd'].map(x => ({ value: x, label: x })),
+      value: SKILLS.filter(x => x.value === initialData['skillAssociated']),
+      suggestions: SKILLS,
       validation: yup
         .array()
         .min(1)
