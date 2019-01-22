@@ -188,6 +188,7 @@ function Form(props) {
                 case FIELDS.textFieldMultiline:
                   return (
                     <Text
+                      key={x.name}
                       type={x.type}
                       formikProps={formikProps}
                       label={x.label}
@@ -199,6 +200,7 @@ function Form(props) {
                 case FIELDS.chipFreeText:
                   return (
                     <TextItems
+                      key={x.name}
                       label={x.label}
                       name={x.name}
                       formikProps={formikProps}
@@ -210,6 +212,7 @@ function Form(props) {
                 case FIELDS.slider:
                   return (
                     <Slider
+                      key={x.name}
                       name={x.name}
                       label={x.label}
                       min={x.min}
@@ -227,6 +230,7 @@ function Form(props) {
                 case FIELDS.autocompleteMultiFreeText:
                   return (
                     <Select
+                      key={x.name}
                       placeholder={x.placeholder}
                       suggestions={x.suggestions}
                       name={x.name}
@@ -240,6 +244,7 @@ function Form(props) {
                 case FIELDS.dateTime:
                   return (
                     <DateTime
+                      key={x.name}
                       name={x.name}
                       label={x.label}
                       type={x.type}
@@ -251,7 +256,9 @@ function Form(props) {
                 case FIELDS.dropzone:
                   return (
                     <Uploader
+                      key={x.name}
                       formikProps={formikProps}
+                      thisBind={this}
                       label={x.label}
                       name={x.name}
                       path={x.path}

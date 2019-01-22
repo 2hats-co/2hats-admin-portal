@@ -51,6 +51,7 @@ const Uploader = props => {
     classes,
   } = props;
   const { setValues, values, errors, touched } = formikProps;
+
   return (
     <Grid item key={name}>
       <Typography
@@ -66,10 +67,10 @@ const Uploader = props => {
             ...values,
             [name]: { name: files[0].name },
           });
-          blobImageUploader(files[0], path, (url, name) => {
+          blobImageUploader(files[0], path, (url, fileName) => {
             setValues({
               ...values,
-              [name]: { name, url },
+              [name]: { name: fileName, url },
             });
           });
         }}

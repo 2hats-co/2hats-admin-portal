@@ -32,7 +32,9 @@ const jobFields = initialData => {
       type: FIELDS.autocompleteMulti,
       name: 'skillsRequired',
       label: 'Skills required',
-      value: SKILLS.filter(x => x.value === initialData['skillAssociated']),
+      value:
+        initialData['skillsRequired'] &&
+        SKILLS.filter(x => initialData['skillsRequired'].includes(x.value)),
       suggestions: SKILLS,
       validation: yup
         .array()
@@ -45,7 +47,7 @@ const jobFields = initialData => {
       label: 'Industry',
       suggestions: ASSESSMENT_CATEGORIES,
       value: ASSESSMENT_CATEGORIES.filter(
-        x => x.value === initialData['category']
+        x => x.value === initialData['industry']
       ),
       validation: yup.string().required('Industry is required'),
     },

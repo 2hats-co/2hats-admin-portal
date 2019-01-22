@@ -34,7 +34,9 @@ const courseFields = initialData => {
       type: FIELDS.autocompleteMulti,
       name: 'skillsAssociated',
       label: 'Skills associated',
-      value: SKILLS.filter(x => x.value === initialData['skillAssociated']),
+      value:
+        initialData['skillAssociated'] &&
+        SKILLS.filter(x => initialData['skillAssociated'].includes(x.value)),
       suggestions: SKILLS,
       validation: yup
         .array()
