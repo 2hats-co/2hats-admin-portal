@@ -18,6 +18,13 @@ const courseFields = initialData => {
     },
     {
       type: FIELDS.textField,
+      name: 'id',
+      label: 'LearnWorlds course ID',
+      value: initialData['id'],
+      validation: yup.string().required('Required Learn Worlds course id'),
+    },
+    {
+      type: FIELDS.textField,
       name: 'title',
       label: 'Title',
       value: initialData['title'],

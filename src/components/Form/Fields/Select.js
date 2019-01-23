@@ -23,7 +23,7 @@ const Select = props => {
         label={label}
         isMulti={type.indexOf('MULTI') > -1}
         creatable={type.indexOf('FREE_TEXT') > -1}
-        error={errors[name] && touched[name]}
+        error={!!(errors[name] && touched[name])}
         helperText={touched[name] && errors[name]}
       />
     </Grid>

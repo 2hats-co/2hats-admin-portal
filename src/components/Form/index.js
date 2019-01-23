@@ -215,6 +215,8 @@ function Form(props) {
                       key={x.name}
                       name={x.name}
                       label={x.label}
+                      calcValueLabel={x.calcValueLabel}
+                      sliderThumbLabel={x.sliderThumbLabel}
                       min={x.min}
                       max={x.max}
                       step={x.step}

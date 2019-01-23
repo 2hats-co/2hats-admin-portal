@@ -9,6 +9,35 @@ const styles = theme => ({
   sliderWrapper: {
     marginRight: theme.spacing.unit * 3,
   },
+
+  thumb: {
+    width: theme.spacing.unit * 1.5,
+    height: theme.spacing.unit * 1.5,
+    borderRadius: '50%',
+    backgroundColor: theme.palette.primary.main,
+  },
+  thumbLabel: {
+    transition: theme.transitions.create('transform', {
+      duration: theme.transitions.duration.shortest,
+    }),
+    transform: 'scale(0)',
+    transformOrigin: '0 100%',
+
+    position: 'absolute',
+    top: -theme.spacing.unit * 5,
+    left: theme.spacing.unit * 0.75,
+    padding: `${theme.spacing.unit / 2}px ${theme.spacing.unit}px`,
+
+    backgroundColor: theme.palette.primary.main,
+    color: theme.palette.primary.contrastText,
+    borderRadius: theme.spacing.unit * 1.5,
+    borderBottomLeftRadius: 2,
+
+    fontWeight: 500,
+    fontFamily: theme.typography.fontFamily,
+
+    '$thumb:active &, $thumb:focus &': { transform: 'scale(1)' },
+  },
 });
 const Slider = props => {
   const {
@@ -16,6 +45,8 @@ const Slider = props => {
     name,
     min,
     max,
+    calcValueLabel,
+    sliderThumbLabel,
     step,
     units,
     formikProps,
@@ -23,6 +54,12 @@ const Slider = props => {
     validator,
   } = props;
   const { setValues, values, errors, touched } = formikProps;
+
+  let valueLabel = `${
+    step < 0.999 ? values[name].toFixed(1) : values[name]
+  } ${units}`;
+  if (calcValueLabel) valueLabel = calcValueLabel(values[name]);
+
   return (
     <Grid item key={name} className={classes.sliderSectionWrapper}>
       <Typography
@@ -47,12 +84,18 @@ const Slider = props => {
             min={min}
             max={max}
             step={step}
+            thumb={
+              <div className={classes.thumb}>
+                <Typography variant="body1" className={classes.thumbLabel}>
+                  {values[name]}
+                  {sliderThumbLabel || units}
+                </Typography>
+              </div>
+            }
           />
         </Grid>
         <Grid item>
-          <Typography variant="subtitle2">
-            {step < 0.999 ? values[name].toFixed(1) : values[name]} {units}
-          </Typography>
+          <Typography variant="subtitle1">{valueLabel}</Typography>
         </Grid>
       </Grid>{' '}
       {validator(name)}

@@ -59,11 +59,22 @@ const jobFields = initialData => {
       validation: yup.string().required('Closing date is required'),
     },
     {
-      type: FIELDS.textField,
-      name: 'pay',
-      label: 'Pay',
-      value: initialData['pay'],
-      validation: yup.string().required('Pay is required'),
+      type: FIELDS.textFieldNumber,
+      name: 'payRate',
+      label: 'Pay rate',
+      value: initialData['payRate'],
+      validation: yup.string().required('Pay rate is required'),
+    },
+    {
+      type: FIELDS.autocomplete,
+      name: 'payUnits',
+      label: 'Skills required',
+      value: initialData['payUnits'] && {
+        value: initialData['payUnits'],
+        label: initialData['payUnits'],
+      },
+      suggestions: ['hour', 'day', 'week'].map(x => ({ value: x, label: x })),
+      validation: yup.string().required('Pay units is required'),
     },
     {
       type: FIELDS.textField,

@@ -60,7 +60,14 @@ export const getfirstIdOfQuery = async (collectionPath, filters) => {
 };
 
 export const createDoc = (collection, docData) => {
-  firestore.collection(collection).add(docData);
+  if (docData.id) {
+    firestore
+      .collection(collection)
+      .doc(docData.id)
+      .set(docData);
+  } else {
+    firestore.collection(collection).add(docData);
+  }
 };
 export const deleteDoc = (collection, docId) => {
   firestore
