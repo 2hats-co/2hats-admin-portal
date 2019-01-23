@@ -34,7 +34,11 @@ export const sendEmail = async (conversationId, emailObject) => {
     attachments,
   };
 
-  const messageText = removeHtmlTags(email.body.split('</head>')[1]);
+  let messageText = email.body;
+  if (email.body.includes('</head>')) {
+    messageText = removeHtmlTags(email.body.split('</head>')[1]);
+  }
+
   const lastMessage = { ...messageDoc, body: messageText };
   //console.log('gmailDoc', gmailDoc);
   //uncommenting will send out emails
