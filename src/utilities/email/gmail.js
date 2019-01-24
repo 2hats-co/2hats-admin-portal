@@ -1,6 +1,6 @@
 import { firestore } from '../../store';
 import { COLLECTIONS } from '../../constants/firestore';
-import { removeHtmlTags } from '../index';
+import { removeHtmlTags, makeId } from '../index';
 
 /**
  * @param {{UID:string,email:string}} recipient
@@ -9,9 +9,11 @@ import { removeHtmlTags } from '../index';
  */
 export const sendEmail = async (conversationId, emailObject) => {
   const { recipient, sender, email, attachments } = emailObject;
+  const messageId = makeId(12);
   const now = new Date();
   const gmailDoc = {
     conversationId,
+    messageId,
     headers: {
       To: recipient.email,
       Cc: recipient.cc,
@@ -46,7 +48,8 @@ export const sendEmail = async (conversationId, emailObject) => {
     .collection(COLLECTIONS.conversations)
     .doc(conversationId)
     .collection(COLLECTIONS.messages)
-    .add(messageDoc);
+    .doc(messageId)
+    .set(messageDoc);
   await firestore
     .collection(COLLECTIONS.conversations)
     .doc(conversationId)

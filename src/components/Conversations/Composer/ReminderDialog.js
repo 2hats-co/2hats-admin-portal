@@ -175,9 +175,10 @@ function ReminderDialog(props) {
   };
 
   const titleSuggestions = [
-    displayName,
+    `follow Up ${displayName}`,
     `Call ${displayName}`,
     `Reply to ${displayName}`,
+    displayName,
   ];
 
   const disableAdd = title.length === 0 || !dt || subscribers.length === 0;
