@@ -7,7 +7,7 @@ const ASSESSMENT_CATEGORIES = [
 
 export const SUBMISSION_TYPES = [
   { label: 'PDF', value: 'pdf' },
-  { label: 'Text', value: 'text' },
+  { label: 'Rich text', value: 'richText' },
   { label: 'Mailchimp', value: 'mailchimp' },
 ];
 

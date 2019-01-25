@@ -26,21 +26,13 @@ const assessmentFields = initialData => {
       suggestions: SKILLS,
       validation: yup.string().required('Skill is required'),
     },
-    // {
-    //   type: FIELDS.slider,
-    //   name: 'duration',
-    //   label: 'Duration',
-    //   value: initialData['duration'],
-    //   units: 'mins',
-    //   min: 5,
-    //   max: 100,
-    //   step: 5,
-    //   validation: yup
-    //     .number()
-    //     .min(5)
-    //     .max(100)
-    //     .required('Duration is required'),
-    // },
+    {
+      type: FIELDS.textField,
+      name: 'title',
+      label: 'Title',
+      value: initialData['title'],
+      validation: yup.string().required('Required'),
+    },
     {
       type: FIELDS.textField,
       name: 'duration',
@@ -51,13 +43,6 @@ const assessmentFields = initialData => {
       max: 20,
       step: 0.5,
       validation: yup.string().required('Duration is required'),
-    },
-    {
-      type: FIELDS.textField,
-      name: 'title',
-      label: 'Title',
-      value: initialData['title'],
-      validation: yup.string().required('Required'),
     },
     {
       type: FIELDS.textFieldMultiline,
@@ -74,15 +59,11 @@ const assessmentFields = initialData => {
       validation: yup.string().required('Required'),
     },
     {
-      type: FIELDS.chipFreeText,
+      type: FIELDS.richText,
       name: 'taskInstructions',
       label: 'Task instructions',
       value: initialData['taskInstructions'],
-      validation: yup
-        .array()
-        .of(yup.string())
-        .min(1)
-        .required('Required'),
+      validation: yup.string().required('Required'),
     },
     {
       type: FIELDS.autocomplete,
@@ -93,13 +74,6 @@ const assessmentFields = initialData => {
       ),
       suggestions: SUBMISSION_TYPES,
       validation: yup.string().required('Submission type is required'),
-    },
-    {
-      type: FIELDS.chipFreeText,
-      name: 'links',
-      label: 'Links to education sources to support the task completion',
-      value: initialData['links'] || [],
-      validation: yup.array().of(yup.string().url('Invalid URL')),
     },
     {
       type: FIELDS.dropzone,

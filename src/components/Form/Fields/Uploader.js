@@ -11,8 +11,10 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import Chip from '@material-ui/core/Chip';
 
 const styles = theme => ({
-  sectionTitle: {
+  sectionTitle: { marginLeft: theme.spacing.unit * 1.5 },
+  warning: {
     marginLeft: theme.spacing.unit * 1.5,
+    marginBottom: theme.spacing.unit,
   },
   dropzone: {
     borderRadius: theme.shape.borderRadius,
@@ -62,17 +64,23 @@ const Uploader = props => {
       >
         {label}
       </Typography>
+      <Typography variant="body2" className={classes.warning}>
+        Please do this last and do not modify any other fields during upload.
+        This is a known bug and will be fixed in the future
+      </Typography>
       <Dropzone
         onDrop={files => {
           setValues({
             ...values,
             [name]: { name: files[0].name },
           });
+          console.log('ondrop', values);
           blobImageUploader(files[0], path, (url, fileName) => {
             setValues({
               ...values,
               [name]: { name: fileName, url },
             });
+            console.log('onupload', values, fileName, url);
           });
         }}
         accept={mimeTypes || ''}

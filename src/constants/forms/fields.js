@@ -4,6 +4,8 @@ const FIELDS = {
   textFieldPassword: 'TEXT_FIELD_PASSWORD',
   textFieldMultiline: 'TEXT_FIELD_MULTILINE',
 
+  richText: 'RICH_TEXT',
+
   chipFreeText: 'CHIP_FREE_TEXT',
 
   autocomplete: 'AUTOCOMPLETE',

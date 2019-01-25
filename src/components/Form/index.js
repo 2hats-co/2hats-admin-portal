@@ -20,6 +20,7 @@ import DateTime from './Fields/DateTime';
 import Uploader from './Fields/Uploader';
 import Select from './Fields/Select';
 import Checkbox from './Fields/Checkbox';
+import RichText from './Fields/RichText';
 
 const styles = theme => ({
   paperRoot: {
@@ -47,6 +48,7 @@ const styles = theme => ({
   wrapperGrid: {
     marginTop: theme.spacing.unit,
     overflowX: 'hidden',
+    paddingBottom: theme.spacing.unit,
   },
 
   capitalise: {
@@ -208,6 +210,18 @@ function Form(props) {
                       label={x.label}
                       name={x.name}
                       placeholder={x.placeholder}
+                    />
+                  );
+
+                case FIELDS.richText:
+                  return (
+                    <RichText
+                      key={x.name}
+                      formikProps={formikProps}
+                      label={x.label}
+                      name={x.name}
+                      placeholder={x.placeholder}
+                      validator={validator}
                     />
                   );
 
