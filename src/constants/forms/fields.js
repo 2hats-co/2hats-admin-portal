@@ -17,6 +17,8 @@ const FIELDS = {
   date: 'DATE_PICKER',
   dateTime: 'DATE_TIME_PICKER',
   time: 'TIME_PICKER',
+
+  checkbox: 'CHECKBOX',
 };
 
 export default FIELDS;
