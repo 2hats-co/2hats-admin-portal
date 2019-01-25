@@ -2,8 +2,6 @@ import FIELDS from './fields';
 import * as yup from 'yup';
 import SKILLS from '../studentPortal/skills';
 
-import ASSESSMENT_CATEGORIES from '../studentPortal/assessmentCategories';
-
 const jobFields = initialData => {
   if (!initialData) initialData = {};
   return [

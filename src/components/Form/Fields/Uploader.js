@@ -74,13 +74,11 @@ const Uploader = props => {
             ...values,
             [name]: { name: files[0].name },
           });
-          console.log('ondrop', values);
           blobImageUploader(files[0], path, (url, fileName) => {
             setValues({
               ...values,
               [name]: { name: fileName, url },
             });
-            console.log('onupload', values, fileName, url);
           });
         }}
         accept={mimeTypes || ''}

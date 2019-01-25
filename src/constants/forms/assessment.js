@@ -7,6 +7,7 @@ import SKILLS from '../studentPortal/skills';
 
 const assessmentFields = initialData => {
   if (!initialData) initialData = {};
+
   return [
     {
       type: FIELDS.autocompleteFreeText,
@@ -15,14 +16,14 @@ const assessmentFields = initialData => {
       suggestions: ASSESSMENT_CATEGORIES,
       value: ASSESSMENT_CATEGORIES.filter(
         x => x.value === initialData['category']
-      ),
+      )[0],
       validation: yup.string().required('Category is required'),
     },
     {
       type: FIELDS.autocomplete,
       name: 'skillAssociated',
       label: 'Skill associated',
-      value: SKILLS.filter(x => x.value === initialData['skillAssociated']),
+      value: SKILLS.filter(x => x.value === initialData['skillAssociated'])[0],
       suggestions: SKILLS,
       validation: yup.string().required('Skill is required'),
     },

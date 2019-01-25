@@ -66,8 +66,8 @@ const Text = props => {
 
             [{ header: 1 }, { header: 2 }],
             [{ list: 'bullet' }, { list: 'ordered' }],
+            [{ indent: '-1' }, { indent: '+1' }],
 
-            //[{ color: [] }, { background: [] }],
             ['link'],
           ],
         }}

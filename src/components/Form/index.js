@@ -143,6 +143,7 @@ function Form(props) {
           reactSelectValueFormatter,
           outputValues
         );
+
         const youtubeUrlFormatted = map(
           youtubeUrlFormatter,
           reactSelectFormattedValues
