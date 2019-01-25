@@ -7,11 +7,12 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import Dropzone from 'react-dropzone';
 import { blobImageUploader } from '../../../utilities/imageUploader';
 import CloudUploadIcon from '@material-ui/icons/CloudUploadOutlined';
+import FormHelperText from '@material-ui/core/FormHelperText';
 import Chip from '@material-ui/core/Chip';
 
 const styles = theme => ({
   sectionTitle: {
-    marginLeft: theme.spacing.unit,
+    marginLeft: theme.spacing.unit * 1.5,
   },
   dropzone: {
     borderRadius: theme.shape.borderRadius,
@@ -107,7 +108,11 @@ const Uploader = props => {
           />
         </div>
       )}
-      {validator(name)}
+      {touched[name] && errors[name] && (
+        <FormHelperText error className={classes.sectionTitle}>
+          Required
+        </FormHelperText>
+      )}
     </Grid>
   );
 };

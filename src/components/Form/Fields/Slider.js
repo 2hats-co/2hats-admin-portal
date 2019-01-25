@@ -6,9 +6,9 @@ import MUISlider from '@material-ui/lab/Slider';
 
 const styles = theme => ({
   sliderSectionWrapper: { margin: `${theme.spacing.unit}px 0` },
-  sliderWrapper: {
-    marginRight: theme.spacing.unit * 3,
-  },
+  sliderWrapper: { marginRight: theme.spacing.unit * 3 },
+  slider: { marginLeft: theme.spacing.unit },
+  sectionTitle: { marginLeft: theme.spacing.unit * 1.5 },
 
   thumb: {
     width: theme.spacing.unit * 1.5,

@@ -19,6 +19,7 @@ import Slider from './Fields/Slider';
 import DateTime from './Fields/DateTime';
 import Uploader from './Fields/Uploader';
 import Select from './Fields/Select';
+import Checkbox from './Fields/Checkbox';
 
 const styles = theme => ({
   paperRoot: {
@@ -43,14 +44,17 @@ const styles = theme => ({
       right: theme.spacing.unit * 3,
     },
   },
-  wrapperGrid: { marginTop: theme.spacing.unit },
+  wrapperGrid: {
+    marginTop: theme.spacing.unit,
+    overflowX: 'hidden',
+  },
 
   capitalise: {
     '&::first-letter': { textTransform: 'uppercase' },
   },
 
   sectionTitle: {
-    marginLeft: theme.spacing.unit,
+    marginLeft: theme.spacing.unit * 1.5,
   },
 
   dialogActions: {
@@ -97,7 +101,17 @@ const validationReducer = (obj, item) => (
 );
 
 function Form(props) {
-  const { classes, action, actions, open, data, formTitle, justForm } = props;
+  const {
+    classes,
+    action,
+    actions,
+    open,
+    data,
+    formTitle,
+    justForm,
+    formHeader,
+    formFooter,
+  } = props;
 
   let initialValues = data.reduce(initialValuesReducer, {});
   let hasNewData = true;
@@ -269,6 +283,17 @@ function Form(props) {
                     />
                   );
 
+                case FIELDS.checkbox:
+                  return (
+                    <Checkbox
+                      key={x.name}
+                      formikProps={formikProps}
+                      label={x.label}
+                      name={x.name}
+                      validator={validator}
+                    />
+                  );
+
                 default:
                   return null;
               }
@@ -292,7 +317,9 @@ function Form(props) {
           <form onSubmit={handleSubmit}>
             {justForm ? (
               <Grid container>
+                {formHeader}
                 {Fields}
+                {formFooter}
                 {PrimaryButton}
               </Grid>
             ) : (
@@ -308,7 +335,11 @@ function Form(props) {
                   {action} {formTitle}
                 </DialogTitle>
 
-                <DialogContent>{Fields}</DialogContent>
+                <DialogContent>
+                  {formHeader}
+                  {Fields}
+                  {formFooter}
+                </DialogContent>
 
                 <DialogActions classes={{ root: classes.dialogActions }}>
                   <Button onClick={actions.close} color="primary">
