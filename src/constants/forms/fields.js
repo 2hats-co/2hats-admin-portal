@@ -5,6 +5,7 @@ const FIELDS = {
   textFieldMultiline: 'TEXT_FIELD_MULTILINE',
 
   richText: 'RICH_TEXT',
+  richTextMulti: 'RICH_TEXT_MULTI',
 
   chipFreeText: 'CHIP_FREE_TEXT',
 

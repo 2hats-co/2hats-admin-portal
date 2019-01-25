@@ -107,10 +107,7 @@ function ContentManagerContainer(props) {
               <OneCard
                 title={x.title}
                 secondaryText={
-                  x.description || x.roleDescription || x.companyDescription
-                }
-                tertiaryText={
-                  collection === COLLECTIONS.assessments && x.taskInstructions
+                  x.description || x.roleDescription || x.jobDescription
                 }
                 primaryAction="Do nothing"
                 route={`#${x.id}`}

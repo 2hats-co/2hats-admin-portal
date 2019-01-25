@@ -21,6 +21,7 @@ import Uploader from './Fields/Uploader';
 import Select from './Fields/Select';
 import Checkbox from './Fields/Checkbox';
 import RichText from './Fields/RichText';
+import RichTextMulti from './Fields/RichTextMulti';
 
 const styles = theme => ({
   paperRoot: {
@@ -216,6 +217,18 @@ function Form(props) {
                 case FIELDS.richText:
                   return (
                     <RichText
+                      key={x.name}
+                      formikProps={formikProps}
+                      label={x.label}
+                      name={x.name}
+                      placeholder={x.placeholder}
+                      validator={validator}
+                    />
+                  );
+
+                case FIELDS.richTextMulti:
+                  return (
+                    <RichTextMulti
                       key={x.name}
                       formikProps={formikProps}
                       label={x.label}

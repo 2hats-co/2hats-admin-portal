@@ -8,6 +8,8 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 
 const styles = theme => ({
+  root: { margin: `${theme.spacing.unit}px 0` },
+
   sectionTitle: { marginLeft: theme.spacing.unit * 1.5 },
 
   quillEditor: {
@@ -26,7 +28,7 @@ const styles = theme => ({
     '& .ql-editor': {
       minHeight: 100,
       fontFamily: theme.typography.fontFamily,
-      fontSize: 16,
+      fontSize: '.875rem',
       color: theme.palette.text.primary,
       '&.ql-blank::before': {
         fontStyle: 'normal',
@@ -41,7 +43,7 @@ const Text = props => {
   const { values, errors, touched, setValues } = formikProps;
 
   return (
-    <Grid item>
+    <Grid item className={classes.root}>
       <Typography
         variant="caption"
         className={classes.sectionTitle}
@@ -63,7 +65,7 @@ const Text = props => {
             ['bold', 'italic', 'underline'],
 
             [{ header: 1 }, { header: 2 }],
-            [{ list: 'bullet' }],
+            [{ list: 'bullet' }, { list: 'ordered' }],
 
             //[{ color: [] }, { background: [] }],
             ['link'],
