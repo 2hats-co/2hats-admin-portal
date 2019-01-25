@@ -42,7 +42,7 @@ function CategoryFilter(props) {
         title={
           selected
             ? `Filtered by ${
-                conversationCategories.filter(x => x.value === selected)[0]
+                conversationCategories().filter(x => x.value === selected)[0]
                   .label
               }`
             : 'Filter by category'
@@ -75,7 +75,7 @@ function CategoryFilter(props) {
         MenuProps={{ anchorEl }}
       >
         <MenuItem value="">No category</MenuItem>
-        {conversationCategories.map(x => (
+        {conversationCategories().map(x => (
           <MenuItem key={x.value} value={x.value}>
             {x.label}
           </MenuItem>

@@ -7,7 +7,7 @@ const Text = props => {
   const { label, name, type, placeholder, formikProps } = props;
   const { handleChange, values, errors, touched } = formikProps;
   return (
-    <Grid item key={name}>
+    <Grid item>
       {type === FIELDS.textFieldMultiline ? (
         <Multiline
           type={type}

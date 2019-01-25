@@ -19,6 +19,7 @@ export const ROUTES = {
 
   marketingLeadGeneration: '/marketingLeadGeneration',
   marketingEmail: '/marketingEmail',
+  emailCampaigns: '/marketing/emailCampaigns',
 
   jobsManager: '/contentManager/jobs',
   assessmentsManager: '/contentManager/assessments',

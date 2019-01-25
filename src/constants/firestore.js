@@ -25,4 +25,5 @@ export const COLLECTIONS = {
   assessments: 'assessments',
   events: 'events',
   emailTemplates: 'emailTemplates',
+  emailCampaigns: 'emailCampaigns',
 };

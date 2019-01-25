@@ -8,7 +8,6 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import TextField from '@material-ui/core/TextField';
 import InputAdornment from '@material-ui/core/InputAdornment';
-import MenuItem from '@material-ui/core/MenuItem';
 import Avatar from '@material-ui/core/Avatar';
 
 import ReactQuill from 'react-quill';
@@ -18,13 +17,14 @@ import classNames from 'classnames';
 import clone from 'ramda/es/clone';
 
 import ComposerActions from './ComposerActions';
+import TemplateDropdown from './TemplateDropdown';
+import TextTemplateDropdown from './TextTemplateDropdown';
 import { AdminsContext } from '../../../contexts/AdminsContext';
 import { useAuthedUser } from '../../../hooks/useAuthedUser';
-import { removeHtmlTags } from '../../../utilities';
+import { removeHtmlTags, globalReplace } from '../../../utilities';
 import { sendEmail } from '../../../utilities/email/gmail';
 import { sendLinkedinMessage } from '../../../utilities/linkedin';
 import { markAsRead, addNote } from '../../../utilities/conversations';
-import templatesObject from '../../../constants/emails/templates';
 import { THEME1 } from '../../../constants/emails/themes';
 import {
   makeEmail,
@@ -67,6 +67,7 @@ const styles = theme => ({
   templateDropdownWrapper: {
     position: 'relative',
     top: theme.spacing.unit / 2,
+    right: theme.spacing.unit / 2,
   },
   templateDropdown: {
     paddingTop: theme.spacing.unit,
@@ -115,26 +116,6 @@ const styles = theme => ({
   },
 });
 
-// const DUMMY_EVENTS = [
-//   { type: 'reminder', label: '12/12/2018 3:48 pm' },
-//   { type: 'file', label: 'resume.pdf', link: 'google.com' },
-//   { type: 'event', label: 'Meeting at 12/12/2018 3:48 pm' },
-// ];
-
-const CANDIDATE_TEMPLATES = [
-  templatesObject.outsideDemographic,
-  templatesObject.outsideIndusty,
-  templatesObject.interviewAccepted,
-  templatesObject.interviewRejected,
-  templatesObject.acInfo,
-  templatesObject.psychSales,
-  templatesObject.psychMarketing,
-  templatesObject.ACAccepted,
-  templatesObject.ACRejected,
-  templatesObject.ACNeedsImprovement,
-  templatesObject.resumeAccepted,
-];
-
 function Composer(props) {
   const { classes, conversation, channels } = props;
 
@@ -165,7 +146,7 @@ function Composer(props) {
     setMessageHtml('');
     setMessageText('');
     setEmailSubject('');
-    setTemplateIndex(-1);
+    setHasTemplate(false);
     setCc('');
     setNotifyList('');
     setAttachments([]);
@@ -179,6 +160,7 @@ function Composer(props) {
   const [attachments, setAttachments] = useState([]);
   const [cc, setCc] = useState('');
   const [templateIndex, setTemplateIndex] = useState(-1);
+  const [hasTemplate, setHasTemplate] = useState(false);
   const [notifyList, setNotifyList] = useState([]);
 
   const addText = addition => {
@@ -208,38 +190,35 @@ function Composer(props) {
   };
 
   const handleFile = data => {
-    console.log('GooglePicker', data);
     if (data.action === 'picked' && data.docs) {
       setAttachments([...attachments, ...data.docs]);
     }
   };
 
-  const templates =
-    conversation.type === 'candidate' ? CANDIDATE_TEMPLATES : [];
+  const setTemplate = data => {
+    setHasTemplate(true);
 
-  const setTemplate = index => {
-    setTemplateIndex(index);
-
-    if (index > -1) {
-      const templateClone = clone(templates[index]);
-      const theme = clone(THEME1);
-
-      const personalisables = [
+    if (data.html && data.subject) {
+      const replaceables = [
+        { tag: '{{firstName}}', value: conversation.firstName },
+        { tag: '{{lastName}}', value: conversation.lastName },
         {
-          firstName: conversation.firstName || conversation.displayName,
-          senderTitle: currentUser.title,
-          senderName: `${currentUser.givenName} ${currentUser.familyName}`,
-          // smartLink: generateSmartKey(conversation.UID, '/introduction'),
+          tag: '{{senderName}}',
+          value: `${currentUser.givenName} ${currentUser.familyName}`,
         },
+        { tag: '{{senderTitle}}', value: currentUser.title },
       ];
 
-      const personalisedElements = personaliseElements(
-        templateClone.elements,
-        personalisables
-      );
+      let html = data.html;
+      let subject = data.subject;
+      replaceables.forEach(x => {
+        html = globalReplace(html, x.tag, x.value);
+        subject = globalReplace(subject, x.tag, x.value);
+      });
 
-      setMessageHtml(makeEmail(theme, personalisedElements));
-      setEmailSubject(templateClone.subject);
+      setMessageHtml(html);
+      setMessageText(' ');
+      setEmailSubject(subject);
     } else {
       clearComposer();
     }
@@ -382,32 +361,18 @@ function Composer(props) {
               </Grid>
             </Grid>
             <Grid item className={classes.templateDropdownWrapper}>
-              <TextField
-                select
-                InputProps={{
-                  disableUnderline: true,
-                  classes: { inputMarginDense: classes.templateDropdown },
-                }}
-                margin="dense"
-                variant="filled"
-                value={templateIndex}
-                onChange={e => {
-                  setTemplate(e.target.value);
-                }}
-              >
-                <MenuItem value={-1}>No template</MenuItem>
-                {templates.map((x, i) => (
-                  <MenuItem key={`${x}-${i}`} value={i}>
-                    {x.templateName}
-                  </MenuItem>
-                ))}
-              </TextField>
+              <TemplateDropdown classes={classes} setTemplate={setTemplate} />
             </Grid>
           </React.Fragment>
         )}
+        {composerType === 'linkedin' && (
+          <Grid item className={classes.templateDropdownWrapper}>
+            <TextTemplateDropdown classes={classes} setText={setMessageText} />
+          </Grid>
+        )}
       </Grid>
       {composerType === 'email' ? (
-        templateIndex > -1 ? (
+        hasTemplate ? (
           <div
             className={classes.scrollableBox}
             style={{ width: '100%', height: '100%' }}

@@ -16,7 +16,7 @@ const Date = props => {
   const { label, name, formikProps, classes, validator } = props;
   const { setValues, values, errors, touched } = formikProps;
   return (
-    <Grid item key={name}>
+    <Grid item>
       <MuiPickersUtilsProvider utils={MomentUtils}>
         <DatePicker
           label={label}

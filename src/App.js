@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
 import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
 
 //routing
@@ -8,52 +8,31 @@ import { ROUTES } from './constants/routes';
 import { useAuthedUser } from './hooks/useAuthedUser';
 import LoadingHat from './components/LoadingHat';
 import SubmissionsContainer from './containers/SubmissionsContainer';
-import StatisticsContainer from './containers/StatisticsContainer';
 //containers
-import Loadable from 'react-loadable';
 import PushNotifications from './components/PushNotifications';
-import withAuthentication from './components/withAuthentication';
-// const StatisticsContainer = Loadable({
-//   loader: () =>
-//     import('./containers/StatisticsContainer' /* webpackChunkName: "StatisticsContainer" */),
-//   loading: LoadingHat,
-// });
 
-const SubjectsContainer = Loadable({
-  loader: () =>
-    import('./containers/SubjectsContainer' /* webpackChunkName: "SubjectsContainer" */),
-  loading: LoadingHat,
-});
-
-const AuthenticationContainer = Loadable({
-  loader: () =>
-    import('./containers/AuthenticationContainer' /* webpackChunkName: "AuthenticationContainer" */),
-  loading: LoadingHat,
-});
-
-const ConversationsContainer = Loadable({
-  loader: () =>
-    import('./containers/ConversationsContainer' /* webpackChunkName: "ConversationsContainer" */),
-  loading: LoadingHat,
-});
-
-const Landing = Loadable({
-  loader: () =>
-    import('./components/Landing' /* webpackChunkName: "Landing" */),
-  loading: LoadingHat,
-});
-
-const MarketingContainer = Loadable({
-  loader: () =>
-    import('./containers/MarketingContainer' /* webpackChunkName: "MarketingContainer" */),
-  loading: LoadingHat,
-});
-
-const ContentManagerContainer = Loadable({
-  loader: () =>
-    import('./containers/ContentManagerContainer' /* webpackChunkName: "ContentManagerContainer" */),
-  loading: LoadingHat,
-});
+import StatisticsContainer from './containers/StatisticsContainer';
+// const StatisticsContainer = lazy(() =>
+//   import('./containers/StatisticsContainer' /* webpackChunkName: "StatisticsContainer" */)
+// );
+const SubjectsContainer = lazy(() =>
+  import('./containers/SubjectsContainer' /* webpackChunkName: "SubjectsContainer" */)
+);
+const AuthenticationContainer = lazy(() =>
+  import('./containers/AuthenticationContainer' /* webpackChunkName: "AuthenticationContainer" */)
+);
+const ConversationsContainer = lazy(() =>
+  import('./containers/ConversationsContainer' /* webpackChunkName: "ConversationsContainer" */)
+);
+const Landing = lazy(() =>
+  import('./components/Landing' /* webpackChunkName: "Landing" */)
+);
+const MarketingContainer = lazy(() =>
+  import('./containers/MarketingContainer' /* webpackChunkName: "MarketingContainer" */)
+);
+const ContentManagerContainer = lazy(() =>
+  import('./containers/ContentManagerContainer' /* webpackChunkName: "ContentManagerContainer" */)
+);
 
 function App(props) {
   const currentUser = useAuthedUser();
@@ -88,95 +67,107 @@ function App(props) {
     <MuiThemeProvider theme={Theme}>
       <Router>
         <div className="app" style={appStyle}>
-          <Switch>
-            <Route
-              exact
-              path={ROUTES.auth}
-              component={() => <AuthenticationContainer {...props} />}
-            />
-            <Route
-              exact
-              path={ROUTES.stats}
-              component={() => <StatisticsContainer {...props} />}
-            />
-            <Route
-              exact
-              path={ROUTES.subjects}
-              component={() => <SubjectsContainer {...props} />}
-            />
-            <Route
-              exact
-              path={ROUTES.candidates}
-              component={() => (
-                <SubjectsContainer route={ROUTES.candidates} {...props} />
-              )}
-            />
-            <Route
-              exact
-              path={ROUTES.clients}
-              component={() => (
-                <SubjectsContainer route={ROUTES.clients} {...props} />
-              )}
-            />
-            <Route
-              exact
-              path={ROUTES.conversations}
-              component={() => <ConversationsContainer {...props} />}
-            />
-            <Route
-              exact
-              path={ROUTES.submissions}
-              component={() => <SubmissionsContainer {...props} />}
-            />
-            <Route
-              exact
-              path={ROUTES.marketingLeadGeneration}
-              component={() => <MarketingContainer {...props} />}
-            />
-            <Route
-              exact
-              path={ROUTES.marketingEmail}
-              component={() => <MarketingContainer {...props} />}
-            />
-            <Route
-              exact
-              path={ROUTES.pending}
-              component={() => <SubmissionsContainer {...props} />}
-            />
-            <Route
-              exact
-              path={ROUTES.rejected}
-              component={() => <SubmissionsContainer {...props} />}
-            />
-            <Route
-              exact
-              path={ROUTES.accepted}
-              component={() => <SubmissionsContainer {...props} />}
-            />
+          <Suspense fallback={<LoadingHat message="Loading container…" />}>
+            <Switch>
+              <Route
+                exact
+                path={ROUTES.auth}
+                component={() => <AuthenticationContainer {...props} />}
+              />
+              <Route
+                exact
+                path={ROUTES.stats}
+                component={() => <StatisticsContainer {...props} />}
+              />
+              <Route
+                exact
+                path={ROUTES.subjects}
+                component={() => <SubjectsContainer {...props} />}
+              />
+              <Route
+                exact
+                path={ROUTES.candidates}
+                component={() => (
+                  <SubjectsContainer route={ROUTES.candidates} {...props} />
+                )}
+              />
+              <Route
+                exact
+                path={ROUTES.clients}
+                component={() => (
+                  <SubjectsContainer route={ROUTES.clients} {...props} />
+                )}
+              />
+              <Route
+                exact
+                path={ROUTES.conversations}
+                component={() => <ConversationsContainer {...props} />}
+              />
+              <Route
+                exact
+                path={ROUTES.submissions}
+                component={() => <SubmissionsContainer {...props} />}
+              />
+              <Route
+                exact
+                path={ROUTES.marketingLeadGeneration}
+                component={() => <MarketingContainer {...props} />}
+              />
+              <Route
+                exact
+                path={ROUTES.marketingEmail}
+                component={() => <MarketingContainer {...props} />}
+              />
+              <Route
+                exact
+                path={ROUTES.emailCampaigns}
+                component={() => <MarketingContainer {...props} />}
+              />
+              <Route
+                exact
+                path={ROUTES.pending}
+                component={() => <SubmissionsContainer {...props} />}
+              />
+              <Route
+                exact
+                path={ROUTES.rejected}
+                component={() => <SubmissionsContainer {...props} />}
+              />
+              <Route
+                exact
+                path={ROUTES.accepted}
+                component={() => <SubmissionsContainer {...props} />}
+              />
 
-            <Route
-              exact
-              path={ROUTES.jobsManager || ROUTES.coursesManager}
-              component={() => <ContentManagerContainer {...props} />}
-            />
-            <Route
-              exact
-              path={ROUTES.coursesManager}
-              component={() => <ContentManagerContainer {...props} />}
-            />
-            <Route
-              exact
-              path={ROUTES.assessmentsManager}
-              component={() => <ContentManagerContainer {...props} />}
-            />
-            <Route
-              exact
-              path={ROUTES.eventsManager}
-              component={() => <ContentManagerContainer {...props} />}
-            />
-            <Route exact path={'/'} component={() => <Landing {...props} />} />
-            <Route component={() => <div>404</div>} />
-          </Switch>
+              <Route
+                exact
+                path={ROUTES.jobsManager || ROUTES.coursesManager}
+                component={() => <ContentManagerContainer {...props} />}
+              />
+              <Route
+                exact
+                path={ROUTES.coursesManager}
+                component={() => <ContentManagerContainer {...props} />}
+              />
+              <Route
+                exact
+                path={ROUTES.assessmentsManager}
+                component={() => <ContentManagerContainer {...props} />}
+              />
+              <Route
+                exact
+                path={ROUTES.eventsManager}
+                component={() => <ContentManagerContainer {...props} />}
+              />
+
+              <Route
+                exact
+                path={'/'}
+                component={() => <Landing {...props} />}
+              />
+              <Route component={() => <div>404</div>} />
+            </Switch>
+          </Suspense>
         </div>
       </Router>
       <PushNotifications />

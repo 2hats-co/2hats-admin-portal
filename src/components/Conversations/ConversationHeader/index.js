@@ -133,28 +133,26 @@ function ConversationHeader(props) {
 
               <Typography variant="h6">{conversation.displayName}</Typography>
 
-              {conversation.type === 'client' && (
-                <TextField
-                  select
-                  InputProps={{
-                    disableUnderline: true,
-                    classes: { inputMarginDense: classes.categoryDropdown },
-                  }}
-                  margin="dense"
-                  variant="filled"
-                  value={category}
-                  onChange={handleChangeCategory}
-                  className={classes.categoryDropdownWrapper}
-                  SelectProps={{ displayEmpty: true }}
-                >
-                  <MenuItem value="">No category</MenuItem>
-                  {conversationCategories.map(x => (
-                    <MenuItem key={x.value} value={x.value}>
-                      {x.label}
-                    </MenuItem>
-                  ))}
-                </TextField>
-              )}
+              <TextField
+                select
+                InputProps={{
+                  disableUnderline: true,
+                  classes: { inputMarginDense: classes.categoryDropdown },
+                }}
+                margin="dense"
+                variant="filled"
+                value={category}
+                onChange={handleChangeCategory}
+                className={classes.categoryDropdownWrapper}
+                SelectProps={{ displayEmpty: true }}
+              >
+                <MenuItem value="">No category</MenuItem>
+                {conversationCategories(conversation.type).map(x => (
+                  <MenuItem key={x.value} value={x.value}>
+                    {x.label}
+                  </MenuItem>
+                ))}
+              </TextField>
             </Grid>
           </Grid>
           <Grid item>

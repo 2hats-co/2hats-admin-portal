@@ -53,7 +53,7 @@ const Uploader = props => {
   const { setValues, values, errors, touched } = formikProps;
 
   return (
-    <Grid item key={name}>
+    <Grid item>
       <Typography
         variant="caption"
         className={classes.sectionTitle}

@@ -61,7 +61,7 @@ const Slider = props => {
   if (calcValueLabel) valueLabel = calcValueLabel(values[name]);
 
   return (
-    <Grid item key={name} className={classes.sliderSectionWrapper}>
+    <Grid item className={classes.sliderSectionWrapper}>
       <Typography
         variant="caption"
         className={classes.sectionTitle}

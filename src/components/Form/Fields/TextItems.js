@@ -31,7 +31,7 @@ const TextItems = props => {
   } = props;
   const { values, errors, touched, handleChange } = formikProps;
   return (
-    <Grid item key={name} className={classes.sliderSectionWrapper}>
+    <Grid item className={classes.sliderSectionWrapper}>
       <TextField
         id={`${name}-temp`}
         type="text"

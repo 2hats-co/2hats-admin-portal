@@ -1,15 +1,18 @@
-import React from 'react';
+import React, { Suspense, lazy } from 'react';
 import ReactDOM from 'react-dom';
+
 import './index.css';
-//import Loadable from 'react-loadable';
-//import LoadingHat from './components/LoadingHat';
+import LoadingHat from './components/LoadingHat';
 import registerServiceWorker from './registerServiceWorker';
-import App from './App';
-// const App = Loadable({
-//   loader: () => import('./App' /* webpackChunkName: "App" */),
-//   loading: LoadingHat,
-// });
-ReactDOM.render(<App />, document.getElementById('root'));
+
+const App = lazy(() => import('./App' /* webpackChunkName: "App" */));
+
+ReactDOM.render(
+  <Suspense fallback={<LoadingHat />}>
+    <App />
+  </Suspense>,
+  document.getElementById('root')
+);
 registerServiceWorker();
 
 if (window.location.hostname === 'localhost')

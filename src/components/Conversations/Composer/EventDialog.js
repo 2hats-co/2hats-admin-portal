@@ -160,12 +160,19 @@ function EventDialog(props) {
     [data.start.dateTime]
   );
 
-  const titleSuggestions = [
-    displayName,
-    `Meeting with ${displayName}`,
-    `Call ${displayName}`,
-    `Chat with ${displayName}`,
-  ];
+  const titleSuggestions =
+    conversation.type === 'client'
+      ? [
+          displayName,
+          `Meeting with ${displayName}`,
+          `Call ${displayName}`,
+          `Chat with ${displayName}`,
+        ]
+      : [
+          `${conversation.firstName} Assessment Centre - Marketing`,
+          `${conversation.firstName} Assessment Centre - Web Development`,
+          `${conversation.firstName} Assessment Centre - Business Development`,
+        ];
 
   const addAttendee = email => {
     const emailToAdd = email || attendeeField;

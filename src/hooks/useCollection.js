@@ -25,7 +25,7 @@ const collectionIntialState = {
   path: null,
   filters: [],
   prevLimit: 0,
-  limit: 20,
+  limit: 30,
   loading: true,
   cap: CAP,
 };
