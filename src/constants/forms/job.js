@@ -1,5 +1,6 @@
 import FIELDS from './fields';
 import * as yup from 'yup';
+import SKILLS from '../studentPortal/skills';
 
 const jobFields = initialData => {
   if (!initialData) initialData = {};
@@ -30,7 +31,7 @@ const jobFields = initialData => {
       name: 'skillsRequired',
       label: 'Skills required',
       value: initialData['skillsRequired'],
-      suggestions: ['ds', 'sdf', 'sdfd'].map(x => ({ value: x, label: x })),
+      suggestions: SKILLS,
       validation: yup
         .array()
         .min(1)
@@ -40,7 +41,7 @@ const jobFields = initialData => {
       type: FIELDS.autocompleteFreeText,
       name: 'industry',
       label: 'Industry',
-      suggestions: ['ds', 'sdf', 'sdfd'].map(x => ({ value: x, label: x })),
+      suggestions: SKILLS,
       value: initialData['industry'],
       validation: yup.string().required('Industry is required'),
     },

@@ -10,10 +10,14 @@ import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import TemplateEditor from './TemplateEditor';
 function EmailTemplates(props) {
-  const { location, history } = props;
-
+  const { location, history, campaignId } = props;
+  let filters = [];
+  if (campaignId) {
+    filters = [{ field: 'campaignId', operator: '==', value: campaignId }];
+  }
   const [templatesState /*templatesDispatch*/] = useCollection({
     path: COLLECTIONS.emailTemplates,
+    filters,
   });
   const templates = templatesState.documents;
 

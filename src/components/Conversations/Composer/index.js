@@ -18,6 +18,7 @@ import clone from 'ramda/es/clone';
 
 import ComposerActions from './ComposerActions';
 import TemplateDropdown from './TemplateDropdown';
+import TextTemplateDropdown from './TextTemplateDropdown';
 import { AdminsContext } from '../../../contexts/AdminsContext';
 import { useAuthedUser } from '../../../hooks/useAuthedUser';
 import { removeHtmlTags, globalReplace } from '../../../utilities';
@@ -66,6 +67,7 @@ const styles = theme => ({
   templateDropdownWrapper: {
     position: 'relative',
     top: theme.spacing.unit / 2,
+    right: theme.spacing.unit / 2,
   },
   templateDropdown: {
     paddingTop: theme.spacing.unit,
@@ -362,6 +364,11 @@ function Composer(props) {
               <TemplateDropdown classes={classes} setTemplate={setTemplate} />
             </Grid>
           </React.Fragment>
+        )}
+        {composerType === 'linkedin' && (
+          <Grid item className={classes.templateDropdownWrapper}>
+            <TextTemplateDropdown classes={classes} setText={setMessageText} />
+          </Grid>
         )}
       </Grid>
       {composerType === 'email' ? (

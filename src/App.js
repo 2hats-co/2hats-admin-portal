@@ -120,6 +120,11 @@ function App(props) {
               />
               <Route
                 exact
+                path={ROUTES.emailCampaigns}
+                component={() => <MarketingContainer {...props} />}
+              />
+              <Route
+                exact
                 path={ROUTES.pending}
                 component={() => <SubmissionsContainer {...props} />}
               />
@@ -154,6 +159,7 @@ function App(props) {
                 path={ROUTES.eventsManager}
                 component={() => <ContentManagerContainer {...props} />}
               />
+
               <Route
                 exact
                 path={'/'}
