@@ -1,7 +1,7 @@
 import FIELDS from './fields';
 import * as yup from 'yup';
 
-import SKILLS from '../studentPortal/skills';
+import { SKILLS } from '@bit/sidney2hats.2hats.global.common-constants';
 
 const courseFields = initialData => {
   if (!initialData) initialData = {};

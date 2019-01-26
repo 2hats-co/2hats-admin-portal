@@ -1,9 +1,10 @@
 import FIELDS from './fields';
 import * as yup from 'yup';
-import ASSESSMENT_CATEGORIES, {
+import {
+  ASSESSMENT_CATEGORIES,
   SUBMISSION_TYPES,
-} from '../studentPortal/assessmentCategories';
-import SKILLS from '../studentPortal/skills';
+  SKILLS,
+} from '@bit/sidney2hats.2hats.global.common-constants';
 
 const assessmentFields = initialData => {
   if (!initialData) initialData = {};
