@@ -1,6 +1,10 @@
 {
-  "env": {},
-  "dependencies": {},
-  "componentsDefaultDirectory": "components/{namespace}/{name}",
-  "packageManager": "npm"
+  "env": {
+    "compiler": "bit.envs/compilers/react@0.0.14"
+  },
+  "dependencies": {
+    "sidney2hats.2hats/global/common-constants": "0.0.1"
+  },
+  "componentsDefaultDirectory": "bit/{namespace}/{name}",
+  "packageManager": "yarn"
 }

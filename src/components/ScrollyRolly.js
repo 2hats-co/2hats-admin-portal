@@ -71,7 +71,10 @@ function ScrollyRolly(props) {
         threshold={100}
         isReverse={reverse || false}
       >
-        <List disablePadding={disablePadding || false}>
+        <List
+          disablePadding={disablePadding || false}
+          className={classes && classes.list}
+        >
           {sortedDocs.length > 0 ? (
             sortedDocs.map(props.children)
           ) : (
