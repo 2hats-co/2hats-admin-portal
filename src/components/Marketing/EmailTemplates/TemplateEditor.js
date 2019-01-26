@@ -2,26 +2,24 @@ import React, { useRef, useState, useEffect } from 'react';
 
 import EmailEditor from 'react-email-editor';
 import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
 //import Tooltip from '@material-ui/core/Tooltip';
 import { sendEmail } from '../../../utilities/email/send';
 import Form from '../../Form';
 import emailTemplate from '../../../constants/forms/emailTemplate';
-import {
-  updateTemplate,
-  setTemplateBase,
-  useEmailTemplate,
-  //  TEMPLATE_BASE,
-} from '../../../utilities/email/templates';
+import { updateTemplate } from '../../../utilities/email/templates';
 import { useAuthedUser } from '../../../hooks/useAuthedUser';
-import IntegrationReactSelect from '../../IntegrationReactSelect';
 import { globalReplace } from '../../../utilities';
 function TemplateEditor(props) {
-  const { template, setTemplate } = props;
+  const {
+    template,
+    //setTemplate
+  } = props;
   const editor = useRef(null);
   const currentUser = useAuthedUser();
-  const [subject, setSubject] = useState(template.subject || '');
-  const [email, setEmail] = useState('test');
+  const [
+    subject,
+    //setSubject
+  ] = useState(template.subject || '');
   useEffect(
     () => {
       if (editor.current) {
@@ -57,7 +55,10 @@ function TemplateEditor(props) {
   };
   const handleSendTest = () => {
     editor.current.exportHtml(data => {
-      const { design, html } = data;
+      const {
+        //design,
+        html,
+      } = data;
 
       let emailSubject = subject;
       let body = html;

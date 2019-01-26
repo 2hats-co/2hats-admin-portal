@@ -44,15 +44,7 @@ const styles = theme => ({
   },
 });
 const Uploader = props => {
-  const {
-    label,
-    name,
-    mimeTypes,
-    path,
-    validator,
-    formikProps,
-    classes,
-  } = props;
+  const { label, name, mimeTypes, path, formikProps, classes } = props;
   const { setValues, values, errors, touched } = formikProps;
 
   return (
