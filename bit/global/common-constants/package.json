@@ -1,6 +1,6 @@
 {
   "name": "@bit/sidney2hats.2hats.global.common-constants",
-  "version": "0.0.1",
+  "version": "0.0.4",
   "homepage": "https://bitsrc.io/sidney2hats/2hats/global/common-constants",
   "main": "index.js",
   "dependencies": {},
