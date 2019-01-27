@@ -53,7 +53,7 @@ function ScrollyRolly(props) {
   if (sort) sortedDocs = sort(dataState.documents);
 
   return (
-    <React.Fragment>
+    <>
       {reverse && loading && (
         <LinearProgress
           key="listLoader"
@@ -111,7 +111,7 @@ function ScrollyRolly(props) {
           className={classes && classes.listLoader}
         />
       )}
-    </React.Fragment>
+    </>
   );
 }
 

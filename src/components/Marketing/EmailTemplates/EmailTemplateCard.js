@@ -40,7 +40,7 @@ const styles = theme => ({
 function EmailTemplateCard(props) {
   const { classes, data, actions } = props;
   return (
-    <React.Fragment>
+    <>
       <Card classes={{ root: classes.root }} elevation={0}>
         <Grid container justify="space-between" alignItems="center">
           <Grid item xs={5}>
@@ -95,7 +95,7 @@ function EmailTemplateCard(props) {
           </Grid>
         </Grid>
       </Card>
-    </React.Fragment>
+    </>
   );
 }
 

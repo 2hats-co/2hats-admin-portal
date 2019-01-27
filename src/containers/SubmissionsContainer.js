@@ -109,7 +109,7 @@ function SumbissionsContainer(props) {
 
   if (submissionState.loading) {
     return (
-      <React.Fragment>
+      <>
         {locationIndicator}
         <Grid
           container
@@ -119,7 +119,7 @@ function SumbissionsContainer(props) {
         >
           <CircularProgress size={64} />
         </Grid>
-      </React.Fragment>
+      </>
     );
   }
 
@@ -174,7 +174,7 @@ function SumbissionsContainer(props) {
   }
 
   return (
-    <React.Fragment>
+    <>
       {locationIndicator}
       <Grid container className={classes.root} wrap="nowrap">
         <Suspense fallback={<LoadingHat />}>
@@ -224,7 +224,7 @@ function SumbissionsContainer(props) {
         }}
         message={<span id="message-id">Sent email!</span>}
       />
-    </React.Fragment>
+    </>
   );
 }
 

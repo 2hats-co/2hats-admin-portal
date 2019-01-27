@@ -261,7 +261,7 @@ function ChartEditor(props) {
         </ToggleButtonGroup>
 
         {chart.type && (
-          <React.Fragment>
+          <>
             {chart.type !== 'number' && (
               <TextField
                 value={chart.title}
@@ -291,7 +291,7 @@ function ChartEditor(props) {
                 handleDeleteItem={handleDeleteItem}
               />
             ))}
-          </React.Fragment>
+          </>
         )}
       </DialogContent>
 

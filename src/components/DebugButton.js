@@ -15,11 +15,11 @@ function DebugButton(props) {
   return (
     <Tooltip
       title={
-        <React.Fragment>
+        <>
           {title || 'Copy UID'}
           <br />
           {toCopy}
-        </React.Fragment>
+        </>
       }
     >
       <IconButton

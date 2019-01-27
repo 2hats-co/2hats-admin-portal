@@ -103,7 +103,7 @@ function ManageSubscribersDialog(props) {
                 value: x.id,
               }));
             return (
-              <React.Fragment>
+              <>
                 <IntegrationReactSelect
                   placeholder="Add Subscriber"
                   autoFocus
@@ -154,7 +154,7 @@ function ManageSubscribersDialog(props) {
                     </ListItem>
                   ))}
                 </List>
-              </React.Fragment>
+              </>
             );
           }}
         </AdminsConsumer>

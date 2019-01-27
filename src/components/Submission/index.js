@@ -154,7 +154,7 @@ function Submission(props) {
   );
 
   return (
-    <React.Fragment>
+    <>
       <div className={classes.debugButtons}>
         <DebugButton title="Copy submission ID" toCopy={submission.id} />
         <DebugButton toCopy={submission.UID} />
@@ -237,7 +237,7 @@ function Submission(props) {
       </Grid>
 
       {submission.submissionContent.process === 'upload' && (
-        <React.Fragment>
+        <>
           <Typography
             className={classNames(classes.subtitle1, classes.block)}
             variant="subtitle1"
@@ -255,11 +255,11 @@ function Submission(props) {
             style={{ display: showPDF ? 'block' : 'none' }}
           />
           {!showPDF && <LinearProgress />}
-        </React.Fragment>
+        </>
       )}
 
       {submission.submissionContent.process === 'build' && (
-        <React.Fragment>
+        <>
           <Typography
             className={classNames(classes.subtitle1, classes.block)}
             variant="subtitle1"
@@ -293,9 +293,9 @@ function Submission(props) {
               endDate={x.endDate}
             />
           ))}
-        </React.Fragment>
+        </>
       )}
-    </React.Fragment>
+    </>
   );
 }
 

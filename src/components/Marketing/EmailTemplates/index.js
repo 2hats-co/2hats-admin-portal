@@ -32,7 +32,7 @@ function EmailTemplates(props) {
   if (template) return <TemplateEditor template={template} />;
   if (templates)
     return (
-      <React.Fragment>
+      <>
         {templates.map((x, i) => (
           <EmailTemplateCard
             data={x}
@@ -69,7 +69,7 @@ function EmailTemplates(props) {
         >
           <AddIcon />
         </Fab>
-      </React.Fragment>
+      </>
     );
   else return <LoadingHat message="Loading templates…" />;
 }

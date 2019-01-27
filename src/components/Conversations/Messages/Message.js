@@ -305,11 +305,11 @@ function Message(props) {
     >
       <Tooltip
         title={
-          <React.Fragment>
+          <>
             {timestamp}
             <br />
             {sender && sender.givenName} {sender && sender.familyName}
-          </React.Fragment>
+          </>
         }
         placement={isIncoming ? 'right' : 'left'}
         enterDelay={1000}

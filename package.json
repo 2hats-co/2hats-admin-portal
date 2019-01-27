@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@babel/core": "^7.2.2",
+    "@bit/sidney2hats.2hats.global.common-constants": "file:./bit/global/common-constants",
     "@date-io/moment": "^1.0.1",
     "@material-ui/core": "^3.6.2",
     "@material-ui/icons": "^3.0.1",
@@ -10,11 +12,11 @@
     "@material-ui/styles": "^3.0.0-alpha.6",
     "algoliasearch": "^3.30.0",
     "autoprefixer": "7.1.6",
-    "babel-core": "6.26.0",
-    "babel-eslint": "7.2.3",
+    "babel-core": "7.0.0-bridge.0",
+    "babel-eslint": "^10.0.1",
     "babel-jest": "20.0.3",
     "babel-loader": "7",
-    "babel-preset-react-app": "^3.1.2",
+    "babel-preset-react-app": "^7.0.0",
     "babel-runtime": "6.26.0",
     "case-sensitive-paths-webpack-plugin": "2.1.1",
     "chalk": "1.1.3",
@@ -74,8 +76,7 @@
     "webpack-dev-server": "2.11.3",
     "webpack-manifest-plugin": "1.3.2",
     "whatwg-fetch": "2.0.3",
-    "yup": "^0.26.6",
-    "@bit/sidney2hats.2hats.global.common-constants": "file:./bit/global/common-constants"
+    "yup": "^0.26.6"
   },
   "scripts": {
     "precommit": "pretty-quick --staged",

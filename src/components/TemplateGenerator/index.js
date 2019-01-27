@@ -72,7 +72,7 @@ function TemplateGenerator(props) {
   if (!candidate)
     return (
       <Slide in direction="up">
-        <React.Fragment>
+        <>
           <Grid
             container
             justify="center"
@@ -82,7 +82,7 @@ function TemplateGenerator(props) {
           >
             <CircularProgress size={64} />
           </Grid>
-        </React.Fragment>
+        </>
       </Slide>
     );
 

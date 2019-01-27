@@ -101,7 +101,7 @@ function TrackerPercentage(props) {
   }
 
   return (
-    <React.Fragment>
+    <>
       <Grid
         container
         className={classes.root}
@@ -161,10 +161,10 @@ function TrackerPercentage(props) {
       >
         <Tooltip
           title={
-            <React.Fragment>
+            <>
               <b>{trackers[0].label}</b>: {trackers[0].sum} <br />
               <b>{trackers[1].label}</b>: {trackers[1].sum}
-            </React.Fragment>
+            </>
           }
         >
           <Grid item>
@@ -184,7 +184,7 @@ function TrackerPercentage(props) {
           </Grid>
         </Tooltip>
       </Grid>
-    </React.Fragment>
+    </>
   );
 }
 

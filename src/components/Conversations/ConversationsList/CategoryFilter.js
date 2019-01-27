@@ -37,7 +37,7 @@ function CategoryFilter(props) {
   };
 
   return (
-    <React.Fragment>
+    <>
       <Tooltip
         title={
           selected
@@ -81,7 +81,7 @@ function CategoryFilter(props) {
           </MenuItem>
         ))}
       </Select>
-    </React.Fragment>
+    </>
   );
 }
 

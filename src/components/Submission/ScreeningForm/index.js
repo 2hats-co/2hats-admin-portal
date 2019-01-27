@@ -334,7 +334,7 @@ function ScreeningForm(props) {
 
       <Tooltip
         title={
-          <React.Fragment>
+          <>
             Place {submission.displayName} in
             <b> {confidenceLevel.index < 2 ? 'Rejected' : 'Accepted'}</b>.
             <br />
@@ -342,7 +342,7 @@ function ScreeningForm(props) {
             here.
             <br />
             No email will be sent.
-          </React.Fragment>
+          </>
         }
       >
         <div className={classes.submitButton}>

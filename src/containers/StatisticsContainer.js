@@ -188,7 +188,7 @@ function StatisticsContainer(props) {
         )}
 
         <Slide in direction="down">
-          <React.Fragment>
+          <>
             <LocationIndicator title="Statistics" showShadow />
             <TimeBar
               format={format}
@@ -196,7 +196,7 @@ function StatisticsContainer(props) {
               setFormat={setFormat}
               setRange={setRange}
             />
-          </React.Fragment>
+          </>
         </Slide>
 
         <Grid container className={classes.grid}>

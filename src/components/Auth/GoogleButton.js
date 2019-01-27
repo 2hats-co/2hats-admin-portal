@@ -60,7 +60,7 @@ function GoogleButton(props) {
   const { classes } = props;
 
   return (
-    <React.Fragment>
+    <>
       <div onClick={props.onClick}>
         <GoogleLogin
           clientId={cid}
@@ -92,7 +92,7 @@ function GoogleButton(props) {
           autoHideDuration={5000}
         />
       )}
-    </React.Fragment>
+    </>
   );
 }
 

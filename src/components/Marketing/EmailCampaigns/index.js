@@ -44,7 +44,7 @@ function EmailCampaigns(props) {
   if (campaigns) {
     console.log(campaigns);
     return (
-      <React.Fragment>
+      <>
         {campaigns.map(campaign => {
           return (
             <EmailCampaignCard
@@ -93,7 +93,7 @@ function EmailCampaigns(props) {
         >
           <AddIcon />
         </Fab>
-      </React.Fragment>
+      </>
     );
   } else return <LoadingHat message="Loading campaigns…" />;
 }

@@ -94,7 +94,7 @@ function ConversationsContainer(props) {
     <Fade in>
       <Grid container direction="row" style={{ height: 'calc(100vh - 64px)' }}>
         {!openedConversationOnMobile && (
-          <React.Fragment>
+          <>
             <LocationIndicator title="Conversations" />
             <Grid
               item
@@ -114,7 +114,7 @@ function ConversationsContainer(props) {
                 }}
               />
             </Grid>
-          </React.Fragment>
+          </>
         )}
         <Grid
           item

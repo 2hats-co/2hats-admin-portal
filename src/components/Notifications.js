@@ -142,7 +142,7 @@ function Notifications(props) {
     return <CircularProgress className={classes.loader} size={24} />;
 
   return (
-    <React.Fragment>
+    <>
       <Fade in>
         <Tooltip title="Notifications" placement="right">
           <IconButton
@@ -254,7 +254,7 @@ function Notifications(props) {
           </Slide>
         </Modal>
       )}
-    </React.Fragment>
+    </>
   );
 }
 

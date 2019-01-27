@@ -81,7 +81,7 @@ const Text = props => {
   };
 
   const textbox = (
-    <React.Fragment>
+    <>
       <ReactQuill
         placeholder={placeholder}
         value={textboxVal}
@@ -107,7 +107,7 @@ const Text = props => {
         <AddIcon />
         Add item
       </Button>
-    </React.Fragment>
+    </>
   );
 
   const items =

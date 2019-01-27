@@ -161,7 +161,7 @@ function UserDialog(props) {
     auth.signOut();
   };
   return (
-    <React.Fragment>
+    <>
       <Modal open={showDialog} onClose={onClose} disableAutoFocus>
         <Slide in={slideIn} direction="up">
           <Paper elevation={24} classes={{ root: classes.paperRoot }}>
@@ -322,7 +322,7 @@ function UserDialog(props) {
         message={snackbarMessage}
         className={classes.snackbar}
       />
-    </React.Fragment>
+    </>
   );
 }
 export default withStyles(styles)(UserDialog);

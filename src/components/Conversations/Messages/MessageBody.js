@@ -147,7 +147,7 @@ const MessageBody = props => {
               <Grid item xs>
                 {endTime.diff(startTime, 'days') > 0 ||
                 startTime.date() !== endTime.date() ? (
-                  <React.Fragment>
+                  <>
                     <Typography variant="body2">
                       <span className={classes.eventDetailCaption}>from</span>
                       {startTime.format('ddd, D/MM/YYYY · h:mm a')}
@@ -156,7 +156,7 @@ const MessageBody = props => {
                       <span className={classes.eventDetailCaption}>to</span>
                       {endTime.format('ddd, D/MM/YYYY · h:mm a')}
                     </Typography>
-                  </React.Fragment>
+                  </>
                 ) : (
                   <Typography variant="body2">
                     {startTime.format('ddd, D/MM/YYYY · h:mm a')}–

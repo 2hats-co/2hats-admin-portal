@@ -125,26 +125,26 @@ const ComposerActions = React.memo(props => {
   switch (composerType) {
     case 'email':
       fabContent = (
-        <React.Fragment>
+        <>
           <EmailIcon />
           Send email
-        </React.Fragment>
+        </>
       );
       break;
     case 'linkedin':
       fabContent = (
-        <React.Fragment>
+        <>
           <LinkedInIcon />
           Send message
-        </React.Fragment>
+        </>
       );
       break;
     case 'note':
       fabContent = (
-        <React.Fragment>
+        <>
           <DoneIcon />
           Save note
-        </React.Fragment>
+        </>
       );
       break;
     default:
@@ -187,7 +187,7 @@ const ComposerActions = React.memo(props => {
   }
 
   return (
-    <React.Fragment>
+    <>
       <Grid item>
         <Grid container justify="space-between">
           <Grid item className={classes.actionsWrapper}>
@@ -232,7 +232,7 @@ const ComposerActions = React.memo(props => {
         handleNo={handleEmailWarningNo}
         handleYes={handleEmailWarningYes}
       />
-    </React.Fragment>
+    </>
   );
 });
 

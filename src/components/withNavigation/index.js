@@ -168,7 +168,7 @@ export default function withNavigation(WrappedComponent) {
           >
             <Grid container wrap="nowrap" className={classes.root}>
               <Slide in direction="right">
-                <React.Fragment>
+                <>
                   <Grid item className={classes.leftNav}>
                     <Grid
                       container
@@ -179,12 +179,12 @@ export default function withNavigation(WrappedComponent) {
                       <Grid item>
                         <Tooltip
                           title={
-                            <React.Fragment>
+                            <>
                               <b>Build {metadata.hash}</b>
                               <div>
                                 {new Date(metadata.date).toLocaleString()}
                               </div>
-                            </React.Fragment>
+                            </>
                           }
                           placement="right"
                         >
@@ -239,7 +239,7 @@ export default function withNavigation(WrappedComponent) {
                       </Grid>
                     </Grid>
                   </Grid>
-                </React.Fragment>
+                </>
               </Slide>
               <Fade in timeout={400}>
                 <Grid
