@@ -30,7 +30,7 @@ const jobFields = initialData => {
       type: FIELDS.autocompleteMulti,
       name: 'skillsRequired',
       label: 'Skills required',
-      value: initialData['skillsRequired'],
+      value: SKILLS.filter(x => x.value === initialData['skillsRequired'])[0],
       suggestions: SKILLS,
       validation: yup
         .array()
@@ -62,7 +62,7 @@ const jobFields = initialData => {
     {
       type: FIELDS.autocomplete,
       name: 'payUnits',
-      label: 'Skills required',
+      label: 'Pay units',
       value: initialData['payUnits'] && {
         value: initialData['payUnits'],
         label: initialData['payUnits'],

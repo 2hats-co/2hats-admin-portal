@@ -92,7 +92,7 @@ function generateTheme(theme, themeColor) {
           position: 'relative',
           zIndex: 99,
         },
-        selected: {
+        '&$selected': {
           color: primaryColor,
           '& > span': { color: primaryColor },
           '&::after': {
@@ -161,7 +161,7 @@ function generateTheme(theme, themeColor) {
         },
       },
       MuiFormLabel: {
-        focused: { color: `${primaryColor} !important` },
+        '&$focused': { color: `${primaryColor} !important` },
       },
       MuiInput: {
         underline: {
@@ -215,7 +215,7 @@ function generateTheme(theme, themeColor) {
           ...baseTheme.overrides.MuiToggleButton.label,
           color: 'rgba(255,255,255,.87)',
         },
-        selected: {
+        '&$selected': {
           color: primaryDarkText,
           '& > span': { color: primaryDarkText },
           '&::after': {
