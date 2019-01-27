@@ -132,8 +132,11 @@ function generateTheme(theme, themeColor) {
       },
       MuiChip: {
         root: {
+          height: 'auto',
+          minHeight: 32,
           '&:not(:last-of-type)': { marginRight: 8 },
         },
+        label: { whiteSpace: 'normal' },
         colorPrimary: {
           color: primaryDarkText,
           backgroundColor: primaryLight,

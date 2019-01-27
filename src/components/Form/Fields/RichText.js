@@ -8,7 +8,18 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 
 const styles = theme => ({
-  root: { margin: `${theme.spacing.unit}px 0` },
+  root: {
+    margin: `${theme.spacing.unit}px 0`,
+    '&:focus-within $sectionTitle': {
+      color:
+        theme.palette.type === 'dark'
+          ? theme.palette.primary.darkText
+          : theme.palette.primary.main,
+    },
+    '&:focus-within .ql-toolbar.ql-snow, &:focus-within .ql-container.ql-snow': {
+      borderColor: theme.palette.primary.main,
+    },
+  },
 
   sectionTitle: { marginLeft: theme.spacing.unit * 1.5 },
 
@@ -33,6 +44,30 @@ const styles = theme => ({
       '&.ql-blank::before': {
         fontStyle: 'normal',
         color: theme.palette.text.disabled,
+      },
+    },
+
+    '& .ql-snow .ql-stroke, & button:hover .ql-stroke': {
+      stroke: theme.palette.text.primary,
+    },
+    '& .ql-active .ql-stroke': {
+      stroke: `${theme.palette.primary.main} !important`,
+    },
+    '& .ql-snow .ql-fill': {
+      fill: theme.palette.text.primary,
+    },
+    '& .ql-active .ql-fill, & button:hover .ql-fill': {
+      fill: `${theme.palette.primary.main} !important`,
+    },
+
+    '& .ql-snow.ql-toolbar button': { borderRadius: theme.shape.borderRadius },
+    '& .ql-snow.ql-toolbar button:hover': {
+      backgroundColor: theme.palette.primary.light,
+      '& .ql-stroke': {
+        stroke: `${theme.palette.primary.darkText} !important`,
+      },
+      '& .ql-fill': {
+        fill: `${theme.palette.primary.darkText} !important`,
       },
     },
   },

@@ -42,8 +42,8 @@ const courseFields = initialData => {
       name: 'skillsAssociated',
       label: 'Skills associated',
       value:
-        initialData['skillAssociated'] &&
-        SKILLS.filter(x => initialData['skillAssociated'].includes(x.value)),
+        initialData['skillsAssociated'] &&
+        SKILLS.filter(x => initialData['skillsAssociated'].includes(x.value)),
       suggestions: SKILLS,
       validation: yup
         .array()
