@@ -1,6 +1,9 @@
 import FIELDS from './fields';
 import * as yup from 'yup';
-import { SKILLS } from '@bit/sidney2hats.2hats.global.common-constants';
+import {
+  ASSESSMENT_CATEGORIES,
+  SKILLS,
+} from '@bit/sidney2hats.2hats.global.common-constants';
 
 const jobFields = initialData => {
   if (!initialData) initialData = {};
@@ -30,7 +33,9 @@ const jobFields = initialData => {
       type: FIELDS.autocompleteMulti,
       name: 'skillsRequired',
       label: 'Skills required',
-      value: SKILLS.filter(x => x.value === initialData['skillsRequired'])[0],
+      value:
+        initialData['skillsRequired'] &&
+        SKILLS.filter(x => initialData['skillsRequired'].includes(x.value)),
       suggestions: SKILLS,
       validation: yup
         .array()
@@ -41,8 +46,10 @@ const jobFields = initialData => {
       type: FIELDS.autocompleteFreeText,
       name: 'industry',
       label: 'Industry',
-      suggestions: SKILLS,
-      value: initialData['industry'],
+      suggestions: ASSESSMENT_CATEGORIES,
+      value: ASSESSMENT_CATEGORIES.filter(
+        x => x.value === initialData['industry']
+      )[0],
       validation: yup.string().required('Industry is required'),
     },
     {
