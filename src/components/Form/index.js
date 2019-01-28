@@ -20,6 +20,9 @@ import DateTime from './Fields/DateTime';
 import Uploader from './Fields/Uploader';
 import Select from './Fields/Select';
 
+import DeleteIcon from '@material-ui/icons/Delete';
+import IconButton from '@material-ui/core/IconButton';
+
 const styles = theme => ({
   paperRoot: {
     width: `calc(100% - ${theme.spacing.unit * 4}px)`,
@@ -97,7 +100,16 @@ const validationReducer = (obj, item) => (
 );
 
 function Form(props) {
-  const { classes, action, actions, open, data, formTitle, justForm } = props;
+  const {
+    classes,
+    action,
+    actions,
+    open,
+    data,
+    formTitle,
+    justForm,
+    handleDelete,
+  } = props;
 
   let initialValues = data.reduce(initialValuesReducer, {});
   let hasNewData = true;
@@ -302,7 +314,12 @@ function Form(props) {
                   className={classes.capitalise}
                   classes={{ root: classes.dialogTitle }}
                 >
-                  {action} {formTitle}
+                  {action} {formTitle}{' '}
+                  {handleDelete && (
+                    <IconButton onClick={handleDelete}>
+                      <DeleteIcon />
+                    </IconButton>
+                  )}
                 </DialogTitle>
 
                 <DialogContent>{Fields}</DialogContent>

@@ -8,7 +8,7 @@ import Typography from '@material-ui/core/Typography';
 import moment from 'moment';
 import IconButton from '@material-ui/core/IconButton';
 
-import DeleteIcon from '@material-ui/icons/Delete';
+import OpenIcon from '@material-ui/icons/ArrowForwardIos';
 import EditIcon from '@material-ui/icons/Edit';
 import CopyIcon from '@material-ui/icons/FileCopy';
 import Tooltip from '@material-ui/core/Tooltip';
@@ -37,8 +37,8 @@ const styles = theme => ({
     textAlign: 'right',
   },
 });
-function EmailTemplateCard(props) {
-  const { classes, data, actions } = props;
+function EmailCampaignCard(props) {
+  const { classes, campaign, actions } = props;
   return (
     <React.Fragment>
       <Card classes={{ root: classes.root }} elevation={0}>
@@ -47,16 +47,11 @@ function EmailTemplateCard(props) {
             <Grid container>
               <Grid item>{''}</Grid>
               <Grid item xs>
-                <Typography variant="h6">
-                  {data.label}
-                  {data.needsToRun && (
-                    <span className={classes.live}>Live</span>
-                  )}
-                </Typography>
+                <Typography variant="h6">{campaign.label}</Typography>
                 <Typography variant="body2">
-                  subject: {data.subject} - created&nbsp;
-                  {data.createdAt
-                    ? moment.unix(data.createdAt.seconds).fromNow()
+                  emai: {campaign.email} - created&nbsp;
+                  {campaign.createdAt
+                    ? moment.unix(campaign.createdAt.seconds).fromNow()
                     : 'at unknown time'}
                 </Typography>
               </Grid>
@@ -73,25 +68,16 @@ function EmailTemplateCard(props) {
           </Grid>
 
           <Grid item xs={3} className={classes.rightAligned}>
-            {data.id !== 'templateBase' && (
-              <Tooltip title="Edit Template">
-                <IconButton onClick={actions.edit}>
-                  <EditIcon />
-                </IconButton>
-              </Tooltip>
-            )}
-            <Tooltip title="Duplicate Template">
-              <IconButton onClick={actions.duplicate}>
-                <CopyIcon />
+            <Tooltip title="Edit Campaign Settings">
+              <IconButton onClick={actions.edit}>
+                <EditIcon />
               </IconButton>
             </Tooltip>
-            {data.id !== 'templateBase' && (
-              <Tooltip title="Delete Template">
-                <IconButton onClick={actions.delete}>
-                  <DeleteIcon />
-                </IconButton>
-              </Tooltip>
-            )}
+            <Tooltip title="Manage Campaign">
+              <IconButton onClick={actions.manage}>
+                <OpenIcon />
+              </IconButton>
+            </Tooltip>
           </Grid>
         </Grid>
       </Card>
@@ -99,4 +85,4 @@ function EmailTemplateCard(props) {
   );
 }
 
-export default withStyles(styles)(EmailTemplateCard);
+export default withStyles(styles)(EmailCampaignCard);

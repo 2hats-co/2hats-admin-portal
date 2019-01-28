@@ -8,10 +8,10 @@ import Typography from '@material-ui/core/Typography';
 import moment from 'moment';
 import IconButton from '@material-ui/core/IconButton';
 
-import OpenIcon from '@material-ui/icons/ArrowForwardIos';
 import EditIcon from '@material-ui/icons/Edit';
 import CopyIcon from '@material-ui/icons/FileCopy';
 import Tooltip from '@material-ui/core/Tooltip';
+import OpenIcon from '@material-ui/icons/ArrowForwardIos';
 
 const styles = theme => ({
   root: {
@@ -37,21 +37,26 @@ const styles = theme => ({
     textAlign: 'right',
   },
 });
-function EmailCampaignCard(props) {
-  const { classes, campaign, actions } = props;
+function EmailTemplateCard(props) {
+  const { classes, data, actions } = props;
   return (
     <React.Fragment>
       <Card classes={{ root: classes.root }} elevation={0}>
         <Grid container justify="space-between" alignItems="center">
-          <Grid item xs={5}>
+          <Grid item xs={4}>
             <Grid container>
               <Grid item>{''}</Grid>
               <Grid item xs>
-                <Typography variant="h6">{campaign.label}</Typography>
+                <Typography variant="h6">
+                  {data.label}
+                  {data.needsToRun && (
+                    <span className={classes.live}>Live</span>
+                  )}
+                </Typography>
                 <Typography variant="body2">
-                  emai: {campaign.email} - created&nbsp;
-                  {campaign.createdAt
-                    ? moment.unix(campaign.createdAt.seconds).fromNow()
+                  subject: {data.subject} - created&nbsp;
+                  {data.createdAt
+                    ? moment.unix(data.createdAt.seconds).fromNow()
                     : 'at unknown time'}
                 </Typography>
               </Grid>
@@ -66,24 +71,31 @@ function EmailCampaignCard(props) {
             <Typography variant="h6">{'--%'}</Typography>
             <Typography variant="body2">Click Rate</Typography>
           </Grid>
+          <Grid item xs={2} className={classes.rightAligned}>
+            <Typography variant="h6">{'--%'}</Typography>
+            <Typography variant="body2">Bounce Rate</Typography>
+          </Grid>
 
-          <Grid item xs={3} className={classes.rightAligned}>
-            <Tooltip title="Edit Campaign Settings">
-              <IconButton onClick={actions.edit}>
-                <EditIcon />
-              </IconButton>
-            </Tooltip>
-
-            <Tooltip title="Duplicate Campaign">
+          <Grid item xs={2} className={classes.rightAligned}>
+            {data.id !== 'templateBase' && (
+              <Tooltip title="Edit Template">
+                <IconButton onClick={actions.edit}>
+                  <EditIcon />
+                </IconButton>
+              </Tooltip>
+            )}
+            <Tooltip title="Duplicate Template">
               <IconButton onClick={actions.duplicate}>
                 <CopyIcon />
               </IconButton>
             </Tooltip>
-            <Tooltip title="Manage Campaign">
-              <IconButton onClick={actions.manage}>
-                <OpenIcon />
-              </IconButton>
-            </Tooltip>
+            {data.id !== 'templateBase' && (
+              <Tooltip title="View Template">
+                <IconButton onClick={actions.editTemplate}>
+                  <OpenIcon />
+                </IconButton>
+              </Tooltip>
+            )}
           </Grid>
         </Grid>
       </Card>
@@ -91,4 +103,4 @@ function EmailCampaignCard(props) {
   );
 }
 
-export default withStyles(styles)(EmailCampaignCard);
+export default withStyles(styles)(EmailTemplateCard);

@@ -15,6 +15,7 @@ export const copyToClipboard = text => {
   document.execCommand('copy');
   document.body.removeChild(dummy);
 };
+
 export function makeId(chars) {
   var text = '';
   var possible =

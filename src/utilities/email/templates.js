@@ -1,6 +1,7 @@
 import { firestore } from '../../store';
 import { COLLECTIONS } from '../../constants/firestore';
 import useDocument from '../../hooks/useDocument';
+import { design } from '../../constants/emails/templateDesign';
 export const createTemplate = async templateObject => {
   const { label, html, design, subject, keys } = templateObject;
 
@@ -30,7 +31,6 @@ export const setTemplateBase = async templateObject => {
     subject,
     keys,
     createdAt: new Date(),
-    isAdminPortal: false,
   };
   return await firestore
     .collection(COLLECTIONS.emailTemplates)
@@ -38,6 +38,23 @@ export const setTemplateBase = async templateObject => {
     .set(TemplateDoc);
 };
 
+export const newTemplate = async (campaignId, type) => {
+  const templateDoc = {
+    label: 'New template',
+    subject: '',
+    type,
+    keys: [],
+    senderEmail: 'hi@2hats.com',
+    delay: 0,
+    createdAt: new Date(),
+    campaignId,
+    design: JSON.stringify(design),
+  };
+  console.log(templateDoc);
+  return await firestore
+    .collection(COLLECTIONS.emailTemplates)
+    .add(templateDoc);
+};
 export const useEmailTemplate = id => {
   const [templateDoc] = useDocument({
     path: `${COLLECTIONS.emailTemplates}/${id}`,

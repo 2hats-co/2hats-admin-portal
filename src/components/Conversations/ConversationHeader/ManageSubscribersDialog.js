@@ -24,7 +24,7 @@ import Button from '@material-ui/core/Button';
 import IntegrationReactSelect from '../../IntegrationReactSelect';
 import SuperAvatar from '../../SuperAvatar';
 import { AdminsConsumer } from '../../../contexts/AdminsContext';
-import { updateProperties } from '../../../utilities/firestore';
+import { updateDoc } from '../../../utilities/firestore';
 import { COLLECTIONS } from '../../../constants/firestore';
 
 const styles = theme => ({
@@ -62,7 +62,7 @@ function ManageSubscribersDialog(props) {
 
     if (data.value) {
       newSubscribers.push(data.value);
-      updateProperties(COLLECTIONS.conversations, conversation.id, {
+      updateDoc(COLLECTIONS.conversations, conversation.id, {
         subscribedAdmins: newSubscribers,
       });
       setSubscribersUIDs(newSubscribers);
@@ -75,7 +75,7 @@ function ManageSubscribersDialog(props) {
 
     if (index > -1) {
       newSubscribers.splice(index, 1);
-      updateProperties(COLLECTIONS.conversations, conversation.id, {
+      updateDoc(COLLECTIONS.conversations, conversation.id, {
         subscribedAdmins: newSubscribers,
       });
       setSubscribersUIDs(newSubscribers);

@@ -1,7 +1,7 @@
 import { makeId } from '../index';
 import { firestore, auth } from '../../store';
 import { COLLECTIONS } from '../../constants/firestore';
-export const updateProperties = (collection, docId, properties) => {
+export const updateDoc = (collection, docId, properties) => {
   firestore
     .collection(collection)
     .doc(docId)

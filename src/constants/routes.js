@@ -18,8 +18,10 @@ export const ROUTES = {
   pending: '/pending',
 
   marketingLeadGeneration: '/marketingLeadGeneration',
-  marketingEmail: '/marketingEmail',
-  emailCampaigns: '/marketing/emailCampaigns',
+
+  conversationEmails: '/conversationEmails',
+  emailCampaigns: '/emailCampaigns',
+  transactionalEmails: '/transactionalEmails',
 
   jobsManager: '/contentManager/jobs',
   assessmentsManager: '/contentManager/assessments',

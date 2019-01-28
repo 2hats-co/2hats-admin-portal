@@ -7,7 +7,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 
 import Form from '../Form';
 
-import { updateProperties, deleteDoc } from '../../utilities/firestore';
+import { updateDoc, deleteDoc } from '../../utilities/firestore';
 
 const EditOneCard = props => {
   const { children, data, fields, collection } = props;
@@ -38,7 +38,7 @@ const EditOneCard = props => {
           action="edit"
           actions={{
             edit: d => {
-              updateProperties(collection, data.id, d);
+              updateDoc(collection, data.id, d);
               setShowForm(false);
             },
             close: () => {
