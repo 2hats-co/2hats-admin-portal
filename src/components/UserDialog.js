@@ -24,7 +24,7 @@ import { ChromePicker } from 'react-color';
 import SuperAvatar from './SuperAvatar';
 import { randomGreeting } from '../utilities';
 import { COLLECTIONS } from '../constants/firestore';
-import { updateProperties } from '../utilities/firestore';
+import { updateDoc } from '../utilities/firestore';
 import { ORANGE_COLOR } from '../Theme';
 import DebugContext from '../contexts/DebugContext';
 import { auth } from '../store';
@@ -140,7 +140,7 @@ function UserDialog(props) {
   };
 
   const updateTheme = () => {
-    updateProperties(COLLECTIONS.admins, user.UID, {
+    updateDoc(COLLECTIONS.admins, user.UID, {
       adminPortal: {
         themeColor,
         theme: darkTheme ? 'dark' : 'light',
@@ -154,7 +154,7 @@ function UserDialog(props) {
 
   const updateDefaultRoute = val => {
     setDefaultRoute(val);
-    updateProperties(COLLECTIONS.admins, user.UID, { defaultRoute: val });
+    updateDoc(COLLECTIONS.admins, user.UID, { defaultRoute: val });
     setSnackbarMessage('Saved default route!');
   };
   const handleLogout = () => {

@@ -10,7 +10,7 @@ import IconButton from '@material-ui/core/IconButton';
 
 import OpenIcon from '@material-ui/icons/ArrowForwardIos';
 import EditIcon from '@material-ui/icons/Edit';
-import CopyIcon from '@material-ui/icons/FileCopy';
+
 import Tooltip from '@material-ui/core/Tooltip';
 
 const styles = theme => ({
@@ -71,12 +71,6 @@ function EmailCampaignCard(props) {
             <Tooltip title="Edit Campaign Settings">
               <IconButton onClick={actions.edit}>
                 <EditIcon />
-              </IconButton>
-            </Tooltip>
-
-            <Tooltip title="Duplicate Campaign">
-              <IconButton onClick={actions.duplicate}>
-                <CopyIcon />
               </IconButton>
             </Tooltip>
             <Tooltip title="Manage Campaign">

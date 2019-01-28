@@ -22,7 +22,7 @@ import {
   invalidSubmission,
 } from '../../../constants/emails/templates';
 import {
-  updateProperties,
+  updateDoc,
   generateSmartKey,
   updateUserDocs,
 } from '../../../utilities/firestore';
@@ -151,7 +151,7 @@ function ScreeningForm(props) {
       type: authedUser.UID,
       value: `screened-${confidenceLevel.value}`,
     });
-    updateProperties(COLLECTIONS.submissions, submissionID, properties);
+    updateDoc(COLLECTIONS.submissions, submissionID, properties);
     resetScreeningForm();
     submissionDispatch({ type: 'clear' });
   };
@@ -177,7 +177,7 @@ function ScreeningForm(props) {
       type: authedUser.UID,
       value: `disqualified-${disqualifyType}`,
     });
-    updateProperties(COLLECTIONS.submissions, submissionID, properties);
+    updateDoc(COLLECTIONS.submissions, submissionID, properties);
     resetScreeningForm();
     submissionDispatch({ type: 'clear' });
   };

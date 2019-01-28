@@ -14,7 +14,6 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.bubble.css';
 
 import classNames from 'classnames';
-
 import ComposerActions from './ComposerActions';
 import TemplateDropdown from './TemplateDropdown';
 import TextTemplateDropdown from './TextTemplateDropdown';

@@ -8,10 +8,10 @@ import Typography from '@material-ui/core/Typography';
 import moment from 'moment';
 import IconButton from '@material-ui/core/IconButton';
 
-import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import CopyIcon from '@material-ui/icons/FileCopy';
 import Tooltip from '@material-ui/core/Tooltip';
+import OpenIcon from '@material-ui/icons/ArrowForwardIos';
 
 const styles = theme => ({
   root: {
@@ -43,7 +43,7 @@ function EmailTemplateCard(props) {
     <>
       <Card classes={{ root: classes.root }} elevation={0}>
         <Grid container justify="space-between" alignItems="center">
-          <Grid item xs={5}>
+          <Grid item xs={4}>
             <Grid container>
               <Grid item>{''}</Grid>
               <Grid item xs>
@@ -71,8 +71,12 @@ function EmailTemplateCard(props) {
             <Typography variant="h6">{'--%'}</Typography>
             <Typography variant="body2">Click Rate</Typography>
           </Grid>
+          <Grid item xs={2} className={classes.rightAligned}>
+            <Typography variant="h6">{'--%'}</Typography>
+            <Typography variant="body2">Bounce Rate</Typography>
+          </Grid>
 
-          <Grid item xs={3} className={classes.rightAligned}>
+          <Grid item xs={2} className={classes.rightAligned}>
             {data.id !== 'templateBase' && (
               <Tooltip title="Edit Template">
                 <IconButton onClick={actions.edit}>
@@ -86,9 +90,9 @@ function EmailTemplateCard(props) {
               </IconButton>
             </Tooltip>
             {data.id !== 'templateBase' && (
-              <Tooltip title="Delete Template">
-                <IconButton onClick={actions.delete}>
-                  <DeleteIcon />
+              <Tooltip title="View Template">
+                <IconButton onClick={actions.editTemplate}>
+                  <OpenIcon />
                 </IconButton>
               </Tooltip>
             )}

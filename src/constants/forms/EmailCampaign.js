@@ -1,6 +1,7 @@
 import FIELDS from './fields';
-import * as yup from 'yup';
 import findIndex from 'ramda/es/findIndex';
+
+import * as yup from 'yup';
 import propEq from 'ramda/es/propEq';
 import { TRIGGERS } from '@bit/sidney2hats.2hats.global.common-constants';
 
@@ -23,17 +24,6 @@ const EmailCampaignFields = initialData => {
       label: 'Campaign Name',
       value: initialData['label'],
       validation: yup.string().required('Campaign Name is required!'),
-    },
-    {
-      type: FIELDS.textField,
-      name: 'email',
-      label: 'outbox email',
-      placeholder: 'example@2hats.com',
-      value: initialData['email'],
-      validation: yup
-        .string()
-        .email('Invalid email address')
-        .required('Email is required!'),
     },
     {
       type: FIELDS.autocompleteMulti,

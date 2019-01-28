@@ -23,6 +23,9 @@ import Checkbox from './Fields/Checkbox';
 import RichText from './Fields/RichText';
 import RichTextMulti from './Fields/RichTextMulti';
 
+import DeleteIcon from '@material-ui/icons/Delete';
+import IconButton from '@material-ui/core/IconButton';
+
 const styles = theme => ({
   paperRoot: {
     width: `calc(100% - ${theme.spacing.unit * 4}px)`,
@@ -122,6 +125,7 @@ function Form(props) {
     justForm,
     formHeader,
     formFooter,
+    handleDelete,
   } = props;
 
   let initialValues = data.reduce(initialValuesReducer, {});
@@ -368,7 +372,12 @@ function Form(props) {
                   className={classes.capitalise}
                   classes={{ root: classes.dialogTitle }}
                 >
-                  {action} {formTitle}
+                  {action} {formTitle}{' '}
+                  {handleDelete && (
+                    <IconButton onClick={handleDelete}>
+                      <DeleteIcon />
+                    </IconButton>
+                  )}
                 </DialogTitle>
 
                 <DialogContent classes={{ root: classes.dialogContent }}>

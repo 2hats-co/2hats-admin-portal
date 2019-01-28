@@ -36,12 +36,13 @@ const useCollection = intialOverrides => {
     ...intialOverrides,
   });
   const getDocuments = (filters, limit, sort) => {
-    //unsubscribe from old path
+    //unsubscribe from old path or filters
     if (
-      collectionState.prevPath &&
-      collectionState.path !== collectionState.prevPath
+      (collectionState.prevPath &&
+        collectionState.path !== collectionState.prevPath) ||
+      collectionState.filters !== collectionState.prevFilters
     ) {
-      collectionState.unsubscribe();
+      if (collectionState.unsubscribe) collectionState.unsubscribe();
     }
     //updates prev values
     collectionDispatch({

@@ -16,6 +16,7 @@ import StatisticsIcon from '@material-ui/icons/InsertChart';
 import ConversationsIcon from '@material-ui/icons/Forum';
 import MarketingIcon from '../../assets/icons/Bullhorn';
 import JobsIcon from '@material-ui/icons/PregnantWoman';
+import EmailIcon from '@material-ui/icons/Email';
 import WarningIcon from '@material-ui/icons/Warning';
 
 import { ROUTES } from '../../constants/routes';
@@ -117,7 +118,17 @@ const navigationRoutes = [
     label: 'Marketing',
     icon: <MarketingIcon />,
     route: ROUTES.marketingLeadGeneration,
-    subRoutes: [ROUTES.marketingLeadGeneration, ROUTES.marketingEmail],
+    subRoutes: [ROUTES.marketingLeadGeneration],
+  },
+  {
+    label: 'Email Templates',
+    icon: <EmailIcon />,
+    route: ROUTES.emailCampaigns,
+    subRoutes: [
+      ROUTES.emailCampaigns,
+      ROUTES.conversationEmails,
+      ROUTES.transactionalEmails,
+    ],
   },
   {
     label: 'Content Manager',

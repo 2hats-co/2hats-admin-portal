@@ -35,7 +35,7 @@ import {
   resumeAccepted,
 } from '../../../constants/emails/templates';
 import {
-  updateProperties,
+  updateDoc,
   // updateUserDocs,
   generateSmartKey,
 } from '../../../utilities/firestore';
@@ -164,7 +164,7 @@ function FeedbackForm(props) {
         },
       ]),
     };
-    updateProperties(COLLECTIONS.submissions, submission.id, properties);
+    updateDoc(COLLECTIONS.submissions, submission.id, properties);
   };
 
   const handleSubmit = () => {
@@ -197,7 +197,7 @@ function FeedbackForm(props) {
   };
 
   const sendToPending = () => {
-    updateProperties(COLLECTIONS.submissions, submission.id, {
+    updateDoc(COLLECTIONS.submissions, submission.id, {
       outcome: 'pending',
       feedbacked: false,
     });

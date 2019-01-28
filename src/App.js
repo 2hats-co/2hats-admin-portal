@@ -33,6 +33,9 @@ const MarketingContainer = lazy(() =>
 const ContentManagerContainer = lazy(() =>
   import('./containers/ContentManagerContainer' /* webpackChunkName: "ContentManagerContainer" */)
 );
+const EmailTemplatesManagerContainer = lazy(() =>
+  import('./containers/EmailTemplatesManagerContainer' /* webpackChunkName: "EmailTemplatesManagerContainer" */)
+);
 
 function App(props) {
   const currentUser = useAuthedUser();
@@ -108,21 +111,7 @@ function App(props) {
                 path={ROUTES.submissions}
                 component={() => <SubmissionsContainer {...props} />}
               />
-              <Route
-                exact
-                path={ROUTES.marketingLeadGeneration}
-                component={() => <MarketingContainer {...props} />}
-              />
-              <Route
-                exact
-                path={ROUTES.marketingEmail}
-                component={() => <MarketingContainer {...props} />}
-              />
-              <Route
-                exact
-                path={ROUTES.emailCampaigns}
-                component={() => <MarketingContainer {...props} />}
-              />
+
               <Route
                 exact
                 path={ROUTES.pending}
@@ -158,6 +147,28 @@ function App(props) {
                 exact
                 path={ROUTES.eventsManager}
                 component={() => <ContentManagerContainer {...props} />}
+              />
+
+              <Route
+                exact
+                path={ROUTES.marketingLeadGeneration}
+                component={() => <MarketingContainer {...props} />}
+              />
+
+              <Route
+                exact
+                path={ROUTES.emailCampaigns}
+                component={() => <EmailTemplatesManagerContainer {...props} />}
+              />
+              <Route
+                exact
+                path={ROUTES.transactionalEmails}
+                component={() => <EmailTemplatesManagerContainer {...props} />}
+              />
+              <Route
+                exact
+                path={ROUTES.conversationEmails}
+                component={() => <EmailTemplatesManagerContainer {...props} />}
               />
 
               <Route
