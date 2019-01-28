@@ -79,4 +79,13 @@ Object.defineProperty(exports, 'ACTIVITY_LOG_LABELS', {
   },
 });
 
+var _quillStyles = require('./quillStyles');
+
+Object.defineProperty(exports, 'QUILL_STYLES', {
+  enumerable: true,
+  get: function get() {
+    return _quillStyles.QUILL_STYLES;
+  },
+});
+
 //# sourceMappingURL=index.js.map

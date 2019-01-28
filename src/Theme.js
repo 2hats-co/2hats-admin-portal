@@ -48,6 +48,7 @@ function generateTheme(theme, themeColor) {
         dark: primaryColor,
         darkText: primaryDarkText,
         light: primaryLight,
+        contrastText: '#fff',
       },
       secondary: {
         main: primaryColor,

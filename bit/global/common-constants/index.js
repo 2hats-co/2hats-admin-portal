@@ -5,3 +5,4 @@ export { TRIGGERS } from './triggers';
 export { COLLECTIONS } from './collections';
 export { MOMENT_LOCALES, MOMENT_FORMATS } from './moment';
 export { ACTIVITY_LOG_TYPES, ACTIVITY_LOG_LABELS } from './activityLog';
+export { QUILL_STYLES } from './quillStyles';

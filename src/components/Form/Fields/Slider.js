@@ -88,7 +88,7 @@ const Slider = props => {
               <div className={classes.thumb}>
                 <Typography variant="body1" className={classes.thumbLabel}>
                   {values[name]}
-                  {sliderThumbLabel || units}
+                  {sliderThumbLabel}
                 </Typography>
               </div>
             }
