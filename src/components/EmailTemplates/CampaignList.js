@@ -1,8 +1,7 @@
-import React, { useState, Suspense, lazy } from 'react';
+import React from 'react';
 
 import LoadingHat from '../LoadingHat';
 import useCollection from '../../hooks/useCollection';
-import { firestore } from '../../store';
 import { COLLECTIONS } from '../../constants/firestore';
 import EmailCampaignCard from './EmailCampaignCard';
 

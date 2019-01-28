@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useEffect } from 'react';
 
 import EmailEditor from 'react-email-editor';
 import Button from '@material-ui/core/Button';

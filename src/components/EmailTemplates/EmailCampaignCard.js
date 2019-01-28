@@ -10,7 +10,7 @@ import IconButton from '@material-ui/core/IconButton';
 
 import OpenIcon from '@material-ui/icons/ArrowForwardIos';
 import EditIcon from '@material-ui/icons/Edit';
-import CopyIcon from '@material-ui/icons/FileCopy';
+
 import Tooltip from '@material-ui/core/Tooltip';
 
 const styles = theme => ({

@@ -14,8 +14,6 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.bubble.css';
 
 import classNames from 'classnames';
-import clone from 'ramda/es/clone';
-
 import ComposerActions from './ComposerActions';
 import TemplateDropdown from './TemplateDropdown';
 import TextTemplateDropdown from './TextTemplateDropdown';
@@ -25,11 +23,6 @@ import { removeHtmlTags, globalReplace } from '../../../utilities';
 import { sendEmail } from '../../../utilities/email/gmail';
 import { sendLinkedinMessage } from '../../../utilities/linkedin';
 import { markAsRead, addNote } from '../../../utilities/conversations';
-import { THEME1 } from '../../../constants/emails/themes';
-import {
-  makeEmail,
-  personaliseElements,
-} from '../../../utilities/email/templateGenerator';
 import { CLOUD_FUNCTIONS, callable } from '../../../firebase/functions';
 
 const styles = theme => ({
@@ -159,7 +152,6 @@ function Composer(props) {
   const [messageHtml, setMessageHtml] = useState('');
   const [attachments, setAttachments] = useState([]);
   const [cc, setCc] = useState('');
-  const [templateIndex, setTemplateIndex] = useState(-1);
   const [hasTemplate, setHasTemplate] = useState(false);
   const [notifyList, setNotifyList] = useState([]);
 

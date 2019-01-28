@@ -1,33 +1,18 @@
-import React, { useEffect, useState, Suspense, lazy } from 'react';
+import React, { useEffect } from 'react';
 import { withRouter } from 'react-router-dom';
 import EmailTemplateCard from './EmailTemplateCard';
 import LoadingHat from '../LoadingHat';
 import useCollection from '../../hooks/useCollection';
-import { createDoc, deleteDoc } from '../../utilities/firestore';
 import { COLLECTIONS } from '../../constants/firestore';
 
-import Fab from '@material-ui/core/Fab';
-import AddIcon from '@material-ui/icons/Add';
-import TemplateEditor from './TemplateEditor';
-import { newTemplate } from '../../utilities/email/templates';
-const Form = lazy(() => import('../Form' /* webpackChunkName: "Form" */));
-
 function TemplateList(props) {
-  const { location, setTemplate, type, campaignId, editTemplate } = props;
+  const { setTemplate, type, campaignId, editTemplate } = props;
   let filters = [];
 
   const [templatesState, templatesDispatch] = useCollection({
     path: COLLECTIONS.emailTemplates,
     filters,
   });
-  console.log('dfsdfd');
-  useEffect(
-    () => {
-      if (location.search) {
-      }
-    },
-    [location.search]
-  );
   useEffect(
     () => {
       if (type) {
@@ -56,18 +41,6 @@ function TemplateList(props) {
             data={x}
             key={i}
             actions={{
-              duplicate: () => {
-                // let { id, label, createdAt, ...rest } = x;
-                // const doc = {
-                //   ...rest,
-                //   label: label + '(COPY)',
-                //   createdAt: new Date(),
-                // };
-                // createDoc(COLLECTIONS.emailTemplates, doc);
-              },
-              delete: () => {
-                // deleteDoc(COLLECTIONS.emailTemplates, x.id);
-              },
               edit: () => {
                 setTemplate(x);
                 editTemplate(x);

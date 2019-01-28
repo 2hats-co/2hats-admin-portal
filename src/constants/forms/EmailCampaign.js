@@ -5,10 +5,10 @@ import * as yup from 'yup';
 import propEq from 'ramda/es/propEq';
 import TRIGGERS from '../studentPortal/triggers';
 
-const getLabel = (value, options) => {
-  let index = findIndex(propEq('value', value))(options);
-  return options[index];
-};
+// const getLabel = (value, options) => {
+//   let index = findIndex(propEq('value', value))(options);
+//   return options[index];
+// };
 const getLabels = (values, options) => {
   return values.map(value => {
     let index = findIndex(propEq('value', value))(options);
