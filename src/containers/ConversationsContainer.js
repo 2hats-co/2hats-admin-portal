@@ -1,7 +1,4 @@
-import React, {
-  useEffect,
-  //Suspense, //lazy
-} from 'react';
+import React, { useEffect, Suspense, lazy } from 'react';
 import withNavigation from '../components/withNavigation';
 import withStyles from '@material-ui/core/styles/withStyles';
 
@@ -11,7 +8,7 @@ import LocationIndicator from '../components/LocationIndicator';
 
 import Grid from '@material-ui/core/Grid';
 import Fade from '@material-ui/core/Fade';
-import ConversationsList from '../components/Conversations/ConversationsList';
+//import ConversationsList from '../components/Conversations/ConversationsList';
 import ConversationHeader from '../components/Conversations/ConversationHeader';
 import Messages from '../components/Conversations/Messages';
 import LoadingHat from '../components/LoadingHat';
@@ -24,6 +21,9 @@ import Composer from '../components/Conversations/Composer';
 // const Composer = lazy(() =>
 //   import('../components/Conversations/Composer' /* webpackChunkName: "Composer" */)
 // );
+const ConversationsList = lazy(() =>
+  import('../components/Conversations/ConversationsList' /* webpackChunkName: "Composer" */)
+);
 
 const styles = theme => ({
   messagesContainer: {
