@@ -1,12 +1,7 @@
 import { makeId } from '../index';
 import { firestore, auth } from '../../store';
 import { COLLECTIONS } from '../../constants/firestore';
-export const updateDoc = (collection, docId, properties) => {
-  firestore
-    .collection(collection)
-    .doc(docId)
-    .update({ ...properties });
-};
+
 export const updateAdminSubCollectionProps = (
   collection,
   docId,
@@ -59,12 +54,34 @@ export const getfirstIdOfQuery = async (collectionPath, filters) => {
   }
 };
 
-export const createDoc = (collection, docData) => {
+export const createDoc = (collection, docData) =>
   firestore.collection(collection).add(docData);
-};
-export const deleteDoc = (collection, docId) => {
+
+export const deleteDoc = (collection, docId) =>
   firestore
     .collection(collection)
     .doc(docId)
     .delete();
+
+export const updateDoc = (collection, docId, properties) =>
+  firestore
+    .collection(collection)
+    .doc(docId)
+    .update({ ...properties });
+
+export const getDoc = async (collection, docId) => {
+  const doc = await firestore
+    .collection(collection)
+    .doc(docId)
+    .get();
+  return doc.data();
+};
+export const queryCount = async (collection, filters) => {
+  let query = firestore.collection(collection);
+  filters.forEach(filter => {
+    query = query.where(filter.field, filter.operator, filter.value);
+  });
+  const snapshot = await query.get();
+  console.log(snapshot);
+  return snapshot.docs.length || 0;
 };

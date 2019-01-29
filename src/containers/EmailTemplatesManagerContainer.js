@@ -11,7 +11,12 @@ import LocationIndicator from '../components/LocationIndicator';
 
 import { ROUTES } from '../constants/routes';
 import { COLLECTIONS } from '../constants/firestore';
-import { createDoc, updateDoc, deleteDoc } from '../utilities/firestore';
+import {
+  createDoc,
+  updateDoc,
+  deleteDoc,
+  queryCount,
+} from '../utilities/firestore';
 
 import moment from 'moment';
 import { momentLocales } from '../constants/momentLocales';
@@ -25,6 +30,8 @@ import transactionalFields from '../constants/forms/transactionalEmailTemplate';
 import campaignTemplateFields from '../constants/forms/campaignEmailTemplate';
 
 import TemplateList from '../components/EmailTemplates/TemplateList';
+import OrderedTemplateList from '../components/EmailTemplates/OrderedTemplateList';
+
 import CampaignList from '../components/EmailTemplates/CampaignList';
 import TemplateEditor from '../components/EmailTemplates/TemplateEditor';
 import { design } from '../constants/emails/templateDesign';
@@ -52,7 +59,8 @@ function EmailTemplatesManagerContainer(props) {
   const [fields, setFields] = useState(null);
   const [showForm, setShowForm] = useState(false);
 
-  const handleCreate = data => {
+  const handleCreate = async data => {
+    setShowForm(false);
     let templateDoc = {
       ...data,
       design: JSON.stringify(design),
@@ -80,9 +88,16 @@ function EmailTemplatesManagerContainer(props) {
     if (!campaignId && path === ROUTES.emailCampaigns) {
       createDoc(COLLECTIONS.emailCampaigns, { ...data, createdAt: new Date() });
     } else {
+      const queryFilters = [
+        { field: 'campaignId', operator: '==', value: campaignId },
+      ];
+      const numberOfCampaignTemplates = await queryCount(
+        COLLECTIONS.emailTemplates,
+        queryFilters
+      );
+      templateDoc.index = numberOfCampaignTemplates;
       createDoc(COLLECTIONS.emailTemplates, templateDoc);
     }
-    setShowForm(false);
   };
   const handleDelete = () => {
     if (!campaignId && path === ROUTES.emailCampaigns) {
@@ -156,7 +171,7 @@ function EmailTemplatesManagerContainer(props) {
       case ROUTES.emailCampaigns:
         if (campaignId) {
           return (
-            <TemplateList
+            <OrderedTemplateList
               campaignId={campaignId}
               setTemplate={setTemplate}
               editTemplate={handleEdit}
@@ -181,7 +196,7 @@ function EmailTemplatesManagerContainer(props) {
           subRoutes={[
             { label: 'campaigns', value: ROUTES.emailCampaigns },
             { label: 'conversations', value: ROUTES.conversationEmails },
-            { label: 'transcationals', value: ROUTES.transactionalEmails },
+            { label: 'transactionals', value: ROUTES.transactionalEmails },
           ]}
         />
 
@@ -209,7 +224,7 @@ function EmailTemplatesManagerContainer(props) {
           <Form
             //justForm
             handleDelete={handleDelete}
-            action={template || campaign ? 'update' : 'create'}
+            action={template || (campaign && !campaignId) ? 'update' : 'create'}
             actions={{
               create: handleCreate,
               update: handleUpdate,

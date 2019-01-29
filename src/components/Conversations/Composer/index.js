@@ -69,7 +69,6 @@ const styles = theme => ({
     fontSize: '.875rem',
     minWidth: 100,
   },
-
   scrollableBox: {
     maxHeight: 400,
     overflowY: 'auto',

@@ -26,6 +26,7 @@ function CampaignList(props) {
                   setCampaign(campaign);
                 },
                 manage: () => {
+                  setCampaign(campaign);
                   history.push(`?campaignId=${campaign.id}`);
                 },
               }}
