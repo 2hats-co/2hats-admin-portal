@@ -4,16 +4,8 @@ import EmailTemplateCard from './EmailTemplateCard';
 import LoadingHat from '../LoadingHat';
 import useCollection from '../../hooks/useCollection';
 import { COLLECTIONS } from '../../constants/firestore';
+import { updateDoc } from '../../utilities/firestore';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
-
-// a little function to help us with reordering the result
-const reorder = (list, startIndex, endIndex) => {
-  const result = Array.from(list);
-  const [removed] = result.splice(startIndex, 1);
-  result.splice(endIndex, 0, removed);
-
-  return result;
-};
 
 const grid = 1;
 
@@ -45,9 +37,14 @@ function OrderedTemplateList(props) {
     filters,
     sort: { field: 'index', direction: 'asc' },
   });
-  const onDragEnd = result => {
+  const onDragEnd = async result => {
     // dropped outside the list
+
     if (result.destination.index !== result.source.index) {
+      //update index of moved element
+      updateDoc(COLLECTIONS.emailTemplates, result.draggableId, {
+        index: result.destination.index,
+      });
       if (result.destination.index < result.source.index) {
         // items effect have index < destination.index
         const affectedTemplates = templatesState.documents.filter(
@@ -55,14 +52,27 @@ function OrderedTemplateList(props) {
             doc.index < result.source.index &&
             doc.index > result.destination.index - 1
         );
-        console.log('affectedTemplates <', affectedTemplates);
+        affectedTemplates.forEach(doc => {
+          updateDoc(COLLECTIONS.emailTemplates, doc.id, {
+            index: doc.index + 1,
+          });
+        });
+        console.log('affectedTemplates drag up', affectedTemplates);
       } else {
         const affectedTemplates = templatesState.documents.filter(
-          doc => doc.index > result.source.index
+          doc =>
+            doc.index > result.source.index &&
+            doc.index <= result.destination.index
         );
-        console.log('affectedTemplates >', affectedTemplates);
+        affectedTemplates.forEach(doc => {
+          updateDoc(COLLECTIONS.emailTemplates, doc.id, {
+            index: doc.index - 1,
+          });
+        });
+        console.log('affectedTemplates drag down', affectedTemplates);
       }
       console.log(result);
+      //await sleep(1000);
       console.log(templatesState.documents);
     }
   };
