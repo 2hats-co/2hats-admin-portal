@@ -17,6 +17,14 @@ const collectionReducer = (prevState, newProps) => {
       case 'updateDoc':
         let docs = prevState.documents;
         const docIndex = findIndex(propEq('id', newProps.id))(docs);
+        //compare before updating
+        let shouldUpdate = false;
+        for (let field in newProps.data) {
+          if (docs[docIndex][field] !== newProps.data[field]) {
+            shouldUpdate = true;
+          }
+        }
+        if (!shouldUpdate) break;
         docs[docIndex] = { ...docs[docIndex], ...newProps.data };
         firestore
           .collection(prevState.path)
