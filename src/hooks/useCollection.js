@@ -1,6 +1,9 @@
 import { firestore } from '../store';
 import { useEffect, useReducer } from 'react';
 import equals from 'ramda/es/equals';
+import findIndex from 'ramda/es/findIndex';
+import propEq from 'ramda/es/propEq';
+
 const CAP = 500;
 
 const collectionReducer = (prevState, newProps) => {
@@ -11,6 +14,15 @@ const collectionReducer = (prevState, newProps) => {
           // documents count hardcap
           return { ...prevState, limit: prevState.limit + 10 };
         else return { ...prevState };
+      case 'updateDoc':
+        let docs = prevState.documents;
+        const docIndex = findIndex(propEq('id', newProps.id))(docs);
+        docs[docIndex] = { ...docs[docIndex], ...newProps.data };
+        firestore
+          .collection(prevState.path)
+          .doc(newProps.id)
+          .update(newProps.data);
+        return { ...prevState, documents: docs };
       default:
         break;
     }

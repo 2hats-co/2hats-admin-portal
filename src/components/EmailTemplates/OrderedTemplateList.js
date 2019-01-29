@@ -4,11 +4,13 @@ import EmailTemplateCard from './EmailTemplateCard';
 import LoadingHat from '../LoadingHat';
 import useCollection from '../../hooks/useCollection';
 import { COLLECTIONS } from '../../constants/firestore';
-import { updateDoc } from '../../utilities/firestore';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
+import sortWith from 'ramda/es/sortWith';
+import ascend from 'ramda/es/ascend';
+import prop from 'ramda/es/prop';
 const grid = 1;
-
+const sortByIndex = sortWith([ascend(prop('index'))]);
 const getItemStyle = (isDragging, draggableStyle) => ({
   // some basic styles to make the items look a bit nicer
   userSelect: 'none',
@@ -42,8 +44,13 @@ function OrderedTemplateList(props) {
 
     if (result.destination.index !== result.source.index) {
       //update index of moved element
-      updateDoc(COLLECTIONS.emailTemplates, result.draggableId, {
-        index: result.destination.index,
+      // updateDoc(COLLECTIONS.emailTemplates, result.draggableId, {
+      //   index: result.destination.index,
+      // });
+      templatesDispatch({
+        type: 'updateDoc',
+        id: result.draggableId,
+        data: { index: result.destination.index },
       });
       if (result.destination.index < result.source.index) {
         // items effect have index < destination.index
@@ -53,8 +60,13 @@ function OrderedTemplateList(props) {
             doc.index > result.destination.index - 1
         );
         affectedTemplates.forEach(doc => {
-          updateDoc(COLLECTIONS.emailTemplates, doc.id, {
-            index: doc.index + 1,
+          // updateDoc(COLLECTIONS.emailTemplates, doc.id, {
+          //   index: doc.index + 1,
+          // });
+          templatesDispatch({
+            type: 'updateDoc',
+            id: doc.id,
+            data: { index: doc.index + 1 },
           });
         });
         console.log('affectedTemplates drag up', affectedTemplates);
@@ -65,15 +77,17 @@ function OrderedTemplateList(props) {
             doc.index <= result.destination.index
         );
         affectedTemplates.forEach(doc => {
-          updateDoc(COLLECTIONS.emailTemplates, doc.id, {
-            index: doc.index - 1,
+          // updateDoc(COLLECTIONS.emailTemplates, doc.id, {
+          //   index: doc.index - 1,
+          // });
+          templatesDispatch({
+            type: 'updateDoc',
+            id: doc.id,
+            data: { index: doc.index - 1 },
           });
         });
         console.log('affectedTemplates drag down', affectedTemplates);
       }
-      console.log(result);
-      //await sleep(1000);
-      console.log(templatesState.documents);
     }
   };
   useEffect(
@@ -95,7 +109,9 @@ function OrderedTemplateList(props) {
     [campaignId]
   );
   let templates = templatesState.documents;
-  if (templates)
+  if (templates) {
+    templates = sortByIndex(templates);
+    console.log(templates);
     return (
       <DragDropContext onDragEnd={onDragEnd}>
         <Droppable droppableId={campaignId}>
@@ -141,7 +157,7 @@ function OrderedTemplateList(props) {
         </Droppable>
       </DragDropContext>
     );
-  else return <LoadingHat message="Loading templates…" />;
+  } else return <LoadingHat message="Loading templates…" />;
 }
 
 export default withRouter(OrderedTemplateList);
