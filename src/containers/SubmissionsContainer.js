@@ -190,10 +190,7 @@ function SumbissionsContainer(props) {
                 xs={template ? 8 : 12}
                 className={classes.submissionWrapper}
               >
-                <Submission
-                  submission={submission}
-                  listType={location.pathname.split('/')[1]}
-                />
+                {console.log(submission)}
               </Grid>
               {template && (
                 <Grid item xs={4} style={{ maxWidth: 'none' }}>
