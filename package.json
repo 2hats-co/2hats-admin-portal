@@ -53,7 +53,8 @@
     "raf": "3.4.0",
     "ramda": "^0.26.0",
     "randomcolor": "^0.5.3",
-    "react": "16.7.0-alpha.2",
+    "react": "^16.7.0-alpha.2",
+    "react-beautiful-dnd": "^10.0.3",
     "react-color": "^2.14.1",
     "react-dev-utils": "^5.0.2",
     "react-dom": "16.7.0-alpha.2",
@@ -80,7 +81,7 @@
   },
   "scripts": {
     "precommit": "pretty-quick --staged",
-    "analyze": "source-map-explorer build/static/js/MarketingContainer.*",
+    "analyze": "source-map-explorer build/static/js/App.*",
     "start": "node scripts/start.js",
     "build": "node generate-build-id.js && node scripts/build.js",
     "test": "node scripts/test.js --env=jsdom"

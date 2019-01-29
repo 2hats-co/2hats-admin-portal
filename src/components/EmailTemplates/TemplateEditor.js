@@ -10,7 +10,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import Chip from '@material-ui/core/Chip';
 import { sendEmail } from '../../utilities/email/send';
 
-import { useAuthedUser } from '../../hooks/useAuthedUser';
+import useAuthedUser from '../../hooks/useAuthedUser';
 import useWindowSize from '../../hooks/useWindowSize';
 import { globalReplace, copyToClipboard } from '../../utilities';
 const basicTags = [

@@ -18,7 +18,7 @@ import ComposerActions from './ComposerActions';
 import TemplateDropdown from './TemplateDropdown';
 import TextTemplateDropdown from './TextTemplateDropdown';
 import { AdminsContext } from '../../../contexts/AdminsContext';
-import { useAuthedUser } from '../../../hooks/useAuthedUser';
+import useAuthedUser from '../../../hooks/useAuthedUser';
 import { removeHtmlTags, globalReplace } from '../../../utilities';
 import { sendEmail } from '../../../utilities/email/gmail';
 import { sendLinkedinMessage } from '../../../utilities/linkedin';
@@ -69,7 +69,6 @@ const styles = theme => ({
     fontSize: '.875rem',
     minWidth: 100,
   },
-
   scrollableBox: {
     maxHeight: 400,
     overflowY: 'auto',

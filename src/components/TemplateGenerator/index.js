@@ -5,7 +5,7 @@ import {
   personaliseElements,
 } from '../../utilities/email/templateGenerator';
 
-import { useAuthedUser } from '../../hooks/useAuthedUser';
+import useAuthedUser from '../../hooks/useAuthedUser';
 
 import withStyles from '@material-ui/core/styles/withStyles';
 import Grid from '@material-ui/core/Grid';

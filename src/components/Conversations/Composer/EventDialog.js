@@ -23,7 +23,7 @@ import moment from 'moment';
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import CustomIcon from '@material-ui/icons/Build';
 
-import { useAuthedUser } from '../../../hooks/useAuthedUser';
+import useAuthedUser from '../../../hooks/useAuthedUser';
 import { addEvent, updateEvent } from '../../../utilities/conversations';
 import clone from 'ramda/es/clone';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';

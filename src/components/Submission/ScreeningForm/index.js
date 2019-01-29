@@ -28,7 +28,7 @@ import {
 } from '../../../utilities/firestore';
 import { COLLECTIONS } from '../../../constants/firestore';
 import { CLOUD_FUNCTIONS, callable } from '../../../firebase/functions';
-import { useAuthedUser } from '../../../hooks/useAuthedUser';
+import useAuthedUser from '../../../hooks/useAuthedUser';
 
 const styles = theme => ({
   root: {

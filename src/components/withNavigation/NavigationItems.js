@@ -114,6 +114,7 @@ function NavigationItems(props) {
               selected:
                 x.label === 'Statistics' ||
                 x.label === 'Marketing' ||
+                x.label === 'Email Templates' ||
                 x.label === 'Content Manager' ||
                 (x.label === 'Subjects' && theme.palette.type === 'dark')
                   ? classNames(classes.selectedItem, classes.selectedItemAltBG)

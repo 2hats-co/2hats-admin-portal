@@ -31,7 +31,7 @@ import UserDialog from '../UserDialog';
 import SuperAvatar from '../SuperAvatar';
 
 import metadata from '../../metadata.json';
-import { useAuthedUser } from '../../hooks/useAuthedUser';
+import useAuthedUser from '../../hooks/useAuthedUser';
 import DebugContext from '../../contexts/DebugContext';
 import { AdminsProvider } from '../../contexts/AdminsContext';
 

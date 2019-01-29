@@ -39,7 +39,7 @@ import {
   // updateUserDocs,
   generateSmartKey,
 } from '../../../utilities/firestore';
-import { useAuthedUser } from '../../../hooks/useAuthedUser';
+import useAuthedUser from '../../../hooks/useAuthedUser';
 
 const styles = theme => ({
   root: {

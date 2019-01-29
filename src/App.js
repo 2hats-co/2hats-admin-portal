@@ -5,25 +5,27 @@ import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import generateTheme, { ORANGE_COLOR } from './Theme';
 import { ROUTES } from './constants/routes';
-import { useAuthedUser } from './hooks/useAuthedUser';
+import useAuthedUser from './hooks/useAuthedUser';
 import LoadingHat from './components/LoadingHat';
-import SubmissionsContainer from './containers/SubmissionsContainer';
-//containers
 import PushNotifications from './components/PushNotifications';
-
-import StatisticsContainer from './containers/StatisticsContainer';
-// const StatisticsContainer = lazy(() =>
-//   import('./containers/StatisticsContainer' /* webpackChunkName: "StatisticsContainer" */)
-// );
+import ConversationsContainer from './containers/ConversationsContainer';
+//containers
+const SubmissionsContainer = lazy(() =>
+  import('./containers/SubmissionsContainer' /* webpackChunkName: "SubmissionsContainer" */)
+);
+//import StatisticsContainer from './containers/StatisticsContainer';
+const StatisticsContainer = lazy(() =>
+  import('./containers/StatisticsContainer' /* webpackChunkName: "StatisticsContainer" */)
+);
 const SubjectsContainer = lazy(() =>
   import('./containers/SubjectsContainer' /* webpackChunkName: "SubjectsContainer" */)
 );
 const AuthenticationContainer = lazy(() =>
   import('./containers/AuthenticationContainer' /* webpackChunkName: "AuthenticationContainer" */)
 );
-const ConversationsContainer = lazy(() =>
-  import('./containers/ConversationsContainer' /* webpackChunkName: "ConversationsContainer" */)
-);
+// const ConversationsContainer = lazy(() =>
+//   import('./containers/ConversationsContainer' /* webpackChunkName: "ConversationsContainer" */)
+// );
 const Landing = lazy(() =>
   import('./components/Landing' /* webpackChunkName: "Landing" */)
 );
