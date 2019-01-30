@@ -47,7 +47,7 @@ function EmailCampaignCard(props) {
             <Grid container>
               <Grid item>{''}</Grid>
               <Grid item xs>
-                <Typography variant="h6">{campaign.label}</Typography>
+                <Typography variant="h6">{campaign.label} </Typography>
                 <Typography variant="body2">
                   emai: {campaign.email} - created&nbsp;
                   {campaign.createdAt

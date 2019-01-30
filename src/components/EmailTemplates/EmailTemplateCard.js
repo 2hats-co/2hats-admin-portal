@@ -49,9 +49,7 @@ function EmailTemplateCard(props) {
               <Grid item xs>
                 <Typography variant="h6">
                   {data.label}
-                  {data.needsToRun && (
-                    <span className={classes.live}>Live</span>
-                  )}
+                  {data.delay ? `(after ${data.delay} days)` : ''}
                 </Typography>
                 <Typography variant="body2">
                   subject: {data.subject} - created&nbsp;
