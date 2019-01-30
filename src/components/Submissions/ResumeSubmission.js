@@ -80,7 +80,7 @@ const styles = theme => ({
   },
 });
 
-function Submission(props) {
+function ResumeSubmission(props) {
   const { classes, submission } = props;
 
   const timeString = moment.unix(submission.createdAt.seconds).fromNow();
@@ -299,4 +299,4 @@ function Submission(props) {
   );
 }
 
-export default withStyles(styles)(Submission);
+export default withStyles(styles)(ResumeSubmission);

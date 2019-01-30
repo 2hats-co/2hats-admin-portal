@@ -92,7 +92,7 @@ function ConversationsContainer(props) {
 
   return (
     <Fade in>
-      <Grid container direction="row" style={{ height: 'calc(100vh - 64px)' }}>
+      <Grid container direction="row">
         {!openedConversationOnMobile && (
           <>
             <LocationIndicator title="Conversations" />

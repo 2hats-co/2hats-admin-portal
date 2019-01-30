@@ -1,49 +1,45 @@
-import React, { useState, useEffect, Suspense, lazy } from 'react';
+import React, {
+  useState,
+  // useEffect,
+  Suspense,
+  // lazy
+} from 'react';
 import withNavigation from '../components/withNavigation';
 import withStyles from '@material-ui/core/styles/withStyles';
 import green from '@material-ui/core/colors/green';
 
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import Snackbar from '@material-ui/core/Snackbar';
+// import CircularProgress from '@material-ui/core/CircularProgress';
+// import Snackbar from '@material-ui/core/Snackbar';
 
-import useCollection from '../hooks/useCollection';
+// import useCollection from '../hooks/useCollection';
 
 import LocationIndicator from '../components/LocationIndicator';
-import { sendEmail } from '../utilities/email/send';
+// import { sendEmail } from '../utilities/email/send';
 import { ROUTES } from '../constants/routes';
-import { COLLECTIONS } from '@bit/sidney2hats.2hats.global.common-constants';
+// import { COLLECTIONS } from '@bit/sidney2hats.2hats.global.common-constants';
 import LoadingHat from '../components/LoadingHat';
 import DebugButton from '../components/DebugButton';
+
 import SubmissionsList from '../components/Submissions/SubmissionsList';
+import AssessmentSubmission from '../components/Submissions/AssessmentSubmission';
+import JobSubmission from '../components/Submissions/JobSubmission';
+import MonkeyButtons from '../components/Submissions/MonkeyButtons';
 
-const Done = lazy(() =>
-  import('../components/Done' /* webpackChunkName: "Done" */)
-);
+// const Done = lazy(() =>
+//   import('../components/Done' /* webpackChunkName: "Done" */)
+// );
 
-const Submission = lazy(() =>
-  import('../components/Submissions' /* webpackChunkName: "Submission" */)
-);
-const AssessmentSubmission = lazy(() =>
-  import('../components/Submissions/AssessmentSubmission' /* webpackChunkName: "AssessmentSubmission" */)
-);
-const JobSubmission = lazy(() =>
-  import('../components/Submissions/JobSubmission' /* webpackChunkName: "JobSubmission" */)
-);
-
-const ScreeningForm = lazy(() =>
-  import('../components/Submissions/ScreeningForm' /* webpackChunkName: "ScreeningForm" */)
-);
-const FeedbackForm = lazy(() =>
-  import('../components/Submissions/FeedbackForm' /* webpackChunkName: "FeedbackForm" */)
-);
-const MonkeyButtons = lazy(() =>
-  import('../components/Submissions/MonkeyButtons' /* webpackChunkName: "MonkeyButtons" */)
-);
-const TemplateGenerator = lazy(() =>
-  import('../components/TemplateGenerator' /* webpackChunkName: "TemplateGenerator" */)
-);
+// const ScreeningForm = lazy(() =>
+//   import('../components/Submissions/ScreeningForm' /* webpackChunkName: "ScreeningForm" */)
+// );
+// const FeedbackForm = lazy(() =>
+//   import('../components/Submissions/FeedbackForm' /* webpackChunkName: "FeedbackForm" */)
+// );
+// const TemplateGenerator = lazy(() =>
+//   import('../components/TemplateGenerator' /* webpackChunkName: "TemplateGenerator" */)
+// );
 
 // import Search from '../components/Search'
 const styles = theme => ({
@@ -83,7 +79,7 @@ const styles = theme => ({
 });
 
 function SumbissionsContainer(props) {
-  const { classes, location, history } = props;
+  const { classes, location } = props;
   const [selectedSubmission, setSelectedSubmission] = useState();
 
   const locationIndicator = (
@@ -119,12 +115,12 @@ function SumbissionsContainer(props) {
         break;
 
       default:
-        submissionView = (
-          <Submission
-            submission={submission}
-            listType={location.pathname.split('/')[1]}
-          />
-        );
+        // submissionView = (
+        //   <Submission
+        //     submission={submission}
+        //     listType={location.pathname.split('/')[1]}
+        //   />
+        // );
         break;
     }
     switch (submission.type) {
