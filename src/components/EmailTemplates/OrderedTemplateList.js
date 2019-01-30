@@ -57,9 +57,6 @@ function OrderedTemplateList(props) {
             doc.index > result.destination.index - 1
         );
         affectedTemplates.forEach(doc => {
-          // updateDoc(COLLECTIONS.emailTemplates, doc.id, {
-          //   index: doc.index + 1,
-          // });
           templatesDispatch({
             type: 'updateDoc',
             id: doc.id,

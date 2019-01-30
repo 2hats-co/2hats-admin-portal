@@ -4,7 +4,6 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 
-import SkipIcon from '@material-ui/icons/Redo';
 import PassIcon from '@material-ui/icons/CheckCircle';
 import FailIcon from '@material-ui/icons/Error';
 
@@ -64,16 +63,6 @@ function MonkeyButtons(props) {
           }}
         >
           <FailIcon className={classes.icon} /> Fail
-        </Button>
-      </Grid>
-      <Grid item xs={12}>
-        <Button
-          color="primary"
-          onClick={() => {
-            submissionDispatch({ type: 'skip' });
-          }}
-        >
-          <SkipIcon className={classes.icon} /> Skip
         </Button>
       </Grid>
     </Grid>
