@@ -140,7 +140,7 @@ const navigationRoutes = [
       ROUTES.assessmentsManager,
       ROUTES.eventsManager,
     ],
-    incomplete: true,
+    //  incomplete: true,
   },
 ];
 

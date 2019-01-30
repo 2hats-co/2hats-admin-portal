@@ -121,7 +121,7 @@ const useCollection = intialOverrides => {
         prevLimit !== limit ||
         prevPath !== path
       ) {
-        getDocuments(filters, limit, sort);
+        if (path) getDocuments(filters, limit, sort);
       }
       return () => {
         if (unsubscribe) {
