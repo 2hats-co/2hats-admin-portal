@@ -2,7 +2,7 @@ import React from 'react';
 
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
-import { QUILL_STYLES } from '@bit/sidney2hats.2hats.global.common-constants';
+import { STYLES } from '@bit/sidney2hats.2hats.global.common-constants';
 
 import withStyles from '@material-ui/core/styles/withStyles';
 import Grid from '@material-ui/core/Grid';
@@ -29,7 +29,7 @@ const styles = theme => ({
   },
 
   quillEditor: {
-    ...QUILL_STYLES(theme),
+    ...STYLES.QUILL(theme),
   },
 });
 
