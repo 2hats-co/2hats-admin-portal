@@ -13,18 +13,30 @@ import LocationIndicator from '../components/LocationIndicator';
 import { sendEmail } from '../utilities/email/send';
 import { ROUTES } from '../constants/routes';
 import LoadingHat from '../components/LoadingHat';
+import DebugButton from '../components/DebugButton';
 
 const Done = lazy(() =>
   import('../components/Done' /* webpackChunkName: "Done" */)
 );
+
 const Submission = lazy(() =>
   import('../components/Submission' /* webpackChunkName: "Submission" */)
 );
+const AssessmentSubmission = lazy(() =>
+  import('../components/Submission/AssessmentSubmission' /* webpackChunkName: "AssessmentSubmission" */)
+);
+const JobSubmission = lazy(() =>
+  import('../components/Submission/JobSubmission' /* webpackChunkName: "JobSubmission" */)
+);
+
 const ScreeningForm = lazy(() =>
   import('../components/Submission/ScreeningForm' /* webpackChunkName: "ScreeningForm" */)
 );
 const FeedbackForm = lazy(() =>
   import('../components/Submission/FeedbackForm' /* webpackChunkName: "FeedbackForm" */)
+);
+const MonkeyButtons = lazy(() =>
+  import('../components/Submission/MonkeyButtons' /* webpackChunkName: "MonkeyButtons" */)
 );
 const TemplateGenerator = lazy(() =>
   import('../components/TemplateGenerator' /* webpackChunkName: "TemplateGenerator" */)
@@ -37,12 +49,11 @@ const styles = theme => ({
     height: 'calc(100vh - 64px)',
   },
   locationIndicatorWrapper: {
-    paddingLeft: 40 - 24,
     backgroundColor: theme.palette.background.default,
   },
   submissionWrapper: {
     overflowY: 'auto',
-    padding: 40,
+    padding: 24,
     maxWidth: 'none',
     position: 'relative',
   },
@@ -59,6 +70,12 @@ const styles = theme => ({
     '& > div': {
       backgroundColor: green[600],
     },
+  },
+
+  debugButton: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
   },
 });
 
@@ -78,7 +95,6 @@ function SumbissionsContainer(props) {
         const uid = location.search.replace('?uid=', '');
         submissionDispatch({ uid });
       }
-      //return () => {};
     },
     [location.search]
   );
@@ -138,39 +154,72 @@ function SumbissionsContainer(props) {
     setEmailReady(false);
   };
 
-  let rightPanel;
-  switch (submission.outcome) {
-    case 'pending':
-    case 'disqualified':
-      rightPanel = (
-        <ScreeningForm
-          submission={submission}
-          setTemplate={setTemplate}
-          setSmartLink={setSmartLink}
-          submissionDispatch={submissionDispatch}
-          handleSendEmail={handleSendEmail}
-          emailReady={emailReady}
-          setEmailReady={setEmailReady}
-        />
-      );
+  let submissionView = null;
+  switch (submission.type) {
+    case 'assessment':
+      submissionView = <AssessmentSubmission data={submission} />;
       break;
-    case 'rejected':
-    case 'accepted':
-      rightPanel = (
-        <FeedbackForm
-          submission={submission}
-          setTemplate={setTemplate}
-          setSmartLink={setSmartLink}
-          submissionDispatch={submissionDispatch}
-          handleSendEmail={handleSendEmail}
-          emailReady={emailReady}
-          location={location}
-          history={history}
-        />
-      );
+
+    case 'job':
+      submissionView = <JobSubmission data={submission} />;
       break;
+
     default:
-      rightPanel = null;
+      submissionView = (
+        <Submission
+          submission={submission}
+          listType={location.pathname.split('/')[1]}
+        />
+      );
+      break;
+  }
+
+  let rightPanel = null;
+  switch (submission.type) {
+    case 'assessment':
+    case 'job':
+      rightPanel = (
+        <MonkeyButtons
+          submission={submission}
+          submissionDispatch={submissionDispatch}
+        />
+      );
+      break;
+
+    default:
+      switch (submission.outcome) {
+        case 'pending':
+        case 'disqualified':
+          rightPanel = (
+            <ScreeningForm
+              submission={submission}
+              setTemplate={setTemplate}
+              setSmartLink={setSmartLink}
+              submissionDispatch={submissionDispatch}
+              handleSendEmail={handleSendEmail}
+              emailReady={emailReady}
+              setEmailReady={setEmailReady}
+            />
+          );
+          break;
+        case 'rejected':
+        case 'accepted':
+          rightPanel = (
+            <FeedbackForm
+              submission={submission}
+              setTemplate={setTemplate}
+              setSmartLink={setSmartLink}
+              submissionDispatch={submissionDispatch}
+              handleSendEmail={handleSendEmail}
+              emailReady={emailReady}
+              location={location}
+              history={history}
+            />
+          );
+          break;
+        default:
+          rightPanel = null;
+      }
   }
 
   return (
@@ -190,7 +239,12 @@ function SumbissionsContainer(props) {
                 xs={template ? 8 : 12}
                 className={classes.submissionWrapper}
               >
-                {console.log(submission)}
+                <DebugButton
+                  title="Copy submission ID"
+                  toCopy={submission.id}
+                  className={classes.debugButton}
+                />
+                {submissionView}
               </Grid>
               {template && (
                 <Grid item xs={4} style={{ maxWidth: 'none' }}>
