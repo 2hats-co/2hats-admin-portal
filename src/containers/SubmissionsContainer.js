@@ -45,7 +45,7 @@ import MonkeyButtons from '../components/Submissions/MonkeyButtons';
 const styles = theme => ({
   root: {
     backgroundColor: theme.palette.background.default,
-    height: 'calc(100vh - 64px)',
+    height: 'calc(100vh)',
   },
   locationIndicatorWrapper: {
     backgroundColor: theme.palette.background.default,
@@ -81,25 +81,6 @@ const styles = theme => ({
 function SumbissionsContainer(props) {
   const { classes, location } = props;
   const [selectedSubmission, setSelectedSubmission] = useState();
-
-  const locationIndicator = (
-    <div className={classes.locationIndicatorWrapper}>
-      <LocationIndicator
-        title="Submissions"
-        subRoutes={
-          location.pathname === ROUTES.submissions
-            ? [
-                ROUTES.pending,
-                ROUTES.rejected,
-                ROUTES.accepted,
-                { label: 'Submission', value: ROUTES.submissions },
-              ]
-            : [ROUTES.pending, ROUTES.rejected, ROUTES.accepted]
-        }
-        altBg
-      />
-    </div>
-  );
 
   let submission = selectedSubmission;
   let submissionView = null;
@@ -156,7 +137,6 @@ function SumbissionsContainer(props) {
 
   return (
     <>
-      {locationIndicator}
       <Grid container className={classes.root} wrap="nowrap">
         <Suspense fallback={<LoadingHat />}>
           <Grid item xs className={classes.card}>

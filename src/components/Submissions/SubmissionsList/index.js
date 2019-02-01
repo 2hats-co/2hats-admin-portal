@@ -130,7 +130,7 @@ function SubmissionsList(props) {
     return (
       <Grid
         container
-        style={{ height: 'calc(100vh - 130px)%' }}
+        style={{ height: 'calc(100vh - 60px)' }}
         justify="center"
         alignItems="center"
       >
@@ -139,11 +139,7 @@ function SubmissionsList(props) {
     );
 
   return (
-    <Grid
-      container
-      direction="column"
-      style={{ height: 'calc(100vh - 130px)' }}
-    >
+    <Grid container direction="column" style={{ height: 'calc(100vh - 60px)' }}>
       {submissions && submissions.length === 0 ? (
         <Grid
           container
