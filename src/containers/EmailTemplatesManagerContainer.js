@@ -79,6 +79,14 @@ function EmailTemplatesManagerContainer(props) {
         if (campaignId) {
           templateDoc.type = 'promotionals';
           templateDoc.campaignId = campaignId;
+          const queryFilters = [
+            { field: 'campaignId', operator: '==', value: campaignId },
+          ];
+          const numberOfCampaignTemplates = await queryCount(
+            COLLECTIONS.emailTemplates,
+            queryFilters
+          );
+          templateDoc.index = numberOfCampaignTemplates;
         } else {
         }
         break;
@@ -88,14 +96,6 @@ function EmailTemplatesManagerContainer(props) {
     if (!campaignId && path === ROUTES.emailCampaigns) {
       createDoc(COLLECTIONS.emailCampaigns, { ...data, createdAt: new Date() });
     } else {
-      const queryFilters = [
-        { field: 'campaignId', operator: '==', value: campaignId },
-      ];
-      const numberOfCampaignTemplates = await queryCount(
-        COLLECTIONS.emailTemplates,
-        queryFilters
-      );
-      templateDoc.index = numberOfCampaignTemplates;
       createDoc(COLLECTIONS.emailTemplates, templateDoc);
     }
   };
