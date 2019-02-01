@@ -1,4 +1,6 @@
 import { makeId } from '../index';
+import firebase from 'firebase/app';
+
 import { firestore, auth } from '../../store';
 import { COLLECTIONS } from '../../constants/firestore';
 
@@ -13,7 +15,10 @@ export const updateAdminSubCollectionProps = (
     .doc(uid)
     .collection(collection)
     .doc(docId)
-    .update({ ...properties });
+    .update({
+      ...properties,
+      updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+    });
 };
 
 export const generateSmartKey = (uid, route) => {
@@ -22,8 +27,8 @@ export const generateSmartKey = (uid, route) => {
     UID: uid,
     expireTime: new Date(7 * 24 * 60 * 60 * 1000),
     route: route,
-    startTime: new Date(),
-    createdAt: new Date(),
+    startTime: firebase.firestore.FieldValue.serverTimestamp(),
+    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
     disable: false,
   };
   firestore
@@ -38,7 +43,10 @@ export const updateUserDocs = (uid, docObjs) => {
     firestore
       .collection(docObj.collection)
       .doc(uid)
-      .update({ ...docObj.updates });
+      .update({
+        ...docObj.updates,
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+      });
   });
 };
 export const getfirstIdOfQuery = async (collectionPath, filters) => {
@@ -55,7 +63,10 @@ export const getfirstIdOfQuery = async (collectionPath, filters) => {
 };
 
 export const createDoc = (collection, docData) =>
-  firestore.collection(collection).add(docData);
+  firestore.collection(collection).add({
+    ...docData,
+    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+  });
 
 export const deleteDoc = (collection, docId) =>
   firestore
@@ -67,7 +78,10 @@ export const updateDoc = (collection, docId, properties) =>
   firestore
     .collection(collection)
     .doc(docId)
-    .update({ ...properties });
+    .update({
+      ...properties,
+      updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+    });
 
 export const getDoc = async (collection, docId) => {
   const doc = await firestore

@@ -1,3 +1,5 @@
+import firebase from 'firebase/app';
+
 import { firestore } from '../store';
 import { useEffect, useReducer } from 'react';
 import equals from 'ramda/es/equals';
@@ -29,7 +31,11 @@ const collectionReducer = (prevState, newProps) => {
         firestore
           .collection(prevState.path)
           .doc(newProps.id)
-          .update(newProps.data);
+          .update({
+            ...newProps.data,
+            updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+          });
+
         return { ...prevState, documents: docs };
       default:
         break;

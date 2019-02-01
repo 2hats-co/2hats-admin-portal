@@ -75,25 +75,16 @@ function EmailTemplateCard(props) {
           </Grid>
 
           <Grid item xs={2} className={classes.rightAligned}>
-            {data.id !== 'templateBase' && (
-              <Tooltip title="Edit Template">
-                <IconButton onClick={actions.edit}>
-                  <EditIcon />
-                </IconButton>
-              </Tooltip>
-            )}
-            <Tooltip title="Duplicate Template">
-              <IconButton onClick={actions.duplicate}>
-                <CopyIcon />
+            <Tooltip title="Edit Template">
+              <IconButton onClick={actions.edit}>
+                <EditIcon />
               </IconButton>
             </Tooltip>
-            {data.id !== 'templateBase' && (
-              <Tooltip title="View Template">
-                <IconButton onClick={actions.editTemplate}>
-                  <OpenIcon />
-                </IconButton>
-              </Tooltip>
-            )}
+            <Tooltip title="View Template">
+              <IconButton onClick={actions.editTemplate}>
+                <OpenIcon />
+              </IconButton>
+            </Tooltip>
           </Grid>
         </Grid>
       </Card>
