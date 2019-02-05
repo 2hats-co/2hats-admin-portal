@@ -275,6 +275,8 @@ function IntegrationReactSelect(props) {
               label,
               InputLabelProps: { shrink: true },
               autoFocus,
+              error,
+              helperText,
             }}
             value={value}
             isMulti={isMulti}

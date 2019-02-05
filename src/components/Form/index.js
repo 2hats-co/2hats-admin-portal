@@ -38,7 +38,6 @@ const styles = theme => ({
     paddingTop: theme.spacing.unit * 2.5,
   },
   wrapperGrid: {
-    // marginTop: theme.spacing.unit,
     overflowX: 'hidden',
     paddingBottom: theme.spacing.unit,
   },
