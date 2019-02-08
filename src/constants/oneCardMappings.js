@@ -17,7 +17,7 @@ export const course = data => ({
 export const assessment = data => ({
   title: data.title,
   secondaryText: <AssessmentDetail data={data} />,
-  primaryAction: 'Edit',
+  // primaryAction: 'Edit',
   // route: `${ROUTES.ASSESSMENTS}?id=${data.id}${
   //   data.assessmentId ? '&yours=true' : ''
   // }`,
@@ -28,7 +28,7 @@ export const assessment = data => ({
 export const job = data => ({
   title: data.title,
   secondaryText: <JobDetail data={data} />,
-  primaryAction: 'Edit',
+  // primaryAction: 'Edit',
   // route: `${ROUTES.JOBS}?id=${data.id}${data.jobId ? '&yours=true' : ''}`,
 
   image: data.image && data.image.url,
@@ -37,7 +37,7 @@ export const job = data => ({
 export const event = data => ({
   title: data.title,
   secondaryText: data.description,
-  primaryAction: 'Edit',
+  // primaryAction: 'Edit',
   // route: `${ROUTES.EVENTS}?id=${data.id}`,
 
   tertiaryText: [`Starts ${data.startDateTime}`, `Ends ${data.endDateTime}`],

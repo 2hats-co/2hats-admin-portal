@@ -18,7 +18,7 @@ import moment from 'moment';
 import { momentLocales } from '../constants/momentLocales';
 
 import withNavigation from '../components/withNavigation';
-import EditOneCard from '../components/OneCard/EditOneCard';
+import EditOneCard from '../components/Cards/EditOneCard';
 import OneCard from '../components/Cards/OneCard';
 import * as oneCardMappings from '../constants/oneCardMappings';
 

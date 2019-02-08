@@ -124,7 +124,7 @@ const styles = theme => ({
   cardContent: {
     textAlign: 'left',
     paddingBottom: theme.spacing.unit,
-    '&:last-child': { paddingBottom: theme.spacing.unit },
+    // '&:last-child': { paddingBottom: theme.spacing.unit },
   },
 
   secondaryText: { whiteSpace: 'pre-wrap' },
