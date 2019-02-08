@@ -32,13 +32,6 @@ const assessmentFields = initialData => {
     },
     {
       type: FIELDS.textField,
-      name: 'title',
-      label: 'Title',
-      value: initialData['title'],
-      validation: yup.string().required('Required'),
-    },
-    {
-      type: FIELDS.textField,
       name: 'duration',
       label: 'Duration',
       value: initialData['duration'],
