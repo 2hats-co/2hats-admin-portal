@@ -118,13 +118,13 @@ const assessmentFields = initialData => {
       value: initialData['image'],
       mimeTypes: 'image/*',
       path: 'studentPortal/',
-      validation: yup.object().shape({
-        name: yup.string().required(),
-        url: yup
-          .string()
-          .url('Invalid URL')
-          .required(),
-      }),
+      // validation: yup.object().shape({
+      //   name: yup.string().required(),
+      //   url: yup
+      //     .string()
+      //     .url('Invalid URL')
+      //     .required(),
+      // }),
     },
   ];
 };
