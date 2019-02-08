@@ -221,40 +221,49 @@ var PADDING = (exports.PADDING = function PADDING(theme, topMargin) {
   );
 });
 
-var PAPER_VIEW = (exports.PAPER_VIEW = function PAPER_VIEW(theme) {
+var DETAIL_VIEW = (exports.DETAIL_VIEW = function DETAIL_VIEW(theme) {
   return _extends(
     {
       root: {
-        padding: theme.spacing.unit,
-        maxWidth: 720,
-        margin: '0 auto',
-
-        '& h6': { marginBottom: theme.spacing.unit / 2 },
+        backgroundColor: theme.palette.background.paper,
+        padding: theme.spacing.unit * 2,
       },
       backButton: {
         display: 'flex',
         marginBottom: theme.spacing.unit,
       },
-      paper: _extends({}, PADDING(theme)),
+      content: {
+        maxWidth: 640,
+        margin: '0 auto',
+      },
 
-      title: { fontWeight: 500 },
+      title: {
+        fontWeight: 400,
+        textAlign: 'center',
+      },
 
       coverImage: {
-        borderRadius: theme.shape.borderRadius / 2,
-        maxWidth: '100%',
+        borderRadius: theme.shape.borderRadius * 0.75,
+        width: '100%',
         height: '100%',
-        minHeight: theme.spacing.unit * 15,
 
+        maxWidth: 480,
+        minHeight: 160,
+
+        margin: '0 auto',
         marginBottom: theme.spacing.unit * 3,
+
         backgroundPosition: 'center',
         backgroundSize: 'cover',
         backgroundImage:
           'linear-gradient(-15deg, #fa0, ' + theme.palette.primary.main + ')',
       },
 
-      section: {
-        marginTop: theme.spacing.unit * 3,
-      },
+      section: { marginTop: theme.spacing.unit * 3 },
+
+      subtitle: { fontWeight: 700 },
+
+      description: { whiteSpace: 'pre-line' },
     },
     RENDERED_HTML(theme)
   );

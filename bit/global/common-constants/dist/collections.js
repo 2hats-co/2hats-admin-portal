@@ -18,7 +18,6 @@ var COLLECTIONS = (exports.COLLECTIONS = {
   assessments: 'assessments',
   events: 'events',
   activityLog: 'activityLog',
-
   admins: 'admins',
   clients: 'clients',
   communications: 'communications',
@@ -31,7 +30,10 @@ var COLLECTIONS = (exports.COLLECTIONS = {
   gmailOutbox: 'gmailOutbox',
   notifications: 'notifications',
   emailTemplates: 'emailTemplates',
+  emails: 'emails',
   emailCampaigns: 'emailCampaigns',
+  campaignSubscriptions: 'campaignSubscriptions',
+  mailchimpAssessments: 'mailchimpAssessments',
 });
 
 //# sourceMappingURL=collections.js.map

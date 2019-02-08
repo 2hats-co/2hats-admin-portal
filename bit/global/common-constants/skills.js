@@ -1,21 +1,21 @@
 export const SKILLS = [
   // marketing
-  { label: 'Social media management', value: 'socialMediaManagement' },
-  { label: 'Blog writing', value: 'blogWriting' },
-  { label: 'EDM composition', value: 'edmComposition' },
-  { label: 'Brochure design', value: 'brochureDesign' },
+  { label: 'Social Media Management', value: 'socialMediaManagement' },
+  { label: 'Blog Writing', value: 'blogWriting' },
+  { label: 'EDM Composition', value: 'edmComposition' },
+  { label: 'Brochure Design', value: 'brochureDesign' },
   { label: 'Google Analytics', value: 'googleAnalytics' },
-  { label: 'SEO', value: 'seo' },
-  { label: 'Copywriting', value: 'copywriting' },
+  // { label: 'SEO', value: 'seo' },
+  // { label: 'Copywriting', value: 'copywriting' },
 
   // sales
   { label: 'Prospecting', value: 'prospecting' },
-  { label: 'Email outreach', value: 'emailOutreach' },
-  { label: 'Objection handling', value: 'objectionHandling' },
-  { label: 'Sales strategy', value: 'salesStrategy' },
-  { label: 'Sales closing', value: 'salesClosing' },
+  { label: 'Email Outreach', value: 'emailOutreach' },
+  { label: 'Objection Handling', value: 'objectionHandling' },
+  { label: 'Sales Strategy', value: 'salesStrategy' },
+  { label: 'Sales Closing', value: 'salesClosing' },
 
-  { label: 'Graphic design', value: 'graphicDesign' },
+  // { label: 'Graphic design', value: 'graphicDesign' },
 ];
 
 export const getSkillLabel = val =>
@@ -28,8 +28,8 @@ export const getSkillCategory = val => {
     case 'edmComposition':
     case 'brochureDesign':
     case 'googleAnalytics':
-    case 'seo':
-    case 'copywriting':
+      // case 'seo':
+      // case 'copywriting':
       return 'marketing';
 
     case 'prospecting':
@@ -42,4 +42,12 @@ export const getSkillCategory = val => {
     default:
       return '';
   }
+};
+
+export const getAllSkillsInCategory = cat => {
+  const output = [];
+  SKILLS.forEach(x => {
+    if (getSkillCategory(x.value) === cat) output.push(x.value);
+  });
+  return output;
 };

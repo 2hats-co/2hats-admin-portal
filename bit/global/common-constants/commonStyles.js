@@ -171,29 +171,36 @@ export const PADDING = (theme, topMargin) => ({
   marginTop: topMargin ? theme.spacing.unit * 2 : 0,
 });
 
-export const PAPER_VIEW = theme => ({
+export const DETAIL_VIEW = theme => ({
   root: {
-    padding: theme.spacing.unit,
-    maxWidth: 720,
-    margin: '0 auto',
-
-    '& h6': { marginBottom: theme.spacing.unit / 2 },
+    backgroundColor: theme.palette.background.paper,
+    padding: theme.spacing.unit * 2,
   },
   backButton: {
     display: 'flex',
     marginBottom: theme.spacing.unit,
   },
-  paper: { ...PADDING(theme) },
+  content: {
+    maxWidth: 640,
+    margin: '0 auto',
+  },
 
-  title: { fontWeight: 500 },
+  title: {
+    fontWeight: 400,
+    textAlign: 'center',
+  },
 
   coverImage: {
-    borderRadius: theme.shape.borderRadius / 2,
-    maxWidth: '100%',
+    borderRadius: theme.shape.borderRadius * 0.75,
+    width: '100%',
     height: '100%',
-    minHeight: theme.spacing.unit * 15,
 
+    maxWidth: 480,
+    minHeight: 160,
+
+    margin: '0 auto',
     marginBottom: theme.spacing.unit * 3,
+
     backgroundPosition: 'center',
     backgroundSize: 'cover',
     backgroundImage: `linear-gradient(-15deg, #fa0, ${
@@ -201,9 +208,11 @@ export const PAPER_VIEW = theme => ({
     })`,
   },
 
-  section: {
-    marginTop: theme.spacing.unit * 3,
-  },
+  section: { marginTop: theme.spacing.unit * 3 },
+
+  subtitle: { fontWeight: 700 },
+
+  description: { whiteSpace: 'pre-line' },
 
   ...RENDERED_HTML(theme),
 });

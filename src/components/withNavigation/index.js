@@ -170,8 +170,9 @@ export default function withNavigation(WrappedComponent) {
         }
       }
     }
+    console.log(currentUser);
 
-    if (currentUser && displayName && uid)
+    if (currentUser && uid)
       return (
         <AdminsProvider>
           <DebugContext.Provider

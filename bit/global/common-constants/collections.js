@@ -13,7 +13,6 @@ export const COLLECTIONS = {
   assessments: 'assessments',
   events: 'events',
   activityLog: 'activityLog',
-
   admins: 'admins',
   clients: 'clients',
   communications: 'communications',
@@ -26,5 +25,8 @@ export const COLLECTIONS = {
   gmailOutbox: 'gmailOutbox',
   notifications: 'notifications',
   emailTemplates: 'emailTemplates',
+  emails: 'emails',
   emailCampaigns: 'emailCampaigns',
+  campaignSubscriptions: 'campaignSubscriptions',
+  mailchimpAssessments: 'mailchimpAssessments',
 };
