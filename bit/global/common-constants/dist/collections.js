@@ -34,6 +34,8 @@ var COLLECTIONS = (exports.COLLECTIONS = {
   emailCampaigns: 'emailCampaigns',
   campaignSubscriptions: 'campaignSubscriptions',
   mailchimpAssessments: 'mailchimpAssessments',
+  eventTrackers: 'eventTrackers',
+  algoliaCandidates: 'algoliaCandidates',
 });
 
 //# sourceMappingURL=collections.js.map

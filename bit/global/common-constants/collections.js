@@ -29,4 +29,6 @@ export const COLLECTIONS = {
   emailCampaigns: 'emailCampaigns',
   campaignSubscriptions: 'campaignSubscriptions',
   mailchimpAssessments: 'mailchimpAssessments',
+  eventTrackers: 'eventTrackers',
+  algoliaCandidates: 'algoliaCandidates',
 };
