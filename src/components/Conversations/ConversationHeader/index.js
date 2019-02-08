@@ -114,7 +114,7 @@ function ConversationHeader(props) {
   };
 
   return (
-    <React.Fragment>
+    <>
       <Grid item className={classes.root}>
         <Grid container alignItems="center">
           {windowSize.isMobile && (
@@ -162,11 +162,11 @@ function ConversationHeader(props) {
                   copyToClipboard(conversation.channels.email);
                 }}
                 title={
-                  <React.Fragment>
+                  <>
                     <b>{conversation.channels.email}</b>
                     <br />
                     (Click to copy)
-                  </React.Fragment>
+                  </>
                 }
               >
                 <IconButton>
@@ -247,7 +247,7 @@ function ConversationHeader(props) {
         showDialog={showSubscriberDialog}
         setShowDialog={setShowSubscriberDialog}
       />
-    </React.Fragment>
+    </>
   );
 }
 

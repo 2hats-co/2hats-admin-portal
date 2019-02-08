@@ -1,6 +1,9 @@
 import FIELDS from './fields';
 import * as yup from 'yup';
-import SKILLS from '../studentPortal/skills';
+import {
+  ASSESSMENT_CATEGORIES,
+  SKILLS,
+} from '@bit/sidney2hats.2hats.global.common-constants';
 
 const jobFields = initialData => {
   if (!initialData) initialData = {};
@@ -30,7 +33,9 @@ const jobFields = initialData => {
       type: FIELDS.autocompleteMulti,
       name: 'skillsRequired',
       label: 'Skills required',
-      value: initialData['skillsRequired'],
+      value:
+        initialData['skillsRequired'] &&
+        SKILLS.filter(x => initialData['skillsRequired'].includes(x.value)),
       suggestions: SKILLS,
       validation: yup
         .array()
@@ -41,8 +46,10 @@ const jobFields = initialData => {
       type: FIELDS.autocompleteFreeText,
       name: 'industry',
       label: 'Industry',
-      suggestions: SKILLS,
-      value: initialData['industry'],
+      suggestions: ASSESSMENT_CATEGORIES,
+      value: ASSESSMENT_CATEGORIES.filter(
+        x => x.value === initialData['industry']
+      )[0],
       validation: yup.string().required('Industry is required'),
     },
     {
@@ -53,11 +60,22 @@ const jobFields = initialData => {
       validation: yup.string().required('Closing date is required'),
     },
     {
-      type: FIELDS.textField,
-      name: 'pay',
-      label: 'Pay',
-      value: initialData['pay'],
-      validation: yup.string().required('Pay is required'),
+      type: FIELDS.textFieldNumber,
+      name: 'payRate',
+      label: 'Pay rate',
+      value: initialData['payRate'],
+      validation: yup.string().required('Pay rate is required'),
+    },
+    {
+      type: FIELDS.autocomplete,
+      name: 'payUnits',
+      label: 'Pay units',
+      value: initialData['payUnits'] && {
+        value: initialData['payUnits'],
+        label: initialData['payUnits'],
+      },
+      suggestions: ['hour', 'day', 'week'].map(x => ({ value: x, label: x })),
+      validation: yup.string().required('Pay units is required'),
     },
     {
       type: FIELDS.textField,

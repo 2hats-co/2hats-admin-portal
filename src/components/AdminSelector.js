@@ -85,7 +85,7 @@ function AdminSelector(props) {
     );
 
     return (
-      <React.Fragment>
+      <>
         {childrenWithProps || defaultPicker}
         <Select
           classes={{ root: classes.selectRoot }}
@@ -127,7 +127,7 @@ function AdminSelector(props) {
             </MenuItem>
           ))}
         </Select>
-      </React.Fragment>
+      </>
     );
   } else {
     return <CircularProgress />;

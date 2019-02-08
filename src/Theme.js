@@ -48,6 +48,7 @@ function generateTheme(theme, themeColor) {
         dark: primaryColor,
         darkText: primaryDarkText,
         light: primaryLight,
+        contrastText: '#fff',
       },
       secondary: {
         main: primaryColor,
@@ -86,19 +87,19 @@ function generateTheme(theme, themeColor) {
           borderRadius: `${BORDER_RADIUS}px !important`,
           flex: 1,
           transition: 'background-color .2s, color .2s',
+
+          '&$selected': {
+            color: primaryColor,
+            '& > span': { color: primaryColor },
+
+            backgroundColor: primaryLight,
+            '&:hover': { backgroundColor: primaryLight },
+          },
         },
         label: {
           color: 'rgba(0,0,0,.87)',
           position: 'relative',
           zIndex: 99,
-        },
-        selected: {
-          color: primaryColor,
-          '& > span': { color: primaryColor },
-          '&::after': {
-            backgroundColor: primaryLight,
-            opacity: 0.8,
-          },
         },
       },
       MuiButton: {
@@ -132,8 +133,11 @@ function generateTheme(theme, themeColor) {
       },
       MuiChip: {
         root: {
+          height: 'auto',
+          minHeight: 32,
           '&:not(:last-of-type)': { marginRight: 8 },
         },
+        label: { whiteSpace: 'normal' },
         colorPrimary: {
           color: primaryDarkText,
           backgroundColor: primaryLight,
@@ -161,7 +165,9 @@ function generateTheme(theme, themeColor) {
         },
       },
       MuiFormLabel: {
-        focused: { color: `${primaryColor} !important` },
+        root: {
+          '&$focused': { color: `${primaryColor} !important` },
+        },
       },
       MuiInput: {
         underline: {
@@ -211,17 +217,22 @@ function generateTheme(theme, themeColor) {
       ...baseTheme.overrides,
       MuiToggleButton: {
         ...baseTheme.overrides.MuiToggleButton,
+
+        root: {
+          ...baseTheme.overrides.MuiToggleButton.root,
+
+          '&$selected': {
+            color: primaryDarkText,
+            '& > span': { color: primaryDarkText },
+
+            backgroundColor: primaryLight,
+            '&:hover': { backgroundColor: primaryLight },
+          },
+        },
+
         label: {
           ...baseTheme.overrides.MuiToggleButton.label,
           color: 'rgba(255,255,255,.87)',
-        },
-        selected: {
-          color: primaryDarkText,
-          '& > span': { color: primaryDarkText },
-          '&::after': {
-            backgroundColor: primaryLight,
-            opacity: 0.8,
-          },
         },
       },
       MuiIconButton: {

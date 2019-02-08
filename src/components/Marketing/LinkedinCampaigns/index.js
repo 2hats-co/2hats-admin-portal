@@ -60,7 +60,7 @@ function LinkedinCampaigns(props) {
   const campaigns = campaignsState.documents;
   if (campaigns)
     return (
-      <React.Fragment>
+      <>
         {campaigns.map((x, i) => (
           <CampaignCard
             data={x}
@@ -105,7 +105,7 @@ function LinkedinCampaigns(props) {
         >
           <AddIcon />
         </Fab>
-      </React.Fragment>
+      </>
     );
   else return <LoadingHat message="Loading campaigns…" />;
 }

@@ -4,6 +4,9 @@ const FIELDS = {
   textFieldPassword: 'TEXT_FIELD_PASSWORD',
   textFieldMultiline: 'TEXT_FIELD_MULTILINE',
 
+  richText: 'RICH_TEXT',
+  richTextMulti: 'RICH_TEXT_MULTI',
+
   chipFreeText: 'CHIP_FREE_TEXT',
 
   autocomplete: 'AUTOCOMPLETE',
@@ -17,6 +20,8 @@ const FIELDS = {
   date: 'DATE_PICKER',
   dateTime: 'DATE_TIME_PICKER',
   time: 'TIME_PICKER',
+
+  checkbox: 'CHECKBOX',
 };
 
 export default FIELDS;

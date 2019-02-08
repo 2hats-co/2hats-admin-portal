@@ -70,7 +70,7 @@ function CampaignDetailsDialog(props) {
   const recentConnections = recentConnectionsState.documents;
 
   return (
-    <React.Fragment>
+    <>
       <DialogTitle className={classes.dialogTitle}>
         Campaign: {data.query}
         {data.needsToRun && <span className={classes.live}>Live</span>}
@@ -182,7 +182,7 @@ function CampaignDetailsDialog(props) {
           </div>
         )}
       </DialogContent>
-    </React.Fragment>
+    </>
   );
 }
 

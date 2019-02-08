@@ -5,7 +5,7 @@ import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import generateTheme, { ORANGE_COLOR } from './Theme';
 import { ROUTES } from './constants/routes';
-import { useAuthedUser } from './hooks/useAuthedUser';
+import useAuthedUser from './hooks/useAuthedUser';
 import LoadingHat from './components/LoadingHat';
 import PushNotifications from './components/PushNotifications';
 import ConversationsContainer from './containers/ConversationsContainer';

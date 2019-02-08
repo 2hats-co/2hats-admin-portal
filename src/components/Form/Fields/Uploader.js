@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
@@ -7,12 +7,12 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import Dropzone from 'react-dropzone';
 import { blobImageUploader } from '../../../utilities/imageUploader';
 import CloudUploadIcon from '@material-ui/icons/CloudUploadOutlined';
+import FormHelperText from '@material-ui/core/FormHelperText';
 import Chip from '@material-ui/core/Chip';
+import FileIcon from '@material-ui/icons/AttachmentRounded';
 
 const styles = theme => ({
-  sectionTitle: {
-    marginLeft: theme.spacing.unit,
-  },
+  sectionTitle: { marginLeft: theme.spacing.unit * 1.5 },
   dropzone: {
     borderRadius: theme.shape.borderRadius,
     borderColor: theme.palette.divider,
@@ -41,16 +41,22 @@ const styles = theme => ({
   },
 });
 const Uploader = props => {
-  const {
-    label,
-    name,
-    mimeTypes,
-    path,
-    validator,
-    formikProps,
-    classes,
-  } = props;
+  const { label, name, mimeTypes, path, formikProps, classes } = props;
   const { setValues, values, errors, touched } = formikProps;
+
+  const [uploadUrl, setUploadUrl] = useState(null);
+  useEffect(
+    () => {
+      if (uploadUrl) {
+        setValues({
+          ...values,
+          [name]: { name: values[name].name, url: uploadUrl },
+        });
+      }
+    },
+    [uploadUrl]
+  );
+
   return (
     <Grid item>
       <Typography
@@ -66,11 +72,8 @@ const Uploader = props => {
             ...values,
             [name]: { name: files[0].name },
           });
-          blobImageUploader(files[0], path, (url, name) => {
-            setValues({
-              ...values,
-              [name]: { name, url },
-            });
+          blobImageUploader(files[0], path, (url, fileName) => {
+            setUploadUrl(url);
           });
         }}
         accept={mimeTypes || ''}
@@ -95,18 +98,33 @@ const Uploader = props => {
             target="_blank"
             rel="noopener noreferrer"
             label={values[name]['name']}
-            onDelete={() =>
-              setValues({
-                ...values,
-                [name]: null,
-              })
+            onDelete={
+              values[name].url
+                ? e => {
+                    e.preventDefault();
+                    setValues({
+                      ...values,
+                      [name]: null,
+                    });
+                  }
+                : null
             }
             className={classes.fileChip}
-            icon={!values[name].url ? <CircularProgress size={32} /> : null}
+            icon={
+              !values[name].url ? (
+                <CircularProgress size={32} />
+              ) : (
+                <FileIcon className={classes.fileIcon} />
+              )
+            }
           />
         </div>
       )}
-      {validator(name)}
+      {touched[name] && errors[name] && (
+        <FormHelperText error className={classes.sectionTitle}>
+          Required
+        </FormHelperText>
+      )}
     </Grid>
   );
 };

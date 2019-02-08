@@ -92,9 +92,9 @@ function ConversationsContainer(props) {
 
   return (
     <Fade in>
-      <Grid container direction="row" style={{ height: 'calc(100vh - 64px)' }}>
+      <Grid container direction="row">
         {!openedConversationOnMobile && (
-          <React.Fragment>
+          <>
             <LocationIndicator title="Conversations" />
             <Grid
               item
@@ -103,18 +103,22 @@ function ConversationsContainer(props) {
                 height: 'calc(100vh - 64px)',
               }}
             >
-              <ConversationsList
-                uid={uid}
-                selectedConversation={selectedConversation}
-                setSelectedConversation={conversation => {
-                  dispatchConversation({
-                    path: `conversations/${conversation.id}`,
-                  });
-                  history.push(`/conversations?id=${conversation.id}`);
-                }}
-              />
+              <Suspense
+                fallback={<LoadingHat message="Getting your controls…" />}
+              >
+                <ConversationsList
+                  uid={uid}
+                  selectedConversation={selectedConversation}
+                  setSelectedConversation={conversation => {
+                    dispatchConversation({
+                      path: `conversations/${conversation.id}`,
+                    });
+                    history.push(`/conversations?id=${conversation.id}`);
+                  }}
+                />
+              </Suspense>
             </Grid>
-          </React.Fragment>
+          </>
         )}
         <Grid
           item

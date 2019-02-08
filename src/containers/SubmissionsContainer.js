@@ -1,34 +1,45 @@
-import React, { useState, useEffect, Suspense, lazy } from 'react';
+import React, {
+  useState,
+  // useEffect,
+  Suspense,
+  // lazy
+} from 'react';
 import withNavigation from '../components/withNavigation';
 import withStyles from '@material-ui/core/styles/withStyles';
 import green from '@material-ui/core/colors/green';
 
 import Grid from '@material-ui/core/Grid';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import Snackbar from '@material-ui/core/Snackbar';
+import Typography from '@material-ui/core/Typography';
+// import CircularProgress from '@material-ui/core/CircularProgress';
+// import Snackbar from '@material-ui/core/Snackbar';
 
-import { useSubmission } from '../hooks/useSubmission';
+// import useCollection from '../hooks/useCollection';
 
 import LocationIndicator from '../components/LocationIndicator';
-import { sendEmail } from '../utilities/email/send';
+// import { sendEmail } from '../utilities/email/send';
 import { ROUTES } from '../constants/routes';
+// import { COLLECTIONS } from '@bit/sidney2hats.2hats.global.common-constants';
 import LoadingHat from '../components/LoadingHat';
+import DebugButton from '../components/DebugButton';
 
-const Done = lazy(() =>
-  import('../components/Done' /* webpackChunkName: "Done" */)
-);
-const Submission = lazy(() =>
-  import('../components/Submission' /* webpackChunkName: "Submission" */)
-);
-const ScreeningForm = lazy(() =>
-  import('../components/Submission/ScreeningForm' /* webpackChunkName: "ScreeningForm" */)
-);
-const FeedbackForm = lazy(() =>
-  import('../components/Submission/FeedbackForm' /* webpackChunkName: "FeedbackForm" */)
-);
-const TemplateGenerator = lazy(() =>
-  import('../components/TemplateGenerator' /* webpackChunkName: "TemplateGenerator" */)
-);
+import SubmissionsList from '../components/Submissions/SubmissionsList';
+import AssessmentSubmission from '../components/Submissions/AssessmentSubmission';
+import JobSubmission from '../components/Submissions/JobSubmission';
+import MonkeyButtons from '../components/Submissions/MonkeyButtons';
+
+// const Done = lazy(() =>
+//   import('../components/Done' /* webpackChunkName: "Done" */)
+// );
+
+// const ScreeningForm = lazy(() =>
+//   import('../components/Submissions/ScreeningForm' /* webpackChunkName: "ScreeningForm" */)
+// );
+// const FeedbackForm = lazy(() =>
+//   import('../components/Submissions/FeedbackForm' /* webpackChunkName: "FeedbackForm" */)
+// );
+// const TemplateGenerator = lazy(() =>
+//   import('../components/TemplateGenerator' /* webpackChunkName: "TemplateGenerator" */)
+// );
 
 // import Search from '../components/Search'
 const styles = theme => ({
@@ -37,12 +48,11 @@ const styles = theme => ({
     height: 'calc(100vh - 64px)',
   },
   locationIndicatorWrapper: {
-    paddingLeft: 40 - 24,
     backgroundColor: theme.palette.background.default,
   },
   submissionWrapper: {
     overflowY: 'auto',
-    padding: 40,
+    padding: 24,
     maxWidth: 'none',
     position: 'relative',
   },
@@ -60,33 +70,17 @@ const styles = theme => ({
       backgroundColor: green[600],
     },
   },
+
+  debugButton: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+  },
 });
 
 function SumbissionsContainer(props) {
-  const { classes, location, history } = props;
-
-  const [template, setTemplate] = useState(null);
-  const [smartLink, setSmartLink] = useState(null);
-
-  const currentRoute = location.pathname.replace('/', '');
-  const [submissionState, submissionDispatch] = useSubmission(currentRoute);
-  const submission = submissionState.submission;
-
-  useEffect(
-    () => {
-      if (location.search.indexOf('?uid=') > -1) {
-        const uid = location.search.replace('?uid=', '');
-        submissionDispatch({ uid });
-      }
-      //return () => {};
-    },
-    [location.search]
-  );
-
-  const [email, setEmail] = useState(null);
-  const [emailReady, setEmailReady] = useState(false);
-
-  const [showSnackbar, setShowSnackbar] = useState(false);
+  const { classes, location } = props;
+  const [selectedSubmission, setSelectedSubmission] = useState();
 
   const locationIndicator = (
     <div className={classes.locationIndicatorWrapper}>
@@ -107,74 +101,61 @@ function SumbissionsContainer(props) {
     </div>
   );
 
-  if (submissionState.loading) {
-    return (
-      <React.Fragment>
-        {locationIndicator}
-        <Grid
-          container
-          justify="center"
-          alignItems="center"
-          style={{ height: 'calc(100vh - 64px)' }}
-        >
-          <CircularProgress size={64} />
+  let submission = selectedSubmission;
+  let submissionView = null;
+  let rightPanel = null;
+  if (submission) {
+    switch (submission.type) {
+      case 'assessment':
+        submissionView = <AssessmentSubmission data={submission} />;
+        break;
+
+      case 'job':
+        submissionView = <JobSubmission data={submission} />;
+        break;
+
+      default:
+        // submissionView = (
+        //   <Submission
+        //     submission={submission}
+        //     listType={location.pathname.split('/')[1]}
+        //   />
+        // );
+        break;
+    }
+    switch (submission.type) {
+      case 'assessment':
+      case 'job':
+        rightPanel = (
+          <MonkeyButtons
+            submission={submission}
+            //submissionDispatch={submissionDispatch}
+          />
+        );
+        break;
+
+      default:
+        rightPanel = <div />;
+    }
+  } else {
+    submissionView = (
+      <Grid
+        container
+        justify="center"
+        alignItems="center"
+        className={classes.noConvs}
+      >
+        <Grid item>
+          <Typography variant="subtitle1" color="textSecondary">
+            No open submission
+          </Typography>
         </Grid>
-      </React.Fragment>
+      </Grid>
     );
-  }
-
-  if (submission.complete) {
-    return (
-      <div style={{ overflow: 'hidden' }}>
-        {locationIndicator} <Done />
-      </div>
-    );
-  }
-
-  const handleSendEmail = () => {
-    sendEmail(email);
-    setShowSnackbar(true);
-    setTemplate(null);
-    setEmailReady(false);
-  };
-
-  let rightPanel;
-  switch (submission.outcome) {
-    case 'pending':
-    case 'disqualified':
-      rightPanel = (
-        <ScreeningForm
-          submission={submission}
-          setTemplate={setTemplate}
-          setSmartLink={setSmartLink}
-          submissionDispatch={submissionDispatch}
-          handleSendEmail={handleSendEmail}
-          emailReady={emailReady}
-          setEmailReady={setEmailReady}
-        />
-      );
-      break;
-    case 'rejected':
-    case 'accepted':
-      rightPanel = (
-        <FeedbackForm
-          submission={submission}
-          setTemplate={setTemplate}
-          setSmartLink={setSmartLink}
-          submissionDispatch={submissionDispatch}
-          handleSendEmail={handleSendEmail}
-          emailReady={emailReady}
-          location={location}
-          history={history}
-        />
-      );
-      break;
-    default:
-      rightPanel = null;
   }
 
   return (
-    <React.Fragment>
+    <>
       {locationIndicator}
       <Grid container className={classes.root} wrap="nowrap">
         <Suspense fallback={<LoadingHat />}>
@@ -185,46 +166,28 @@ function SumbissionsContainer(props) {
               wrap="nowrap"
               style={{ height: '100%' }}
             >
-              <Grid
-                item
-                xs={template ? 8 : 12}
-                className={classes.submissionWrapper}
-              >
-                <Submission
-                  submission={submission}
-                  listType={location.pathname.split('/')[1]}
-                />
-              </Grid>
-              {template && (
-                <Grid item xs={4} style={{ maxWidth: 'none' }}>
-                  <TemplateGenerator
-                    template={template}
-                    recipientUID={submission.UID}
-                    smartLink={smartLink}
-                    setEmail={setEmail}
-                    setEmailReady={setEmailReady}
+              <Grid item xs={12} className={classes.submissionWrapper}>
+                {submission && (
+                  <DebugButton
+                    title="Copy submission ID"
+                    toCopy={submission.id}
+                    className={classes.debugButton}
                   />
-                </Grid>
-              )}
+                )}
+                {submissionView}
+              </Grid>
             </Grid>
           </Grid>
           <Grid item style={{ width: 400, overflowY: 'auto' }}>
+            <SubmissionsList
+              selectedSubmission={selectedSubmission}
+              setSelectedSubmission={setSelectedSubmission}
+            />
             {rightPanel}
           </Grid>
         </Suspense>
       </Grid>
-
-      <Snackbar
-        className={classes.successSnackbar}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-        open={showSnackbar}
-        autoHideDuration={1500}
-        onClose={() => {
-          setShowSnackbar(false);
-        }}
-        message={<span id="message-id">Sent email!</span>}
-      />
-    </React.Fragment>
+    </>
   );
 }
 

@@ -1,6 +1,8 @@
 import FIELDS from './fields';
 import * as yup from 'yup';
 
+import { SKILLS } from '@bit/sidney2hats.2hats.global.common-constants';
+
 const courseFields = initialData => {
   if (!initialData) initialData = {};
   return [
@@ -13,6 +15,13 @@ const courseFields = initialData => {
         .string()
         .url('Invalid URL')
         .required('Required'),
+    },
+    {
+      type: FIELDS.textField,
+      name: 'id',
+      label: 'LearnWorlds course ID',
+      value: initialData['id'],
+      validation: yup.string().required('Required Learn Worlds course id'),
     },
     {
       type: FIELDS.textField,
@@ -32,8 +41,10 @@ const courseFields = initialData => {
       type: FIELDS.autocompleteMulti,
       name: 'skillsAssociated',
       label: 'Skills associated',
-      value: initialData['skillsAssociated'],
-      suggestions: ['ds', 'sdf', 'sdfd'].map(x => ({ value: x, label: x })),
+      value:
+        initialData['skillsAssociated'] &&
+        SKILLS.filter(x => initialData['skillsAssociated'].includes(x.value)),
+      suggestions: SKILLS,
       validation: yup
         .array()
         .min(1)

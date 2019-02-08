@@ -3,7 +3,8 @@ import findIndex from 'ramda/es/findIndex';
 
 import * as yup from 'yup';
 import propEq from 'ramda/es/propEq';
-import TRIGGERS from '../studentPortal/triggers';
+import { TRIGGERS } from '@bit/sidney2hats.2hats.global.common-constants';
+
 // const getLabel = (value, options) => {
 //   let index = findIndex(propEq('value', value))(options);
 //   return options[index];

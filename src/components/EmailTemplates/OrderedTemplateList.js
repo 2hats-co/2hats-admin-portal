@@ -44,9 +44,6 @@ function OrderedTemplateList(props) {
 
     if (result.destination.index !== result.source.index) {
       //update index of moved element
-      // updateDoc(COLLECTIONS.emailTemplates, result.draggableId, {
-      //   index: result.destination.index,
-      // });
       templatesDispatch({
         type: 'updateDoc',
         id: result.draggableId,
@@ -60,9 +57,6 @@ function OrderedTemplateList(props) {
             doc.index > result.destination.index - 1
         );
         affectedTemplates.forEach(doc => {
-          // updateDoc(COLLECTIONS.emailTemplates, doc.id, {
-          //   index: doc.index + 1,
-          // });
           templatesDispatch({
             type: 'updateDoc',
             id: doc.id,
@@ -77,9 +71,6 @@ function OrderedTemplateList(props) {
             doc.index <= result.destination.index
         );
         affectedTemplates.forEach(doc => {
-          // updateDoc(COLLECTIONS.emailTemplates, doc.id, {
-          //   index: doc.index - 1,
-          // });
           templatesDispatch({
             type: 'updateDoc',
             id: doc.id,
@@ -139,11 +130,9 @@ function OrderedTemplateList(props) {
                           edit: () => {
                             setTemplate(item);
                             editTemplate(item);
-                            // history.push(`marketingEmail?id=${x.id}`);
                           },
                           editTemplate: () => {
                             setTemplate(item);
-                            // history.push(`marketingEmail?id=${x.id}`);
                           },
                         }}
                       />

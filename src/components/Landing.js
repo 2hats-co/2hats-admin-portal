@@ -4,7 +4,7 @@ import { ROUTES } from '../constants/routes';
 import withAuthentication from './withAuthentication';
 
 import LoadingHat from '../components/LoadingHat';
-import { useAuthedUser } from '../hooks/useAuthedUser';
+import useAuthedUser from '../hooks/useAuthedUser';
 //import { initializePushNotifications } from '../store';
 function Landing(props) {
   const currentUser = useAuthedUser();

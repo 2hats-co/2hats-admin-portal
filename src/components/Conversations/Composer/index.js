@@ -18,7 +18,7 @@ import ComposerActions from './ComposerActions';
 import TemplateDropdown from './TemplateDropdown';
 import TextTemplateDropdown from './TextTemplateDropdown';
 import { AdminsContext } from '../../../contexts/AdminsContext';
-import { useAuthedUser } from '../../../hooks/useAuthedUser';
+import useAuthedUser from '../../../hooks/useAuthedUser';
 import { removeHtmlTags, globalReplace } from '../../../utilities';
 import { sendEmail } from '../../../utilities/email/gmail';
 import { sendLinkedinMessage } from '../../../utilities/linkedin';
@@ -313,7 +313,7 @@ function Composer(props) {
           </Tabs>
         </Grid>
         {composerType === 'email' && (
-          <React.Fragment>
+          <>
             <Grid item xs className={classes.emailFields}>
               <Grid container spacing={8}>
                 <Grid item xs={6}>
@@ -354,7 +354,7 @@ function Composer(props) {
             <Grid item className={classes.templateDropdownWrapper}>
               <TemplateDropdown classes={classes} setTemplate={setTemplate} />
             </Grid>
-          </React.Fragment>
+          </>
         )}
         {composerType === 'linkedin' && (
           <Grid item className={classes.templateDropdownWrapper}>

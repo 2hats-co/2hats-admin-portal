@@ -46,7 +46,7 @@ function CampaignCard(props) {
   const [showDetailsDialog, setShowDetailsDialog] = useState(false);
 
   return (
-    <React.Fragment>
+    <>
       <Card classes={{ root: classes.root }} elevation={0}>
         <Grid container justify="space-between" alignItems="center">
           <Grid item xs={7}>
@@ -124,7 +124,7 @@ function CampaignCard(props) {
         setShowDialog={setShowDetailsDialog}
         data={data}
       />
-    </React.Fragment>
+    </>
   );
 }
 

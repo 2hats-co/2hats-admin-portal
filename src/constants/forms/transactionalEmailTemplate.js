@@ -2,7 +2,7 @@ import FIELDS from './fields';
 import findIndex from 'ramda/es/findIndex';
 import propEq from 'ramda/es/propEq';
 import * as yup from 'yup';
-import TRIGGERS from '../studentPortal/triggers';
+import { TRIGGERS } from '@bit/sidney2hats.2hats.global.common-constants/triggers';
 const getLabels = (values, options) => {
   return values.map(value => {
     let index = findIndex(propEq('value', value))(options);

@@ -2,7 +2,7 @@ import { auth, firestore } from '../store';
 import { COLLECTIONS } from '../constants/firestore';
 import { useState, useEffect } from 'react';
 import assoc from 'ramda/es/assoc';
-export function useAuthedUser() {
+function useAuthedUser() {
   const [currentUser, setCurrentUser] = useState(null);
   let unsubscribe;
   const handleGetAuthedUser = async uid => {
@@ -48,3 +48,4 @@ export function useAuthedUser() {
   );
   return currentUser;
 }
+export default useAuthedUser;

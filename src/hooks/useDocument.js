@@ -40,11 +40,14 @@ const useDocument = intialOverrides => {
         if (unsubscribe) unsubscribe();
         setDocumentListner();
       }
-      return () => {
-        //  if (unsubscribe) unsubscribe();
-      };
     },
     [documentState]
+  );
+  useEffect(
+    () => () => {
+      if (documentState.unsubscribe) documentState.unsubscribe();
+    },
+    []
   );
   return [documentState, documentDispatch];
 };

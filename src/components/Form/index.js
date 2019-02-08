@@ -19,6 +19,9 @@ import Slider from './Fields/Slider';
 import DateTime from './Fields/DateTime';
 import Uploader from './Fields/Uploader';
 import Select from './Fields/Select';
+import Checkbox from './Fields/Checkbox';
+import RichText from './Fields/RichText';
+import RichTextMulti from './Fields/RichTextMulti';
 
 import DeleteIcon from '@material-ui/icons/Delete';
 import IconButton from '@material-ui/core/IconButton';
@@ -33,41 +36,52 @@ const styles = theme => ({
 
   dialogTitle: {
     paddingTop: theme.spacing.unit * 2.5,
-    paddingBottom: theme.spacing.unit * 2,
+  },
+  wrapperGrid: {
+    overflowX: 'hidden',
+    paddingBottom: theme.spacing.unit,
+  },
+  dialogContent: {
+    paddingBottom: 0,
     position: 'relative',
-    '&::after': {
+    zIndex: 1,
+    background: `${theme.palette.background.paper} no-repeat`,
+    backgroundImage:
+      theme.palette.type === 'dark'
+        ? 'linear-gradient(to bottom, rgba(0,0,0,.5), rgba(0,0,0,0)), linear-gradient(to top, rgba(0,0,0,.5), rgba(0,0,0,0))'
+        : 'linear-gradient(to bottom, rgba(0,0,0,.1), rgba(0,0,0,0)), linear-gradient(to top, rgba(0,0,0,.1), rgba(0,0,0,0))',
+    backgroundPosition: `-${theme.spacing.unit * 3}px 0, -${theme.spacing.unit *
+      3}px 100%`,
+    backgroundSize: `calc(100% + ${theme.spacing.unit * 3}px) ${theme.spacing
+      .unit * 2}px`,
+
+    '&::before, &::after': {
       content: '""',
+      position: 'relative',
+      zIndex: -1,
       display: 'block',
-      height: 1,
-      position: 'absolute',
-      background: theme.palette.divider,
-      bottom: 0,
-      left: theme.spacing.unit * 3,
-      right: theme.spacing.unit * 3,
+      height: theme.spacing.unit * 4,
+      margin: `0 -${theme.spacing.unit * 3}px -${theme.spacing.unit * 4}px`,
+      background: `linear-gradient(to bottom, ${
+        theme.palette.background.paper
+      }, ${theme.palette.background.paper} 30%, rgba(255, 255, 255, 0))`,
+    },
+
+    '&::after': {
+      marginTop: -theme.spacing.unit * 4,
+      marginBottom: 0,
+      background: `linear-gradient(to bottom, rgba(255, 255, 255, 0), ${
+        theme.palette.background.paper
+      } 70%, ${theme.palette.background.paper})`,
     },
   },
-  wrapperGrid: { marginTop: theme.spacing.unit },
 
   capitalise: {
     '&::first-letter': { textTransform: 'uppercase' },
   },
 
   sectionTitle: {
-    marginLeft: theme.spacing.unit,
-  },
-
-  dialogActions: {
-    position: 'relative',
-    '&::before': {
-      content: '""',
-      display: 'block',
-      height: 1,
-      position: 'absolute',
-      background: theme.palette.divider,
-      top: -theme.spacing.unit,
-      left: theme.spacing.unit * 2.5,
-      right: theme.spacing.unit * 2.5,
-    },
+    marginLeft: theme.spacing.unit * 1.5,
   },
 });
 
@@ -108,6 +122,8 @@ function Form(props) {
     data,
     formTitle,
     justForm,
+    formHeader,
+    formFooter,
     handleDelete,
   } = props;
 
@@ -138,6 +154,7 @@ function Form(props) {
           reactSelectValueFormatter,
           outputValues
         );
+
         const youtubeUrlFormatted = map(
           youtubeUrlFormatter,
           reactSelectFormattedValues
@@ -209,6 +226,30 @@ function Form(props) {
                     />
                   );
 
+                case FIELDS.richText:
+                  return (
+                    <RichText
+                      key={x.name}
+                      formikProps={formikProps}
+                      label={x.label}
+                      name={x.name}
+                      placeholder={x.placeholder}
+                      validator={validator}
+                    />
+                  );
+
+                case FIELDS.richTextMulti:
+                  return (
+                    <RichTextMulti
+                      key={x.name}
+                      formikProps={formikProps}
+                      label={x.label}
+                      name={x.name}
+                      placeholder={x.placeholder}
+                      validator={validator}
+                    />
+                  );
+
                 case FIELDS.chipFreeText:
                   return (
                     <TextItems
@@ -227,6 +268,8 @@ function Form(props) {
                       key={x.name}
                       name={x.name}
                       label={x.label}
+                      calcValueLabel={x.calcValueLabel}
+                      sliderThumbLabel={x.sliderThumbLabel}
                       min={x.min}
                       max={x.max}
                       step={x.step}
@@ -270,10 +313,22 @@ function Form(props) {
                     <Uploader
                       key={x.name}
                       formikProps={formikProps}
+                      thisBind={this}
                       label={x.label}
                       name={x.name}
                       path={x.path}
                       mimeTypes={x.mimeTypes}
+                      validator={validator}
+                    />
+                  );
+
+                case FIELDS.checkbox:
+                  return (
+                    <Checkbox
+                      key={x.name}
+                      formikProps={formikProps}
+                      label={x.label}
+                      name={x.name}
                       validator={validator}
                     />
                   );
@@ -301,7 +356,9 @@ function Form(props) {
           <form onSubmit={handleSubmit}>
             {justForm ? (
               <Grid container>
+                {formHeader}
                 {Fields}
+                {formFooter}
                 {PrimaryButton}
               </Grid>
             ) : (
@@ -322,9 +379,13 @@ function Form(props) {
                   )}
                 </DialogTitle>
 
-                <DialogContent>{Fields}</DialogContent>
+                <DialogContent classes={{ root: classes.dialogContent }}>
+                  {formHeader}
+                  {Fields}
+                  {formFooter}
+                </DialogContent>
 
-                <DialogActions classes={{ root: classes.dialogActions }}>
+                <DialogActions>
                   <Button onClick={actions.close} color="primary">
                     Cancel
                   </Button>

@@ -23,7 +23,7 @@ import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 import SuperAvatar from '../../SuperAvatar';
 import AdminSelector from '../../AdminSelector';
 import { AdminsContext } from '../../../contexts/AdminsContext';
-import { useAuthedUser } from '../../../hooks/useAuthedUser';
+import useAuthedUser from '../../../hooks/useAuthedUser';
 import { addReminder } from '../../../utilities/conversations';
 
 const styles = theme => ({

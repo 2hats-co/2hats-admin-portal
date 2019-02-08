@@ -23,7 +23,7 @@ import moment from 'moment';
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import CustomIcon from '@material-ui/icons/Build';
 
-import { useAuthedUser } from '../../../hooks/useAuthedUser';
+import useAuthedUser from '../../../hooks/useAuthedUser';
 import { addEvent, updateEvent } from '../../../utilities/conversations';
 import clone from 'ramda/es/clone';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
@@ -370,7 +370,7 @@ function EventDialog(props) {
             className={classes.durationWrapper}
           >
             {customDuration ? (
-              <React.Fragment>
+              <>
                 <Grid item xs className={classes.sliderWrapper}>
                   <Slider
                     classes={{ container: classes.slider }}
@@ -386,9 +386,9 @@ function EventDialog(props) {
                     {data.end.duration} min
                   </Typography>
                 </Grid>
-              </React.Fragment>
+              </>
             ) : (
-              <React.Fragment>
+              <>
                 <ToggleButtonGroup
                   exclusive
                   value={data.end.duration}
@@ -403,7 +403,7 @@ function EventDialog(props) {
                     <CustomIcon fontSize="small" />
                   </IconButton>
                 </Tooltip>
-              </React.Fragment>
+              </>
             )}
           </Grid>
           <Typography variant="body1" className={classes.durationLabel}>
