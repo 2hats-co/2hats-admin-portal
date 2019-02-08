@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import withStyles from '@material-ui/core/styles/withStyles';
-// import Typography from '@material-ui/core/Typography';
+import Grid from '@material-ui/core/Grid';
 import Fade from '@material-ui/core/Fade';
 import Fab from '@material-ui/core/Fab';
 
@@ -19,7 +19,8 @@ import { momentLocales } from '../constants/momentLocales';
 
 import withNavigation from '../components/withNavigation';
 import EditOneCard from '../components/OneCard/EditOneCard';
-import OneCard from '../components/OneCard';
+import OneCard from '../components/Cards/OneCard';
+import * as oneCardMappings from '../constants/oneCardMappings';
 
 import Form from '../components/Form';
 import courseFields from '../constants/forms/course';
@@ -51,21 +52,25 @@ function ContentManagerContainer(props) {
   let fields = [];
   let formTitle = '';
   let collection = '';
+  let mapping = '';
   switch (path) {
     case ROUTES.jobsManager:
       fields = jobFields;
       formTitle = 'Job';
       collection = COLLECTIONS.jobs;
+      mapping = oneCardMappings.job;
       break;
     case ROUTES.coursesManager:
       fields = courseFields;
       formTitle = 'Course';
       collection = COLLECTIONS.courses;
+      mapping = oneCardMappings.course;
       break;
     case ROUTES.assessmentsManager:
       fields = assessmentFields;
       formTitle = 'Assessment';
       collection = COLLECTIONS.assessments;
+      mapping = oneCardMappings.assessment;
       break;
     case ROUTES.eventsManager:
       fields = eventFields;
@@ -78,6 +83,7 @@ function ContentManagerContainer(props) {
 
   const [dataState] = useCollection({
     path: collection,
+    sort: { field: 'createdAt', direction: 'desc' },
   });
   const docs = dataState.documents;
   // console.log(docs);
@@ -92,30 +98,23 @@ function ContentManagerContainer(props) {
             { label: 'Jobs', value: ROUTES.jobsManager },
             { label: 'Courses', value: ROUTES.coursesManager },
             { label: 'Assessments', value: ROUTES.assessmentsManager },
-            { label: 'Events', value: ROUTES.eventsManager },
+            //  { label: 'Events', value: ROUTES.eventsManager },
           ]}
         />
 
-        {docs &&
-          docs.map(x => (
-            <EditOneCard
-              data={x}
-              fields={fields}
-              key={x.id}
-              collection={collection}
-            >
-              <OneCard
-                title={x.title}
-                secondaryText={
-                  x.description || x.roleDescription || x.jobDescription
-                }
-                primaryAction="Do nothing"
-                route={`#${x.id}`}
-                image={x.image && x.image.url}
-                video={x.videoUrl}
-              />
-            </EditOneCard>
-          ))}
+        <Grid container>
+          {docs &&
+            docs.map(x => (
+              <EditOneCard
+                data={x}
+                fields={fields}
+                key={x.id}
+                collection={collection}
+              >
+                <OneCard {...mapping(x)} />
+              </EditOneCard>
+            ))}
+        </Grid>
 
         <Fab
           className={classes.fab}
