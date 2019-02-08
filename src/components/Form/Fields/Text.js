@@ -4,10 +4,18 @@ import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import Multiline from './Multiline';
 const Text = props => {
-  const { label, name, type, placeholder, formikProps } = props;
+  const {
+    label,
+    name,
+    type,
+    placeholder,
+    formikProps,
+    width,
+    autoFocus,
+  } = props;
   const { handleChange, values, errors, touched } = formikProps;
   return (
-    <Grid item>
+    <Grid item xs={width || 12}>
       {type === FIELDS.textFieldMultiline ? (
         <Multiline
           type={type}
@@ -15,6 +23,7 @@ const Text = props => {
           label={label}
           name={name}
           placeholder={placeholder}
+          autoFocus={autoFocus}
         />
       ) : (
         <TextField
@@ -36,6 +45,7 @@ const Text = props => {
           placeholder={placeholder}
           error={!!(errors[name] && touched[name])}
           helperText={touched[name] && errors[name]}
+          autoFocus={autoFocus}
         />
       )}
     </Grid>

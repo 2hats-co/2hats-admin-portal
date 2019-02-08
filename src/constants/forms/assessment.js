@@ -19,6 +19,7 @@ const assessmentFields = initialData => {
         x => x.value === initialData['category']
       )[0],
       validation: yup.string().required('Category is required'),
+      width: 6,
     },
     {
       type: FIELDS.autocomplete,
@@ -27,6 +28,7 @@ const assessmentFields = initialData => {
       value: SKILLS.filter(x => x.value === initialData['skillAssociated'])[0],
       suggestions: SKILLS,
       validation: yup.string().required('Skill is required'),
+      width: 6,
     },
     {
       type: FIELDS.textField,
