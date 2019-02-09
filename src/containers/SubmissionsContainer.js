@@ -23,6 +23,7 @@ import LoadingHat from '../components/LoadingHat';
 import DebugButton from '../components/DebugButton';
 
 import SubmissionsList from '../components/Submissions/SubmissionsList';
+import ResumeSubmission from '../components/Submissions/ResumeSubmission';
 import AssessmentSubmission from '../components/Submissions/AssessmentSubmission';
 import JobSubmission from '../components/Submissions/JobSubmission';
 import MonkeyButtons from '../components/Submissions/MonkeyButtons';
@@ -115,12 +116,12 @@ function SumbissionsContainer(props) {
         break;
 
       default:
-        // submissionView = (
-        //   <Submission
-        //     submission={submission}
-        //     listType={location.pathname.split('/')[1]}
-        //   />
-        // );
+        submissionView = (
+          <ResumeSubmission
+            submission={submission}
+            listType={location.pathname.split('/')[1]}
+          />
+        );
         break;
     }
     switch (submission.type) {

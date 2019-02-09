@@ -79,7 +79,7 @@ function SubmissionsList(props) {
   const [submissionsState, submissionsDispatch] = useCollection({
     path: COLLECTIONS.submissions,
     sort: [orderbySubmissionTime],
-    filters: [],
+    filters: [{ field: 'outcome', operator: '==', value: 'pending' }],
   });
   const submissions = submissionsState.documents;
 

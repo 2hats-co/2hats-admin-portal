@@ -100,7 +100,9 @@ function Item(props) {
                 variant="subtitle1"
                 style={{ display: 'inline-block' }}
               >
-                {submission.user.firstName} {submission.user.LastName}
+                {submission.user
+                  ? `${submission.user.firstName} ${submission.user.lastName}`
+                  : submission.displayName}
               </Typography>
             </Grid>
             <Grid item>
