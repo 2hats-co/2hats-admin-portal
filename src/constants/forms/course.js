@@ -21,9 +21,9 @@ const courseFields = initialData => {
     },
     {
       type: FIELDS.textField,
-      name: 'id',
+      name: 'LWid',
       label: 'LearnWorlds course ID',
-      value: initialData['id'],
+      value: initialData['LWid'],
       validation: yup.string().required('Required Learn Worlds course id'),
     },
     {
