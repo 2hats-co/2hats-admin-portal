@@ -13,9 +13,15 @@ var ASSESSMENT_CATEGORIES = (exports.ASSESSMENT_CATEGORIES = [
 var getAssessmentCategoryLabel = (exports.getAssessmentCategoryLabel = function getAssessmentCategoryLabel(
   val
 ) {
-  return ASSESSMENT_CATEGORIES.filter(function(x) {
-    return x.value === val;
-  })[0].label;
+  if (
+    ASSESSMENT_CATEGORIES.filter(function(x) {
+      return x.value === val;
+    }).length > 0
+  )
+    return ASSESSMENT_CATEGORIES.filter(function(x) {
+      return x.value === val;
+    })[0].label;
+  return null;
 });
 
 //# sourceMappingURL=assessmentCategories.js.map

@@ -21,8 +21,11 @@ export const SKILLS = [
   { label: 'Web App Essentials', value: 'webAppEssentials' },
 ];
 
-export const getSkillLabel = val =>
-  SKILLS.filter(x => x.value === val)[0].label;
+export const getSkillLabel = val => {
+  if (SKILLS.filter(x => x.value === val).length > 0)
+    return SKILLS.filter(x => x.value === val)[0].label;
+  return null;
+};
 
 export const getSkillCategory = val => {
   switch (val) {

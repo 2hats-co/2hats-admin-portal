@@ -27,9 +27,15 @@ var SKILLS = (exports.SKILLS = [
 ]);
 
 var getSkillLabel = (exports.getSkillLabel = function getSkillLabel(val) {
-  return SKILLS.filter(function(x) {
-    return x.value === val;
-  })[0].label;
+  if (
+    SKILLS.filter(function(x) {
+      return x.value === val;
+    }).length > 0
+  )
+    return SKILLS.filter(function(x) {
+      return x.value === val;
+    })[0].label;
+  return null;
 });
 
 var getSkillCategory = (exports.getSkillCategory = function getSkillCategory(
