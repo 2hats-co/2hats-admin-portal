@@ -417,7 +417,7 @@ function Form(props) {
             ) : (
               <Dialog
                 open={open}
-                onClose={actions.close}
+                //onClose={actions.close}
                 classes={{
                   paper: isMobile ? classes.mobilePaperRoot : classes.paperRoot,
                 }}
