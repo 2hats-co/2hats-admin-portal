@@ -16,6 +16,9 @@ export const SKILLS = [
   { label: 'Sales Closing', value: 'salesClosing' },
 
   // { label: 'Graphic design', value: 'graphicDesign' },
+
+  // dev
+  { label: 'Web App Essentials', value: 'webAppEssentials' },
 ];
 
 export const getSkillLabel = val =>
@@ -38,6 +41,9 @@ export const getSkillCategory = val => {
     case 'salesStrategy':
     case 'salesClosing':
       return 'sales';
+
+    case 'webAppEssentials':
+      return 'tech';
 
     default:
       return '';

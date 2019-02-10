@@ -97,6 +97,7 @@ export const DROPZONE = theme => ({
     color: theme.palette.text.secondary,
   },
   dropzoneButton: { marginTop: theme.spacing.unit / 2 },
+  fileChipWrapper: { textAlign: 'center' },
   fileChip: {
     cursor: 'pointer',
     marginTop: theme.spacing.unit,
