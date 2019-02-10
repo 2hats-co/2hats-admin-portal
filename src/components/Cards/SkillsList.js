@@ -27,7 +27,7 @@ const styles = theme => ({
 const SkillsList = props => {
   const { classes, values, header } = props;
 
-  return (
+  return values ? (
     <>
       <Typography variant="subtitle2" className={classes.skillsRequiredLabel}>
         {header || 'Skills required'}
@@ -43,6 +43,8 @@ const SkillsList = props => {
         )}
       </div>
     </>
+  ) : (
+    <></>
   );
 };
 
