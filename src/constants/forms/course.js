@@ -48,10 +48,8 @@ const courseFields = initialData => {
         initialData['skillsAssociated'] &&
         SKILLS.filter(x => initialData['skillsAssociated'].includes(x.value)),
       suggestions: SKILLS,
-      validation: yup
-        .array()
-        .min(1)
-        .required('Skills are required'),
+      validation: yup.array().min(0),
+      // .required('Skills are required'),
     },
     {
       type: FIELDS.autocompleteFreeText,
