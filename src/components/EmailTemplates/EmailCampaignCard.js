@@ -9,7 +9,7 @@ import moment from 'moment';
 import IconButton from '@material-ui/core/IconButton';
 
 import OpenIcon from '@material-ui/icons/ArrowForwardIos';
-import EditIcon from '@material-ui/icons/Edit';
+import EditIcon from '@material-ui/icons/EditOutlined';
 
 import Tooltip from '@material-ui/core/Tooltip';
 

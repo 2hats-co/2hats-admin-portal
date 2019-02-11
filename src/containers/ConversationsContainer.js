@@ -3,7 +3,7 @@ import withNavigation from '../components/withNavigation';
 import withStyles from '@material-ui/core/styles/withStyles';
 
 import Typography from '@material-ui/core/Typography';
-import ForumIcon from '@material-ui/icons/Forum';
+import ForumIcon from '@material-ui/icons/ForumOutlined';
 import LocationIndicator from '../components/LocationIndicator';
 
 import Grid from '@material-ui/core/Grid';

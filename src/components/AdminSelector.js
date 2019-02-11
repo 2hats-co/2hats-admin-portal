@@ -8,8 +8,8 @@ import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import Avatar from '@material-ui/core/Avatar';
 
-import PersonIcon from '@material-ui/icons/Person';
-import DropDownIcon from '@material-ui/icons/ArrowDropDown';
+import PersonIcon from '@material-ui/icons/PersonOutlined';
+import DropDownIcon from '@material-ui/icons/ArrowDropDownOutlined';
 
 import SuperAvatar from './SuperAvatar';
 import { AdminsContext } from '../contexts/AdminsContext';

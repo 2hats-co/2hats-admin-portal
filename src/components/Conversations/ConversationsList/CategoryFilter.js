@@ -7,7 +7,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 
-import FilterIcon from '@material-ui/icons/FilterList';
+import FilterIcon from '@material-ui/icons/FilterListOutlined';
 
 import conversationCategories from '../../../constants/conversationCategories';
 

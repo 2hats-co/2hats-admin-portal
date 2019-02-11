@@ -11,7 +11,7 @@ import Chip from '@material-ui/core/Chip';
 
 import LinkedInIcon from '../../assets/icons/LinkedIn';
 import MailIcon from '@material-ui/icons/MailOutline';
-import PhoneIcon from '@material-ui/icons/Phone';
+import PhoneIcon from '@material-ui/icons/PhoneOutlined';
 // import PersonIcon from '@material-ui/icons/Person';
 
 import SuperAvatar from '../SuperAvatar';

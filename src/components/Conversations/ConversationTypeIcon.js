@@ -1,9 +1,9 @@
 import React from 'react';
 
-import PersonIcon from '@material-ui/icons/Person';
-import ClientIcon from '@material-ui/icons/BusinessCenter';
-import CandidateIcon from '@material-ui/icons/School';
-import SpamIcon from '@material-ui/icons/Report';
+import PersonIcon from '@material-ui/icons/PersonOutlined';
+import ClientIcon from '@material-ui/icons/BusinessCenterOutlined';
+import CandidateIcon from '@material-ui/icons/SchoolOutlined';
+import SpamIcon from '@material-ui/icons/ReportOutlined';
 
 function ConversationTypeIcon(props) {
   const { className, type } = props;

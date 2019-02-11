@@ -8,7 +8,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Avatar from '@material-ui/core/Avatar';
 
 import StarBorderIcon from '@material-ui/icons/StarBorder';
-import PersonIcon from '@material-ui/icons/Person';
+import PersonIcon from '@material-ui/icons/PersonOutlined';
 
 import moment from 'moment';
 import { momentLocales } from '../../../constants/momentLocales';
