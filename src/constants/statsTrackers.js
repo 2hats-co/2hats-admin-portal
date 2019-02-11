@@ -120,6 +120,101 @@ export const trackers = {
     collection: 'submissions',
     itemType: 'query',
   },
+
+  interestJobs: {
+    presetName: 'interestJobs',
+    label: 'interested in jobs',
+    filters: [{ property: 'interest', operation: '==', value: 'jobs' }],
+    collection: 'users',
+    itemType: 'query',
+  },
+  interestCourses: {
+    presetName: 'interestCourses',
+    label: 'interested in courses',
+    filters: [{ property: 'interest', operation: '==', value: 'courses' }],
+    collection: 'users',
+    itemType: 'query',
+  },
+  interestAssessments: {
+    presetName: 'interestAssessments',
+    label: 'interested in assessments',
+    filters: [{ property: 'interest', operation: '==', value: 'assessments' }],
+    collection: 'users',
+    itemType: 'query',
+  },
+
+  jobApplied: {
+    presetName: 'jobApplied',
+    type: 'candidate',
+    name: 'job-applied',
+    label: 'Job applications',
+    itemType: 'tracker',
+  },
+  jobScreened: {
+    presetName: 'jobScreened',
+    type: 'job',
+    name: 'job-screened',
+    label: 'Job applications screened',
+    itemType: 'tracker',
+  },
+  jobPass: {
+    presetName: 'jobPass',
+    type: 'job',
+    name: 'job-pass',
+    label: 'Job applications passed',
+    itemType: 'tracker',
+  },
+  jobFail: {
+    presetName: 'jobFail',
+    type: 'job',
+    name: 'job-fail',
+    label: 'Job applications failed',
+    itemType: 'tracker',
+  },
+
+  assessmentStarted: {
+    presetName: 'assessmentStarted',
+    type: 'assessment',
+    name: 'assessment-started',
+    label: 'Assessments started',
+    itemType: 'tracker',
+  },
+  assessmentSubmitted: {
+    presetName: 'assessmentSubmitted',
+    type: 'assessment',
+    name: 'assessment-submitted',
+    label: 'Assessment submissions',
+    itemType: 'tracker',
+  },
+  assessmentScreened: {
+    presetName: 'assessmentScreened',
+    type: 'assessment',
+    name: 'assessment-screened',
+    label: 'Assessments screened',
+    itemType: 'tracker',
+  },
+  assessmentPass: {
+    presetName: 'assessmentPass',
+    type: 'assessment',
+    name: 'assessment-pass',
+    label: 'Assessments passed',
+    itemType: 'tracker',
+  },
+  assessmentFail: {
+    presetName: 'assessmentFail',
+    type: 'assessment',
+    name: 'assessment-fail',
+    label: 'Assessments failed',
+    itemType: 'tracker',
+  },
+
+  courseCompleted: {
+    presetName: 'courseCompleted',
+    type: 'courses',
+    name: 'course-completed',
+    label: 'Course completions',
+    itemType: 'tracker',
+  },
 };
 
 export const trackersList = Object.keys(trackers).map(x => ({
