@@ -7,7 +7,7 @@ export const ROUTES = {
   templates: '/templates',
   auth: '/auth',
   resumes: '/resumes',
-  mail: '/mail',
+  // mail: '/mail',
   leads: '/leads',
   conversations: '/conversations',
   subjects: '/subjects',
