@@ -12,6 +12,7 @@ import Fade from '@material-ui/core/Fade';
 import SearchIcon from '@material-ui/icons/Search';
 import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
 import DescriptionIcon from '@material-ui/icons/Description';
+import Submissions2Icon from '@material-ui/icons/RateReview';
 import StatisticsIcon from '@material-ui/icons/InsertChart';
 import ConversationsIcon from '@material-ui/icons/Forum';
 import MarketingIcon from '../../assets/icons/Bullhorn';
@@ -101,6 +102,12 @@ const navigationRoutes = [
       ROUTES.rejected,
       ROUTES.accepted,
     ],
+  },
+  {
+    label: 'Submissions2',
+    icon: <Submissions2Icon />,
+    route: ROUTES.submissions2,
+    incomplete: true,
   },
   {
     label: 'Conversations',

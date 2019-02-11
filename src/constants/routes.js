@@ -17,6 +17,8 @@ export const ROUTES = {
   accepted: '/accepted',
   pending: '/pending',
 
+  submissions2: '/submissions2',
+
   marketingLeadGeneration: '/marketingLeadGeneration',
 
   conversationEmails: '/conversationEmails',
