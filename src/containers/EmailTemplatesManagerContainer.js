@@ -71,7 +71,7 @@ function EmailTemplatesManagerContainer(props) {
         break;
 
       case ROUTES.transactionalEmails:
-        templateDoc.type = 'transactionals';
+        templateDoc.type = 'transactional';
         break;
 
       case ROUTES.emailCampaigns:
@@ -156,7 +156,7 @@ function EmailTemplatesManagerContainer(props) {
       case ROUTES.transactionalEmails:
         return (
           <TemplateList
-            type="transactionals"
+            type="transactional"
             setTemplate={setTemplate}
             editTemplate={handleEdit}
           />
@@ -189,7 +189,7 @@ function EmailTemplatesManagerContainer(props) {
           subRoutes={[
             { label: 'campaigns', value: ROUTES.emailCampaigns },
             { label: 'conversations', value: ROUTES.conversationEmails },
-            { label: 'transactionals', value: ROUTES.transactionalEmails },
+            { label: 'transactional', value: ROUTES.transactionalEmails },
           ]}
         />
 
