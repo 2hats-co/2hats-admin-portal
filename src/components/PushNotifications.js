@@ -6,7 +6,7 @@ import Snackbar from '@material-ui/core/Snackbar';
 import Grid from '@material-ui/core/Grid';
 
 import Avatar from '@material-ui/core/Avatar';
-import NotificationIcon from '@material-ui/icons/Notifications';
+import NotificationIcon from '@material-ui/icons/NotificationsOutlined';
 
 import { messaging } from '../store';
 

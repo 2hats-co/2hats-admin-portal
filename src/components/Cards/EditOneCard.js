@@ -3,8 +3,8 @@ import React, { useState } from 'react';
 import withStyles from '@material-ui/core/styles/withStyles';
 
 import IconButton from '@material-ui/core/IconButton';
-import EditIcon from '@material-ui/icons/Edit';
-import DeleteIcon from '@material-ui/icons/Delete';
+import EditIcon from '@material-ui/icons/EditOutlined';
+import DeleteIcon from '@material-ui/icons/DeleteOutlined';
 
 import Form from '../Form';
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import Avatar from '@material-ui/core/Avatar';
 import Tooltip from '@material-ui/core/Tooltip';
-import PersonIcon from '@material-ui/icons/Person';
+import PersonIcon from '@material-ui/icons/PersonOutlined';
 import { getInitials } from '../utilities';
 
 function SuperAvatar(props) {

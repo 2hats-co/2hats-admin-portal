@@ -7,20 +7,20 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Chip from '@material-ui/core/Chip';
 
-import MailIcon from '@material-ui/icons/Mail';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import MailIcon from '@material-ui/icons/MailOutlined';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMoreOutlined';
 import EventIcon from '@material-ui/icons/EventOutlined';
-import TimeIcon from '@material-ui/icons/AccessTime';
-import DetailsIcon from '@material-ui/icons/Notes';
+import TimeIcon from '@material-ui/icons/AccessTimeOutlined';
+import DetailsIcon from '@material-ui/icons/NotesOutlined';
 import LocationIcon from '@material-ui/icons/LocationOnOutlined';
 import AttendeesIcon from '@material-ui/icons/PeopleOutlined';
 import ReminderIcon from '@material-ui/icons/NotificationsOutlined';
 
-import TextIcon from '@material-ui/icons/Description';
-import ImageIcon from '@material-ui/icons/Image';
-import AudioIcon from '@material-ui/icons/Audiotrack';
-import VideoIcon from '@material-ui/icons/Videocam';
-import AttachmentIcon from '@material-ui/icons/Attachment';
+import TextIcon from '@material-ui/icons/DescriptionOutlined';
+import ImageIcon from '@material-ui/icons/ImageOutlined';
+import AudioIcon from '@material-ui/icons/AudiotrackOutlined';
+import VideoIcon from '@material-ui/icons/VideocamOutlined';
+import AttachmentIcon from '@material-ui/icons/AttachmentOutlined';
 
 import classNames from 'classnames';
 import moment from 'moment';

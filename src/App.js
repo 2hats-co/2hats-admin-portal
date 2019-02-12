@@ -13,6 +13,9 @@ import ConversationsContainer from './containers/ConversationsContainer';
 const SubmissionsContainer = lazy(() =>
   import('./containers/SubmissionsContainer' /* webpackChunkName: "SubmissionsContainer" */)
 );
+const Submissions2Container = lazy(() =>
+  import('./containers/Submissions2Container' /* webpackChunkName: "Submissions2Container" */)
+);
 //import StatisticsContainer from './containers/StatisticsContainer';
 const StatisticsContainer = lazy(() =>
   import('./containers/StatisticsContainer' /* webpackChunkName: "StatisticsContainer" */)
@@ -128,6 +131,12 @@ function App(props) {
                 exact
                 path={ROUTES.accepted}
                 component={() => <SubmissionsContainer {...props} />}
+              />
+
+              <Route
+                exact
+                path={ROUTES.submissions2}
+                component={() => <Submissions2Container {...props} />}
               />
 
               <Route

@@ -8,8 +8,8 @@ import Typography from '@material-ui/core/Typography';
 import moment from 'moment';
 import IconButton from '@material-ui/core/IconButton';
 
-import EditIcon from '@material-ui/icons/Edit';
-import CopyIcon from '@material-ui/icons/FileCopy';
+import EditIcon from '@material-ui/icons/EditOutlined';
+import CopyIcon from '@material-ui/icons/FileCopyOutlined';
 import Tooltip from '@material-ui/core/Tooltip';
 import OpenIcon from '@material-ui/icons/ArrowForwardIos';
 
