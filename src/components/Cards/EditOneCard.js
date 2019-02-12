@@ -3,8 +3,12 @@ import React, { useState } from 'react';
 import withStyles from '@material-ui/core/styles/withStyles';
 
 import IconButton from '@material-ui/core/IconButton';
+import Tooltip from '@material-ui/core/Tooltip';
+
 import EditIcon from '@material-ui/icons/EditOutlined';
 import DeleteIcon from '@material-ui/icons/DeleteOutlined';
+import PublishedIcon from '@material-ui/icons/VisibilityOutlined';
+import UnpublishedIcon from '@material-ui/icons/VisibilityOffOutlined';
 
 import Form from '../Form';
 
@@ -27,20 +31,33 @@ const EditOneCard = props => {
   return (
     <div className={classes.root}>
       <div className={classes.buttonBar}>
-        <IconButton
-          onClick={() => {
-            setShowForm(true);
-          }}
-        >
-          <EditIcon />
-        </IconButton>
-        <IconButton
-          onClick={() => {
-            deleteDoc(collection, data.id);
-          }}
-        >
-          <DeleteIcon />
-        </IconButton>
+        <Tooltip title="Edit">
+          <IconButton
+            onClick={() => {
+              setShowForm(true);
+            }}
+          >
+            <EditIcon />
+          </IconButton>
+        </Tooltip>
+        <Tooltip title="Edit">
+          <IconButton
+            onClick={() => {
+              updateDoc(collection, data.id, { published: !data.published });
+            }}
+          >
+            {data.published ? <PublishedIcon /> : <UnpublishedIcon />}
+          </IconButton>
+        </Tooltip>
+        <Tooltip title="Delete">
+          <IconButton
+            onClick={() => {
+              deleteDoc(collection, data.id);
+            }}
+          >
+            <DeleteIcon />
+          </IconButton>
+        </Tooltip>
       </div>
 
       {children}
