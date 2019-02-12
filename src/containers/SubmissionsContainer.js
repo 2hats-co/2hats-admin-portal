@@ -34,7 +34,7 @@ const TemplateGenerator = lazy(() =>
 const styles = theme => ({
   root: {
     backgroundColor: theme.palette.background.default,
-    height: 'calc(100vh - 64px)',
+    height: 'calc(100vh)',
   },
   locationIndicatorWrapper: {
     paddingLeft: 40 - 24,
@@ -175,7 +175,6 @@ function SumbissionsContainer(props) {
 
   return (
     <>
-      {locationIndicator}
       <Grid container className={classes.root} wrap="nowrap">
         <Suspense fallback={<LoadingHat />}>
           <Grid item xs className={classes.card}>
