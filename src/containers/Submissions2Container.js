@@ -6,13 +6,14 @@ import Grid from '@material-ui/core/Grid';
 import Fade from '@material-ui/core/Fade';
 import Typography from '@material-ui/core/Typography';
 
-import Submissions2Icon from '@material-ui/icons/RateReview';
+import Submissions2Icon from '@material-ui/icons/RateReviewOutlined';
 
 import LocationIndicator from '../components/LocationIndicator';
 import LoadingHat from '../components/LoadingHat';
+import SubmissionsList from '../components/Submissions/SubmissionsList';
 
 import useDocument from '../hooks/useDocument';
-import { getfirstIdOfQuery } from '../utilities/firestore';
+import { ROUTES } from '../constants/routes';
 
 const styles = theme => ({
   messagesContainer: {
@@ -45,8 +46,7 @@ const styles = theme => ({
 });
 
 function Submissions2Container(props) {
-  const { classes, uid, location, history } = props;
-  const currentUserId = uid;
+  const { classes, location, history } = props;
 
   const [submissionState, submissionDispatch] = useDocument();
   let selectedSubmission = submissionState.doc;
@@ -81,16 +81,15 @@ function Submissions2Container(props) {
             height: 'calc(100vh - 64px)',
           }}
         >
-          {/* <ConversationsList
-                  uid={uid}
-                  selectedConversation={selectedConversation}
-                  setSelectedConversation={conversation => {
-                    submissionDispatch({
-                      path: `conversations/${conversation.id}`,
-                    });
-                    history.push(`/conversations?id=${conversation.id}`);
-                  }}
-                /> */}
+          <SubmissionsList
+            selectedSubmission={selectedSubmission}
+            setSelectedSubmission={sub => {
+              submissionDispatch({
+                path: `${ROUTES.submissions2}/${sub.id}`,
+              });
+              history.push(`/${ROUTES.submissions2}?id=${sub.id}`);
+            }}
+          />
         </Grid>
         <Grid
           item

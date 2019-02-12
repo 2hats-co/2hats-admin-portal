@@ -75,7 +75,8 @@ const categoryFilter = category => ({
 });
 
 function SubmissionsList(props) {
-  const { classes, setSelectedSubmission, selectedSubmission, uid } = props;
+  const { classes, setSelectedSubmission, selectedSubmission } = props;
+
   const [submissionsState, submissionsDispatch] = useCollection({
     path: COLLECTIONS.submissions,
     sort: [orderbySubmissionTime],
@@ -130,7 +131,7 @@ function SubmissionsList(props) {
     return (
       <Grid
         container
-        style={{ height: 'calc(100vh - 130px)%' }}
+        style={{ height: 'calc(100vh - 130px)' }}
         justify="center"
         alignItems="center"
       >
