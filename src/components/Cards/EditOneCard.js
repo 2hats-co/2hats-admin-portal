@@ -40,7 +40,7 @@ const EditOneCard = props => {
             <EditIcon />
           </IconButton>
         </Tooltip>
-        <Tooltip title="Edit">
+        <Tooltip title={data.published ? 'Unpublish' : 'Publish'}>
           <IconButton
             onClick={() => {
               updateDoc(collection, data.id, { published: !data.published });
