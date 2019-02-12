@@ -9,8 +9,8 @@ import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 
-import IndustryIcon from '@material-ui/icons/BusinessRounded';
-import TimeIcon from '@material-ui/icons/AccessTimeRounded';
+import IndustryIcon from '@material-ui/icons/BusinessOutlined';
+import TimeIcon from '@material-ui/icons/AccessTimeOutlined';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMoreRounded';
 
 import SkillItem from '../../SkillItem';

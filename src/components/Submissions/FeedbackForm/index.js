@@ -16,11 +16,11 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogActions from '@material-ui/core/DialogActions';
 import TextField from '@material-ui/core/TextField';
 
-import DeleteIcon from '@material-ui/icons/Delete';
-import RedoIcon from '@material-ui/icons/Redo';
-import DoneIcon from '@material-ui/icons/Done';
-import SendIcon from '@material-ui/icons/Send';
-import SendToPendingIcon from '@material-ui/icons/SettingsBackupRestore';
+import DeleteIcon from '@material-ui/icons/DeleteOutlined';
+import RedoIcon from '@material-ui/icons/RedoOutlined';
+import DoneIcon from '@material-ui/icons/DoneOutlined';
+import SendIcon from '@material-ui/icons/SendOutlined';
+import SendToPendingIcon from '@material-ui/icons/SettingsBackupRestoreOutlined';
 
 import FeedbackElement from './FeedbackElement';
 import map from 'lodash/map';

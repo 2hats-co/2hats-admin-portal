@@ -7,38 +7,18 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import Dropzone from 'react-dropzone';
 import { blobImageUploader } from '../../../utilities/imageUploader';
 import CloudUploadIcon from '@material-ui/icons/CloudUploadOutlined';
+import FileIcon from '@material-ui/icons/AttachmentOutlined';
+
 import FormHelperText from '@material-ui/core/FormHelperText';
 import Chip from '@material-ui/core/Chip';
-import FileIcon from '@material-ui/icons/AttachmentRounded';
+
+import { STYLES } from '@bit/sidney2hats.2hats.global.common-constants';
 
 const styles = theme => ({
-  sectionTitle: { marginLeft: theme.spacing.unit * 1.5 },
-  dropzone: {
-    borderRadius: theme.shape.borderRadius,
-    borderColor: theme.palette.divider,
-    borderStyle: 'dashed',
-    borderWidth: theme.spacing.unit / 2,
-    padding: theme.spacing.unit * 2,
-    paddingBottom: theme.spacing.unit * 3,
-    textAlign: 'center',
-    minHeight: theme.spacing.unit * 12,
-    cursor: 'pointer',
-
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    flexDirection: 'column',
+  sectionTitle: {
+    marginLeft: theme.spacing.unit * 1.5,
   },
-  uploadIcon: {
-    fontSize: theme.spacing.unit * 8,
-    color: theme.palette.text.secondary,
-  },
-  dropzoneButton: { marginTop: theme.spacing.unit / 2 },
-  fileChipWrapper: { textAlign: 'center' },
-  fileChip: {
-    marginTop: theme.spacing.unit / 2,
-    cursor: 'pointer',
-  },
+  ...STYLES.DROPZONE(theme),
 });
 const Uploader = props => {
   const { label, name, mimeTypes, path, formikProps, classes } = props;
@@ -58,7 +38,7 @@ const Uploader = props => {
   );
 
   return (
-    <Grid item>
+    <Grid item xs={12}>
       <Typography
         variant="caption"
         className={classes.sectionTitle}

@@ -6,14 +6,14 @@ import Typography from '@material-ui/core/Typography';
 import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
 
-import AddSubscriberIcon from '@material-ui/icons/GroupAdd';
-// import LinkIcon from '@material-ui/icons/Link';
-import BackIcon from '@material-ui/icons/ArrowBack';
+import AddSubscriberIcon from '@material-ui/icons/GroupAddOutlined';
+// import LinkIcon from '@material-ui/icons/LinkOutlined';
+import BackIcon from '@material-ui/icons/ArrowBackOutlined';
 // import StarOutlineIcon from '@material-ui/icons/StarBorder';
-import EmailIcon from '@material-ui/icons/Markunread';
-import AddIcon from '@material-ui/icons/Add';
+import EmailIcon from '@material-ui/icons/MarkunreadOutlined';
+import AddIcon from '@material-ui/icons/AddOutlined';
 import LinkedInIcon from '../../../assets/icons/LinkedIn';
-import SpamIcon from '@material-ui/icons/Report';
+import SpamIcon from '@material-ui/icons/ReportOutlined';
 import MenuItem from '@material-ui/core/MenuItem';
 import TextField from '@material-ui/core/TextField';
 

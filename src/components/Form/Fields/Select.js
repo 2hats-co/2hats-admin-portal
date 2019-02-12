@@ -2,10 +2,19 @@ import React from 'react';
 import Grid from '@material-ui/core/Grid';
 import IntegrationReactSelect from '../../IntegrationReactSelect';
 const Select = props => {
-  const { label, name, type, placeholder, suggestions, formikProps } = props;
+  const {
+    label,
+    name,
+    type,
+    placeholder,
+    suggestions,
+    formikProps,
+    width,
+  } = props;
   const { setValues, values, errors, touched } = formikProps;
+
   return (
-    <Grid item>
+    <Grid item xs={width || 12}>
       <IntegrationReactSelect
         placeholder={
           placeholder || type.indexOf('MULTI') > -1

@@ -10,7 +10,7 @@ import Message from './Message';
 import EventDialog from '../Composer/EventDialog';
 import useCollection from '../../../hooks/useCollection';
 import ScrollyRolly from '../../ScrollyRolly';
-import ForumIcon from '@material-ui/icons/Forum';
+import ForumIcon from '@material-ui/icons/ForumOutlined';
 
 import sortBy from 'ramda/es/sortBy';
 import prop from 'ramda/es/prop';

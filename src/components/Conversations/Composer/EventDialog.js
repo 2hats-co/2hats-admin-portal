@@ -14,14 +14,14 @@ import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
 import Chip from '@material-ui/core/Chip';
 
-import AddIcon from '@material-ui/icons/Add';
+import AddIcon from '@material-ui/icons/AddOutlined';
 
 import { MuiPickersUtilsProvider } from 'material-ui-pickers';
 import MomentUtils from '@date-io/moment';
 import { DateTimePicker } from 'material-ui-pickers';
 import moment from 'moment';
 import ToggleButton from '@material-ui/lab/ToggleButton';
-import CustomIcon from '@material-ui/icons/Build';
+import CustomIcon from '@material-ui/icons/BuildOutlined';
 
 import useAuthedUser from '../../../hooks/useAuthedUser';
 import { addEvent, updateEvent } from '../../../utilities/conversations';

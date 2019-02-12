@@ -8,8 +8,8 @@ import Typography from '@material-ui/core/Typography';
 import moment from 'moment';
 import IconButton from '@material-ui/core/IconButton';
 
-import EditIcon from '@material-ui/icons/Edit';
-import CopyIcon from '@material-ui/icons/FileCopy';
+import EditIcon from '@material-ui/icons/EditOutlined';
+import CopyIcon from '@material-ui/icons/FileCopyOutlined';
 import Tooltip from '@material-ui/core/Tooltip';
 import OpenIcon from '@material-ui/icons/ArrowForwardIos';
 
@@ -75,25 +75,16 @@ function EmailTemplateCard(props) {
           </Grid>
 
           <Grid item xs={2} className={classes.rightAligned}>
-            {data.id !== 'templateBase' && (
-              <Tooltip title="Edit Template">
-                <IconButton onClick={actions.edit}>
-                  <EditIcon />
-                </IconButton>
-              </Tooltip>
-            )}
-            <Tooltip title="Duplicate Template">
-              <IconButton onClick={actions.duplicate}>
-                <CopyIcon />
+            <Tooltip title="Edit Template">
+              <IconButton onClick={actions.edit}>
+                <EditIcon />
               </IconButton>
             </Tooltip>
-            {data.id !== 'templateBase' && (
-              <Tooltip title="View Template">
-                <IconButton onClick={actions.editTemplate}>
-                  <OpenIcon />
-                </IconButton>
-              </Tooltip>
-            )}
+            <Tooltip title="View Template">
+              <IconButton onClick={actions.editTemplate}>
+                <OpenIcon />
+              </IconButton>
+            </Tooltip>
           </Grid>
         </Grid>
       </Card>

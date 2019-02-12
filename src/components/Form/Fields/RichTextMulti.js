@@ -132,7 +132,7 @@ const Text = props => {
     ));
 
   return (
-    <Grid item className={classes.root}>
+    <Grid item xs={12} className={classes.root}>
       <Typography
         variant="caption"
         className={classes.sectionTitle}

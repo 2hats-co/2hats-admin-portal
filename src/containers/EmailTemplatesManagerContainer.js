@@ -64,7 +64,6 @@ function EmailTemplatesManagerContainer(props) {
     let templateDoc = {
       ...data,
       design: JSON.stringify(design),
-      createdAt: new Date(),
     };
     switch (path) {
       case ROUTES.conversationEmails:
@@ -79,6 +78,14 @@ function EmailTemplatesManagerContainer(props) {
         if (campaignId) {
           templateDoc.type = 'promotionals';
           templateDoc.campaignId = campaignId;
+          const queryFilters = [
+            { field: 'campaignId', operator: '==', value: campaignId },
+          ];
+          const numberOfCampaignTemplates = await queryCount(
+            COLLECTIONS.emailTemplates,
+            queryFilters
+          );
+          templateDoc.index = numberOfCampaignTemplates;
         } else {
         }
         break;
@@ -86,16 +93,8 @@ function EmailTemplatesManagerContainer(props) {
         break;
     }
     if (!campaignId && path === ROUTES.emailCampaigns) {
-      createDoc(COLLECTIONS.emailCampaigns, { ...data, createdAt: new Date() });
+      createDoc(COLLECTIONS.emailCampaigns, data);
     } else {
-      const queryFilters = [
-        { field: 'campaignId', operator: '==', value: campaignId },
-      ];
-      const numberOfCampaignTemplates = await queryCount(
-        COLLECTIONS.emailTemplates,
-        queryFilters
-      );
-      templateDoc.index = numberOfCampaignTemplates;
       createDoc(COLLECTIONS.emailTemplates, templateDoc);
     }
   };
@@ -111,15 +110,9 @@ function EmailTemplatesManagerContainer(props) {
   };
   const handleUpdate = data => {
     if (!campaignId && path === ROUTES.emailCampaigns) {
-      updateDoc(COLLECTIONS.emailCampaigns, campaign.id, {
-        ...data,
-        updatedAt: new Date(),
-      });
+      updateDoc(COLLECTIONS.emailCampaigns, campaign.id, data);
     } else {
-      updateDoc(COLLECTIONS.emailTemplates, template.id, {
-        ...data,
-        updatedAt: new Date(),
-      });
+      updateDoc(COLLECTIONS.emailTemplates, template.id, data);
     }
     setShowForm(false);
     setTemplate(null);

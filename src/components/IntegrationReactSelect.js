@@ -11,7 +11,7 @@ import Paper from '@material-ui/core/Paper';
 import Chip from '@material-ui/core/Chip';
 import Avatar from '@material-ui/core/Avatar';
 import MenuItem from '@material-ui/core/MenuItem';
-import CancelIcon from '@material-ui/icons/Cancel';
+import CancelIcon from '@material-ui/icons/CancelOutlined';
 import DropdownIcon from '@material-ui/icons/KeyboardArrowDown';
 import IconButton from '@material-ui/core/IconButton';
 import Grow from '@material-ui/core/Grow';
@@ -275,6 +275,8 @@ function IntegrationReactSelect(props) {
               label,
               InputLabelProps: { shrink: true },
               autoFocus,
+              error,
+              helperText,
             }}
             value={value}
             isMulti={isMulti}

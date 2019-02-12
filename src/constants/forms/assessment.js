@@ -19,6 +19,7 @@ const assessmentFields = initialData => {
         x => x.value === initialData['category']
       )[0],
       validation: yup.string().required('Category is required'),
+      width: 6,
     },
     {
       type: FIELDS.autocomplete,
@@ -27,6 +28,7 @@ const assessmentFields = initialData => {
       value: SKILLS.filter(x => x.value === initialData['skillAssociated'])[0],
       suggestions: SKILLS,
       validation: yup.string().required('Skill is required'),
+      width: 6,
     },
     {
       type: FIELDS.textField,
@@ -40,11 +42,11 @@ const assessmentFields = initialData => {
       name: 'duration',
       label: 'Duration',
       value: initialData['duration'],
-      units: 'h',
-      min: 0.5,
-      max: 20,
-      step: 0.5,
-      validation: yup.string().required('Duration is required'),
+      // units: 'h',
+      // min: 0.5,
+      // max: 20,
+      // step: 0.5,
+      // validation: yup.string().required('Duration is required'),
     },
     {
       type: FIELDS.richText,
@@ -116,13 +118,13 @@ const assessmentFields = initialData => {
       value: initialData['image'],
       mimeTypes: 'image/*',
       path: 'studentPortal/',
-      validation: yup.object().shape({
-        name: yup.string().required(),
-        url: yup
-          .string()
-          .url('Invalid URL')
-          .required(),
-      }),
+      // validation: yup.object().shape({
+      //   name: yup.string().required(),
+      //   url: yup
+      //     .string()
+      //     .url('Invalid URL')
+      //     .required(),
+      // }),
     },
   ];
 };

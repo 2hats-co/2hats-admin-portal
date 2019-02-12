@@ -6,15 +6,15 @@ import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import Fab from '@material-ui/core/Fab';
 
-import EmailIcon from '@material-ui/icons/Email';
+import EmailIcon from '@material-ui/icons/EmailOutlined';
 import LinkedInIcon from '../../../assets/icons/LinkedIn';
-import DoneIcon from '@material-ui/icons/Done';
-import AtIcon from '@material-ui/icons/AlternateEmail';
-// import EmojiIcon from '@material-ui/icons/InsertEmoticon';
-import FileIcon from '@material-ui/icons/Attachment';
+import DoneIcon from '@material-ui/icons/DoneOutlined';
+import AtIcon from '@material-ui/icons/AlternateEmailOutlined';
+// import EmojiIcon from '@material-ui/icons/InsertEmoticonOutlined';
+import FileIcon from '@material-ui/icons/AttachmentOutlined';
 import EventIcon from '@material-ui/icons/EventOutlined';
 import ReminderIcon from '@material-ui/icons/NotificationsOutlined';
-import GroupIcon from '@material-ui/icons/Group';
+import GroupIcon from '@material-ui/icons/GroupOutlined';
 
 // import EmojiDialog from './EmojiDialog';
 import EventDialog from './EventDialog';

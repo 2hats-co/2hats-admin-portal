@@ -16,17 +16,17 @@ const jobFields = initialData => {
       validation: yup.string().required('Required'),
     },
     {
-      type: FIELDS.textFieldMultiline,
+      type: FIELDS.richText,
       name: 'companyDescription',
       label: 'Company description',
       value: initialData['companyDescription'],
       validation: yup.string().required('Required'),
     },
     {
-      type: FIELDS.textFieldMultiline,
-      name: 'roleDescription',
-      label: 'Role description',
-      value: initialData['roleDescription'],
+      type: FIELDS.richText,
+      name: 'jobDescription',
+      label: 'Job description',
+      value: initialData['jobDescription'],
       validation: yup.string().required('Required'),
     },
     {
@@ -60,11 +60,12 @@ const jobFields = initialData => {
       validation: yup.string().required('Closing date is required'),
     },
     {
-      type: FIELDS.textFieldNumber,
+      type: FIELDS.textField,
       name: 'payRate',
       label: 'Pay rate',
       value: initialData['payRate'],
       validation: yup.string().required('Pay rate is required'),
+      width: 6,
     },
     {
       type: FIELDS.autocomplete,
@@ -74,15 +75,35 @@ const jobFields = initialData => {
         value: initialData['payUnits'],
         label: initialData['payUnits'],
       },
-      suggestions: ['hour', 'day', 'week'].map(x => ({ value: x, label: x })),
+      suggestions: ['per hour', 'per day', 'per week'].map(x => ({
+        value: x,
+        label: x,
+      })),
       validation: yup.string().required('Pay units is required'),
+      width: 6,
     },
     {
       type: FIELDS.textField,
       name: 'commitment',
       label: 'Commitment',
       value: initialData['commitment'],
-      validation: yup.string().required('commitment is required'),
+      validation: yup.string().required('Required'),
+      width: 6,
+    },
+    {
+      type: FIELDS.autocomplete,
+      name: 'commitmentUnits',
+      label: 'Commitment units',
+      value: initialData['commitmentUnits'] && {
+        value: initialData['commitmentUnits'],
+        label: initialData['commitmentUnits'],
+      },
+      suggestions: ['hours per week', 'days per week'].map(x => ({
+        value: x,
+        label: x,
+      })),
+      validation: yup.string().required('Required'),
+      width: 6,
     },
     {
       type: FIELDS.dropzone,
@@ -91,13 +112,13 @@ const jobFields = initialData => {
       value: initialData['image'],
       mimeTypes: 'image/*',
       path: 'studentPortal/',
-      validation: yup.object().shape({
-        name: yup.string().required(),
-        url: yup
-          .string()
-          .url('Invalid URL')
-          .required(),
-      }),
+      // validation: yup.object().shape({
+      //   name: yup.string().required(),
+      //   url: yup
+      //     .string()
+      //     .url('Invalid URL')
+      //     .required(),
+      // }),
     },
   ];
 };

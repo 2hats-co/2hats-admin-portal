@@ -18,9 +18,9 @@ import Avatar from '@material-ui/core/Avatar';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 
-import NotificationIcon from '@material-ui/icons/Notifications';
-import MessageIcon from '@material-ui/icons/Forum';
-import NoteIcon from '@material-ui/icons/AlternateEmail';
+import NotificationIcon from '@material-ui/icons/NotificationsOutlined';
+import MessageIcon from '@material-ui/icons/ForumOutlined';
+import NoteIcon from '@material-ui/icons/AlternateEmailOutlined';
 
 import ScrollyRolly from './ScrollyRolly';
 import useCollection from '../hooks/useCollection';

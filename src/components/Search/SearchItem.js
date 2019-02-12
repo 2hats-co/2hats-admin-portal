@@ -13,7 +13,7 @@ import Grid from '@material-ui/core/Grid';
 
 import SubmissionIcon from '@material-ui/icons/DescriptionOutlined';
 import ConversationIcon from '@material-ui/icons/ChatOutlined';
-import ResumeIcon from '@material-ui/icons/Attachment';
+import ResumeIcon from '@material-ui/icons/AttachmentOutlined';
 
 import ConversationTypeIcon from '../Conversations/ConversationTypeIcon';
 import { flattenSearchHighlight } from '../../utilities/objects';
