@@ -1,11 +1,10 @@
 {
   "name": "@bit/sidney2hats.2hats.global.common-constants",
-  "version": "0.0.28",
+  "version": "0.0.31",
   "homepage": "https://bitsrc.io/sidney2hats/2hats/global/common-constants",
   "main": "dist/index.js",
   "dependencies": {},
   "devDependencies": {},
   "peerDependencies": {},
-  "componentRootFolder": "bit/global/common-constants",
   "license": "SEE LICENSE IN LICENSE"
 }
