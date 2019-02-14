@@ -89,15 +89,9 @@ function Notifications(props) {
   const [showDialog, setShowDialog] = useState(false);
   const [slideIn, setSlideIn] = useState(true);
   const [unreadNotificationsState] = useCollection({
-    path: COLLECTIONS.notifications,
+    path: `${COLLECTIONS.admins}/${uid}/${COLLECTIONS.notifications}`,
     sort: { field: 'createdAt', direction: 'desc' },
-    filters: [
-      {
-        field: 'unreadSubscribers',
-        operator: 'array-contains',
-        value: uid,
-      },
-    ],
+    filters: [],
   });
   const unreadNotifications = unreadNotificationsState.documents
     ? unreadNotificationsState.documents.length

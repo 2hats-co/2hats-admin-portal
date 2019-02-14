@@ -12,6 +12,7 @@ import moment from 'moment';
 import { momentLocales } from '../../../constants/momentLocales';
 import withStyles from '@material-ui/core/styles/withStyles';
 import ConversationTypeIcon from '../ConversationTypeIcon';
+import { removeHtmlTags } from '../../../utilities';
 
 const styles = theme => ({
   root: {
@@ -73,6 +74,42 @@ const styles = theme => ({
 function Item(props) {
   const { data, classes, selected, isUnread } = props;
   moment.updateLocale('en', momentLocales);
+
+  const getLastMessageText = () => {
+    switch (data.lastMessage.type) {
+      case 'reminder':
+        return (
+          <>
+            <b>Reminder:</b> {data.lastMessage.data.title}
+          </>
+        );
+
+      case 'event':
+        return (
+          <>
+            <b>Event:</b> {data.lastMessage.data.summary}
+          </>
+        );
+
+      case 'note':
+        return (
+          <>
+            <b>Note:</b> {data.lastMessage.body}
+          </>
+        );
+
+      case 'email':
+        return removeHtmlTags(
+          data.lastMessage.body.indexOf('</head>') > -1
+            ? data.lastMessage.body.split('</head>')[1]
+            : data.lastMessage.body
+        );
+
+      default:
+        return data.lastMessage.body;
+    }
+  };
+
   return (
     <ListItem
       key={data.id}
@@ -115,7 +152,7 @@ function Item(props) {
             </Grid>
           </Grid>
         }
-        secondary={data.lastMessage.body}
+        secondary={getLastMessageText()}
         classes={{
           root: classes.listItemTextRoot,
           secondary: classes.clipBodyText,
