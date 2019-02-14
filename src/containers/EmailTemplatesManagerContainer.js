@@ -116,6 +116,7 @@ function EmailTemplatesManagerContainer(props) {
     }
     setShowForm(false);
     setTemplate(null);
+    setCampaign(null);
   };
   const setForm = template => {
     switch (path) {
