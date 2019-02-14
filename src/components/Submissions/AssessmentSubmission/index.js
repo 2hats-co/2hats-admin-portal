@@ -1,5 +1,4 @@
 import React from 'react';
-import moment from 'moment';
 
 import withStyles from '@material-ui/core/styles/withStyles';
 import Grid from '@material-ui/core/Grid';
@@ -13,8 +12,6 @@ import IndustryIcon from '@material-ui/icons/BusinessOutlined';
 import TimeIcon from '@material-ui/icons/AccessTimeOutlined';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMoreRounded';
 
-import SkillItem from '../../SkillItem';
-import SuperAvatar from '../../SuperAvatar';
 import Question from './Question';
 
 import {
@@ -23,15 +20,20 @@ import {
 } from '@bit/sidney2hats.2hats.global.common-constants';
 
 const styles = theme => ({
-  ...STYLES.PAPER_VIEW(theme),
+  ...STYLES.DETAIL_VIEW(theme),
 
-  meta: { marginTop: theme.spacing.unit },
-
-  industryWrapper: { marginTop: theme.spacing.unit },
-  timeWrapper: { marginTop: theme.spacing.unit / 2 },
+  meta: {
+    marginTop: theme.spacing.unit * 1.5,
+    marginBottom: theme.spacing.unit * 3,
+    textAlign: 'center',
+  },
+  metaWrapper: {
+    display: 'inline-flex',
+    width: 'auto',
+    '& + &': { marginLeft: theme.spacing.unit * 2 },
+  },
   icon: {
-    marginLeft: theme.spacing.unit * 1.5,
-    marginRight: theme.spacing.unit * 2.5,
+    marginRight: theme.spacing.unit,
     opacity: 0.67,
   },
 
@@ -56,137 +58,123 @@ const AssessmentSubmission = props => {
 
   return (
     <div className={classes.root}>
-      <Grid container spacing={24}>
-        <Grid item sm={12} md={5}>
-          <div
-            style={
-              data.image && data.image.url
-                ? { backgroundImage: `url(${data.image.url})` }
-                : {}
-            }
-            className={classes.coverImage}
-          />
-        </Grid>
+      <main className={classes.content}>
+        <div
+          style={
+            data.image && data.image.url
+              ? { backgroundImage: `url(${data.image.url})` }
+              : {}
+          }
+          className={classes.coverImage}
+        />
 
-        <Grid item sm={12} md={7}>
-          <Typography variant="h5" className={classes.title}>
-            {data.title}
-          </Typography>
+        <Typography variant="h4" className={classes.title}>
+          {data.title}
+        </Typography>
 
-          <div className={classes.meta}>
-            <SkillItem value={data.skillAssociated} />
-            <Grid
-              container
-              alignItems="flex-end"
-              className={classes.industryWrapper}
-            >
-              <IndustryIcon className={classes.icon} />
-              <Typography variant="body1">
-                {getAssessmentCategoryLabel(data.category)}
-              </Typography>
-            </Grid>
-            <Grid
-              container
-              alignItems="flex-end"
-              className={classes.timeWrapper}
-            >
-              <TimeIcon className={classes.icon} />
-              <Typography variant="body1">{data.duration}</Typography>
-            </Grid>
-          </div>
-        </Grid>
-      </Grid>
-
-      <div className={classes.section}>
-        <ExpansionPanel classes={{ root: classes.expansionPanel }}>
-          <ExpansionPanelSummary
-            expandIcon={<ExpandMoreIcon color="primary" />}
-            classes={{
-              root: classes.expansionPanelSummary,
-              content: classes.expansionPanelSummaryContent,
-              expandIcon: classes.expansionPanelSummaryExpandIcon,
-            }}
-          >
-            <Typography variant="subtitle1" color="primary">
-              Details
-            </Typography>
-          </ExpansionPanelSummary>
-          <ExpansionPanelDetails
-            classes={{ root: classes.expansionPanelDetails }}
-          >
-            <div>
-              <Typography variant="h6">The company</Typography>
-              <div
-                className={classes.renderedHtml}
-                dangerouslySetInnerHTML={{ __html: data.companyDescription }}
-              />
-            </div>
-
-            <div className={classes.section}>
-              <Typography variant="h6">Your job</Typography>
-              <div
-                className={classes.renderedHtml}
-                dangerouslySetInnerHTML={{ __html: data.jobDescription }}
-              />
-            </div>
-
-            <div className={classes.section}>
-              <Typography variant="h6">Instructions</Typography>
-              <div
-                className={classes.renderedHtml}
-                dangerouslySetInnerHTML={{ __html: data.taskInstructions }}
-              />
-            </div>
-          </ExpansionPanelDetails>
-        </ExpansionPanel>
-        <Divider />
-      </div>
-
-      <div className={classes.section}>
-        <Grid container alignItems="center">
-          <Grid item>
-            <SuperAvatar data={data.user} className={classes.superAvatar} />
-          </Grid>
-          <Grid item xs>
-            <Typography variant="h5">
-              {data.user.firstName} {data.user.lastName}
-            </Typography>
-            <Typography variant="body2">
-              Submitted {moment.unix(data.createdAt.seconds).fromNow()}
+        <div className={classes.meta}>
+          <Grid container alignItems="flex-end" className={classes.metaWrapper}>
+            <IndustryIcon className={classes.icon} />
+            <Typography variant="body1">
+              {getAssessmentCategoryLabel(data.category)}
             </Typography>
           </Grid>
-        </Grid>
-      </div>
 
-      {data.mcEmail && (
-        <div className={classes.section}>
-          <Typography variant="body1">
-            Sent to <b>{data.mcEmail}</b>
-          </Typography>
+          <Grid container alignItems="flex-end" className={classes.metaWrapper}>
+            <TimeIcon className={classes.icon} />
+            <Typography variant="body1">{data.duration}</Typography>
+          </Grid>
         </div>
-      )}
 
-      {data.copiedQuestions &&
-        data.copiedQuestions.map((x, i) => (
+        <div className={classes.section}>
+          <ExpansionPanel classes={{ root: classes.expansionPanel }}>
+            <ExpansionPanelSummary
+              expandIcon={<ExpandMoreIcon color="primary" />}
+              classes={{
+                root: classes.expansionPanelSummary,
+                content: classes.expansionPanelSummaryContent,
+                expandIcon: classes.expansionPanelSummaryExpandIcon,
+              }}
+            >
+              <Typography variant="subtitle1" color="primary">
+                Details
+              </Typography>
+            </ExpansionPanelSummary>
+            <ExpansionPanelDetails
+              classes={{ root: classes.expansionPanelDetails }}
+            >
+              <div>
+                <Typography
+                  variant="subtitle1"
+                  gutterBottom
+                  className={classes.subtitle}
+                >
+                  The company
+                </Typography>
+                <div
+                  className={classes.renderedHtml}
+                  dangerouslySetInnerHTML={{ __html: data.companyDescription }}
+                />
+              </div>
+
+              <div className={classes.section}>
+                <Typography
+                  variant="subtitle1"
+                  gutterBottom
+                  className={classes.subtitle}
+                >
+                  Your job
+                </Typography>
+                <div
+                  className={classes.renderedHtml}
+                  dangerouslySetInnerHTML={{ __html: data.jobDescription }}
+                />
+              </div>
+
+              <div className={classes.section}>
+                <Typography variant="h6" gutterBottom>
+                  Instructions
+                </Typography>
+                <div
+                  className={classes.renderedHtml}
+                  dangerouslySetInnerHTML={{ __html: data.taskInstructions }}
+                />
+              </div>
+            </ExpansionPanelDetails>
+          </ExpansionPanel>
+          <Divider />
+        </div>
+
+        {data.mcEmail && (
+          <div className={classes.section}>
+            <Typography variant="body1">
+              Sent to <b>{data.mcEmail}</b>
+            </Typography>
+          </div>
+        )}
+
+        {data.copiedQuestions &&
+          data.copiedQuestions.map((x, i) => (
+            <Question
+              key={i}
+              questionNum={i + 1}
+              questionText={x}
+              submissionType={data.submissionType}
+              answer={data.submissionContent[i]}
+              user={data.user}
+            />
+          ))}
+
+        {!data.copiedQuestions && (
           <Question
-            key={i}
-            questionNum={i + 1}
-            questionText={x}
+            questionNum={-1}
+            questionText=""
             submissionType={data.submissionType}
-            answer={data.submissionContent[i]}
+            answer={data.submissionContent[0]}
             user={data.user}
           />
-        ))}
-
-      {!data.copiedQuestions && (
-        <Question
-          questionNum={-1}
-          questionText=""
-          submissionType={data.submissionType}
-          answer={data.submissionContent[0]}
-          user={data.user}
-        />
-      )}
+        )}
+      </main>
     </div>
   );
 };

@@ -11,6 +11,9 @@ import Submissions2Icon from '@material-ui/icons/RateReviewOutlined';
 import LocationIndicator from '../components/LocationIndicator';
 import LoadingHat from '../components/LoadingHat';
 import SubmissionsList from '../components/Submissions/SubmissionsList';
+import SubmissionHeader from '../components/Submissions/SubmissionHeader';
+import AssessmentSubmission from '../components/Submissions/AssessmentSubmission';
+import JobSubmission from '../components/Submissions/JobSubmission';
 
 import useDocument from '../hooks/useDocument';
 import { ROUTES } from '../constants/routes';
@@ -26,12 +29,11 @@ const styles = theme => ({
         : theme.palette.background.paper,
     borderLeft: `1px solid ${theme.palette.divider}`,
   },
+
   messagesWrapper: {
-    overflow: 'hidden',
+    overflowY: 'auto',
   },
-  composerContainer: {
-    borderTop: `1px solid ${theme.palette.divider}`,
-  },
+
   nothingSelected: {
     height: '100vh',
     color: theme.palette.text.secondary,
@@ -45,15 +47,30 @@ const styles = theme => ({
   },
 });
 
+function SubmissionView(props) {
+  const { submission } = props;
+
+  if (!submission || !submission.type) return null;
+
+  switch (submission.type) {
+    case 'assessment':
+      return <AssessmentSubmission data={submission} />;
+    case 'job':
+      return <JobSubmission data={submission} />;
+    default:
+      return null;
+  }
+}
+
 function Submissions2Container(props) {
   const { classes, location, history } = props;
 
   const [submissionState, submissionDispatch] = useDocument();
   let selectedSubmission = submissionState.doc;
 
-  const handleCloseConversation = () => {
-    submissionDispatch({ path: null });
-  };
+  // const handleCloseSubmission = () => {
+  //   submissionDispatch({ path: null });
+  // };
 
   const setSubmissionWithURL = async () => {
     if (location.search.indexOf('?id=') > -1) {
@@ -87,7 +104,7 @@ function Submissions2Container(props) {
               submissionDispatch({
                 path: `${ROUTES.submissions2}/${sub.id}`,
               });
-              history.push(`/${ROUTES.submissions2}?id=${sub.id}`);
+              history.push(`${ROUTES.submissions2}?id=${sub.id}`);
             }}
           />
         </Grid>
@@ -104,20 +121,11 @@ function Submissions2Container(props) {
               wrap="nowrap"
               style={{ height: '100vh' }}
             >
-              {/* <ConversationHeader
-                closeConversation={handleCloseConversation}
-                conversation={selectedConversation}
-              />
+              <SubmissionHeader submission={selectedSubmission} />
 
               <Grid item xs className={classes.messagesWrapper}>
-                <Messages conversation={selectedConversation} />
+                <SubmissionView submission={selectedSubmission} />
               </Grid>
-              <Grid item className={classes.composerContainer}>
-                <Composer
-                  conversation={selectedConversation}
-                  channels={selectedConversation.channels}
-                />
-              </Grid> */}
             </Grid>
           ) : location.search.indexOf('?id=') > -1 ? (
             <LoadingHat altBg message="Finding and/or creating conversation…" />

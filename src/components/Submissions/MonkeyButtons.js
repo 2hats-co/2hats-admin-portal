@@ -24,8 +24,8 @@ const styles = theme => ({
     },
   },
 
-  pass: { backgroundColor: `${green[500]} !important` },
-  fail: { backgroundColor: `${red[500]} !important` },
+  pass: { color: `${green[500]} !important` },
+  fail: { color: `${red[500]} !important` },
 });
 
 function MonkeyButtons(props) {
@@ -37,8 +37,6 @@ function MonkeyButtons(props) {
         <Button
           color="primary"
           className={classes.pass}
-          variant="contained"
-          size="large"
           onClick={() => {
             updateDoc(COLLECTIONS.submissions, submission.id, {
               outcome: 'pass',
@@ -53,8 +51,6 @@ function MonkeyButtons(props) {
         <Button
           color="primary"
           className={classes.fail}
-          variant="contained"
-          size="large"
           onClick={() => {
             updateDoc(COLLECTIONS.submissions, submission.id, {
               outcome: 'fail',
