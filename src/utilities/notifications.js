@@ -1,14 +1,24 @@
-import { COLLECTIONS } from '../constants/firestore';
+import { COLLECTIONS } from '@bit/sidney2hats.2hats.global.common-constants';
 import { updateDoc } from './firestore';
 
-export const markAsRead = (uid, notifications) => {
-  const notificationsToMarkAsRead = notifications.filter(
-    x => x.unreadSubscribers.indexOf(uid) > -1
-  );
+export const markAllAsRead = (uid, notifications) => {
+  const notificationsToMarkAsRead = notifications.filter(x => x.unread);
 
   notificationsToMarkAsRead.forEach(x => {
-    const unreadSubscribers = [...x.unreadSubscribers];
-    unreadSubscribers.splice(unreadSubscribers.indexOf(uid), 1);
-    updateDoc(COLLECTIONS.notifications, x.id, { unreadSubscribers });
+    markAsRead(uid, x);
   });
 };
+
+export const archive = (uid, notification) =>
+  updateDoc(
+    `${COLLECTIONS.admins}/${uid}/${COLLECTIONS.notifications}`,
+    notification.id,
+    { archived: true }
+  );
+
+export const markAsRead = (uid, notification) =>
+  updateDoc(
+    `${COLLECTIONS.admins}/${uid}/${COLLECTIONS.notifications}`,
+    notification.id,
+    { unread: false }
+  );
