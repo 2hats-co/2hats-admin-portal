@@ -29,14 +29,14 @@ const EmailCampaignFields = initialData => {
       type: FIELDS.autocompleteMulti,
       name: 'startTriggers',
       label: 'Start Triggers',
-      value: initialData['pauseTriggers']
-        ? getLabels(initialData['pauseTriggers'], TRIGGERS)
+      value: initialData['startTriggers']
+        ? getLabels(initialData['startTriggers'], TRIGGERS)
         : [],
       suggestions: TRIGGERS,
       validation: yup
         .array()
         .min(1)
-        .required('Skills are required'),
+        .required('Triggers are required'),
     },
     {
       type: FIELDS.autocompleteMulti,
@@ -49,7 +49,7 @@ const EmailCampaignFields = initialData => {
       validation: yup
         .array()
         .min(1)
-        .required('Skills are required'),
+        .required('Triggers are required'),
     },
   ];
 };
