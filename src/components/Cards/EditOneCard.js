@@ -6,13 +6,13 @@ import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 
 import EditIcon from '@material-ui/icons/EditOutlined';
-import DeleteIcon from '@material-ui/icons/DeleteOutlined';
+// import DeleteIcon from '@material-ui/icons/DeleteOutlined';
 import PublishedIcon from '@material-ui/icons/VisibilityOutlined';
 import UnpublishedIcon from '@material-ui/icons/VisibilityOffOutlined';
 
 import Form from '../Form';
 
-import { updateDoc, deleteDoc } from '../../utilities/firestore';
+import { updateDoc } from '../../utilities/firestore';
 
 const styles = theme => ({
   root: { marginTop: theme.spacing.unit },
@@ -49,7 +49,7 @@ const EditOneCard = props => {
             {data.published ? <PublishedIcon /> : <UnpublishedIcon />}
           </IconButton>
         </Tooltip>
-        <Tooltip title="Delete">
+        {/* <Tooltip title="Delete">
           <IconButton
             onClick={() => {
               deleteDoc(collection, data.id);
@@ -57,7 +57,7 @@ const EditOneCard = props => {
           >
             <DeleteIcon />
           </IconButton>
-        </Tooltip>
+        </Tooltip> */}
       </div>
 
       {children}
