@@ -49,9 +49,7 @@ const styles = theme => ({
 });
 
 const SkillItem = props => {
-  const { classes, className, style, value, header, dense } = props;
-
-  const achieved = false;
+  const { classes, className, style, value, header, dense, achieved } = props;
 
   return (
     <Grid
@@ -86,6 +84,7 @@ SkillItem.propTypes = {
   value: PropTypes.string.isRequired,
   header: PropTypes.node,
   dense: PropTypes.bool,
+  achieved: PropTypes.bool,
 };
 
 export default withStyles(styles)(SkillItem);

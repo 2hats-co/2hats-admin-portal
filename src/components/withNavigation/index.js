@@ -177,7 +177,6 @@ export default function withNavigation(WrappedComponent) {
         }
       }
     }
-    console.log(currentUser);
 
     if (currentUser && uid)
       return (

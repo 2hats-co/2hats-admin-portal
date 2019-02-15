@@ -1,19 +1,19 @@
 import React from 'react';
 
-import PersonIcon from '@material-ui/icons/Person';
-import ClientIcon from '@material-ui/icons/BusinessCenter';
-import CandidateIcon from '@material-ui/icons/School';
+import ResumeIcon from '@material-ui/icons/PersonOutlined';
+import JobIcon from '@material-ui/icons/BusinessCenterOutlined';
+import AssessmentIcon from '@material-ui/icons/AssignmentOutlined';
 
 function ConversationTypeIcon(props) {
   const { className, type } = props;
 
   switch (type) {
     case 'job':
-      return <ClientIcon className={className} />;
+      return <JobIcon className={className} />;
     case 'assessment':
-      return <CandidateIcon className={className} />;
+      return <AssessmentIcon className={className} />;
     default:
-      return <PersonIcon className={className} />;
+      return <ResumeIcon className={className} />;
   }
 }
 
