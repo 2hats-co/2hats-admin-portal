@@ -11,11 +11,8 @@ import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 
-import IndustryIcon from '@material-ui/icons/BusinessRounded';
-import TimeIcon from '@material-ui/icons/AccessTimeRounded';
-import PayIcon from '@material-ui/icons/AttachMoneyRounded';
-import EventIcon from '@material-ui/icons/EventRounded';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMoreRounded';
+import IndustryIcon from '@material-ui/icons/Business';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 import SkillItem from '../SkillItem';
 import SuperAvatar from '../SuperAvatar';
@@ -177,7 +174,7 @@ const JobSubmission = props => {
                       sm={4}
                       className={classes.skillWrapper}
                     >
-                      <SkillItem value={x} />
+                      <SkillItem value={x} achieved />
                     </Grid>
                   ))}
                 </Grid>

@@ -3,35 +3,53 @@ import withStyles from '@material-ui/core/styles/withStyles';
 
 import Grid from '@material-ui/core/Grid';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Tooltip from '@material-ui/core/Tooltip';
+import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
+import ToggleButton from '@material-ui/lab/ToggleButton';
 
-import ForumIcon from '@material-ui/icons/Forum';
-import UnreadIcon from '@material-ui/icons/Markunread';
-import ClientIcon from '@material-ui/icons/BusinessCenter';
-import CandidateIcon from '@material-ui/icons/School';
-import SpamIcon from '@material-ui/icons/Report';
-import useCollection from '../../../hooks/useCollection';
-import Item from './Item';
+import Submissions2Icon from '@material-ui/icons/RateReviewOutlined';
+import JobIcon from '@material-ui/icons/BusinessCenterOutlined';
+import AssessmentIcon from '@material-ui/icons/AssignmentOutlined';
+import SkillIcon from '../../../assets/icons/SkillAchieved';
+import IndustryIcon from '@material-ui/icons/Business';
+
+import FilterMenu from './FilterMenu';
+import JobFilterMenu from './JobFilterMenu';
 import ScrollyRolly from '../../ScrollyRolly';
-import { COLLECTIONS } from '@bit/sidney2hats.2hats.global.common-constants';
+import Item from './Item';
+
+import useCollection from '../../../hooks/useCollection';
+import {
+  COLLECTIONS,
+  SKILLS,
+  ASSESSMENT_CATEGORIES,
+} from '@bit/sidney2hats.2hats.global.common-constants';
 
 const styles = theme => ({
-  adminSelectorWrapper: {
-    marginTop: -theme.spacing.unit * 7,
+  topFilterWrapper: {
+    marginTop: -theme.spacing.unit * 6,
     marginBottom: theme.spacing.unit,
     textAlign: 'right',
     paddingRight: theme.spacing.unit,
   },
-  tabs: {
+  topFilterToggleButtons: { display: 'inline-block' },
+
+  filterBar: {
+    padding: theme.spacing.unit,
+    paddingTop: 0,
+    paddingLeft: theme.spacing.unit * 2,
     boxShadow: `0 -1px 0 ${theme.palette.divider} inset`,
   },
-  tabLabelContainer: {
-    paddingLeft: theme.spacing.unit * 2,
-    paddingRight: theme.spacing.unit * 2,
+  filterLabel: {
+    userSelect: 'none',
+    marginLeft: theme.spacing.unit,
+    marginRight: theme.spacing.unit,
+
+    fontWeight: 500,
+    color: theme.palette.text.secondary,
   },
+
   noConvs: {
     height: '100%',
     color: theme.palette.text.secondary,
@@ -45,93 +63,77 @@ const styles = theme => ({
   },
 });
 
-const unreadFilter = uid => ({
-  field: 'unreadAdmins',
-  operator: 'array-contains',
-  value: uid,
-});
-const subscriberFilter = uid => ({
-  field: 'subscribedAdmins',
-  operator: 'array-contains',
-  value: uid,
-});
-const assigneeFilter = uid => ({
-  field: 'assignee',
+const typeFilter = type => ({ field: 'type', operator: '==', value: type });
+const skillFilter = (type, skill) => {
+  if (type === 'assessment')
+    return { field: 'skillAssociated', operator: '==', value: skill };
+  else if (type === 'job')
+    return {
+      field: 'skillsRequired',
+      operator: 'array-contains',
+      value: skill,
+    };
+};
+const industryFilter = (type, industry) => {
+  if (type === 'assessment')
+    return { field: 'category', operator: '==', value: industry };
+  else if (type === 'job')
+    return { field: 'industry', operator: '==', value: industry };
+};
+const jobFilter = jobId => ({ field: 'jobId', operator: '==', value: jobId });
+const outcomeFilter = outcome => ({
+  field: 'outcome',
   operator: '==',
-  value: uid,
-});
-const candidateFilter = uid => ({
-  field: 'UID',
-  operator: '==',
-  value: uid,
+  value: outcome,
 });
 
-const orderbySubmissionTime = { field: 'createdAt', direction: 'asc' };
-const orderByType = { field: 'type', direction: 'asc' };
-const categoryFilter = category => ({
-  field: 'category',
-  operator: '==',
-  value: category,
-});
+const orderBySubmissionTime = { field: 'createdAt', direction: 'asc' };
 
 function SubmissionsList(props) {
   const { classes, setSelectedSubmission, selectedSubmission } = props;
 
+  const [selectedFilters, setSelectedFilters] = useState({
+    type: 'assessment',
+    skill: '',
+    industry: '',
+    job: '',
+    outcome: 'pending',
+  });
+
   const [submissionsState, submissionsDispatch] = useCollection({
     path: COLLECTIONS.submissions,
-    sort: [orderbySubmissionTime],
-    filters: [{ field: 'outcome', operator: '==', value: 'pending' }],
+    sort: [orderBySubmissionTime],
+    filters: [outcomeFilter('pending')],
   });
   const submissions = submissionsState.documents;
 
-  // const [filter, setFilter] = useState('all');
-  // const [filters, setFilters] = useState([subscriberFilter(uid)]);
-  // const [sorts, setSorts] = useState([orderByType, orderbyLastMessage]);
-  // const [category, setCategory] = useState('');
+  useEffect(
+    () => {
+      const filters = [];
+      if (selectedFilters.type) filters.push(typeFilter(selectedFilters.type));
+      if (selectedFilters.skill)
+        filters.push(skillFilter(selectedFilters.type, selectedFilters.skill));
+      if (selectedFilters.industry)
+        filters.push(
+          industryFilter(selectedFilters.type, selectedFilters.industry)
+        );
+      if (selectedFilters.job) filters.push(jobFilter(selectedFilters.job));
+      if (selectedFilters.outcome)
+        filters.push(outcomeFilter(selectedFilters.outcome));
+      submissionsDispatch({ filters });
+    },
+    [selectedFilters]
+  );
 
-  // useEffect(
-  //   () => {
-  //     if (filter) setCategory('');
-  //     switch (filter) {
-  //       case 'unread':
-  //         setSorts([orderByType, orderbyLastMessage]);
-  //         setFilters([unreadFilter(uid)]);
-  //         break;
-  //       case 'candidate':
-  //         setSorts([orderbyLastMessage]);
-  //         setFilters([candidateFilter]);
-  //         break;
-  //       case 'client':
-  //         setSorts([orderbyLastMessage]);
-  //         setFilters([subscriberFilter(uid), clientFilter]);
-  //         break;
-  //       case 'spam':
-  //         setSorts([orderbyLastMessage]);
-  //         setFilters([spamFilter]);
-  //         break;
-  //       case 'all':
-  //         setSorts([orderByType, orderbyLastMessage]);
-  //         setFilters([subscriberFilter(uid), notSpamFilter]);
-  //         break;
-  //       default:
-  //         break;
-  //     }
-  //   },
-  //   [filter]
-  // );
-
-  // useEffect(
-  //   () => {
-  //     conversationsDispatch({ filters: filters, sort: sorts });
-  //   },
-  //   [filters]
-  // );
+  const setFilter = (name, val) => {
+    setSelectedFilters({ ...selectedFilters, [name]: val });
+  };
 
   if (submissionsState.loading)
     return (
       <Grid
         container
-        style={{ height: 'calc(100vh - 60px)' }}
+        style={{ height: 'calc(100vh - 64px)' }}
         justify="center"
         alignItems="center"
       >
@@ -140,19 +142,89 @@ function SubmissionsList(props) {
     );
 
   return (
-    <Grid container direction="column" style={{ height: 'calc(100vh - 60px)' }}>
-      {submissions && submissions.length === 0 ? (
-        <Grid
-          container
-          justify="center"
-          alignItems="center"
-          className={classes.noConvs}
+    <Grid container direction="column" style={{ height: 'calc(100vh - 64px)' }}>
+      <Grid item className={classes.topFilterWrapper}>
+        <ToggleButtonGroup
+          value={selectedFilters.type}
+          exclusive
+          onChange={(e, val) => {
+            setFilter('type', val);
+          }}
+          classes={{ root: classes.topFilterToggleButtons }}
         >
-          <Grid item>
-            <ForumIcon />
-            <Typography variant="subtitle1" color="textSecondary">
-              No submissions
-            </Typography>
+          <ToggleButton value="assessment">
+            <Tooltip title="Assessments">
+              <AssessmentIcon />
+            </Tooltip>
+          </ToggleButton>
+
+          <ToggleButton value="job">
+            <Tooltip title="Jobs">
+              <JobIcon />
+            </Tooltip>
+          </ToggleButton>
+        </ToggleButtonGroup>
+      </Grid>
+
+      <Grid item className={classes.filterBar}>
+        <Grid container alignItems="center">
+          <Typography variant="body2" className={classes.filterLabel}>
+            Filters:
+          </Typography>
+          <FilterMenu
+            title="skill"
+            Icon={SkillIcon}
+            items={SKILLS}
+            selection={selectedFilters.skill}
+            setSelection={val => {
+              setFilter('skill', val);
+            }}
+          />
+          <FilterMenu
+            title="industry"
+            Icon={IndustryIcon}
+            items={ASSESSMENT_CATEGORIES}
+            selection={selectedFilters.industry}
+            setSelection={val => {
+              setFilter('industry', val);
+            }}
+          />
+          <FilterMenu
+            title="outcome"
+            Icon={Submissions2Icon}
+            items={[
+              { value: 'pending', label: 'Pending' },
+              { value: 'pass', label: 'Pass' },
+              { value: 'fail', label: 'Fail' },
+            ]}
+            selection={selectedFilters.outcome}
+            setSelection={val => {
+              setFilter('outcome', val);
+            }}
+          />
+          {selectedFilters.type === 'job' && (
+            <JobFilterMenu
+              selectedFilters={selectedFilters}
+              setFilter={setFilter}
+            />
+          )}
+        </Grid>
+      </Grid>
+
+      {submissions && submissions.length === 0 ? (
+        <Grid item xs>
+          <Grid
+            container
+            justify="center"
+            alignItems="center"
+            className={classes.noConvs}
+          >
+            <Grid item>
+              <Submissions2Icon />
+              <Typography variant="subtitle1" color="textSecondary">
+                No submissions
+              </Typography>
+            </Grid>
           </Grid>
         </Grid>
       ) : (

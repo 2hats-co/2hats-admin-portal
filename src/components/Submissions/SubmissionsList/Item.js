@@ -5,9 +5,6 @@ import Typography from '@material-ui/core/Typography';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 
-import IncomingIcon from '@material-ui/icons/Inbox';
-import OutgoingIcon from '@material-ui/icons/Reply';
-
 import moment from 'moment';
 import { momentLocales } from '../../../constants/momentLocales';
 import withStyles from '@material-ui/core/styles/withStyles';

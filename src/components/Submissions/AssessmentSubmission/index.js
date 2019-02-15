@@ -10,7 +10,7 @@ import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 
 import IndustryIcon from '@material-ui/icons/BusinessOutlined';
 import TimeIcon from '@material-ui/icons/AccessTimeOutlined';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMoreRounded';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 import Question from './Question';
 
