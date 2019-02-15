@@ -93,17 +93,6 @@ const navigationRoutes = [
     route: ROUTES.stats,
   },
   {
-    label: 'Submissions',
-    icon: <DescriptionIcon />,
-    route: ROUTES.pending,
-    subRoutes: [
-      ROUTES.submissions,
-      ROUTES.pending,
-      ROUTES.rejected,
-      ROUTES.accepted,
-    ],
-  },
-  {
     label: 'Submissions2',
     icon: <Submissions2Icon />,
     route: ROUTES.submissions2,

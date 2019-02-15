@@ -10,9 +10,6 @@ import LoadingHat from './components/LoadingHat';
 import PushNotifications from './components/PushNotifications';
 import ConversationsContainer from './containers/ConversationsContainer';
 //containers
-const SubmissionsContainer = lazy(() =>
-  import('./containers/SubmissionsContainer' /* webpackChunkName: "SubmissionsContainer" */)
-);
 const Submissions2Container = lazy(() =>
   import('./containers/Submissions2Container' /* webpackChunkName: "Submissions2Container" */)
 );
@@ -110,27 +107,6 @@ function App(props) {
                 exact
                 path={ROUTES.conversations}
                 component={() => <ConversationsContainer {...props} />}
-              />
-              <Route
-                exact
-                path={ROUTES.submissions}
-                component={() => <SubmissionsContainer {...props} />}
-              />
-
-              <Route
-                exact
-                path={ROUTES.pending}
-                component={() => <SubmissionsContainer {...props} />}
-              />
-              <Route
-                exact
-                path={ROUTES.rejected}
-                component={() => <SubmissionsContainer {...props} />}
-              />
-              <Route
-                exact
-                path={ROUTES.accepted}
-                component={() => <SubmissionsContainer {...props} />}
               />
 
               <Route
