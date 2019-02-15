@@ -27,6 +27,7 @@ const TextTemplateDropdown = props => {
         console.log(e.target.value);
         setText(e.target.value);
       }}
+      style={{ margin: 0, textAlign: 'left' }}
     >
       <MenuItem value={''}>No template</MenuItem>
       {templates &&

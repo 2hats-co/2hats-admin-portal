@@ -46,7 +46,7 @@ const styles = theme => ({
     marginLeft: -theme.spacing.unit * 2,
     marginBottom: theme.spacing.unit * 2,
     width: `calc(100% + ${theme.spacing.unit * 3}px)`,
-    height: theme.spacing.unit * 4.5,
+    // height: theme.spacing.unit * 4.5,
   },
   tabsScroller: { width: 'auto' },
   tabsFlexContainer: { display: 'inline-flex' },
@@ -55,12 +55,19 @@ const styles = theme => ({
   emailFields: {
     marginLeft: theme.spacing.unit * 2,
     marginRight: theme.spacing.unit * 2,
+    marginTop: -5,
+    marginBottom: -7,
   },
 
   templateDropdownWrapper: {
     position: 'relative',
     top: theme.spacing.unit / 2,
-    right: theme.spacing.unit / 2,
+    textAlign: 'right',
+
+    [theme.breakpoints.down('sm')]: {
+      top: theme.spacing.unit,
+      left: theme.spacing.unit,
+    },
   },
   templateDropdown: {
     paddingTop: theme.spacing.unit,
@@ -270,7 +277,7 @@ function Composer(props) {
       )}
     >
       <Grid container className={classes.topBar} alignItems="center">
-        <Grid item>
+        <Grid item xs={12} lg="auto">
           <Tabs
             classes={{
               root: classes.tabRoot,
@@ -314,7 +321,7 @@ function Composer(props) {
         </Grid>
         {composerType === 'email' && (
           <>
-            <Grid item xs className={classes.emailFields}>
+            <Grid item xs={12} sm className={classes.emailFields}>
               <Grid container spacing={8}>
                 <Grid item xs={6}>
                   <TextField
@@ -357,7 +364,7 @@ function Composer(props) {
           </>
         )}
         {composerType === 'linkedin' && (
-          <Grid item className={classes.templateDropdownWrapper}>
+          <Grid item xs className={classes.templateDropdownWrapper}>
             <TextTemplateDropdown classes={classes} setText={setMessageText} />
           </Grid>
         )}

@@ -12,8 +12,10 @@ import Fade from '@material-ui/core/Fade';
 import ConversationHeader from '../components/Conversations/ConversationHeader';
 import Messages from '../components/Conversations/Messages';
 import LoadingHat from '../components/LoadingHat';
-import useWindowSize from '../hooks/useWindowSize';
+
+import { unstable_useMediaQuery as useMediaQuery } from '@material-ui/core/useMediaQuery';
 import useDocument from '../hooks/useDocument';
+import { ROUTES } from '../constants/routes';
 import { getfirstIdOfQuery } from '../utilities/firestore';
 import { createConversation } from '../utilities/conversations';
 
@@ -57,15 +59,20 @@ const styles = theme => ({
 function ConversationsContainer(props) {
   const { classes, uid, location, history } = props;
   const currentUserId = uid;
-  const windowSize = useWindowSize();
+
+  const isMobile = useMediaQuery('(max-width: 704px)');
 
   const [conversationState, dispatchConversation] = useDocument();
   let selectedConversation = conversationState.doc;
-  const openedConversationOnMobile =
-    windowSize.isMobile && selectedConversation;
+
+  const openedConversationOnMobile = isMobile && selectedConversation;
+
   const handleCloseConversation = () => {
-    dispatchConversation({ path: null });
+    dispatchConversation({ path: null, doc: null });
+    selectedConversation = null;
+    history.push(ROUTES.conversations);
   };
+
   const setConversationWithURL = async () => {
     if (location.search.indexOf('?id=') > -1) {
       const conversationId = location.search.replace('?id=', '');
@@ -82,6 +89,7 @@ function ConversationsContainer(props) {
       }
     }
   };
+
   useEffect(
     () => {
       selectedConversation = null;
@@ -99,7 +107,7 @@ function ConversationsContainer(props) {
             <Grid
               item
               style={{
-                width: windowSize.isMobile ? '100%' : 320,
+                width: isMobile ? '100%' : 320,
                 height: 'calc(100vh - 64px)',
               }}
             >
@@ -124,7 +132,7 @@ function ConversationsContainer(props) {
           item
           xs
           className={classes.messagesContainer}
-          style={{ marginTop: windowSize.isMobile ? 0 : '-64px' }}
+          style={{ marginTop: isMobile ? 0 : '-64px' }}
         >
           {selectedConversation ? (
             <Grid
