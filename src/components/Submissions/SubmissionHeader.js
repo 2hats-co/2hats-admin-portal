@@ -65,7 +65,7 @@ function SubmissionHeader(props) {
     if (submission.type === 'assessment') {
       const user = await getDoc(COLLECTIONS.users, submission.UID);
 
-      if (user.skills.includes(submission.skillAssociated)) {
+      if (user.skills && user.skills.includes(submission.skillAssociated)) {
         const newSkills = user.skills;
         newSkills.splice(newSkills.indexOf(submission.skillAssociated), 1);
         updateDoc(COLLECTIONS.users, submission.UID, {
@@ -84,10 +84,16 @@ function SubmissionHeader(props) {
     if (submission.type === 'assessment') {
       const user = await getDoc(COLLECTIONS.users, submission.UID);
 
-      if (!user.skills.includes(submission.skillAssociated))
+      if (user.skills) {
+        if (!user.skills.includes(submission.skillAssociated))
+          updateDoc(COLLECTIONS.users, submission.UID, {
+            skills: [...user.skills, submission.skillAssociated],
+          });
+      } else {
         updateDoc(COLLECTIONS.users, submission.UID, {
-          skills: [...user.skills, submission.skillAssociated],
+          skills: [submission.skillAssociated],
         });
+      }
     }
   };
 
