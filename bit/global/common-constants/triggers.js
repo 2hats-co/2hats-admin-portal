@@ -13,4 +13,5 @@ export const TRIGGERS = [
   { value: 'task-outcome-ready', label: 'Task Outcome Ready' },
   { value: 'task-completed-full', label: 'All Tasks Completed' },
   { value: 'complete-edu', label: 'Completed Course' },
+  { value: 'dummy', label: 'Dummy Trigger' },
 ];
