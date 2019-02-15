@@ -96,11 +96,7 @@ function generateTheme(theme, themeColor) {
             '&:hover': { backgroundColor: primaryLight },
           },
         },
-        label: {
-          color: 'rgba(0,0,0,.87)',
-          position: 'relative',
-          zIndex: 99,
-        },
+        label: { color: 'rgba(0,0,0,.87)' },
       },
       MuiButton: {
         label: {

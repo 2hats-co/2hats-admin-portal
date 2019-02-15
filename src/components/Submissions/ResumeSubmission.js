@@ -6,7 +6,7 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Avatar from '@material-ui/core/Avatar';
-import PersonIcon from '@material-ui/icons/Person';
+import PersonIcon from '@material-ui/icons/PersonOutlined';
 import Fade from '@material-ui/core/Fade';
 import Chip from '@material-ui/core/Chip';
 import LinearProgress from '@material-ui/core/LinearProgress';

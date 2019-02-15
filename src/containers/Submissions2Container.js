@@ -14,6 +14,7 @@ import SubmissionsList from '../components/Submissions/SubmissionsList';
 import SubmissionHeader from '../components/Submissions/SubmissionHeader';
 import AssessmentSubmission from '../components/Submissions/AssessmentSubmission';
 import JobSubmission from '../components/Submissions/JobSubmission';
+import ResumeSubmission from '../components/Submissions/ResumeSubmission';
 
 import useDocument from '../hooks/useDocument';
 import { ROUTES } from '../constants/routes';
@@ -44,6 +45,16 @@ const styles = theme => ({
       fontSize: 48,
       color: theme.palette.text.disabled,
     },
+  },
+
+  resumeSubmissionWrapper: {
+    height: '100vh',
+    boxSizing: 'border-box',
+    overflowY: 'auto',
+  },
+  resumeSubmission: {
+    maxWidth: 720,
+    margin: `${theme.spacing.unit * 5}px auto`,
   },
 });
 
@@ -87,6 +98,50 @@ function Submissions2Container(props) {
     [location.search]
   );
 
+  let content = (
+    <Grid
+      container
+      justify="center"
+      alignItems="center"
+      className={classes.nothingSelected}
+    >
+      <Grid item>
+        <Submissions2Icon />
+        <Typography variant="subtitle1" color="textSecondary">
+          Nothing selected
+        </Typography>
+      </Grid>
+    </Grid>
+  );
+
+  if (location.search.indexOf('?id=') > -1)
+    content = <LoadingHat altBg message="Finding submission…" />;
+  if (selectedSubmission) {
+    if (selectedSubmission.user)
+      content = (
+        <Grid
+          container
+          direction="column"
+          wrap="nowrap"
+          style={{ height: '100vh' }}
+        >
+          <SubmissionHeader submission={selectedSubmission} />
+
+          <Grid item xs className={classes.messagesWrapper}>
+            <SubmissionView submission={selectedSubmission} />
+          </Grid>
+        </Grid>
+      );
+    else
+      content = (
+        <div className={classes.resumeSubmissionWrapper}>
+          <div className={classes.resumeSubmission}>
+            <ResumeSubmission submission={selectedSubmission} />
+          </div>
+        </div>
+      );
+  }
+
   return (
     <Fade in>
       <Grid container direction="row">
@@ -114,36 +169,7 @@ function Submissions2Container(props) {
           className={classes.messagesContainer}
           style={{ marginTop: '-64px' }}
         >
-          {selectedSubmission ? (
-            <Grid
-              container
-              direction="column"
-              wrap="nowrap"
-              style={{ height: '100vh' }}
-            >
-              <SubmissionHeader submission={selectedSubmission} />
-
-              <Grid item xs className={classes.messagesWrapper}>
-                <SubmissionView submission={selectedSubmission} />
-              </Grid>
-            </Grid>
-          ) : location.search.indexOf('?id=') > -1 ? (
-            <LoadingHat altBg message="Finding and/or creating conversation…" />
-          ) : (
-            <Grid
-              container
-              justify="center"
-              alignItems="center"
-              className={classes.nothingSelected}
-            >
-              <Grid item>
-                <Submissions2Icon />
-                <Typography variant="subtitle1" color="textSecondary">
-                  Nothing selected
-                </Typography>
-              </Grid>
-            </Grid>
-          )}
+          {content}
         </Grid>
       </Grid>
     </Fade>

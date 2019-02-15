@@ -107,7 +107,6 @@ const navigationRoutes = [
     label: 'Submissions2',
     icon: <Submissions2Icon />,
     route: ROUTES.submissions2,
-    incomplete: true,
   },
   {
     label: 'Conversations',
