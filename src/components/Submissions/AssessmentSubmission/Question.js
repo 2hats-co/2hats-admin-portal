@@ -5,6 +5,9 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import LinearProgress from '@material-ui/core/LinearProgress';
+import Chip from '@material-ui/core/Chip';
+
+import FileIcon from '@material-ui/icons/AttachmentOutlined';
 
 import { globalReplace } from '../../../utilities';
 import { STYLES } from '@bit/sidney2hats.2hats.global.common-constants';
@@ -60,6 +63,20 @@ const Question = props => {
           />
           {!showPDF && <LinearProgress />}
         </>
+      );
+      break;
+
+    case 'zip':
+      answerInput = (
+        <Chip
+          component="a"
+          href={answer.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          label={answer.name}
+          icon={<FileIcon className={classes.fileIcon} />}
+          clickable
+        />
       );
       break;
 
