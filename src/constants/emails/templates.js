@@ -28,7 +28,7 @@ export const rejectedWithFeedback = {
     {
       type: 'button',
       replaceables: {
-        url: 'https://portal.2hats.com.au/smartLinks?slKey=#smartLink#',
+        url: 'https://students.2hats.com/smartLinks?slKey=#smartLink#',
         label: 'Read Feedback',
       },
     },
@@ -673,7 +673,7 @@ export const invalidSubmission = {
     {
       type: 'button',
       replaceables: {
-        url: 'https://portal.2hats.com.au/smartLinks?slKey=#smartLink#',
+        url: 'https://students.2hats.com/smartLinks?slKey=#smartLink#',
         label: 'Resubmit',
       },
     },
