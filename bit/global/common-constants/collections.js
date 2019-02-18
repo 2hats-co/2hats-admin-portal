@@ -36,4 +36,5 @@ export const COLLECTIONS = {
   calendarEvents: 'calendarEvents',
   gmailsToStore: 'gmailsToStore',
   gmails: 'gmails',
+  announcements: 'announcements',
 };

@@ -44,3 +44,8 @@ export const event = data => ({
 
   image: data.image && data.image.url,
 });
+
+export const announcement = data => ({
+  title: data.title,
+  secondaryText: <div dangerouslySetInnerHTML={{ __html: data.description }} />,
+});

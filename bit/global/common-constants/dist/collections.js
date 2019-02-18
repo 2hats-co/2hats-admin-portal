@@ -41,6 +41,7 @@ var COLLECTIONS = (exports.COLLECTIONS = {
   calendarEvents: 'calendarEvents',
   gmailsToStore: 'gmailsToStore',
   gmails: 'gmails',
+  announcements: 'announcements',
 });
 
 //# sourceMappingURL=collections.js.map

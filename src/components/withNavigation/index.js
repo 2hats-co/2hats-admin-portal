@@ -134,6 +134,7 @@ const navigationRoutes = [
       ROUTES.coursesManager,
       ROUTES.assessmentsManager,
       ROUTES.eventsManager,
+      ROUTES.announcementsManager,
     ],
     //  incomplete: true,
   },
