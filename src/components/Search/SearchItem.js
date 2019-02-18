@@ -93,7 +93,7 @@ function SearchItem(props) {
       <ListItemText
         primary={
           <Typography variant="subtitle1">
-            {hit.firstName} {hit.lastName}
+            {hit.displayName || `${hit.firstName} ${hit.lastName}`}
           </Typography>
         }
         secondary={highlighted}
@@ -112,7 +112,7 @@ function SearchItem(props) {
           </Tooltip>
         )}
 
-        {hit.status !== 'incomplete' && (
+        {/* {hit.status !== 'incomplete' && (
           <Tooltip title="Submission">
             <IconButton
               onClick={() => {
@@ -122,7 +122,7 @@ function SearchItem(props) {
               <SubmissionIcon />
             </IconButton>
           </Tooltip>
-        )}
+        )} */}
         <Tooltip title="Conversation">
           <IconButton
             onClick={() => {

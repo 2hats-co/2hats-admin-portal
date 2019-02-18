@@ -184,7 +184,7 @@ function ConversationsList(props) {
           }}
           indicatorColor="primary"
           textColor="primary"
-          fullWidth
+          variant="fullWidth"
         >
           <Tab
             value="all"

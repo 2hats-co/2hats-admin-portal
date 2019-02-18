@@ -118,14 +118,23 @@ const styles = theme => ({
 });
 
 function Search(props) {
-  const { history, classes, showSearch, setShowSearch } = props;
+  const {
+    history,
+    classes,
+    showSearch,
+    setShowSearch,
+    useSearchIndex,
+    placeholder,
+  } = props;
 
   const [slideIn, setSlideIn] = useState(true);
   const [hasMore, setHasMore] = useState(true);
-  const [searchState, searchDispatch] = useSearch();
+  const [searchState, searchDispatch] = useSearch(useSearchIndex);
   const { results } = searchState;
   const [showEnterPrompt, setShowEnterPrompt] = useState(false);
   const windowSize = useWindowSize();
+
+  console.log(searchState);
 
   const updateQuery = query => {
     searchDispatch({ search: query });
@@ -154,20 +163,22 @@ function Search(props) {
     }, 100);
   };
 
-  const handleSubmissionRoute = hit => {
-    const { status, objectID } = hit;
-    if (
-      status !== 'pre-review' ||
-      status !== 'incomplete' ||
-      status !== 'complete'
-    ) {
-      history.push(`${ROUTES.submissions}?uid=${objectID}`);
-      handleClose();
-    }
-  };
+  // const handleSubmissionRoute = hit => {
+  //   const { status, objectID } = hit;
+  //   if (
+  //     status !== 'pre-review' ||
+  //     status !== 'incomplete' ||
+  //     status !== 'complete'
+  //   ) {
+  //     history.push(`${ROUTES.submissions}?uid=${objectID}`);
+  //     handleClose();
+  //   }
+  // };
   const handleConversationRoute = hit => {
-    const { objectID } = hit;
-    history.push(`${ROUTES.conversations}?uid=${objectID}`);
+    const { conversationId, objectID } = hit;
+    if (conversationId)
+      history.push(`${ROUTES.conversations}?id=${conversationId}`);
+    else history.push(`${ROUTES.conversations}?uid=${objectID}`);
     handleClose();
   };
 
@@ -178,7 +189,7 @@ function Search(props) {
         key={i}
         hit={hit}
         handleRoutes={{
-          submission: handleSubmissionRoute,
+          //submission: handleSubmissionRoute,
           conversation: handleConversationRoute,
         }}
       />
@@ -201,7 +212,7 @@ function Search(props) {
               if (e.key === 'Enter') updateQuery(e.target.value);
               else if (!showEnterPrompt) setShowEnterPrompt(true);
             }}
-            placeholder="Search users"
+            placeholder={placeholder}
             startAdornment={<SearchIcon className={classes.searchIcon} />}
           />
           {showEnterPrompt ? (
