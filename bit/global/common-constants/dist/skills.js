@@ -24,6 +24,7 @@ var SKILLS = (exports.SKILLS = [
 
   // dev
   { label: 'Web App Essentials', value: 'webAppEssentials' },
+  { label: 'Web Design', value: 'webDesign' },
 ]);
 
 var getSkillLabel = (exports.getSkillLabel = function getSkillLabel(val) {

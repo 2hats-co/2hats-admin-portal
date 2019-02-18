@@ -33,4 +33,7 @@ export const COLLECTIONS = {
   algoliaCandidates: 'algoliaCandidates',
   reminders: 'reminders',
   algoliaConversations: 'algoliaConversations',
+  calendarEvents: 'calendarEvents',
+  gmailsToStore: 'gmailsToStore',
+  gmails: 'gmails',
 };

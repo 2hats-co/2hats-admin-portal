@@ -19,6 +19,7 @@ export const SKILLS = [
 
   // dev
   { label: 'Web App Essentials', value: 'webAppEssentials' },
+  { label: 'Web Design', value: 'webDesign' },
 ];
 
 export const getSkillLabel = val => {
