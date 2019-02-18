@@ -135,6 +135,11 @@ function App(props) {
                 path={ROUTES.eventsManager}
                 component={() => <ContentManagerContainer {...props} />}
               />
+              <Route
+                exact
+                path={ROUTES.announcementsManager}
+                component={() => <ContentManagerContainer {...props} />}
+              />
 
               <Route
                 exact

@@ -95,6 +95,9 @@ const Text = props => {
 
             ['link'],
           ],
+          clipboard: {
+            matchVisual: false,
+          },
         }}
       />
       <Button color="primary" onClick={handleAdd}>

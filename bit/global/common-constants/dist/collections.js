@@ -38,6 +38,10 @@ var COLLECTIONS = (exports.COLLECTIONS = {
   algoliaCandidates: 'algoliaCandidates',
   reminders: 'reminders',
   algoliaConversations: 'algoliaConversations',
+  calendarEvents: 'calendarEvents',
+  gmailsToStore: 'gmailsToStore',
+  gmails: 'gmails',
+  announcements: 'announcements',
 });
 
 //# sourceMappingURL=collections.js.map

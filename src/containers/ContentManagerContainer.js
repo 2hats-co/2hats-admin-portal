@@ -10,7 +10,7 @@ import AddIcon from '@material-ui/icons/Add';
 import LocationIndicator from '../components/LocationIndicator';
 
 import { ROUTES } from '../constants/routes';
-import { COLLECTIONS } from '../constants/firestore';
+import { COLLECTIONS } from '@bit/sidney2hats.2hats.global.common-constants';
 import { createDoc } from '../utilities/firestore';
 import useCollection from '../hooks/useCollection';
 
@@ -27,6 +27,7 @@ import courseFields from '../constants/forms/course';
 import assessmentFields from '../constants/forms/assessment';
 import jobFields from '../constants/forms/job';
 import eventFields from '../constants/forms/event';
+import announcementFields from '../constants/forms/announcement';
 
 const styles = theme => ({
   root: {
@@ -60,23 +61,34 @@ function ContentManagerContainer(props) {
       collection = COLLECTIONS.jobs;
       mapping = oneCardMappings.job;
       break;
+
     case ROUTES.coursesManager:
       fields = courseFields;
       formTitle = 'Course';
       collection = COLLECTIONS.courses;
       mapping = oneCardMappings.course;
       break;
+
     case ROUTES.assessmentsManager:
       fields = assessmentFields;
       formTitle = 'Assessment';
       collection = COLLECTIONS.assessments;
       mapping = oneCardMappings.assessment;
       break;
+
     case ROUTES.eventsManager:
       fields = eventFields;
       formTitle = 'Event';
       collection = COLLECTIONS.events;
       break;
+
+    case ROUTES.announcementsManager:
+      fields = announcementFields;
+      formTitle = 'Announcements';
+      collection = COLLECTIONS.announcements;
+      mapping = oneCardMappings.announcement;
+      break;
+
     default:
       break;
   }
@@ -99,6 +111,7 @@ function ContentManagerContainer(props) {
             { label: 'Courses', value: ROUTES.coursesManager },
             { label: 'Assessments', value: ROUTES.assessmentsManager },
             //  { label: 'Events', value: ROUTES.eventsManager },
+            { label: 'Announcements', value: ROUTES.announcementsManager },
           ]}
         />
 

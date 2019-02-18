@@ -5,6 +5,7 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 
+import CopyIcon from '@material-ui/icons/FileCopyOutlined';
 import EditIcon from '@material-ui/icons/EditOutlined';
 // import DeleteIcon from '@material-ui/icons/DeleteOutlined';
 import PublishedIcon from '@material-ui/icons/VisibilityOutlined';
@@ -13,6 +14,7 @@ import UnpublishedIcon from '@material-ui/icons/VisibilityOffOutlined';
 import Form from '../Form';
 
 import { updateDoc } from '../../utilities/firestore';
+import { copyToClipboard } from '../../utilities';
 
 const styles = theme => ({
   root: { marginTop: theme.spacing.unit },
@@ -31,6 +33,15 @@ const EditOneCard = props => {
   return (
     <div className={classes.root}>
       <div className={classes.buttonBar}>
+        <Tooltip title="Copy ID">
+          <IconButton
+            onClick={() => {
+              copyToClipboard(data.id);
+            }}
+          >
+            <CopyIcon />
+          </IconButton>
+        </Tooltip>
         <Tooltip title="Edit">
           <IconButton
             onClick={() => {
