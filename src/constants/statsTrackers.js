@@ -6,6 +6,13 @@ export const trackers = {
     label: 'Sign ups',
     itemType: 'tracker',
   },
+  courseStarted: {
+    presetName: 'Course Started',
+    type: 'course',
+    name: 'started',
+    label: 'Course Started',
+    itemType: 'tracker',
+  },
   signup3rdParty: {
     presetName: 'signup3rdParty',
     type: 'candidate',
