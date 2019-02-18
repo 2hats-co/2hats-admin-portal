@@ -65,6 +65,9 @@ const Text = props => {
 
             ['link'],
           ],
+          clipboard: {
+            matchVisual: false,
+          },
         }}
       />
       {validator(name)}
