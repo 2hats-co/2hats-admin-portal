@@ -42,11 +42,6 @@ const assessmentFields = initialData => {
       name: 'duration',
       label: 'Duration',
       value: initialData['duration'],
-      // units: 'h',
-      // min: 0.5,
-      // max: 20,
-      // step: 0.5,
-      // validation: yup.string().required('Duration is required'),
     },
     {
       type: FIELDS.richText,
@@ -69,6 +64,13 @@ const assessmentFields = initialData => {
       placeholder: 'Copy-paste main instructions here',
       value: initialData['taskInstructions'],
       validation: yup.string().required('Required'),
+    },
+    {
+      type: FIELDS.richText,
+      name: 'relatedMaterial',
+      label: 'Related material',
+      value: initialData['relatedMaterial'],
+      validation: yup.string(),
     },
     {
       type: FIELDS.autocomplete,

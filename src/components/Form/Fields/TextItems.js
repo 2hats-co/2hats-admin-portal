@@ -28,6 +28,7 @@ const TextItems = props => {
     formikProps,
     classes,
     handleAddToList,
+    placeholder,
   } = props;
   const { values, errors, touched, handleChange } = formikProps;
   return (
@@ -46,6 +47,7 @@ const TextItems = props => {
             handleAddToList(name, `${name}-temp`);
           }
         }}
+        placeholder={placeholder}
         error={!!(errors[name] && touched[name])}
         helperText={touched[name] && errors[name]}
         InputProps={{

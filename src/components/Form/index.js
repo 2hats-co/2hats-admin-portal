@@ -296,6 +296,7 @@ function Form(props) {
                       formikProps={formikProps}
                       handleAddToList={handleAddToList}
                       handleDeleteFromList={handleDeleteFromList}
+                      placeholder={x.placeholder}
                     />
                   );
 
