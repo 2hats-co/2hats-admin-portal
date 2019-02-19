@@ -12,7 +12,25 @@ import OpenIcon from '@material-ui/icons/ArrowForwardIos';
 import EditIcon from '@material-ui/icons/EditOutlined';
 
 import Tooltip from '@material-ui/core/Tooltip';
-
+import useAnalytics from '../../hooks/useAnalytics';
+const campaginSubscriptions = id => ({
+  filters: [{ property: 'campaignId', operation: '==', value: id }],
+  collection: 'campaignSubscriptions',
+});
+const campaginCompleted = id => ({
+  filters: [
+    { property: 'campaignId', operation: '==', value: id },
+    { property: 'isFinished', operation: '==', value: true },
+  ],
+  collection: 'campaignSubscriptions',
+});
+const campaginConverted = id => ({
+  filters: [
+    { property: 'campaignId', operation: '==', value: id },
+    { property: 'isPaused', operation: '==', value: true },
+  ],
+  collection: 'campaignSubscriptions',
+});
 const styles = theme => ({
   root: {
     margin: theme.spacing.unit * 2,
@@ -39,6 +57,10 @@ const styles = theme => ({
 });
 function EmailCampaignCard(props) {
   const { classes, campaign, actions } = props;
+
+  const campaignSubscribers = useAnalytics(campaginSubscriptions(campaign.id));
+  const campaignCompletion = useAnalytics(campaginCompleted(campaign.id));
+  const campaignConversion = useAnalytics(campaginConverted(campaign.id));
   return (
     <>
       <Card classes={{ root: classes.root }} elevation={0}>
@@ -59,12 +81,16 @@ function EmailCampaignCard(props) {
           </Grid>
 
           <Grid item xs={2} className={classes.rightAligned}>
-            <Typography variant="h6">{'--%'}</Typography>
-            <Typography variant="body2">Open Rate</Typography>
+            <Typography variant="h6">{campaignSubscribers}</Typography>
+            <Typography variant="body2">total Subscriptions</Typography>
           </Grid>
-          <Grid item xs={2} className={classes.rightAligned}>
-            <Typography variant="h6">{'--%'}</Typography>
-            <Typography variant="body2">Click Rate</Typography>
+          <Grid item xs={1} className={classes.rightAligned}>
+            <Typography variant="h6">{campaignCompletion}</Typography>
+            <Typography variant="body2">Completion</Typography>
+          </Grid>
+          <Grid item xs={1} className={classes.rightAligned}>
+            <Typography variant="h6">{campaignConversion}</Typography>
+            <Typography variant="body2">Conversion</Typography>
           </Grid>
 
           <Grid item xs={3} className={classes.rightAligned}>
