@@ -403,6 +403,7 @@ function Composer(props) {
       ) : (
         <InputBase
           autoFocus
+          disabled={composerType === 'linkedin'}
           value={messageText}
           onChange={e => {
             setMessageText(e.target.value);
@@ -413,9 +414,14 @@ function Composer(props) {
             className: classNames(classes.plainTextBox, classes.scrollableBox),
           }}
           multiline
-          placeholder={`Type your ${
-            composerType === 'linkedin' ? 'message' : 'note'
-          } here…`}
+          // placeholder={`Type your ${
+          //   composerType === 'linkedin' ? 'message' : 'note'
+          // } here…`}
+          placeholder={
+            composerType === 'linkedin'
+              ? 'This service is currently under reconstruction due to internet reliablity issues, please use the linkedin icon above to be direct to the clients linkedin message thread. We are working hard to bring back this service, sorry for the inconvience, and thank you for your understanding.'
+              : 'Type your note here'
+          }
         />
       )}
 
