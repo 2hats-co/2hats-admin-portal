@@ -58,6 +58,7 @@ function ChartItem(props) {
   const [colour, setColour] = useState(
     chartItem.colour ? chartItem.colour : randomColor({ format: 'rgb' })
   );
+
   const [preset, setPreset] = useState(
     chartItem.preset
       ? { value: chartItem.preset, label: trackers[chartItem.preset].label }
