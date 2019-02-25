@@ -31,6 +31,7 @@ import Uploader from './Fields/Uploader';
 import Select from './Fields/Select';
 import Checkbox from './Fields/Checkbox';
 import RadioButtons from './Fields/RadioButtons';
+import DocumentSelect from './Fields/DocumentSelect';
 
 const styles = theme => ({
   mobile: {},
@@ -326,6 +327,19 @@ function Form(props) {
                       key={x.name}
                       placeholder={x.placeholder}
                       suggestions={x.suggestions}
+                      name={x.name}
+                      label={x.label}
+                      type={x.type}
+                      formikProps={formikProps}
+                      width={x.width}
+                    />
+                  );
+                case FIELDS.docAutocomplete:
+                  return (
+                    <DocumentSelect
+                      collection={x.collection}
+                      key={x.name}
+                      placeholder={x.placeholder}
                       name={x.name}
                       label={x.label}
                       type={x.type}

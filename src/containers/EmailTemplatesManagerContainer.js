@@ -16,6 +16,7 @@ import {
   updateDoc,
   deleteDoc,
   queryCount,
+  getDoc,
 } from '../utilities/firestore';
 
 import moment from 'moment';
@@ -65,6 +66,14 @@ function EmailTemplatesManagerContainer(props) {
       ...data,
       design: JSON.stringify(design),
     };
+    if (data.clonedTemplateId) {
+      const clonedTemplateDoc = await getDoc(
+        'emailTemplates',
+        data.clonedTemplateId
+      );
+      templateDoc.design = clonedTemplateDoc.design;
+      templateDoc.html = clonedTemplateDoc.html;
+    }
     switch (path) {
       case ROUTES.conversationEmails:
         templateDoc.type = 'conversations';
@@ -229,7 +238,11 @@ function EmailTemplatesManagerContainer(props) {
               },
             }}
             open={showForm}
-            data={fields}
+            data={
+              template
+                ? fields.filter(x => x.name !== 'clonedTemplateId')
+                : fields
+            }
             formTitle={`template`}
           />
         )}

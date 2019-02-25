@@ -10,6 +10,7 @@ const FIELDS = {
   chipFreeText: 'CHIP_FREE_TEXT',
 
   autocomplete: 'AUTOCOMPLETE',
+  docAutocomplete: 'DOCUMENT_AUTOCOMPLETE',
   autocompleteMulti: 'AUTOCOMPLETE_MULTI',
   autocompleteFreeText: 'AUTOCOMPLETE_FREE_TEXT',
   autocompleteMultiFreeText: 'AUTOCOMPLETE_MULTI_FREE_TEXT',
