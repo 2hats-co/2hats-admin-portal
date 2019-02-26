@@ -8,6 +8,7 @@ var SUBMISSION_TYPES = (exports.SUBMISSION_TYPES = [
   { label: 'Rich text', value: 'richText' },
   { label: 'Mailchimp', value: 'mailchimp' },
   { label: 'ZIP File', value: 'zip' },
+  { label: 'IDEO', value: 'ideo' },
 ]);
 
 //# sourceMappingURL=submissionTypes.js.map

@@ -125,12 +125,28 @@ var DROPZONE = (exports.DROPZONE = function DROPZONE(theme) {
       minHeight: theme.spacing.unit * 12,
       cursor: 'pointer',
       userSelect: 'none',
+      outline: 'none',
 
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
       flexDirection: 'column',
+
+      '&:not($dropzoneDisabled):focus': {
+        outline: 'none',
+        borderColor: theme.palette.primary.main,
+        color: theme.palette.primary.main,
+
+        '& *': { color: theme.palette.primary.main },
+      },
     },
+    dropzoneDragActive: {
+      borderColor: theme.palette.primary.main,
+      color: theme.palette.primary.main,
+
+      '& *': { color: theme.palette.primary.main },
+    },
+    dropzoneDisabled: { cursor: 'default' },
     uploadIcon: {
       fontSize: theme.spacing.unit * 8,
       color: theme.palette.text.secondary,
