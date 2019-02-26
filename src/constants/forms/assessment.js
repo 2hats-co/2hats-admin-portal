@@ -83,6 +83,15 @@ const assessmentFields = initialData => {
       validation: yup.string().required('Submission type is required'),
     },
     {
+      type: FIELDS.textFieldMultiline,
+      name: 'codePreset',
+      label: 'Code preset (optional – only if submission type is IDEO)',
+      value: initialData['codePreset'],
+      placeholder:
+        'Make sure to validate your JSON first and that newlines in strings are \\n\n\nYou can set the html, css, js, htmlMode, cssMode, jsMode properties',
+      validation: yup.string(),
+    },
+    {
       type: FIELDS.richTextMulti,
       name: 'questions',
       label: 'Questions (optional)',
