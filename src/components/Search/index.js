@@ -41,6 +41,7 @@ const styles = theme => ({
     overflow: 'hidden',
   },
   algloria: {
+    display: 'none',
     userSelect: 'none',
     position: 'absolute',
     top: theme.spacing.unit * 6,
