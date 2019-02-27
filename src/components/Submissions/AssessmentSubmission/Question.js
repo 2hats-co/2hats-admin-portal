@@ -103,7 +103,6 @@ const Question = props => {
     smartLink,
     submissionDoc,
   } = props;
-  console.log(submissionDoc);
 
   const [showPDF, setShowPDF] = useState(false);
 
