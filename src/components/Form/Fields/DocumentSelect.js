@@ -4,7 +4,7 @@ import Select from './Select';
 import useCollection from '../../../hooks/useCollection';
 
 const DocumentSelect = props => {
-  const { collection } = props;
+  const { collection, mappings } = props;
 
   const [collectionState] = useCollection({
     path: collection,
@@ -12,7 +12,7 @@ const DocumentSelect = props => {
   });
   const docs = collectionState.documents;
   const suggestions = docs
-    ? docs.map(x => ({ value: x.id, label: x.label }))
+    ? docs.map(x => ({ value: x[mappings.value], label: x[mappings.label] }))
     : [];
   if (collectionState.loading) return 'loading';
   // return <Select {...props} disabled/>;

@@ -8,6 +8,7 @@ const emailTemplateFields = initialData => {
       type: FIELDS.docAutocomplete,
       name: 'clonedTemplateId',
       label: 'Template Base',
+      mappings: { label: 'label', value: 'id' },
       collection: 'emailTemplates',
       placeholder: 'Template Base',
       value: initialData['clonedTemplateId'],

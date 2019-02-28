@@ -1,5 +1,6 @@
 import FIELDS from './fields';
 import * as yup from 'yup';
+import { COLLECTIONS } from '@bit/sidney2hats.2hats.global.common-constants/dist/collections';
 
 const announcementFields = initialData => {
   if (!initialData) initialData = {};
@@ -28,17 +29,21 @@ const announcementFields = initialData => {
     },
 
     {
-      type: FIELDS.textField,
+      type: FIELDS.docAutocomplete,
+      collection: COLLECTIONS.assessments,
+      mappings: { label: 'title', value: 'id' },
       name: 'assessmentId',
-      label: 'Assessment ID',
+      label: 'Assessment',
       value: initialData['assessmentId'],
       validation: yup.string().required('Required'),
       width: 6,
     },
     {
-      type: FIELDS.textField,
+      type: FIELDS.docAutocomplete,
+      collection: COLLECTIONS.jobs,
+      mappings: { label: 'title', value: 'id' },
       name: 'jobId',
-      label: 'Job ID',
+      label: 'Job Listing',
       value: initialData['jobId'],
       validation: yup.string().required('Required'),
       width: 6,
