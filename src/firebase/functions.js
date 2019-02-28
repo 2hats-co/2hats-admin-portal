@@ -6,6 +6,7 @@ export const CLOUD_FUNCTIONS = {
   auth: 'callablesAdminAuthentication',
   refreshAccessToken: 'callablesRefreshAccessToken',
   grantDrivePermissions: 'callablesGrantDrivePermissions',
+  callablesSendTargeted: 'callablesSendTargeted',
 };
 
 export const callable = (name, input, success, fail) => {
