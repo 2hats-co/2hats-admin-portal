@@ -1,26 +1,27 @@
 import React, { useState, useEffect } from 'react';
+import classNames from 'classnames';
 
 import withStyles from '@material-ui/core/styles/withStyles';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
-
-import AddSubscriberIcon from '@material-ui/icons/GroupAdd';
-// import LinkIcon from '@material-ui/icons/Link';
-import BackIcon from '@material-ui/icons/ArrowBack';
-// import StarOutlineIcon from '@material-ui/icons/StarBorder';
-import EmailIcon from '@material-ui/icons/Markunread';
-import AddIcon from '@material-ui/icons/Add';
-import LinkedInIcon from '../../../assets/icons/LinkedIn';
-import SpamIcon from '@material-ui/icons/Report';
 import MenuItem from '@material-ui/core/MenuItem';
 import TextField from '@material-ui/core/TextField';
 
+import AddSubscriberIcon from '@material-ui/icons/GroupAddOutlined';
+// import LinkIcon from '@material-ui/icons/LinkOutlined';
+import BackIcon from '@material-ui/icons/ArrowBackOutlined';
+// import StarOutlineIcon from '@material-ui/icons/StarBorder';
+import EmailIcon from '@material-ui/icons/MarkunreadOutlined';
+import AddIcon from '@material-ui/icons/AddOutlined';
+import LinkedInIcon from '../../../assets/icons/LinkedIn';
+import SpamIcon from '@material-ui/icons/ReportOutlined';
+
+import { unstable_useMediaQuery as useMediaQuery } from '@material-ui/core/useMediaQuery';
 import ConversationTypeIcon from '../ConversationTypeIcon';
 import ManageSubscribersDialog from './ManageSubscribersDialog';
 import DebugButton from '../../DebugButton';
-import useWindowSize from '../../../hooks/useWindowSize';
 import { copyToClipboard } from '../../../utilities';
 import {
   markAsSpam,
@@ -36,17 +37,24 @@ const styles = theme => ({
       theme.spacing.unit
     }px ${theme.spacing.unit * 2.25}px`,
     borderBottom: `1px solid ${theme.palette.divider}`,
+    [theme.breakpoints.down('sm')]: {
+      paddingLeft: theme.spacing.unit * 1.5,
+      paddingRight: theme.spacing.unit,
+    },
   },
   typeIcon: {
     marginTop: theme.spacing.unit / 2,
     marginRight: theme.spacing.unit,
     opacity: 0.87,
     color: theme.palette.text.primary,
+
+    [theme.breakpoints.down('sm')]: { display: 'none' },
   },
 
   categoryDropdownWrapper: {
     margin: 0,
     marginLeft: theme.spacing.unit * 2,
+    // [theme.breakpoints.down('md')]: { marginLeft: theme.spacing.unit },
   },
   categoryDropdown: {
     paddingTop: theme.spacing.unit,
@@ -54,6 +62,12 @@ const styles = theme => ({
     paddingRight: theme.spacing.unit * 3,
     fontSize: '.875rem',
     minWidth: 100,
+
+    [theme.breakpoints.down('xs')]: { minWidth: 'auto', width: 80 },
+  },
+
+  rightButtons: {
+    [theme.breakpoints.down('sm')]: { display: 'none' },
   },
 
   emailAdd: {
@@ -69,12 +83,16 @@ const styles = theme => ({
     fontSize: 18,
   },
 
+  iconButton: {
+    [theme.breakpoints.down('sm')]: { padding: theme.spacing.unit },
+  },
   linkedInButton: {
     color: `${theme.palette.text.secondary} !important`,
   },
 
   actionButtons: {
     position: 'relative',
+    display: 'inline-block',
     paddingLeft: theme.spacing.unit * 2,
     marginLeft: theme.spacing.unit * 2,
 
@@ -89,11 +107,21 @@ const styles = theme => ({
       left: 0,
       top: theme.spacing.unit,
     },
+
+    [theme.breakpoints.down('sm')]: {
+      marginLeft: theme.spacing.unit,
+      paddingLeft: theme.spacing.unit,
+      '&::before': {
+        height: theme.spacing.unit * 3,
+      },
+    },
   },
+
+  backButton: { marginLeft: -theme.spacing.unit },
 });
 
 function ConversationHeader(props) {
-  const windowSize = useWindowSize();
+  const isMobile = useMediaQuery('(max-width: 704px)');
 
   const { classes, conversation, closeConversation } = props;
 
@@ -114,62 +142,71 @@ function ConversationHeader(props) {
   };
 
   return (
-    <React.Fragment>
+    <>
       <Grid item className={classes.root}>
         <Grid container alignItems="center">
-          {windowSize.isMobile && (
+          {isMobile && (
             <Grid item>
-              <IconButton onClick={closeConversation}>
+              <IconButton
+                onClick={closeConversation}
+                className={classes.backButton}
+              >
                 <BackIcon />
               </IconButton>
             </Grid>
           )}
-          <Grid item xs>
+
+          <Grid item>
             <Grid container alignItems="flex-start">
               <ConversationTypeIcon
                 type={conversation.type}
                 className={classes.typeIcon}
               />
 
-              <Typography variant="h6">{conversation.displayName}</Typography>
-
-              <TextField
-                select
-                InputProps={{
-                  disableUnderline: true,
-                  classes: { inputMarginDense: classes.categoryDropdown },
-                }}
-                margin="dense"
-                variant="filled"
-                value={category}
-                onChange={handleChangeCategory}
-                className={classes.categoryDropdownWrapper}
-                SelectProps={{ displayEmpty: true }}
-              >
-                <MenuItem value="">No category</MenuItem>
-                {conversationCategories(conversation.type).map(x => (
-                  <MenuItem key={x.value} value={x.value}>
-                    {x.label}
-                  </MenuItem>
-                ))}
-              </TextField>
+              <Typography variant={isMobile ? 'subtitle1' : 'h6'}>
+                {conversation.displayName}
+              </Typography>
             </Grid>
           </Grid>
-          <Grid item>
+
+          <Grid item md>
+            <TextField
+              select
+              InputProps={{
+                disableUnderline: true,
+                classes: { inputMarginDense: classes.categoryDropdown },
+              }}
+              margin="dense"
+              variant="filled"
+              value={category}
+              onChange={handleChangeCategory}
+              className={classes.categoryDropdownWrapper}
+              SelectProps={{ displayEmpty: true }}
+            >
+              <MenuItem value="">No category</MenuItem>
+              {conversationCategories(conversation.type).map(x => (
+                <MenuItem key={x.value} value={x.value}>
+                  {x.label}
+                </MenuItem>
+              ))}
+            </TextField>
+          </Grid>
+
+          <Grid item className={classes.rightButtons}>
             {conversation.channels.email ? (
               <Tooltip
                 onClick={() => {
                   copyToClipboard(conversation.channels.email);
                 }}
                 title={
-                  <React.Fragment>
+                  <>
                     <b>{conversation.channels.email}</b>
                     <br />
                     (Click to copy)
-                  </React.Fragment>
+                  </>
                 }
               >
-                <IconButton>
+                <IconButton className={classes.iconButton}>
                   <EmailIcon />
                 </IconButton>
               </Tooltip>
@@ -180,7 +217,7 @@ function ConversationHeader(props) {
                 }}
                 title="Set email"
               >
-                <IconButton>
+                <IconButton className={classes.iconButton}>
                   <EmailIcon />
                   <AddIcon className={classes.emailAdd} />
                 </IconButton>
@@ -189,7 +226,10 @@ function ConversationHeader(props) {
             {conversation.channels.linkedin && (
               <Tooltip title="Open LinkedIn thread (as Gloria)">
                 <IconButton
-                  className={classes.linkedInButton}
+                  className={classNames(
+                    classes.iconButton,
+                    classes.linkedInButton
+                  )}
                   component="a"
                   href={
                     'https://www.linkedin.com/messaging/thread/' +
@@ -203,37 +243,42 @@ function ConversationHeader(props) {
                 </IconButton>
               </Tooltip>
             )}
-          </Grid>
-          <Grid item className={classes.actionButtons}>
-            <DebugButton
-              title="Copy conversation ID"
-              toCopy={conversation.id}
-            />
-            <DebugButton toCopy={conversation.UID} />
-            <Tooltip title="Manage subscribers">
-              <IconButton
-                onClick={() => {
-                  setShowSubscriberDialog(true);
-                }}
+
+            <div className={classes.actionButtons}>
+              <DebugButton
+                title="Copy conversation ID"
+                toCopy={conversation.id}
+              />
+              <DebugButton toCopy={conversation.UID} />
+              <Tooltip title="Manage subscribers">
+                <IconButton
+                  className={classes.iconButton}
+                  onClick={() => {
+                    setShowSubscriberDialog(true);
+                  }}
+                >
+                  <AddSubscriberIcon />
+                </IconButton>
+              </Tooltip>
+              <Tooltip
+                title={
+                  conversation.type === 'spam'
+                    ? 'Unmark as spam'
+                    : 'Mark as spam'
+                }
               >
-                <AddSubscriberIcon />
-              </IconButton>
-            </Tooltip>
-            <Tooltip
-              title={
-                conversation.type === 'spam' ? 'Unmark as spam' : 'Mark as spam'
-              }
-            >
-              <IconButton
-                onClick={() => {
-                  if (conversation.type === 'spam')
-                    unmarkAsSpam(conversation.id);
-                  else markAsSpam(conversation.id);
-                }}
-              >
-                <SpamIcon />
-              </IconButton>
-            </Tooltip>
+                <IconButton
+                  className={classes.iconButton}
+                  onClick={() => {
+                    if (conversation.type === 'spam')
+                      unmarkAsSpam(conversation.id);
+                    else markAsSpam(conversation.id);
+                  }}
+                >
+                  <SpamIcon />
+                </IconButton>
+              </Tooltip>
+            </div>
           </Grid>
         </Grid>
       </Grid>
@@ -247,7 +292,7 @@ function ConversationHeader(props) {
         showDialog={showSubscriberDialog}
         setShowDialog={setShowSubscriberDialog}
       />
-    </React.Fragment>
+    </>
   );
 }
 

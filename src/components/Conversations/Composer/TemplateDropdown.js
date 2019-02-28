@@ -37,6 +37,7 @@ const TemplateDropdown = props => {
         setTemplateIndex(e.target.value);
         setTemplate(e.target.value > -1 ? templates[e.target.value] : {});
       }}
+      style={{ margin: 0, textAlign: 'left' }}
     >
       <MenuItem value={-1}>No template</MenuItem>
       {templates &&

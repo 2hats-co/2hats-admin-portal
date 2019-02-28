@@ -39,9 +39,9 @@ function TrackerBarChart(props) {
     <Chip
       key={i}
       label={
-        <React.Fragment>
+        <>
           <b>{x.label}</b>: {x.sum}
-        </React.Fragment>
+        </>
       }
       style={{
         backgroundColor: x.colour,

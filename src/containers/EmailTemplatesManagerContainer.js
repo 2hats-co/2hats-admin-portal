@@ -16,6 +16,7 @@ import {
   updateDoc,
   deleteDoc,
   queryCount,
+  getDoc,
 } from '../utilities/firestore';
 
 import moment from 'moment';
@@ -64,21 +65,36 @@ function EmailTemplatesManagerContainer(props) {
     let templateDoc = {
       ...data,
       design: JSON.stringify(design),
-      createdAt: new Date(),
     };
+    if (data.clonedTemplateId) {
+      const clonedTemplateDoc = await getDoc(
+        'emailTemplates',
+        data.clonedTemplateId
+      );
+      templateDoc.design = clonedTemplateDoc.design;
+      templateDoc.html = clonedTemplateDoc.html;
+    }
     switch (path) {
       case ROUTES.conversationEmails:
         templateDoc.type = 'conversations';
         break;
 
       case ROUTES.transactionalEmails:
-        templateDoc.type = 'transactionals';
+        templateDoc.type = 'transactional';
         break;
 
       case ROUTES.emailCampaigns:
         if (campaignId) {
-          templateDoc.type = 'promotionals';
+          templateDoc.type = 'promotional';
           templateDoc.campaignId = campaignId;
+          const queryFilters = [
+            { field: 'campaignId', operator: '==', value: campaignId },
+          ];
+          const numberOfCampaignTemplates = await queryCount(
+            COLLECTIONS.emailTemplates,
+            queryFilters
+          );
+          templateDoc.index = numberOfCampaignTemplates;
         } else {
         }
         break;
@@ -86,16 +102,8 @@ function EmailTemplatesManagerContainer(props) {
         break;
     }
     if (!campaignId && path === ROUTES.emailCampaigns) {
-      createDoc(COLLECTIONS.emailCampaigns, { ...data, createdAt: new Date() });
+      createDoc(COLLECTIONS.emailCampaigns, data);
     } else {
-      const queryFilters = [
-        { field: 'campaignId', operator: '==', value: campaignId },
-      ];
-      const numberOfCampaignTemplates = await queryCount(
-        COLLECTIONS.emailTemplates,
-        queryFilters
-      );
-      templateDoc.index = numberOfCampaignTemplates;
       createDoc(COLLECTIONS.emailTemplates, templateDoc);
     }
   };
@@ -111,18 +119,13 @@ function EmailTemplatesManagerContainer(props) {
   };
   const handleUpdate = data => {
     if (!campaignId && path === ROUTES.emailCampaigns) {
-      updateDoc(COLLECTIONS.emailCampaigns, campaign.id, {
-        ...data,
-        updatedAt: new Date(),
-      });
+      updateDoc(COLLECTIONS.emailCampaigns, campaign.id, data);
     } else {
-      updateDoc(COLLECTIONS.emailTemplates, template.id, {
-        ...data,
-        updatedAt: new Date(),
-      });
+      updateDoc(COLLECTIONS.emailTemplates, template.id, data);
     }
     setShowForm(false);
     setTemplate(null);
+    setCampaign(null);
   };
   const setForm = template => {
     switch (path) {
@@ -163,7 +166,7 @@ function EmailTemplatesManagerContainer(props) {
       case ROUTES.transactionalEmails:
         return (
           <TemplateList
-            type="transactionals"
+            type="transactional"
             setTemplate={setTemplate}
             editTemplate={handleEdit}
           />
@@ -196,7 +199,7 @@ function EmailTemplatesManagerContainer(props) {
           subRoutes={[
             { label: 'campaigns', value: ROUTES.emailCampaigns },
             { label: 'conversations', value: ROUTES.conversationEmails },
-            { label: 'transactionals', value: ROUTES.transactionalEmails },
+            { label: 'transactional', value: ROUTES.transactionalEmails },
           ]}
         />
 
@@ -235,7 +238,11 @@ function EmailTemplatesManagerContainer(props) {
               },
             }}
             open={showForm}
-            data={fields}
+            data={
+              template
+                ? fields.filter(x => x.name !== 'clonedTemplateId')
+                : fields
+            }
             formTitle={`template`}
           />
         )}

@@ -5,14 +5,14 @@ import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import generateTheme, { ORANGE_COLOR } from './Theme';
 import { ROUTES } from './constants/routes';
-import { useAuthedUser } from './hooks/useAuthedUser';
+import useAuthedUser from './hooks/useAuthedUser';
 import LoadingHat from './components/LoadingHat';
 import PushNotifications from './components/PushNotifications';
 import ConversationsContainer from './containers/ConversationsContainer';
 import TestContainer from './containers/TestContainer';
 //containers
-const SubmissionsContainer = lazy(() =>
-  import('./containers/SubmissionsContainer' /* webpackChunkName: "SubmissionsContainer" */)
+const Submissions2Container = lazy(() =>
+  import('./containers/Submissions2Container' /* webpackChunkName: "Submissions2Container" */)
 );
 //import StatisticsContainer from './containers/StatisticsContainer';
 const StatisticsContainer = lazy(() =>
@@ -109,26 +109,11 @@ function App(props) {
                 path={ROUTES.conversations}
                 component={() => <ConversationsContainer {...props} />}
               />
-              <Route
-                exact
-                path={ROUTES.submissions}
-                component={() => <SubmissionsContainer {...props} />}
-              />
 
               <Route
                 exact
-                path={ROUTES.pending}
-                component={() => <SubmissionsContainer {...props} />}
-              />
-              <Route
-                exact
-                path={ROUTES.rejected}
-                component={() => <SubmissionsContainer {...props} />}
-              />
-              <Route
-                exact
-                path={ROUTES.accepted}
-                component={() => <SubmissionsContainer {...props} />}
+                path={ROUTES.submissions2}
+                component={() => <Submissions2Container {...props} />}
               />
 
               <Route
@@ -149,6 +134,11 @@ function App(props) {
               <Route
                 exact
                 path={ROUTES.eventsManager}
+                component={() => <ContentManagerContainer {...props} />}
+              />
+              <Route
+                exact
+                path={ROUTES.announcementsManager}
                 component={() => <ContentManagerContainer {...props} />}
               />
 

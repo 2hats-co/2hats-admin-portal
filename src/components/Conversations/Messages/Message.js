@@ -7,8 +7,8 @@ import Avatar from '@material-ui/core/Avatar';
 import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
 
-import PersonIcon from '@material-ui/icons/Person';
-import EditIcon from '@material-ui/icons/Edit';
+import PersonIcon from '@material-ui/icons/PersonOutlined';
+import EditIcon from '@material-ui/icons/EditOutlined';
 
 import { isOnlyEmojis } from '../../../utilities/emoji';
 import moment from 'moment';
@@ -305,11 +305,11 @@ function Message(props) {
     >
       <Tooltip
         title={
-          <React.Fragment>
+          <>
             {timestamp}
             <br />
             {sender && sender.givenName} {sender && sender.familyName}
-          </React.Fragment>
+          </>
         }
         placement={isIncoming ? 'right' : 'left'}
         enterDelay={1000}

@@ -13,20 +13,23 @@ import Modal from '@material-ui/core/Modal';
 import Slide from '@material-ui/core/Slide';
 
 import ListItem from '@material-ui/core/ListItem';
+import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import ListItemText from '@material-ui/core/ListItemText';
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import Avatar from '@material-ui/core/Avatar';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 
-import NotificationIcon from '@material-ui/icons/Notifications';
-import MessageIcon from '@material-ui/icons/Forum';
-import NoteIcon from '@material-ui/icons/AlternateEmail';
+import NotificationIcon from '@material-ui/icons/NotificationsOutlined';
+import MessageIcon from '@material-ui/icons/ForumOutlined';
+import NoteIcon from '@material-ui/icons/AlternateEmailOutlined';
+import ArchiveIcon from '@material-ui/icons/ArchiveOutlined';
 
 import ScrollyRolly from './ScrollyRolly';
 import useCollection from '../hooks/useCollection';
-import { COLLECTIONS } from '../constants/firestore';
+import { COLLECTIONS } from '@bit/sidney2hats.2hats.global.common-constants';
 import { ROUTES } from '../constants/routes';
-import { markAsRead } from '../utilities/notifications';
+import { markAllAsRead, markAsRead, archive } from '../utilities/notifications';
 
 import moment from 'moment';
 import { momentLocales } from '../constants/momentLocales';
@@ -51,6 +54,7 @@ const styles = theme => ({
     left: theme.spacing.unit * 9,
     overflowY: 'auto',
   },
+  listItemRoot: { paddingRight: theme.spacing.unit * 7 },
   listItemTextRoot: { paddingRight: 0 },
   timestamp: {
     color: theme.palette.text.secondary,
@@ -89,14 +93,11 @@ function Notifications(props) {
   const [showDialog, setShowDialog] = useState(false);
   const [slideIn, setSlideIn] = useState(true);
   const [unreadNotificationsState] = useCollection({
-    path: COLLECTIONS.notifications,
+    path: `${COLLECTIONS.admins}/${uid}/${COLLECTIONS.notifications}`,
     sort: { field: 'createdAt', direction: 'desc' },
     filters: [
-      {
-        field: 'unreadSubscribers',
-        operator: 'array-contains',
-        value: uid,
-      },
+      { field: 'unread', operator: '==', value: true },
+      { field: 'archived', operator: '==', value: false },
     ],
   });
   const unreadNotifications = unreadNotificationsState.documents
@@ -104,15 +105,9 @@ function Notifications(props) {
     : 0;
 
   const [notificationsState, notificationsDispatch] = useCollection({
-    path: COLLECTIONS.notifications,
+    path: `${COLLECTIONS.admins}/${uid}/${COLLECTIONS.notifications}`,
     sort: { field: 'createdAt', direction: 'desc' },
-    filters: [
-      {
-        field: 'subscribers',
-        operator: 'array-contains',
-        value: uid,
-      },
-    ],
+    filters: [{ field: 'archived', operator: '==', value: false }],
   });
   const notifications = notificationsState.documents;
 
@@ -126,14 +121,17 @@ function Notifications(props) {
   useEffect(
     () => {
       if (!showDialog) setSlideIn(true);
-      else markAsRead(uid, notifications);
+      else markAllAsRead(uid, notifications);
     },
     [showDialog]
   );
 
-  const handleClick = data => {
-    if (data.conversationId) {
-      history.push(`${ROUTES.conversations}?id=${data.conversationId}`);
+  const handleClick = notificiation => {
+    markAsRead(uid, notificiation);
+    if (notificiation.data.conversationId) {
+      history.push(
+        `${ROUTES.conversations}?id=${notificiation.data.conversationId}`
+      );
       handleClose();
     }
   };
@@ -142,7 +140,7 @@ function Notifications(props) {
     return <CircularProgress className={classes.loader} size={24} />;
 
   return (
-    <React.Fragment>
+    <>
       <Fade in>
         <Tooltip title="Notifications" placement="right">
           <IconButton
@@ -176,16 +174,15 @@ function Notifications(props) {
                     key={x.id}
                     button
                     onClick={() => {
-                      handleClick(x.data);
+                      handleClick(x);
                     }}
+                    classes={{ root: classes.listItemRoot }}
                   >
-                    <Avatar
-                      className={
-                        x.unreadSubscribers.includes(uid) ? classes.unread : ''
-                      }
-                    >
-                      {getIcon(x.data.type)}
-                    </Avatar>
+                    <ListItemAvatar>
+                      <Avatar className={x.unread ? classes.unread : ''}>
+                        {getIcon(x.data.type)}
+                      </Avatar>
+                    </ListItemAvatar>
                     <ListItemText
                       primary={
                         <Grid
@@ -208,53 +205,23 @@ function Notifications(props) {
                         secondary: classes.listItemSecondary,
                       }}
                     />
+                    <ListItemSecondaryAction>
+                      <IconButton
+                        onClick={() => {
+                          archive(uid, x);
+                        }}
+                      >
+                        <ArchiveIcon />
+                      </IconButton>
+                    </ListItemSecondaryAction>
                   </ListItem>
                 )}
               </ScrollyRolly>
-              {/* <List>
-                {notifications &&
-                  notifications.length > 0 &&
-                  notifications.map(x => (
-                    <ListItem
-                      key={x.id}
-                      button
-                      onClick={() => {
-                        handleClick(x.data);
-                      }}
-                    >
-                      <Avatar>{getIcon(x.data.type)}</Avatar>
-                      <ListItemText
-                        primary={
-                          <Grid
-                            container
-                            justify="space-between"
-                            alignItems="center"
-                          >
-                            <Typography variant="subtitle1">
-                              {x.title}
-                            </Typography>
-                            <Typography
-                              variant="body2"
-                              className={classes.timestamp}
-                            >
-                              {moment.unix(x.createdAt.seconds).fromNow()}
-                            </Typography>
-                          </Grid>
-                        }
-                        secondary={x.body}
-                        classes={{
-                          root: classes.listItemTextRoot,
-                          secondary: classes.listItemSecondary,
-                        }}
-                      />
-                    </ListItem>
-                  ))}
-              </List> */}
             </Paper>
           </Slide>
         </Modal>
       )}
-    </React.Fragment>
+    </>
   );
 }
 

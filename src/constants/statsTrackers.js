@@ -6,6 +6,13 @@ export const trackers = {
     label: 'Sign ups',
     itemType: 'tracker',
   },
+  courseStarted: {
+    presetName: 'courseStarted',
+    type: 'course',
+    name: 'started',
+    label: 'Course Started',
+    itemType: 'tracker',
+  },
   signup3rdParty: {
     presetName: 'signup3rdParty',
     type: 'candidate',
@@ -119,6 +126,101 @@ export const trackers = {
     filters: [{ property: 'outcome', operation: '==', value: 'pending' }],
     collection: 'submissions',
     itemType: 'query',
+  },
+
+  interestJobs: {
+    presetName: 'interestJobs',
+    label: 'interested in jobs',
+    filters: [{ property: 'interest', operation: '==', value: 'jobs' }],
+    collection: 'users',
+    itemType: 'query',
+  },
+  interestCourses: {
+    presetName: 'interestCourses',
+    label: 'interested in courses',
+    filters: [{ property: 'interest', operation: '==', value: 'courses' }],
+    collection: 'users',
+    itemType: 'query',
+  },
+  interestAssessments: {
+    presetName: 'interestAssessments',
+    label: 'interested in assessments',
+    filters: [{ property: 'interest', operation: '==', value: 'assessments' }],
+    collection: 'users',
+    itemType: 'query',
+  },
+
+  jobApplied: {
+    presetName: 'jobApplied',
+    type: 'candidate',
+    name: 'applied',
+    label: 'Job applications',
+    itemType: 'tracker',
+  },
+  jobScreened: {
+    presetName: 'jobScreened',
+    type: 'job',
+    name: 'screened',
+    label: 'Job applications screened',
+    itemType: 'tracker',
+  },
+  jobPass: {
+    presetName: 'jobPass',
+    type: 'job',
+    name: 'pass',
+    label: 'Job applications passed',
+    itemType: 'tracker',
+  },
+  jobFail: {
+    presetName: 'jobFail',
+    type: 'job',
+    name: 'fail',
+    label: 'Job applications failed',
+    itemType: 'tracker',
+  },
+
+  assessmentStarted: {
+    presetName: 'assessmentStarted',
+    type: 'assessment',
+    name: 'started',
+    label: 'Assessments started',
+    itemType: 'tracker',
+  },
+  assessmentSubmitted: {
+    presetName: 'assessmentSubmitted',
+    type: 'assessment',
+    name: 'submitted',
+    label: 'Assessment submissions',
+    itemType: 'tracker',
+  },
+  assessmentScreened: {
+    presetName: 'assessmentScreened',
+    type: 'assessment',
+    name: 'screened',
+    label: 'Assessments screened',
+    itemType: 'tracker',
+  },
+  assessmentPass: {
+    presetName: 'assessmentPass',
+    type: 'assessment',
+    name: 'pass',
+    label: 'Assessments passed',
+    itemType: 'tracker',
+  },
+  assessmentFail: {
+    presetName: 'assessmentFail',
+    type: 'assessment',
+    name: 'fail',
+    label: 'Assessments failed',
+    itemType: 'tracker',
+  },
+
+  courseCompleted: {
+    presetName: 'courseCompleted',
+    type: 'courses',
+    name: 'completed',
+    label: 'Course completions',
+    itemType: 'tracker',
   },
 };
 

@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 
 import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
-import DebugIcon from '@material-ui/icons/BugReport';
+import DebugIcon from '@material-ui/icons/BugReportOutlined';
 
 import { copyToClipboard } from '../utilities';
 import DebugContext from '../contexts/DebugContext';
@@ -15,11 +15,11 @@ function DebugButton(props) {
   return (
     <Tooltip
       title={
-        <React.Fragment>
+        <>
           {title || 'Copy UID'}
           <br />
           {toCopy}
-        </React.Fragment>
+        </>
       }
     >
       <IconButton

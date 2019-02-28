@@ -8,8 +8,8 @@ import Typography from '@material-ui/core/Typography';
 import moment from 'moment';
 import IconButton from '@material-ui/core/IconButton';
 
-import EditIcon from '@material-ui/icons/Edit';
-import CopyIcon from '@material-ui/icons/FileCopy';
+import EditIcon from '@material-ui/icons/EditOutlined';
+import CopyIcon from '@material-ui/icons/FileCopyOutlined';
 import Tooltip from '@material-ui/core/Tooltip';
 import OpenIcon from '@material-ui/icons/ArrowForwardIos';
 
@@ -40,7 +40,7 @@ const styles = theme => ({
 function EmailTemplateCard(props) {
   const { classes, data, actions } = props;
   return (
-    <React.Fragment>
+    <>
       <Card classes={{ root: classes.root }} elevation={0}>
         <Grid container justify="space-between" alignItems="center">
           <Grid item xs={4}>
@@ -49,9 +49,7 @@ function EmailTemplateCard(props) {
               <Grid item xs>
                 <Typography variant="h6">
                   {data.label}
-                  {data.needsToRun && (
-                    <span className={classes.live}>Live</span>
-                  )}
+                  {data.delay ? `(after ${data.delay} days)` : ''}
                 </Typography>
                 <Typography variant="body2">
                   subject: {data.subject} - created&nbsp;
@@ -77,29 +75,20 @@ function EmailTemplateCard(props) {
           </Grid>
 
           <Grid item xs={2} className={classes.rightAligned}>
-            {data.id !== 'templateBase' && (
-              <Tooltip title="Edit Template">
-                <IconButton onClick={actions.edit}>
-                  <EditIcon />
-                </IconButton>
-              </Tooltip>
-            )}
-            <Tooltip title="Duplicate Template">
-              <IconButton onClick={actions.duplicate}>
-                <CopyIcon />
+            <Tooltip title="Edit Template">
+              <IconButton onClick={actions.edit}>
+                <EditIcon />
               </IconButton>
             </Tooltip>
-            {data.id !== 'templateBase' && (
-              <Tooltip title="View Template">
-                <IconButton onClick={actions.editTemplate}>
-                  <OpenIcon />
-                </IconButton>
-              </Tooltip>
-            )}
+            <Tooltip title="View Template">
+              <IconButton onClick={actions.editTemplate}>
+                <OpenIcon />
+              </IconButton>
+            </Tooltip>
           </Grid>
         </Grid>
       </Card>
-    </React.Fragment>
+    </>
   );
 }
 

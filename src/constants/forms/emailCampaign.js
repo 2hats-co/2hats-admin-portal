@@ -3,7 +3,8 @@ import findIndex from 'ramda/es/findIndex';
 
 import * as yup from 'yup';
 import propEq from 'ramda/es/propEq';
-import TRIGGERS from '../studentPortal/triggers';
+import { TRIGGERS } from '@bit/sidney2hats.2hats.global.common-constants';
+
 // const getLabel = (value, options) => {
 //   let index = findIndex(propEq('value', value))(options);
 //   return options[index];
@@ -28,14 +29,14 @@ const EmailCampaignFields = initialData => {
       type: FIELDS.autocompleteMulti,
       name: 'startTriggers',
       label: 'Start Triggers',
-      value: initialData['pauseTriggers']
-        ? getLabels(initialData['pauseTriggers'], TRIGGERS)
+      value: initialData['startTriggers']
+        ? getLabels(initialData['startTriggers'], TRIGGERS)
         : [],
       suggestions: TRIGGERS,
       validation: yup
         .array()
         .min(1)
-        .required('Skills are required'),
+        .required('Triggers are required'),
     },
     {
       type: FIELDS.autocompleteMulti,
@@ -48,7 +49,7 @@ const EmailCampaignFields = initialData => {
       validation: yup
         .array()
         .min(1)
-        .required('Skills are required'),
+        .required('Triggers are required'),
     },
   ];
 };

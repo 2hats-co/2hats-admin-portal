@@ -14,16 +14,16 @@ import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
 import Chip from '@material-ui/core/Chip';
 
-import AddIcon from '@material-ui/icons/Add';
+import AddIcon from '@material-ui/icons/AddOutlined';
 
 import { MuiPickersUtilsProvider } from 'material-ui-pickers';
 import MomentUtils from '@date-io/moment';
 import { DateTimePicker } from 'material-ui-pickers';
 import moment from 'moment';
 import ToggleButton from '@material-ui/lab/ToggleButton';
-import CustomIcon from '@material-ui/icons/Build';
+import CustomIcon from '@material-ui/icons/BuildOutlined';
 
-import { useAuthedUser } from '../../../hooks/useAuthedUser';
+import useAuthedUser from '../../../hooks/useAuthedUser';
 import { addEvent, updateEvent } from '../../../utilities/conversations';
 import clone from 'ramda/es/clone';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
@@ -370,7 +370,7 @@ function EventDialog(props) {
             className={classes.durationWrapper}
           >
             {customDuration ? (
-              <React.Fragment>
+              <>
                 <Grid item xs className={classes.sliderWrapper}>
                   <Slider
                     classes={{ container: classes.slider }}
@@ -386,9 +386,9 @@ function EventDialog(props) {
                     {data.end.duration} min
                   </Typography>
                 </Grid>
-              </React.Fragment>
+              </>
             ) : (
-              <React.Fragment>
+              <>
                 <ToggleButtonGroup
                   exclusive
                   value={data.end.duration}
@@ -403,7 +403,7 @@ function EventDialog(props) {
                     <CustomIcon fontSize="small" />
                   </IconButton>
                 </Tooltip>
-              </React.Fragment>
+              </>
             )}
           </Grid>
           <Typography variant="body1" className={classes.durationLabel}>

@@ -7,7 +7,7 @@ export const ROUTES = {
   templates: '/templates',
   auth: '/auth',
   resumes: '/resumes',
-  mail: '/mail',
+  // mail: '/mail',
   leads: '/leads',
   conversations: '/conversations',
   subjects: '/subjects',
@@ -16,6 +16,8 @@ export const ROUTES = {
   rejected: '/rejected',
   accepted: '/accepted',
   pending: '/pending',
+
+  submissions2: '/submissions2',
 
   marketingLeadGeneration: '/marketingLeadGeneration',
 
@@ -27,4 +29,5 @@ export const ROUTES = {
   assessmentsManager: '/contentManager/assessments',
   coursesManager: '/contentManager/courses',
   eventsManager: '/contentManager/events',
+  announcementsManager: '/contentManager/announcements',
 };

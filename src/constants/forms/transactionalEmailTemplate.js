@@ -2,7 +2,7 @@ import FIELDS from './fields';
 import findIndex from 'ramda/es/findIndex';
 import propEq from 'ramda/es/propEq';
 import * as yup from 'yup';
-import TRIGGERS from '../studentPortal/triggers';
+import { TRIGGERS } from '@bit/sidney2hats.2hats.global.common-constants/triggers';
 const getLabels = (values, options) => {
   return values.map(value => {
     let index = findIndex(propEq('value', value))(options);
@@ -12,6 +12,15 @@ const getLabels = (values, options) => {
 const emailTemplateFields = initialData => {
   if (!initialData) initialData = {};
   return [
+    {
+      type: FIELDS.docAutocomplete,
+      name: 'clonedTemplateId',
+      label: 'Template Base',
+      collection: 'emailTemplates',
+      placeholder: 'Template Base',
+      value: initialData['clonedTemplateId'],
+      validation: true,
+    },
     {
       type: FIELDS.textField,
       name: 'label',
@@ -44,10 +53,7 @@ const emailTemplateFields = initialData => {
         ? getLabels(initialData['triggers'], TRIGGERS)
         : [],
       suggestions: TRIGGERS,
-      validation: yup
-        .array()
-        .min(1)
-        .required('a trigger is required'),
+      validation: yup.array(),
     },
   ];
 };

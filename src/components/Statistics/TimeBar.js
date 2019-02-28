@@ -144,7 +144,7 @@ function TimeBar(props) {
             <option value="quarter">past quarter</option>
           </NativeSelect>
         ) : (
-          <React.Fragment>
+          <>
             {' '}
             <ToggleButtonGroup
               value={rangeType}
@@ -204,7 +204,7 @@ function TimeBar(props) {
                 </MuiPickersUtilsProvider>
               </form>
             )}
-          </React.Fragment>
+          </>
         )}
       </Grid>
       <Grid item className={classes.toggleContainer}>

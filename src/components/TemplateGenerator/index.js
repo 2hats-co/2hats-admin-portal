@@ -5,7 +5,7 @@ import {
   personaliseElements,
 } from '../../utilities/email/templateGenerator';
 
-import { useAuthedUser } from '../../hooks/useAuthedUser';
+import useAuthedUser from '../../hooks/useAuthedUser';
 
 import withStyles from '@material-ui/core/styles/withStyles';
 import Grid from '@material-ui/core/Grid';
@@ -72,7 +72,7 @@ function TemplateGenerator(props) {
   if (!candidate)
     return (
       <Slide in direction="up">
-        <React.Fragment>
+        <>
           <Grid
             container
             justify="center"
@@ -82,7 +82,7 @@ function TemplateGenerator(props) {
           >
             <CircularProgress size={64} />
           </Grid>
-        </React.Fragment>
+        </>
       </Slide>
     );
 

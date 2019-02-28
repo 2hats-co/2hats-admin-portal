@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
@@ -7,52 +7,38 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import Dropzone from 'react-dropzone';
 import { blobImageUploader } from '../../../utilities/imageUploader';
 import CloudUploadIcon from '@material-ui/icons/CloudUploadOutlined';
+import FileIcon from '@material-ui/icons/AttachmentOutlined';
+
+import FormHelperText from '@material-ui/core/FormHelperText';
 import Chip from '@material-ui/core/Chip';
+
+import { STYLES } from '@bit/sidney2hats.2hats.global.common-constants';
 
 const styles = theme => ({
   sectionTitle: {
-    marginLeft: theme.spacing.unit,
+    marginLeft: theme.spacing.unit * 1.5,
   },
-  dropzone: {
-    borderRadius: theme.shape.borderRadius,
-    borderColor: theme.palette.divider,
-    borderStyle: 'dashed',
-    borderWidth: theme.spacing.unit / 2,
-    padding: theme.spacing.unit * 2,
-    paddingBottom: theme.spacing.unit * 3,
-    textAlign: 'center',
-    minHeight: theme.spacing.unit * 12,
-    cursor: 'pointer',
-
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    flexDirection: 'column',
-  },
-  uploadIcon: {
-    fontSize: theme.spacing.unit * 8,
-    color: theme.palette.text.secondary,
-  },
-  dropzoneButton: { marginTop: theme.spacing.unit / 2 },
-  fileChipWrapper: { textAlign: 'center' },
-  fileChip: {
-    marginTop: theme.spacing.unit / 2,
-    cursor: 'pointer',
-  },
+  ...STYLES.DROPZONE(theme),
 });
 const Uploader = props => {
-  const {
-    label,
-    name,
-    mimeTypes,
-    path,
-    validator,
-    formikProps,
-    classes,
-  } = props;
+  const { label, name, mimeTypes, path, formikProps, classes } = props;
   const { setValues, values, errors, touched } = formikProps;
+
+  const [uploadUrl, setUploadUrl] = useState(null);
+  useEffect(
+    () => {
+      if (uploadUrl) {
+        setValues({
+          ...values,
+          [name]: { name: values[name].name, url: uploadUrl },
+        });
+      }
+    },
+    [uploadUrl]
+  );
+
   return (
-    <Grid item>
+    <Grid item xs={12}>
       <Typography
         variant="caption"
         className={classes.sectionTitle}
@@ -66,11 +52,8 @@ const Uploader = props => {
             ...values,
             [name]: { name: files[0].name },
           });
-          blobImageUploader(files[0], path, (url, name) => {
-            setValues({
-              ...values,
-              [name]: { name, url },
-            });
+          blobImageUploader(files[0], path, (url, fileName) => {
+            setUploadUrl(url);
           });
         }}
         accept={mimeTypes || ''}
@@ -95,18 +78,33 @@ const Uploader = props => {
             target="_blank"
             rel="noopener noreferrer"
             label={values[name]['name']}
-            onDelete={() =>
-              setValues({
-                ...values,
-                [name]: null,
-              })
+            onDelete={
+              values[name].url
+                ? e => {
+                    e.preventDefault();
+                    setValues({
+                      ...values,
+                      [name]: null,
+                    });
+                  }
+                : null
             }
             className={classes.fileChip}
-            icon={!values[name].url ? <CircularProgress size={32} /> : null}
+            icon={
+              !values[name].url ? (
+                <CircularProgress size={32} />
+              ) : (
+                <FileIcon className={classes.fileIcon} />
+              )
+            }
           />
         </div>
       )}
-      {validator(name)}
+      {touched[name] && errors[name] && (
+        <FormHelperText error className={classes.sectionTitle}>
+          Required
+        </FormHelperText>
+      )}
     </Grid>
   );
 };

@@ -1,29 +1,40 @@
 import React, { useEffect } from 'react';
 
 import withStyles from '@material-ui/core/styles/withStyles';
+
+import { unstable_useMediaQuery as useMediaQuery } from '@material-ui/core/useMediaQuery';
+import Slide from '@material-ui/core/Slide';
+import Grid from '@material-ui/core/Grid';
+import Button from '@material-ui/core/Button';
+import FormHelperText from '@material-ui/core/FormHelperText';
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
-import Grid from '@material-ui/core/Grid';
-import Button from '@material-ui/core/Button';
-import FormHelperText from '@material-ui/core/FormHelperText';
+import DeleteIcon from '@material-ui/icons/DeleteOutlined';
+import IconButton from '@material-ui/core/IconButton';
+
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import remove from 'ramda/es/remove';
 import map from 'ramda/es/map';
+
 import FIELDS from '../../constants/forms/fields';
+
 import Text from './Fields/Text';
+import RichText from './Fields/RichText';
+import RichTextMulti from './Fields/RichTextMulti';
 import TextItems from './Fields/TextItems';
 import Slider from './Fields/Slider';
 import DateTime from './Fields/DateTime';
 import Uploader from './Fields/Uploader';
 import Select from './Fields/Select';
-
-import DeleteIcon from '@material-ui/icons/Delete';
-import IconButton from '@material-ui/core/IconButton';
+import Checkbox from './Fields/Checkbox';
+import RadioButtons from './Fields/RadioButtons';
+import DocumentSelect from './Fields/DocumentSelect';
 
 const styles = theme => ({
+  mobile: {},
   paperRoot: {
     width: `calc(100% - ${theme.spacing.unit * 4}px)`,
     maxWidth: 600,
@@ -33,41 +44,74 @@ const styles = theme => ({
 
   dialogTitle: {
     paddingTop: theme.spacing.unit * 2.5,
-    paddingBottom: theme.spacing.unit * 2,
-    position: 'relative',
-    '&::after': {
-      content: '""',
-      display: 'block',
-      height: 1,
-      position: 'absolute',
-      background: theme.palette.divider,
-      bottom: 0,
-      left: theme.spacing.unit * 3,
-      right: theme.spacing.unit * 3,
+
+    '& > *': {
+      overflow: 'hidden',
+      whiteSpace: 'nowrap',
+      textOverflow: 'ellipsis',
+    },
+
+    '$mobile &': {
+      padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit * 2.5}px`,
     },
   },
-  wrapperGrid: { marginTop: theme.spacing.unit },
+
+  wrapperGrid: {
+    overflowX: 'hidden',
+    paddingBottom: theme.spacing.unit,
+  },
+
+  dialogContent: {
+    paddingBottom: 0,
+    position: 'relative',
+    zIndex: 1,
+
+    background: `${theme.palette.background.paper} no-repeat`,
+    backgroundImage:
+      theme.palette.type === 'dark'
+        ? 'linear-gradient(to bottom, rgba(0,0,0,.5), rgba(0,0,0,0)), linear-gradient(to top, rgba(0,0,0,.5), rgba(0,0,0,0))'
+        : 'linear-gradient(to bottom, rgba(0,0,0,.1), rgba(0,0,0,0)), linear-gradient(to top, rgba(0,0,0,.1), rgba(0,0,0,0))',
+    backgroundPosition: `-${theme.spacing.unit * 3}px 0, -${theme.spacing.unit *
+      3}px 100%`,
+    backgroundSize: `calc(100% + ${theme.spacing.unit * 3}px) ${theme.spacing
+      .unit * 2}px`,
+
+    '&::before, &::after': {
+      content: '""',
+      position: 'relative',
+      zIndex: -1,
+      display: 'block',
+      height: theme.spacing.unit * 4,
+      margin: `0 -${theme.spacing.unit * 3}px -${theme.spacing.unit * 4}px`,
+      background: `linear-gradient(to bottom, ${
+        theme.palette.background.paper
+      }, ${theme.palette.background.paper} 30%, rgba(255, 255, 255, 0))`,
+    },
+
+    '&::after': {
+      marginTop: -theme.spacing.unit * 4,
+      marginBottom: 0,
+      background: `linear-gradient(to bottom, rgba(255, 255, 255, 0), ${
+        theme.palette.background.paper
+      } 70%, ${theme.palette.background.paper})`,
+    },
+
+    '$mobile &': {
+      padding: `0 ${theme.spacing.unit * 2}px`,
+
+      '&::before, &::after': {
+        marginLeft: -theme.spacing.unit * 2,
+        marginRight: -theme.spacing.unit * 2,
+      },
+    },
+  },
 
   capitalise: {
     '&::first-letter': { textTransform: 'uppercase' },
   },
 
   sectionTitle: {
-    marginLeft: theme.spacing.unit,
-  },
-
-  dialogActions: {
-    position: 'relative',
-    '&::before': {
-      content: '""',
-      display: 'block',
-      height: 1,
-      position: 'absolute',
-      background: theme.palette.divider,
-      top: -theme.spacing.unit,
-      left: theme.spacing.unit * 2.5,
-      right: theme.spacing.unit * 2.5,
-    },
+    marginLeft: theme.spacing.unit * 1.5,
   },
 });
 
@@ -99,15 +143,22 @@ const validationReducer = (obj, item) => (
   item.validation ? (obj[item.name] = item.validation) : null, obj
 );
 
+function Transition(props) {
+  return <Slide direction="up" {...props} />;
+}
+
 function Form(props) {
   const {
     classes,
+    theme,
     action,
     actions,
     open,
     data,
     formTitle,
     justForm,
+    formHeader,
+    formFooter,
     handleDelete,
   } = props;
 
@@ -124,6 +175,8 @@ function Form(props) {
     },
     [data]
   );
+
+  const isMobile = useMediaQuery(theme.breakpoints.down('xs'));
 
   return (
     <Formik
@@ -188,7 +241,7 @@ function Form(props) {
         const Fields = (
           <Grid
             container
-            direction="column"
+            direction="row"
             spacing={8}
             className={classes.wrapperGrid}
           >
@@ -206,6 +259,32 @@ function Form(props) {
                       label={x.label}
                       name={x.name}
                       placeholder={x.placeholder}
+                      width={x.width}
+                      autoFocus={x.autoFocus}
+                    />
+                  );
+
+                case FIELDS.richText:
+                  return (
+                    <RichText
+                      key={x.name}
+                      formikProps={formikProps}
+                      label={x.label}
+                      name={x.name}
+                      placeholder={x.placeholder}
+                      validator={validator}
+                    />
+                  );
+
+                case FIELDS.richTextMulti:
+                  return (
+                    <RichTextMulti
+                      key={x.name}
+                      formikProps={formikProps}
+                      label={x.label}
+                      name={x.name}
+                      placeholder={x.placeholder}
+                      validator={validator}
                     />
                   );
 
@@ -218,6 +297,7 @@ function Form(props) {
                       formikProps={formikProps}
                       handleAddToList={handleAddToList}
                       handleDeleteFromList={handleDeleteFromList}
+                      placeholder={x.placeholder}
                     />
                   );
 
@@ -227,6 +307,8 @@ function Form(props) {
                       key={x.name}
                       name={x.name}
                       label={x.label}
+                      calcValueLabel={x.calcValueLabel}
+                      sliderThumbLabel={x.sliderThumbLabel}
                       min={x.min}
                       max={x.max}
                       step={x.step}
@@ -249,6 +331,20 @@ function Form(props) {
                       label={x.label}
                       type={x.type}
                       formikProps={formikProps}
+                      width={x.width}
+                    />
+                  );
+                case FIELDS.docAutocomplete:
+                  return (
+                    <DocumentSelect
+                      collection={x.collection}
+                      key={x.name}
+                      placeholder={x.placeholder}
+                      name={x.name}
+                      label={x.label}
+                      type={x.type}
+                      formikProps={formikProps}
+                      width={x.width}
                     />
                   );
 
@@ -262,6 +358,7 @@ function Form(props) {
                       type={x.type}
                       formikProps={formikProps}
                       validator={validator}
+                      width={x.width}
                     />
                   );
 
@@ -270,11 +367,37 @@ function Form(props) {
                     <Uploader
                       key={x.name}
                       formikProps={formikProps}
+                      thisBind={this}
                       label={x.label}
                       name={x.name}
                       path={x.path}
                       mimeTypes={x.mimeTypes}
                       validator={validator}
+                    />
+                  );
+
+                case FIELDS.checkbox:
+                  return (
+                    <Checkbox
+                      key={x.name}
+                      formikProps={formikProps}
+                      label={x.label}
+                      name={x.name}
+                      validator={validator}
+                      width={x.width}
+                    />
+                  );
+
+                case FIELDS.radio:
+                  return (
+                    <RadioButtons
+                      key={x.name}
+                      formikProps={formikProps}
+                      label={x.label}
+                      name={x.name}
+                      validator={validator}
+                      options={x.options}
+                      horiz={x.horiz}
                     />
                   );
 
@@ -290,25 +413,32 @@ function Form(props) {
             color="primary"
             variant="contained"
             type="submit"
+            id="submit"
             classes={{ label: classes.capitalise }}
           >
             {action[0].toUpperCase()}
             {action.substr(1)}
           </Button>
         );
-
         return (
           <form onSubmit={handleSubmit}>
             {justForm ? (
               <Grid container>
+                {formHeader}
                 {Fields}
+                {formFooter}
                 {PrimaryButton}
               </Grid>
             ) : (
               <Dialog
                 open={open}
-                onClose={actions.close}
-                classes={{ paper: classes.paperRoot }}
+                //onClose={actions.close}
+                classes={{
+                  paper: isMobile ? classes.mobilePaperRoot : classes.paperRoot,
+                }}
+                fullScreen={isMobile}
+                className={isMobile ? classes.mobile : ''}
+                TransitionComponent={Transition}
               >
                 <DialogTitle
                   className={classes.capitalise}
@@ -322,10 +452,14 @@ function Form(props) {
                   )}
                 </DialogTitle>
 
-                <DialogContent>{Fields}</DialogContent>
+                <DialogContent classes={{ root: classes.dialogContent }}>
+                  {formHeader}
+                  {Fields}
+                  {formFooter}
+                </DialogContent>
 
-                <DialogActions classes={{ root: classes.dialogActions }}>
-                  <Button onClick={actions.close} color="primary">
+                <DialogActions>
+                  <Button onClick={actions.close} color="primary" id="cancel">
                     Cancel
                   </Button>
                   {PrimaryButton}
@@ -339,4 +473,4 @@ function Form(props) {
   );
 }
 
-export default withStyles(styles)(Form);
+export default withStyles(styles, { withTheme: true })(Form);

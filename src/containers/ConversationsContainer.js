@@ -3,7 +3,7 @@ import withNavigation from '../components/withNavigation';
 import withStyles from '@material-ui/core/styles/withStyles';
 
 import Typography from '@material-ui/core/Typography';
-import ForumIcon from '@material-ui/icons/Forum';
+import ForumIcon from '@material-ui/icons/ForumOutlined';
 import LocationIndicator from '../components/LocationIndicator';
 
 import Grid from '@material-ui/core/Grid';
@@ -12,8 +12,10 @@ import Fade from '@material-ui/core/Fade';
 import ConversationHeader from '../components/Conversations/ConversationHeader';
 import Messages from '../components/Conversations/Messages';
 import LoadingHat from '../components/LoadingHat';
-import useWindowSize from '../hooks/useWindowSize';
+
+import { unstable_useMediaQuery as useMediaQuery } from '@material-ui/core/useMediaQuery';
 import useDocument from '../hooks/useDocument';
+import { ROUTES } from '../constants/routes';
 import { getfirstIdOfQuery } from '../utilities/firestore';
 import { createConversation } from '../utilities/conversations';
 
@@ -57,15 +59,20 @@ const styles = theme => ({
 function ConversationsContainer(props) {
   const { classes, uid, location, history } = props;
   const currentUserId = uid;
-  const windowSize = useWindowSize();
+
+  const isMobile = useMediaQuery('(max-width: 704px)');
 
   const [conversationState, dispatchConversation] = useDocument();
   let selectedConversation = conversationState.doc;
-  const openedConversationOnMobile =
-    windowSize.isMobile && selectedConversation;
+
+  const openedConversationOnMobile = isMobile && selectedConversation;
+
   const handleCloseConversation = () => {
-    dispatchConversation({ path: null });
+    dispatchConversation({ path: null, doc: null });
+    selectedConversation = null;
+    history.push(ROUTES.conversations);
   };
+
   const setConversationWithURL = async () => {
     if (location.search.indexOf('?id=') > -1) {
       const conversationId = location.search.replace('?id=', '');
@@ -82,6 +89,7 @@ function ConversationsContainer(props) {
       }
     }
   };
+
   useEffect(
     () => {
       selectedConversation = null;
@@ -92,35 +100,39 @@ function ConversationsContainer(props) {
 
   return (
     <Fade in>
-      <Grid container direction="row" style={{ height: 'calc(100vh - 64px)' }}>
+      <Grid container direction="row">
         {!openedConversationOnMobile && (
-          <React.Fragment>
+          <>
             <LocationIndicator title="Conversations" />
             <Grid
               item
               style={{
-                width: windowSize.isMobile ? '100%' : 320,
+                width: isMobile ? '100%' : 320,
                 height: 'calc(100vh - 64px)',
               }}
             >
-              <ConversationsList
-                uid={uid}
-                selectedConversation={selectedConversation}
-                setSelectedConversation={conversation => {
-                  dispatchConversation({
-                    path: `conversations/${conversation.id}`,
-                  });
-                  history.push(`/conversations?id=${conversation.id}`);
-                }}
-              />
+              <Suspense
+                fallback={<LoadingHat message="Getting your controls…" />}
+              >
+                <ConversationsList
+                  uid={uid}
+                  selectedConversation={selectedConversation}
+                  setSelectedConversation={conversation => {
+                    dispatchConversation({
+                      path: `conversations/${conversation.id}`,
+                    });
+                    history.push(`/conversations?id=${conversation.id}`);
+                  }}
+                />
+              </Suspense>
             </Grid>
-          </React.Fragment>
+          </>
         )}
         <Grid
           item
           xs
           className={classes.messagesContainer}
-          style={{ marginTop: windowSize.isMobile ? 0 : '-64px' }}
+          style={{ marginTop: isMobile ? 0 : '-64px' }}
         >
           {selectedConversation ? (
             <Grid

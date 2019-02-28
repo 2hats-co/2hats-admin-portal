@@ -16,9 +16,10 @@ function CampaignList(props) {
   if (campaigns) {
     return (
       <React.Fragment>
-        {campaigns.map(campaign => {
+        {campaigns.map((campaign, i) => {
           return (
             <EmailCampaignCard
+              key={i}
               campaign={campaign}
               actions={{
                 edit: () => {

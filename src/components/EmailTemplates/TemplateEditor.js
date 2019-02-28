@@ -10,7 +10,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import Chip from '@material-ui/core/Chip';
 import { sendEmail } from '../../utilities/email/send';
 
-import { useAuthedUser } from '../../hooks/useAuthedUser';
+import useAuthedUser from '../../hooks/useAuthedUser';
 import useWindowSize from '../../hooks/useWindowSize';
 import { globalReplace, copyToClipboard } from '../../utilities';
 const basicTags = [
@@ -58,7 +58,7 @@ function TemplateEditor(props) {
     editor.current.exportHtml(data => {
       const { html } = data;
 
-      let emailSubject = 'test sub';
+      let emailSubject = template.subject;
       let body = html;
       replaceables.forEach(r => {
         body = globalReplace(body, r.label, r.value);
@@ -66,7 +66,7 @@ function TemplateEditor(props) {
       });
       sendEmail({
         email: { subject: emailSubject, body: body },
-        recipient: { UID: '234253235', email: currentUser.email },
+        recipient: { UID: 'TESTUID', email: currentUser.email },
         sender: { UID: currentUser.UID, email: template.senderEmail },
       });
     });

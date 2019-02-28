@@ -18,7 +18,7 @@ import ComposerActions from './ComposerActions';
 import TemplateDropdown from './TemplateDropdown';
 import TextTemplateDropdown from './TextTemplateDropdown';
 import { AdminsContext } from '../../../contexts/AdminsContext';
-import { useAuthedUser } from '../../../hooks/useAuthedUser';
+import useAuthedUser from '../../../hooks/useAuthedUser';
 import { removeHtmlTags, globalReplace } from '../../../utilities';
 import { sendEmail } from '../../../utilities/email/gmail';
 import { sendLinkedinMessage } from '../../../utilities/linkedin';
@@ -46,7 +46,7 @@ const styles = theme => ({
     marginLeft: -theme.spacing.unit * 2,
     marginBottom: theme.spacing.unit * 2,
     width: `calc(100% + ${theme.spacing.unit * 3}px)`,
-    height: theme.spacing.unit * 4.5,
+    // height: theme.spacing.unit * 4.5,
   },
   tabsScroller: { width: 'auto' },
   tabsFlexContainer: { display: 'inline-flex' },
@@ -55,12 +55,19 @@ const styles = theme => ({
   emailFields: {
     marginLeft: theme.spacing.unit * 2,
     marginRight: theme.spacing.unit * 2,
+    marginTop: -5,
+    marginBottom: -7,
   },
 
   templateDropdownWrapper: {
     position: 'relative',
     top: theme.spacing.unit / 2,
-    right: theme.spacing.unit / 2,
+    textAlign: 'right',
+
+    [theme.breakpoints.down('sm')]: {
+      top: theme.spacing.unit,
+      left: theme.spacing.unit,
+    },
   },
   templateDropdown: {
     paddingTop: theme.spacing.unit,
@@ -270,7 +277,7 @@ function Composer(props) {
       )}
     >
       <Grid container className={classes.topBar} alignItems="center">
-        <Grid item>
+        <Grid item xs={12} lg="auto">
           <Tabs
             classes={{
               root: classes.tabRoot,
@@ -313,8 +320,8 @@ function Composer(props) {
           </Tabs>
         </Grid>
         {composerType === 'email' && (
-          <React.Fragment>
-            <Grid item xs className={classes.emailFields}>
+          <>
+            <Grid item xs={12} sm className={classes.emailFields}>
               <Grid container spacing={8}>
                 <Grid item xs={6}>
                   <TextField
@@ -354,10 +361,10 @@ function Composer(props) {
             <Grid item className={classes.templateDropdownWrapper}>
               <TemplateDropdown classes={classes} setTemplate={setTemplate} />
             </Grid>
-          </React.Fragment>
+          </>
         )}
         {composerType === 'linkedin' && (
-          <Grid item className={classes.templateDropdownWrapper}>
+          <Grid item xs className={classes.templateDropdownWrapper}>
             <TextTemplateDropdown classes={classes} setText={setMessageText} />
           </Grid>
         )}
@@ -396,6 +403,7 @@ function Composer(props) {
       ) : (
         <InputBase
           autoFocus
+          disabled={composerType === 'linkedin'}
           value={messageText}
           onChange={e => {
             setMessageText(e.target.value);
@@ -406,9 +414,14 @@ function Composer(props) {
             className: classNames(classes.plainTextBox, classes.scrollableBox),
           }}
           multiline
-          placeholder={`Type your ${
-            composerType === 'linkedin' ? 'message' : 'note'
-          } here…`}
+          // placeholder={`Type your ${
+          //   composerType === 'linkedin' ? 'message' : 'note'
+          // } here…`}
+          placeholder={
+            composerType === 'linkedin'
+              ? 'This service is currently under reconstruction due to internet reliablity issues, please use the linkedin icon above to be direct to the clients linkedin message thread. We are working hard on bring back this service, sorry for the inconvience, and thank you for your understanding.'
+              : 'Type your note here'
+          }
         />
       )}
 

@@ -70,7 +70,7 @@ function CampaignDetailsDialog(props) {
   const recentConnections = recentConnectionsState.documents;
 
   return (
-    <React.Fragment>
+    <>
       <DialogTitle className={classes.dialogTitle}>
         Campaign: {data.query}
         {data.needsToRun && <span className={classes.live}>Live</span>}
@@ -88,7 +88,7 @@ function CampaignDetailsDialog(props) {
       <DialogContent className={classes.dialogContent}>
         <div className={classes.dialogSection}>
           <Typography variant="subtitle1" className={classes.sectionTitle}>
-            Stats <span className={classes.fake}>(*fake data)</span>
+            Stats
           </Typography>
           <Grid container spacing={24}>
             <Grid item xs={3}>
@@ -106,30 +106,6 @@ function CampaignDetailsDialog(props) {
               <Typography variant="body2">Last page</Typography>
             </Grid>
 
-            <Grid item xs={3} className={classes.fake}>
-              <Typography variant="h6">
-                {Math.floor(Math.random() * 100)}
-                <small>%</small>
-              </Typography>
-              <Typography variant="body2">
-                Accepted
-                <br />
-                connection rate*
-              </Typography>
-            </Grid>
-
-            <Grid item xs={3} className={classes.fake}>
-              <Typography variant="h6">
-                {Math.floor(Math.random() * 100)}
-                <small>%</small>
-              </Typography>
-              <Typography variant="body2">
-                Response
-                <br />
-                rate*
-              </Typography>
-            </Grid>
-
             <Grid item xs={3}>
               <Typography variant="h6">{data.requestsCount}</Typography>
               <Typography variant="body2">
@@ -145,17 +121,6 @@ function CampaignDetailsDialog(props) {
                 Connections
                 <br />
                 per session
-              </Typography>
-            </Grid>
-
-            <Grid item xs={3} className={classes.fake}>
-              <Typography variant="h6">
-                {Math.floor(Math.random() * 10)}
-              </Typography>
-              <Typography variant="body2">
-                Connections
-                <br />
-                per day*
               </Typography>
             </Grid>
           </Grid>
@@ -182,7 +147,7 @@ function CampaignDetailsDialog(props) {
           </div>
         )}
       </DialogContent>
-    </React.Fragment>
+    </>
   );
 }
 

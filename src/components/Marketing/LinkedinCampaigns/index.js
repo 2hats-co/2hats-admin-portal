@@ -1,4 +1,5 @@
 import React, { useState, Suspense, lazy } from 'react';
+import firebase from 'firebase/app';
 
 import CampaignCard from './CampaignCard';
 import LoadingHat from '../../LoadingHat';
@@ -38,7 +39,7 @@ function LinkedinCampaigns(props) {
       needsToRun: false,
       requestsCount: 0,
       startPage: 0,
-      createdAt: new Date(),
+      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
     });
     setShowEditor(false);
   };
@@ -49,7 +50,7 @@ function LinkedinCampaigns(props) {
       .update({
         ...data,
         needsToRun: false,
-        updatedAt: new Date(),
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
       });
     setShowEditor(false);
   };
@@ -59,7 +60,7 @@ function LinkedinCampaigns(props) {
   const campaigns = campaignsState.documents;
   if (campaigns)
     return (
-      <React.Fragment>
+      <>
         {campaigns.map((x, i) => (
           <CampaignCard
             data={x}
@@ -104,7 +105,7 @@ function LinkedinCampaigns(props) {
         >
           <AddIcon />
         </Fab>
-      </React.Fragment>
+      </>
     );
   else return <LoadingHat message="Loading campaigns…" />;
 }

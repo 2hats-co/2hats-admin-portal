@@ -13,12 +13,12 @@ import TextField from '@material-ui/core/TextField';
 
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
-import DonutIcon from '@material-ui/icons/DonutLarge';
-import BarIcon from '@material-ui/icons/BarChart';
-import LineIcon from '@material-ui/icons/Timeline';
+import DonutIcon from '@material-ui/icons/DonutLargeOutlined';
+import BarIcon from '@material-ui/icons/BarChartOutlined';
+import LineIcon from '@material-ui/icons/TimelineOutlined';
 
 import AddCircleIcon from '@material-ui/icons/AddCircleOutline';
-import DeleteIcon from '@material-ui/icons/Delete';
+import DeleteIcon from '@material-ui/icons/DeleteOutlined';
 
 import ChartItem from './ChartItem';
 import { getRandomId } from '../../../utilities';
@@ -261,7 +261,7 @@ function ChartEditor(props) {
         </ToggleButtonGroup>
 
         {chart.type && (
-          <React.Fragment>
+          <>
             {chart.type !== 'number' && (
               <TextField
                 value={chart.title}
@@ -291,7 +291,7 @@ function ChartEditor(props) {
                 handleDeleteItem={handleDeleteItem}
               />
             ))}
-          </React.Fragment>
+          </>
         )}
       </DialogContent>
 

@@ -11,7 +11,8 @@ import Fade from '@material-ui/core/Fade';
 
 import SearchIcon from '@material-ui/icons/Search';
 import SupervisorAccountIcon from '@material-ui/icons/SupervisorAccount';
-import DescriptionIcon from '@material-ui/icons/Description';
+// import DescriptionIcon from '@material-ui/icons/Description';
+import Submissions2Icon from '@material-ui/icons/RateReview';
 import StatisticsIcon from '@material-ui/icons/InsertChart';
 import ConversationsIcon from '@material-ui/icons/Forum';
 import MarketingIcon from '../../assets/icons/Bullhorn';
@@ -31,7 +32,7 @@ import UserDialog from '../UserDialog';
 import SuperAvatar from '../SuperAvatar';
 
 import metadata from '../../metadata.json';
-import { useAuthedUser } from '../../hooks/useAuthedUser';
+import useAuthedUser from '../../hooks/useAuthedUser';
 import DebugContext from '../../contexts/DebugContext';
 import { AdminsProvider } from '../../contexts/AdminsContext';
 
@@ -92,15 +93,9 @@ const navigationRoutes = [
     route: ROUTES.stats,
   },
   {
-    label: 'Submissions',
-    icon: <DescriptionIcon />,
-    route: ROUTES.pending,
-    subRoutes: [
-      ROUTES.submissions,
-      ROUTES.pending,
-      ROUTES.rejected,
-      ROUTES.accepted,
-    ],
+    label: 'Submissions2',
+    icon: <Submissions2Icon />,
+    route: ROUTES.submissions2,
   },
   {
     label: 'Conversations',
@@ -139,8 +134,9 @@ const navigationRoutes = [
       ROUTES.coursesManager,
       ROUTES.assessmentsManager,
       ROUTES.eventsManager,
+      ROUTES.announcementsManager,
     ],
-    incomplete: true,
+    //  incomplete: true,
   },
 ];
 
@@ -171,7 +167,7 @@ export default function withNavigation(WrappedComponent) {
       }
     }
 
-    if (currentUser && displayName && uid)
+    if (currentUser && uid)
       return (
         <AdminsProvider>
           <DebugContext.Provider
@@ -179,7 +175,7 @@ export default function withNavigation(WrappedComponent) {
           >
             <Grid container wrap="nowrap" className={classes.root}>
               <Slide in direction="right">
-                <React.Fragment>
+                <>
                   <Grid item className={classes.leftNav}>
                     <Grid
                       container
@@ -190,12 +186,12 @@ export default function withNavigation(WrappedComponent) {
                       <Grid item>
                         <Tooltip
                           title={
-                            <React.Fragment>
+                            <>
                               <b>Build {metadata.hash}</b>
                               <div>
                                 {new Date(metadata.date).toLocaleString()}
                               </div>
-                            </React.Fragment>
+                            </>
                           }
                           placement="right"
                         >
@@ -250,7 +246,7 @@ export default function withNavigation(WrappedComponent) {
                       </Grid>
                     </Grid>
                   </Grid>
-                </React.Fragment>
+                </>
               </Slide>
               <Fade in timeout={400}>
                 <Grid
@@ -264,7 +260,11 @@ export default function withNavigation(WrappedComponent) {
             </Grid>
 
             {showSearch && (
-              <Search showSearch={showSearch} setShowSearch={setShowSearch} />
+              <Search
+                showSearch={showSearch}
+                setShowSearch={setShowSearch}
+                placeholder="Search users"
+              />
             )}
             {showUserDialog && (
               <UserDialog

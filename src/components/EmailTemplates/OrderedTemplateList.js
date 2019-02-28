@@ -6,17 +6,11 @@ import useCollection from '../../hooks/useCollection';
 import { COLLECTIONS } from '../../constants/firestore';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
-// a little function to help us with reordering the result
-const reorder = (list, startIndex, endIndex) => {
-  const result = Array.from(list);
-  const [removed] = result.splice(startIndex, 1);
-  result.splice(endIndex, 0, removed);
-
-  return result;
-};
-
+import sortWith from 'ramda/es/sortWith';
+import ascend from 'ramda/es/ascend';
+import prop from 'ramda/es/prop';
 const grid = 1;
-
+const sortByIndex = sortWith([ascend(prop('index'))]);
 const getItemStyle = (isDragging, draggableStyle) => ({
   // some basic styles to make the items look a bit nicer
   userSelect: 'none',
@@ -24,7 +18,7 @@ const getItemStyle = (isDragging, draggableStyle) => ({
   margin: `0 0 ${grid}px 0`,
 
   // change background colour if dragging
-  background: isDragging ? 'lightgreen' : 'grey',
+  background: isDragging ? 'lightgreen' : 'rgb(245, 245, 245)',
 
   // styles we need to apply on draggables
   ...draggableStyle,
@@ -45,9 +39,16 @@ function OrderedTemplateList(props) {
     filters,
     sort: { field: 'index', direction: 'asc' },
   });
-  const onDragEnd = result => {
+  const onDragEnd = async result => {
     // dropped outside the list
+
     if (result.destination.index !== result.source.index) {
+      //update index of moved element
+      templatesDispatch({
+        type: 'updateDoc',
+        id: result.draggableId,
+        data: { index: result.destination.index },
+      });
       if (result.destination.index < result.source.index) {
         // items effect have index < destination.index
         const affectedTemplates = templatesState.documents.filter(
@@ -55,15 +56,29 @@ function OrderedTemplateList(props) {
             doc.index < result.source.index &&
             doc.index > result.destination.index - 1
         );
-        console.log('affectedTemplates <', affectedTemplates);
+        affectedTemplates.forEach(doc => {
+          templatesDispatch({
+            type: 'updateDoc',
+            id: doc.id,
+            data: { index: doc.index + 1 },
+          });
+        });
+        console.log('affectedTemplates drag up', affectedTemplates);
       } else {
         const affectedTemplates = templatesState.documents.filter(
-          doc => doc.index > result.source.index
+          doc =>
+            doc.index > result.source.index &&
+            doc.index <= result.destination.index
         );
-        console.log('affectedTemplates >', affectedTemplates);
+        affectedTemplates.forEach(doc => {
+          templatesDispatch({
+            type: 'updateDoc',
+            id: doc.id,
+            data: { index: doc.index - 1 },
+          });
+        });
+        console.log('affectedTemplates drag down', affectedTemplates);
       }
-      console.log(result);
-      console.log(templatesState.documents);
     }
   };
   useEffect(
@@ -85,7 +100,9 @@ function OrderedTemplateList(props) {
     [campaignId]
   );
   let templates = templatesState.documents;
-  if (templates)
+  if (templates) {
+    templates = sortByIndex(templates);
+    console.log(templates);
     return (
       <DragDropContext onDragEnd={onDragEnd}>
         <Droppable droppableId={campaignId}>
@@ -113,11 +130,9 @@ function OrderedTemplateList(props) {
                           edit: () => {
                             setTemplate(item);
                             editTemplate(item);
-                            // history.push(`marketingEmail?id=${x.id}`);
                           },
                           editTemplate: () => {
                             setTemplate(item);
-                            // history.push(`marketingEmail?id=${x.id}`);
                           },
                         }}
                       />
@@ -131,7 +146,7 @@ function OrderedTemplateList(props) {
         </Droppable>
       </DragDropContext>
     );
-  else return <LoadingHat message="Loading templates…" />;
+  } else return <LoadingHat message="Loading templates…" />;
 }
 
 export default withRouter(OrderedTemplateList);

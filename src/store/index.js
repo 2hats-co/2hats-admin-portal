@@ -9,11 +9,11 @@ import { COLLECTIONS } from '../constants/firestore';
 if (process.env.REACT_APP_ENV === 'PRODUCTION') {
   console.log('production');
   firebase.initializeApp(productionConfig);
-  firebase.firestore().settings({ timestampsInSnapshots: true });
+  //  firebase.firestore().settings({ timestampsInSnapshots: true });
 } else {
   console.log('staging');
   firebase.initializeApp(stagingConfig);
-  firebase.firestore().settings({ timestampsInSnapshots: true });
+  //firebase.firestore().settings({ timestampsInSnapshots: true });
 }
 export const messaging = firebase.messaging();
 export const auth = firebase.auth();

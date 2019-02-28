@@ -8,8 +8,8 @@ import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import Avatar from '@material-ui/core/Avatar';
 
-import PersonIcon from '@material-ui/icons/Person';
-import DropDownIcon from '@material-ui/icons/ArrowDropDown';
+import PersonIcon from '@material-ui/icons/PersonOutlined';
+import DropDownIcon from '@material-ui/icons/ArrowDropDownOutlined';
 
 import SuperAvatar from './SuperAvatar';
 import { AdminsContext } from '../contexts/AdminsContext';
@@ -85,7 +85,7 @@ function AdminSelector(props) {
     );
 
     return (
-      <React.Fragment>
+      <>
         {childrenWithProps || defaultPicker}
         <Select
           classes={{ root: classes.selectRoot }}
@@ -127,7 +127,7 @@ function AdminSelector(props) {
             </MenuItem>
           ))}
         </Select>
-      </React.Fragment>
+      </>
     );
   } else {
     return <CircularProgress />;

@@ -203,7 +203,7 @@ function SubjectsContainer(props) {
       altBg={theme.palette.type !== 'dark'}
     />
   ) : (
-    <React.Fragment>
+    <>
       <Grid container direction="column" wrap="nowrap" className={classes.root}>
         <Grid item>
           <LocationIndicator
@@ -294,7 +294,7 @@ function SubjectsContainer(props) {
           <span id="message-id">Copied to clipboard: {snackbarContent}</span>
         }
       />
-    </React.Fragment>
+    </>
   );
 }
 

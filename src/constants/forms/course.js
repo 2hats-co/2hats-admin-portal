@@ -1,6 +1,11 @@
 import FIELDS from './fields';
 import * as yup from 'yup';
 
+import {
+  SKILLS,
+  ASSESSMENT_CATEGORIES,
+} from '@bit/sidney2hats.2hats.global.common-constants';
+
 const courseFields = initialData => {
   if (!initialData) initialData = {};
   return [
@@ -13,6 +18,13 @@ const courseFields = initialData => {
         .string()
         .url('Invalid URL')
         .required('Required'),
+    },
+    {
+      type: FIELDS.textField,
+      name: 'LWid',
+      label: 'LearnWorlds course ID',
+      value: initialData['LWid'],
+      validation: yup.string().required('Required Learn Worlds course id'),
     },
     {
       type: FIELDS.textField,
@@ -32,37 +44,32 @@ const courseFields = initialData => {
       type: FIELDS.autocompleteMulti,
       name: 'skillsAssociated',
       label: 'Skills associated',
-      value: initialData['skillsAssociated'],
-      suggestions: ['ds', 'sdf', 'sdfd'].map(x => ({ value: x, label: x })),
-      validation: yup
-        .array()
-        .min(1)
-        .required('Skills are required'),
+      value:
+        initialData['skillsAssociated'] &&
+        SKILLS.filter(x => initialData['skillsAssociated'].includes(x.value)),
+      suggestions: SKILLS,
+      validation: yup.array().min(0),
+      // .required('Skills are required'),
     },
-    // {
-    //   type: FIELDS.slider,
-    //   name: 'duration',
-    //   label: 'Duration',
-    //   value: initialData['duration'],
-    //   units: 'h',
-    //   min: 0.5,
-    //   max: 20,
-    //   step: 0.5,
-    //   validation: yup
-    //     .number()
-    //     .min(0.5)
-    //     .max(20)
-    //     .required('Duration is required'),
-    // },
+    {
+      type: FIELDS.autocompleteFreeText,
+      name: 'category',
+      label: 'Category',
+      suggestions: ASSESSMENT_CATEGORIES,
+      value: ASSESSMENT_CATEGORIES.filter(
+        x => x.value === initialData['category']
+      )[0],
+      validation: yup.string().required('Category is required'),
+    },
     {
       type: FIELDS.textField,
       name: 'duration',
       label: 'Duration',
       value: initialData['duration'],
-      units: 'h',
-      min: 0.5,
-      max: 20,
-      step: 0.5,
+      // units: 'mins',
+      // min: 0.5,
+      // max: 20,
+      // step: 0.5,
       validation: yup.string().required('Duration is required'),
     },
   ];

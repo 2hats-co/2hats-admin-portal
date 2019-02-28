@@ -7,8 +7,11 @@ import IconButton from '@material-ui/core/IconButton';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 
-import FilterIcon from '@material-ui/icons/FilterList';
+import SearchIcon from '@material-ui/icons/Search';
+import FilterIcon from '@material-ui/icons/FilterListOutlined';
 
+import Search from '../../Search';
+import { ALGOLIA_INDEX } from '../../../config/algolia';
 import conversationCategories from '../../../constants/conversationCategories';
 
 const styles = theme => ({
@@ -30,6 +33,7 @@ function CategoryFilter(props) {
 
   const [open, setOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
+  const [showSearch, setShowSearch] = useState(false);
 
   const handleClick = e => {
     setAnchorEl(e.currentTarget);
@@ -37,7 +41,17 @@ function CategoryFilter(props) {
   };
 
   return (
-    <React.Fragment>
+    <>
+      <Tooltip title="Search conversation">
+        <IconButton
+          className={classes.button}
+          onClick={() => {
+            setShowSearch(true);
+          }}
+        >
+          <SearchIcon />
+        </IconButton>
+      </Tooltip>
       <Tooltip
         title={
           selected
@@ -81,7 +95,16 @@ function CategoryFilter(props) {
           </MenuItem>
         ))}
       </Select>
-    </React.Fragment>
+
+      {showSearch && (
+        <Search
+          showSearch={showSearch}
+          setShowSearch={setShowSearch}
+          useSearchIndex={ALGOLIA_INDEX.conversations}
+          placeholder="Search conversations…"
+        />
+      )}
+    </>
   );
 }
 

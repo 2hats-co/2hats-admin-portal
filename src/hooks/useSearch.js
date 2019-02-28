@@ -24,7 +24,7 @@ const updateQuery = async (index, search, filters, limit, searchDispatch) => {
   searchDispatch({ results, loading: false });
 };
 
-export function useSearch() {
+export function useSearch(initIndex) {
   const [searchState, searchDispatch] = useReducer(searchReducer, {
     search: '',
     filters: [],
@@ -34,7 +34,7 @@ export function useSearch() {
     limit: 20,
     prevLimit: 20,
   });
-  const index = createAlgoliaIndex(ALGOLIA_INDEX.users);
+  const index = createAlgoliaIndex(initIndex || ALGOLIA_INDEX.users);
   useEffect(
     () => {
       const {

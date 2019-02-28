@@ -13,7 +13,7 @@ import Grid from '@material-ui/core/Grid';
 
 import SubmissionIcon from '@material-ui/icons/DescriptionOutlined';
 import ConversationIcon from '@material-ui/icons/ChatOutlined';
-import ResumeIcon from '@material-ui/icons/Attachment';
+import ResumeIcon from '@material-ui/icons/AttachmentOutlined';
 
 import ConversationTypeIcon from '../Conversations/ConversationTypeIcon';
 import { flattenSearchHighlight } from '../../utilities/objects';
@@ -93,7 +93,7 @@ function SearchItem(props) {
       <ListItemText
         primary={
           <Typography variant="subtitle1">
-            {hit.firstName} {hit.lastName}
+            {hit.displayName || `${hit.firstName} ${hit.lastName}`}
           </Typography>
         }
         secondary={highlighted}
@@ -112,7 +112,7 @@ function SearchItem(props) {
           </Tooltip>
         )}
 
-        {hit.status !== 'incomplete' && (
+        {/* {hit.status !== 'incomplete' && (
           <Tooltip title="Submission">
             <IconButton
               onClick={() => {
@@ -122,7 +122,7 @@ function SearchItem(props) {
               <SubmissionIcon />
             </IconButton>
           </Tooltip>
-        )}
+        )} */}
         <Tooltip title="Conversation">
           <IconButton
             onClick={() => {

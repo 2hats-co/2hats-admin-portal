@@ -11,7 +11,7 @@ import Paper from '@material-ui/core/Paper';
 import Chip from '@material-ui/core/Chip';
 import Avatar from '@material-ui/core/Avatar';
 import MenuItem from '@material-ui/core/MenuItem';
-import CancelIcon from '@material-ui/icons/Cancel';
+import CancelIcon from '@material-ui/icons/CancelOutlined';
 import DropdownIcon from '@material-ui/icons/KeyboardArrowDown';
 import IconButton from '@material-ui/core/IconButton';
 import Grow from '@material-ui/core/Grow';
@@ -70,6 +70,7 @@ const styles = theme => ({
     zIndex: 9,
     left: 0,
     right: 0,
+    '& > div': { borderRadius: theme.shape.borderRadius },
   },
 
   indicatorButton: {
@@ -127,6 +128,7 @@ function Option(props) {
       component="div"
       style={{
         fontWeight: props.isSelected ? 500 : 400,
+        position: 'static',
       }}
       {...props.innerProps}
     >
@@ -188,7 +190,7 @@ function Menu(props) {
       <Grow in style={{ transformOrigin: '50% 0' }}>
         <Paper
           className={props.selectProps.classes.paper}
-          elevation={8}
+          elevation={2}
           {...props.innerProps}
         >
           {props.children}
@@ -273,6 +275,8 @@ function IntegrationReactSelect(props) {
               label,
               InputLabelProps: { shrink: true },
               autoFocus,
+              error,
+              helperText,
             }}
             value={value}
             isMulti={isMulti}

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 import withStyles from '@material-ui/core/styles/withStyles';
-// import Typography from '@material-ui/core/Typography';
+import Grid from '@material-ui/core/Grid';
 import Fade from '@material-ui/core/Fade';
 import Fab from '@material-ui/core/Fab';
 
@@ -10,7 +10,7 @@ import AddIcon from '@material-ui/icons/Add';
 import LocationIndicator from '../components/LocationIndicator';
 
 import { ROUTES } from '../constants/routes';
-import { COLLECTIONS } from '../constants/firestore';
+import { COLLECTIONS } from '@bit/sidney2hats.2hats.global.common-constants';
 import { createDoc } from '../utilities/firestore';
 import useCollection from '../hooks/useCollection';
 
@@ -18,14 +18,16 @@ import moment from 'moment';
 import { momentLocales } from '../constants/momentLocales';
 
 import withNavigation from '../components/withNavigation';
-import EditOneCard from '../components/OneCard/EditOneCard';
-import OneCard from '../components/OneCard';
+import EditOneCard from '../components/Cards/EditOneCard';
+import OneCard from '../components/Cards/OneCard';
+import * as oneCardMappings from '../constants/oneCardMappings';
 
 import Form from '../components/Form';
 import courseFields from '../constants/forms/course';
 import assessmentFields from '../constants/forms/assessment';
 import jobFields from '../constants/forms/job';
 import eventFields from '../constants/forms/event';
+import announcementFields from '../constants/forms/announcement';
 
 const styles = theme => ({
   root: {
@@ -51,33 +53,49 @@ function ContentManagerContainer(props) {
   let fields = [];
   let formTitle = '';
   let collection = '';
+  let mapping = '';
   switch (path) {
     case ROUTES.jobsManager:
       fields = jobFields;
       formTitle = 'Job';
       collection = COLLECTIONS.jobs;
+      mapping = oneCardMappings.job;
       break;
+
     case ROUTES.coursesManager:
       fields = courseFields;
       formTitle = 'Course';
       collection = COLLECTIONS.courses;
+      mapping = oneCardMappings.course;
       break;
+
     case ROUTES.assessmentsManager:
       fields = assessmentFields;
       formTitle = 'Assessment';
       collection = COLLECTIONS.assessments;
+      mapping = oneCardMappings.assessment;
       break;
+
     case ROUTES.eventsManager:
       fields = eventFields;
       formTitle = 'Event';
       collection = COLLECTIONS.events;
       break;
+
+    case ROUTES.announcementsManager:
+      fields = announcementFields;
+      formTitle = 'Announcements';
+      collection = COLLECTIONS.announcements;
+      mapping = oneCardMappings.announcement;
+      break;
+
     default:
       break;
   }
 
   const [dataState] = useCollection({
     path: collection,
+    sort: { field: 'createdAt', direction: 'desc' },
   });
   const docs = dataState.documents;
   // console.log(docs);
@@ -92,33 +110,24 @@ function ContentManagerContainer(props) {
             { label: 'Jobs', value: ROUTES.jobsManager },
             { label: 'Courses', value: ROUTES.coursesManager },
             { label: 'Assessments', value: ROUTES.assessmentsManager },
-            { label: 'Events', value: ROUTES.eventsManager },
+            //  { label: 'Events', value: ROUTES.eventsManager },
+            { label: 'Announcements', value: ROUTES.announcementsManager },
           ]}
         />
 
-        {docs &&
-          docs.map(x => (
-            <EditOneCard
-              data={x}
-              fields={fields}
-              key={x.id}
-              collection={collection}
-            >
-              <OneCard
-                title={x.title}
-                secondaryText={
-                  x.description || x.roleDescription || x.companyDescription
-                }
-                tertiaryText={
-                  collection === COLLECTIONS.assessments && x.taskInstructions
-                }
-                primaryAction="Do nothing"
-                route={`#${x.id}`}
-                image={x.image && x.image.url}
-                video={x.videoUrl}
-              />
-            </EditOneCard>
-          ))}
+        <Grid container>
+          {docs &&
+            docs.map(x => (
+              <EditOneCard
+                data={x}
+                fields={fields}
+                key={x.id}
+                collection={collection}
+              >
+                <OneCard {...mapping(x)} />
+              </EditOneCard>
+            ))}
+        </Grid>
 
         <Fab
           className={classes.fab}

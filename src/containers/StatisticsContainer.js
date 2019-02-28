@@ -9,7 +9,7 @@ import Fab from '@material-ui/core/Fab';
 import Slide from '@material-ui/core/Slide';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Snackbar from '@material-ui/core/Snackbar';
-import EditIcon from '@material-ui/icons/Edit';
+import EditIcon from '@material-ui/icons/EditOutlined';
 import IconButton from '@material-ui/core/IconButton';
 import AddIcon from '@material-ui/icons/Add';
 import SaveIcon from '@material-ui/icons/Save';
@@ -188,7 +188,7 @@ function StatisticsContainer(props) {
         )}
 
         <Slide in direction="down">
-          <React.Fragment>
+          <>
             <LocationIndicator title="Statistics" showShadow />
             <TimeBar
               format={format}
@@ -196,7 +196,7 @@ function StatisticsContainer(props) {
               setFormat={setFormat}
               setRange={setRange}
             />
-          </React.Fragment>
+          </>
         </Slide>
 
         <Grid container className={classes.grid}>
