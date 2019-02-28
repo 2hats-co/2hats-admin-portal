@@ -9,6 +9,7 @@ import { useAuthedUser } from './hooks/useAuthedUser';
 import LoadingHat from './components/LoadingHat';
 import PushNotifications from './components/PushNotifications';
 import ConversationsContainer from './containers/ConversationsContainer';
+import TestContainer from './containers/TestContainer';
 //containers
 const SubmissionsContainer = lazy(() =>
   import('./containers/SubmissionsContainer' /* webpackChunkName: "SubmissionsContainer" */)
@@ -172,7 +173,11 @@ function App(props) {
                 path={ROUTES.conversationEmails}
                 component={() => <EmailTemplatesManagerContainer {...props} />}
               />
-
+              <Route
+                exact
+                path={'/test'}
+                component={() => <TestContainer {...props} />}
+              />
               <Route
                 exact
                 path={'/'}
