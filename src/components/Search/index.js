@@ -21,7 +21,7 @@ import { useSearch } from '../../hooks/useSearch';
 import { ROUTES } from '../../constants/routes';
 // import { sleep } from '../../utilities';
 // import last from 'ramda/es/last';
-import gloria from '../../assets/gloria.jpg';
+// import gloria from '../../assets/gloria.jpg';
 
 const styles = theme => ({
   webRoot: {
@@ -135,8 +135,6 @@ function Search(props) {
   const [showEnterPrompt, setShowEnterPrompt] = useState(false);
   const windowSize = useWindowSize();
 
-  console.log(searchState);
-
   const updateQuery = query => {
     searchDispatch({ search: query });
     setHasMore(true);
@@ -225,12 +223,12 @@ function Search(props) {
               </div>
             )
           )}
-          {!showEnterPrompt && (
+          {/* {!showEnterPrompt && (
             <div className={classes.algloria}>
               powered by Algloria
               <img src={gloria} alt="Algloria" />
             </div>
-          )}
+          )} */}
 
           <div className={classes.listWrapper}>
             <InfiniteScroll

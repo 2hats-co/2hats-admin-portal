@@ -147,6 +147,11 @@ function App(props) {
                 path={ROUTES.marketingLeadGeneration}
                 component={() => <MarketingContainer {...props} />}
               />
+              <Route
+                exact
+                path={ROUTES.marketingEmailBlast}
+                component={() => <MarketingContainer {...props} />}
+              />
 
               <Route
                 exact

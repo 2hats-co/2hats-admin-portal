@@ -3,13 +3,19 @@ import * as yup from 'yup';
 import {
   ASSESSMENT_CATEGORIES,
   SUBMISSION_TYPES,
-  SKILLS,
 } from '@bit/sidney2hats.2hats.global.common-constants';
 
 const assessmentFields = initialData => {
   if (!initialData) initialData = {};
 
   return [
+    {
+      type: FIELDS.textField,
+      name: 'title',
+      label: 'Title',
+      value: initialData['title'],
+      validation: yup.string().required('Required'),
+    },
     {
       type: FIELDS.autocompleteFreeText,
       name: 'category',
@@ -22,26 +28,11 @@ const assessmentFields = initialData => {
       width: 6,
     },
     {
-      type: FIELDS.autocomplete,
-      name: 'skillAssociated',
-      label: 'Skill associated',
-      value: SKILLS.filter(x => x.value === initialData['skillAssociated'])[0],
-      suggestions: SKILLS,
-      validation: yup.string().required('Skill is required'),
-      width: 6,
-    },
-    {
-      type: FIELDS.textField,
-      name: 'title',
-      label: 'Title',
-      value: initialData['title'],
-      validation: yup.string().required('Required'),
-    },
-    {
       type: FIELDS.textField,
       name: 'duration',
       label: 'Duration',
       value: initialData['duration'],
+      width: 6,
     },
     {
       type: FIELDS.richText,

@@ -113,7 +113,7 @@ const navigationRoutes = [
     label: 'Marketing',
     icon: <MarketingIcon />,
     route: ROUTES.marketingLeadGeneration,
-    subRoutes: [ROUTES.marketingLeadGeneration],
+    subRoutes: [ROUTES.marketingLeadGeneration, ROUTES.marketingEmailBlast],
   },
   {
     label: 'Email Templates',

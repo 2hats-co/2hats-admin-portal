@@ -6,6 +6,7 @@ export const AdminsContext = React.createContext([]);
 export const AdminsProvider = props => {
   let [admins] = useCollection({ path: 'admins' });
   const getAdmin = id => {
+    if (!admins.documents || admins.documents.length === 0) return {};
     const admin = admins.documents.filter(x => x.id === id);
     return admin[0];
   };

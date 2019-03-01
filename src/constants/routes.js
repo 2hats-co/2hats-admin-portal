@@ -19,7 +19,8 @@ export const ROUTES = {
 
   submissions2: '/submissions2',
 
-  marketingLeadGeneration: '/marketingLeadGeneration',
+  marketingLeadGeneration: '/marketing/leadGeneration',
+  marketingEmailBlast: '/marketing/emailBlast',
 
   conversationEmails: '/conversationEmails',
   emailCampaigns: '/emailCampaigns',
