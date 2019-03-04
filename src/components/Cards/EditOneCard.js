@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 
 import withStyles from '@material-ui/core/styles/withStyles';
+import { withRouter } from 'react-router-dom';
 
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 
 import CopyIcon from '@material-ui/icons/FileCopyOutlined';
+import ApplicantsIcon from '@material-ui/icons/AssignmentIndOutlined';
 import EditIcon from '@material-ui/icons/EditOutlined';
 // import DeleteIcon from '@material-ui/icons/DeleteOutlined';
 import PublishedIcon from '@material-ui/icons/VisibilityOutlined';
@@ -15,6 +17,7 @@ import Form from '../Form';
 
 import { updateDoc } from '../../utilities/firestore';
 import { copyToClipboard } from '../../utilities';
+import { assessment } from '../../constants/oneCardMappings';
 
 const styles = theme => ({
   root: { marginTop: theme.spacing.unit },
@@ -26,13 +29,28 @@ const styles = theme => ({
 });
 
 const EditOneCard = props => {
-  const { classes, children, data, fields, collection } = props;
+  const { classes, children, data, fields, collection, history } = props;
 
   const [showForm, setShowForm] = useState(false);
 
   return (
     <div className={classes.root}>
       <div className={classes.buttonBar}>
+        {(collection === 'jobs' || collection === 'assessments') && (
+          <Tooltip title="applicants">
+            <IconButton
+              onClick={() => {
+                history.push(
+                  `/submissions2?${
+                    collection === 'jobs' ? 'jobId=' : 'assessmentId='
+                  }${data.id}`
+                );
+              }}
+            >
+              <ApplicantsIcon />
+            </IconButton>
+          </Tooltip>
+        )}
         <Tooltip title="Copy ID">
           <IconButton
             onClick={() => {
@@ -94,4 +112,4 @@ const EditOneCard = props => {
   );
 };
 
-export default withStyles(styles)(EditOneCard);
+export default withRouter(withStyles(styles)(EditOneCard));
