@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import queryString from 'query-string';
 
 import withStyles from '@material-ui/core/styles/withStyles';
 // import Typography from '@material-ui/core/Typography';
@@ -37,6 +38,8 @@ import CampaignList from '../components/EmailTemplates/CampaignList';
 import TemplateEditor from '../components/EmailTemplates/TemplateEditor';
 import { design } from '../constants/emails/templateDesign';
 
+import useDocument from '../hooks/useDocument';
+
 const styles = theme => ({
   root: {
     backgroundColor: theme.palette.background.default,
@@ -59,6 +62,27 @@ function EmailTemplatesManagerContainer(props) {
   const [campaign, setCampaign] = useState(null);
   const [fields, setFields] = useState(null);
   const [showForm, setShowForm] = useState(false);
+
+  const [templateFromUrlState, templateFromUrlDispatch] = useDocument();
+
+  useEffect(
+    () => {
+      const parsedQuery = queryString.parse(location.search);
+      if (parsedQuery.id)
+        templateFromUrlDispatch({
+          path: `${COLLECTIONS.emailTemplates}/${parsedQuery.id}`,
+        });
+    },
+    [location.search]
+  );
+  useEffect(
+    () => {
+      const parsedQuery = queryString.parse(location.search);
+      if (parsedQuery.id && templateFromUrlState.doc)
+        setTemplate(templateFromUrlState.doc);
+    },
+    [templateFromUrlState.doc]
+  );
 
   const handleCreate = async data => {
     setShowForm(false);
