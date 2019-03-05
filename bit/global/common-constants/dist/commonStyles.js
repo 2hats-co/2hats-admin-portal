@@ -286,4 +286,51 @@ var DETAIL_VIEW = (exports.DETAIL_VIEW = function DETAIL_VIEW(theme) {
   );
 });
 
+var NAKED_EXPANSION_PANEL = (exports.NAKED_EXPANSION_PANEL = function NAKED_EXPANSION_PANEL(
+  theme
+) {
+  return {
+    expansionPanel: {
+      boxShadow: 'none',
+      backgroundColor: 'transparent',
+      '&::before': { display: 'none' },
+    },
+    expansionPanelExpanded: { margin: 0 },
+
+    expansionPanelSummary: {
+      padding: 0,
+      '&$expansionPanelSummaryExpanded': { minHeight: 48 },
+    },
+    expansionPanelSummaryExpanded: {},
+    expansionPanelSummaryExpandIcon: { right: -theme.spacing.unit * 1.5 },
+    expansionPanelSummaryContent: {
+      '&$expansionPanelSummaryExpanded': {
+        margin: '12px 0',
+      },
+    },
+    expansionPanelDetails: {
+      flexDirection: 'column',
+      padding: 0,
+      paddingBottom: theme.spacing.unit * 2,
+    },
+
+    /* CLASSES PROPS
+      ExpansionPanel:
+      {
+        root: classes.expansionPanel,
+        expanded: classes.expansionPanelExpanded,
+      }
+       ExpansionPanelSummary:
+      {
+        root: classes.expansionPanelSummary,
+        content: classes.expansionPanelSummaryContent,
+        expanded: classes.expansionPanelSummaryExpanded,
+        expandIcon: classes.expansionPanelSummaryExpandIcon,
+      }
+       ExpansionPanelDetails:
+      { root: classes.expansionPanelDetails }
+    */
+  };
+});
+
 //# sourceMappingURL=commonStyles.js.map

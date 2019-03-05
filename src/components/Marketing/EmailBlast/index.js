@@ -136,9 +136,9 @@ function EmailBlast(props) {
         </Grid>
       </Grid>
       <Form
-        action="Blast!"
+        action="Create"
         actions={{
-          'Blast!': createBlast,
+          Create: createBlast,
           close: () => {
             setShowForm(false);
           },
@@ -149,7 +149,10 @@ function EmailBlast(props) {
           justFormWrapper: classes.justFormWrapper,
           wrapperGrid: classes.wrapperGrid,
         }}
-        formFooter={values => <BlastPreview query={values.query} />}
+        formFooter={values => (
+          <BlastPreview query={values.query} template={values.templateId} />
+        )}
+        formTitle="Blast!"
       />
     </>
   );
