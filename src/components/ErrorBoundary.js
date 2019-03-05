@@ -41,6 +41,7 @@ class ErrorBoundary extends Component {
 
   render() {
     const { classes } = this.props;
+    const someone = ['sydney', 'sham', 'vector', 'victor', 'vector'];
 
     if (this.state.hasError)
       return (
@@ -56,7 +57,8 @@ class ErrorBoundary extends Component {
             oopsie no bueno
           </Typography>
           <Typography variant="h6" className={classes.subtitle}>
-            idk slack shams or something
+            idk slack {someone[Math.floor(Math.random() * someone.length)]} or
+            something
           </Typography>
 
           <div className={classes.buttonWrapper}>

@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import { withRouter } from 'react-router-dom';
 import withStyles from '@material-ui/core/styles/withStyles';
+import queryString from 'query-string';
 
 import Grid from '@material-ui/core/Grid';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -7,6 +9,7 @@ import Typography from '@material-ui/core/Typography';
 import Tooltip from '@material-ui/core/Tooltip';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 import ToggleButton from '@material-ui/lab/ToggleButton';
+import Button from '@material-ui/core/Button';
 
 import Submissions2Icon from '@material-ui/icons/RateReviewOutlined';
 import JobIcon from '@material-ui/icons/BusinessCenterOutlined';
@@ -15,7 +18,7 @@ import SkillIcon from '../../../assets/icons/SkillAchieved';
 import IndustryIcon from '@material-ui/icons/Business';
 
 import FilterMenu from './FilterMenu';
-import JobFilterMenu from './JobFilterMenu';
+import DocsFilterMenu from './DocsFilterMenu';
 import ScrollyRolly from '../../ScrollyRolly';
 import Item from './Item';
 
@@ -25,6 +28,7 @@ import {
   SKILLS,
   ASSESSMENT_CATEGORIES,
 } from '@bit/sidney2hats.2hats.global.common-constants';
+import { ROUTES } from '../../../constants/routes';
 
 const styles = theme => ({
   topFilterWrapper: {
@@ -80,24 +84,38 @@ const industryFilter = (type, industry) => {
   else if (type === 'job')
     return { field: 'industry', operator: '==', value: industry };
 };
+const assessmentFilter = assessmentId => ({
+  field: 'assessmentId',
+  operator: '==',
+  value: assessmentId,
+});
 const jobFilter = jobId => ({ field: 'jobId', operator: '==', value: jobId });
 const outcomeFilter = outcome => ({
   field: 'outcome',
   operator: '==',
   value: outcome,
 });
+const uidFilter = UID => ({ field: 'UID', operator: '==', value: UID });
 
 const orderBySubmissionTime = { field: 'createdAt', direction: 'asc' };
 
 function SubmissionsList(props) {
-  const { classes, setSelectedSubmission, selectedSubmission } = props;
+  const {
+    classes,
+    setSelectedSubmission,
+    selectedSubmission,
+    location,
+    history,
+  } = props;
 
   const [selectedFilters, setSelectedFilters] = useState({
     type: 'assessment',
     skill: '',
     industry: '',
+    assessment: '',
     job: '',
     outcome: 'pending',
+    uid: '',
   });
 
   const [submissionsState, submissionsDispatch] = useCollection({
@@ -117,12 +135,41 @@ function SubmissionsList(props) {
         filters.push(
           industryFilter(selectedFilters.type, selectedFilters.industry)
         );
+      if (selectedFilters.assessment)
+        filters.push(assessmentFilter(selectedFilters.assessment));
       if (selectedFilters.job) filters.push(jobFilter(selectedFilters.job));
       if (selectedFilters.outcome)
         filters.push(outcomeFilter(selectedFilters.outcome));
+      if (selectedFilters.uid) filters.push(uidFilter(selectedFilters.uid));
       submissionsDispatch({ filters });
     },
     [selectedFilters]
+  );
+
+  useEffect(
+    () => {
+      const parsedQuery = queryString.parse(location.search);
+      if (parsedQuery.assessmentId)
+        setSelectedFilters({
+          ...selectedFilters,
+          assessment: parsedQuery.assessmentId,
+          type: 'assessment',
+        });
+      if (parsedQuery.jobId)
+        setSelectedFilters({
+          ...selectedFilters,
+          job: parsedQuery.jobId,
+          type: 'job',
+        });
+      if (parsedQuery.uid)
+        setSelectedFilters({
+          ...selectedFilters,
+          uid: parsedQuery.uid,
+          type: '',
+          outcome: '',
+        });
+    },
+    [location.search]
   );
 
   const setFilter = (name, val) => {
@@ -171,42 +218,68 @@ function SubmissionsList(props) {
           <Typography variant="body2" className={classes.filterLabel}>
             Filters:
           </Typography>
-          <FilterMenu
-            title="skill"
-            Icon={SkillIcon}
-            items={SKILLS}
-            selection={selectedFilters.skill}
-            setSelection={val => {
-              setFilter('skill', val);
-            }}
-          />
-          <FilterMenu
-            title="industry"
-            Icon={IndustryIcon}
-            items={ASSESSMENT_CATEGORIES}
-            selection={selectedFilters.industry}
-            setSelection={val => {
-              setFilter('industry', val);
-            }}
-          />
-          <FilterMenu
-            title="outcome"
-            Icon={Submissions2Icon}
-            items={[
-              { value: 'pending', label: 'Pending' },
-              { value: 'pass', label: 'Pass' },
-              { value: 'fail', label: 'Fail' },
-            ]}
-            selection={selectedFilters.outcome}
-            setSelection={val => {
-              setFilter('outcome', val);
-            }}
-          />
-          {selectedFilters.type === 'job' && (
-            <JobFilterMenu
-              selectedFilters={selectedFilters}
-              setFilter={setFilter}
-            />
+          {selectedFilters.uid ? (
+            <Button
+              onClick={() => {
+                history.push(ROUTES.submissions2);
+                window.location.reload();
+              }}
+              color="primary"
+            >
+              Set filters
+            </Button>
+          ) : (
+            <>
+              <FilterMenu
+                title="skill"
+                Icon={SkillIcon}
+                items={SKILLS}
+                selection={selectedFilters.skill}
+                setSelection={val => {
+                  setFilter('skill', val);
+                }}
+              />
+              <FilterMenu
+                title="industry"
+                Icon={IndustryIcon}
+                items={ASSESSMENT_CATEGORIES}
+                selection={selectedFilters.industry}
+                setSelection={val => {
+                  setFilter('industry', val);
+                }}
+              />
+              <FilterMenu
+                title="outcome"
+                Icon={Submissions2Icon}
+                items={[
+                  { value: 'pending', label: 'Pending' },
+                  { value: 'pass', label: 'Pass' },
+                  { value: 'fail', label: 'Fail' },
+                ]}
+                selection={selectedFilters.outcome}
+                setSelection={val => {
+                  setFilter('outcome', val);
+                }}
+              />
+              {selectedFilters.type === 'assessment' && (
+                <DocsFilterMenu
+                  collection={COLLECTIONS.assessments}
+                  title="assessment"
+                  Icon={AssessmentIcon}
+                  selectedFilters={selectedFilters}
+                  setFilter={setFilter}
+                />
+              )}
+              {selectedFilters.type === 'job' && (
+                <DocsFilterMenu
+                  collection={COLLECTIONS.jobs}
+                  title="job"
+                  Icon={JobIcon}
+                  selectedFilters={selectedFilters}
+                  setFilter={setFilter}
+                />
+              )}
+            </>
           )}
         </Grid>
       </Grid>
@@ -254,4 +327,4 @@ function SubmissionsList(props) {
   );
 }
 
-export default withStyles(styles)(SubmissionsList);
+export default withRouter(withStyles(styles)(SubmissionsList));

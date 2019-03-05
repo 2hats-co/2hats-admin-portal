@@ -9,9 +9,13 @@ import moment from 'moment';
 import IconButton from '@material-ui/core/IconButton';
 
 import EditIcon from '@material-ui/icons/EditOutlined';
-import CopyIcon from '@material-ui/icons/FileCopyOutlined';
 import Tooltip from '@material-ui/core/Tooltip';
 import OpenIcon from '@material-ui/icons/ArrowForwardIos';
+import RecipientsIcon from '@material-ui/icons/GroupOutlined';
+
+import EmailAnalytics from './EmailAnalytics';
+
+import { COLLECTIONS } from '@bit/sidney2hats.2hats.global.common-constants';
 
 const styles = theme => ({
   root: {
@@ -35,6 +39,8 @@ const styles = theme => ({
   },
   rightAligned: {
     textAlign: 'right',
+
+    '& > *': { justifyContent: 'flex-end' },
   },
 });
 function EmailTemplateCard(props) {
@@ -61,25 +67,27 @@ function EmailTemplateCard(props) {
             </Grid>
           </Grid>
 
-          <Grid item xs={2} className={classes.rightAligned}>
-            <Typography variant="h6">{'--%'}</Typography>
-            <Typography variant="body2">Open Rate</Typography>
-          </Grid>
-          <Grid item xs={2} className={classes.rightAligned}>
-            <Typography variant="h6">{'--%'}</Typography>
-            <Typography variant="body2">Click Rate</Typography>
-          </Grid>
-          <Grid item xs={2} className={classes.rightAligned}>
-            <Typography variant="h6">{'--%'}</Typography>
-            <Typography variant="body2">Bounce Rate</Typography>
+          <Grid item xs={6} className={classes.rightAligned}>
+            <EmailAnalytics
+              analyticsCollection={`${COLLECTIONS.emailTemplates}/${
+                data.id
+              }/analytics`}
+            />
           </Grid>
 
           <Grid item xs={2} className={classes.rightAligned}>
+            <Tooltip title="View recipients">
+              <IconButton onClick={actions.viewRecipients}>
+                <RecipientsIcon />
+              </IconButton>
+            </Tooltip>
+
             <Tooltip title="Edit Template">
               <IconButton onClick={actions.edit}>
                 <EditIcon />
               </IconButton>
             </Tooltip>
+
             <Tooltip title="View Template">
               <IconButton onClick={actions.editTemplate}>
                 <OpenIcon />

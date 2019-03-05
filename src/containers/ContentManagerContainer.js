@@ -26,7 +26,7 @@ import Form from '../components/Form';
 import courseFields from '../constants/forms/course';
 import assessmentFields from '../constants/forms/assessment';
 import jobFields from '../constants/forms/job';
-import eventFields from '../constants/forms/event';
+// import eventFields from '../constants/forms/event';
 import announcementFields from '../constants/forms/announcement';
 
 const styles = theme => ({

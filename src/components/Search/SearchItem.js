@@ -11,14 +11,15 @@ import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 
-import SubmissionIcon from '@material-ui/icons/DescriptionOutlined';
+// import SubmissionIcon from '@material-ui/icons/DescriptionOutlined';
 import ConversationIcon from '@material-ui/icons/ChatOutlined';
 import ResumeIcon from '@material-ui/icons/AttachmentOutlined';
 
 import ConversationTypeIcon from '../Conversations/ConversationTypeIcon';
 import { flattenSearchHighlight } from '../../utilities/objects';
-import groupBy from 'ramda/es/groupBy';
-import map from 'ramda/es/map';
+// import groupBy from 'ramda/es/groupBy';
+// import map from 'ramda/es/map';
+
 const styles = theme => ({
   listItem: {
     alignItems: 'flex-start',
@@ -44,10 +45,10 @@ const styles = theme => ({
     color: theme.palette.text.secondary,
   },
 });
-const byField = groupBy(function(snippet) {
-  return snippet.field;
-});
-const removeField = x => x.map(i => i.value);
+// const byField = groupBy(function(snippet) {
+//   return snippet.field;
+// });
+// const removeField = x => x.map(i => i.value);
 
 function SearchItem(props) {
   const { classes, hit, handleRoutes } = props;
@@ -73,13 +74,13 @@ function SearchItem(props) {
       </Grid>
     );
   });
-  const snippetKeyValuesPairs = flattenSearchHighlight(hit._snippetResult).map(
-    x => {
-      const field = x[0].split('.')[0];
-      const value = x[1];
-      return { field, value };
-    }
-  );
+  // const snippetKeyValuesPairs = flattenSearchHighlight(hit._snippetResult).map(
+  //   x => {
+  //     const field = x[0].split('.')[0];
+  //     const value = x[1];
+  //     return { field, value };
+  //   }
+  // );
 
   // console.log(
   //   'snippetGroups',

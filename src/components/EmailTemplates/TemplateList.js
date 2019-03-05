@@ -1,18 +1,20 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import EmailTemplateCard from './EmailTemplateCard';
+import EmailRecipients from './EmailRecipients';
 import LoadingHat from '../LoadingHat';
 import useCollection from '../../hooks/useCollection';
 import { COLLECTIONS } from '../../constants/firestore';
 
 function TemplateList(props) {
   const { setTemplate, type, campaignId, editTemplate } = props;
-  let filters = [];
 
+  let filters = [];
   const [templatesState, templatesDispatch] = useCollection({
     path: COLLECTIONS.emailTemplates,
     filters,
   });
+  let templates = templatesState.documents;
   useEffect(
     () => {
       if (type) {
@@ -31,11 +33,12 @@ function TemplateList(props) {
     },
     [campaignId]
   );
-  let templates = templatesState.documents;
-  console.log(templatesState);
+
+  const [recipientsId, setRecipientsId] = useState('');
+
   if (templates)
     return (
-      <React.Fragment>
+      <>
         {templates.map((x, i) => (
           <EmailTemplateCard
             data={x}
@@ -50,10 +53,23 @@ function TemplateList(props) {
                 setTemplate(x);
                 // history.push(`marketingEmail?id=${x.id}`);
               },
+              viewRecipients: () => {
+                setRecipientsId(x.id);
+              },
             }}
           />
         ))}
-      </React.Fragment>
+
+        {!!recipientsId && (
+          <EmailRecipients
+            showDialog={!!recipientsId}
+            setShowDialog={setRecipientsId}
+            collectionPath={`${
+              COLLECTIONS.emailTemplates
+            }/${recipientsId}/analytics`}
+          />
+        )}
+      </>
     );
   else return <LoadingHat message="Loading templates…" />;
 }

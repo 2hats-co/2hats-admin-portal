@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { withRouter } from 'react-router-dom';
 import moment from 'moment';
 
@@ -10,22 +10,23 @@ import Button from '@material-ui/core/Button';
 
 import EditIcon from '@material-ui/icons/EditOutlined';
 import CheckIcon from '@material-ui/icons/CheckCircle';
-import PersonIcon from '@material-ui/icons/PersonOutline';
+import RecipientsIcon from '@material-ui/icons/GroupOutlined';
 import PausedIcon from '@material-ui/icons/PauseCircleOutline';
 
-import BlastStatusIcon from '../BlastStatusIcon';
-import Friction from '../../../Friction';
-import EmailAnalytics from './EmailAnalytics';
+import BlastStatusIcon from './BlastStatusIcon';
+import Friction from '../../Friction';
+import EmailAnalytics from '../../EmailTemplates/EmailAnalytics';
+import EmailRecipients from '../../EmailTemplates/EmailRecipients';
 
-import useDocument from '../../../../hooks/useDocument';
-import { updateDoc } from '../../../../utilities/firestore';
-import { AdminsContext } from '../../../../contexts/AdminsContext';
+import useDocument from '../../../hooks/useDocument';
+import { updateDoc } from '../../../utilities/firestore';
+import { AdminsContext } from '../../../contexts/AdminsContext';
 
 import {
   COLLECTIONS,
   MOMENT_FORMATS,
 } from '@bit/sidney2hats.2hats.global.common-constants';
-import { ROUTES } from '../../../../constants/routes';
+import { ROUTES } from '../../../constants/routes';
 
 const styles = theme => ({
   root: {
@@ -57,6 +58,8 @@ const styles = theme => ({
 
 const BlastDetails = props => {
   const { classes, history, data, editHandler } = props;
+
+  const [showRecipients, setShowRecipients] = useState(false);
 
   const [templateState, templateDispatch] = useDocument();
   const templateDoc = templateState.doc;
@@ -154,13 +157,19 @@ const BlastDetails = props => {
           </Typography>
         </Grid>
         <Grid item xs className={classes.sectionButtons}>
-          <Button disabled>
-            <PersonIcon />
-            View individuals
+          <Button
+            onClick={() => {
+              setShowRecipients(true);
+            }}
+          >
+            <RecipientsIcon />
+            View recipients
           </Button>
         </Grid>
       </Grid>
-      <EmailAnalytics />
+      <EmailAnalytics
+        analyticsCollection={`${COLLECTIONS.emailBlasts}/${data.id}/analytics`}
+      />
 
       <Divider className={classes.divider} />
 
@@ -188,6 +197,12 @@ const BlastDetails = props => {
       {templateDoc && (
         <div dangerouslySetInnerHTML={{ __html: templateDoc.html }} />
       )}
+
+      <EmailRecipients
+        showDialog={showRecipients}
+        setShowDialog={setShowRecipients}
+        collectionPath={`${COLLECTIONS.emailBlasts}/${data.id}/analytics`}
+      />
     </div>
   );
 };

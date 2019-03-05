@@ -17,7 +17,7 @@ import Form from '../Form';
 
 import { updateDoc } from '../../utilities/firestore';
 import { copyToClipboard } from '../../utilities';
-import { assessment } from '../../constants/oneCardMappings';
+// import { assessment } from '../../constants/oneCardMappings';
 
 const styles = theme => ({
   root: { marginTop: theme.spacing.unit },
