@@ -12,8 +12,10 @@ import EditIcon from '@material-ui/icons/EditOutlined';
 // import DeleteIcon from '@material-ui/icons/DeleteOutlined';
 import PublishedIcon from '@material-ui/icons/VisibilityOutlined';
 import UnpublishedIcon from '@material-ui/icons/VisibilityOffOutlined';
+import CriteriaIcon from '@material-ui/icons/AssignmentOutlined';
 
 import Form from '../Form';
+import CriteriaDialog from './CriteriaDialog';
 
 import { updateDoc } from '../../utilities/firestore';
 import { copyToClipboard } from '../../utilities';
@@ -32,12 +34,25 @@ const EditOneCard = props => {
   const { classes, children, data, fields, collection, history } = props;
 
   const [showForm, setShowForm] = useState(false);
+  const [showCriteriaDialog, setShowCriteriaDialog] = useState(false);
 
   return (
     <div className={classes.root}>
       <div className={classes.buttonBar}>
+        {collection === 'assessments' && (
+          <Tooltip title="Edit criteria">
+            <IconButton
+              onClick={() => {
+                setShowCriteriaDialog(true);
+              }}
+            >
+              <CriteriaIcon />
+            </IconButton>
+          </Tooltip>
+        )}
+
         {(collection === 'jobs' || collection === 'assessments') && (
-          <Tooltip title="applicants">
+          <Tooltip title={collection === 'jobs' ? 'Applicants' : 'Submissions'}>
             <IconButton
               onClick={() => {
                 history.push(
@@ -51,6 +66,7 @@ const EditOneCard = props => {
             </IconButton>
           </Tooltip>
         )}
+
         <Tooltip title="Copy ID">
           <IconButton
             onClick={() => {
@@ -106,6 +122,14 @@ const EditOneCard = props => {
           open={showForm}
           data={fields(data)}
           formTitle={data.title}
+        />
+      )}
+
+      {collection === 'assessments' && showCriteriaDialog && (
+        <CriteriaDialog
+          showDialog={showCriteriaDialog}
+          setShowDialog={setShowCriteriaDialog}
+          data={data}
         />
       )}
     </div>

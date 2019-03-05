@@ -33,7 +33,7 @@ import Checkbox from './Fields/Checkbox';
 import RadioButtons from './Fields/RadioButtons';
 import DocumentSelect from './Fields/DocumentSelect';
 
-const styles = theme => ({
+export const styles = theme => ({
   mobile: {},
   paperRoot: {
     width: `calc(100% - ${theme.spacing.unit * 4}px)`,
