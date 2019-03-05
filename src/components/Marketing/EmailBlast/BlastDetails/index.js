@@ -15,6 +15,7 @@ import PausedIcon from '@material-ui/icons/PauseCircleOutline';
 
 import BlastStatusIcon from '../BlastStatusIcon';
 import Friction from '../../../Friction';
+import EmailAnalytics from './EmailAnalytics';
 
 import useDocument from '../../../../hooks/useDocument';
 import { updateDoc } from '../../../../utilities/firestore';
@@ -159,7 +160,7 @@ const BlastDetails = props => {
           </Button>
         </Grid>
       </Grid>
-      <Typography>Your analytics go here</Typography>
+      <EmailAnalytics />
 
       <Divider className={classes.divider} />
 
