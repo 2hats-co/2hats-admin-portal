@@ -38,7 +38,7 @@ const styles = theme => ({
 function BlastPreview({ classes, query, template }) {
   const [hasMore, setHasMore] = useState(true);
 
-  const [searchState, searchDispatch] = useSearch();
+  const [searchState, searchDispatch] = useSearch('', query);
   const { results } = searchState;
 
   const [templateState, templateDispatch] = useDocument();
