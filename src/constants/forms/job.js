@@ -8,6 +8,7 @@ import {
 
 const jobFields = initialData => {
   if (!initialData) initialData = {};
+
   return [
     {
       type: FIELDS.textField,
