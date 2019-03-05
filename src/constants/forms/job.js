@@ -1,5 +1,6 @@
 import FIELDS from './fields';
 import * as yup from 'yup';
+import moment from 'moment';
 import {
   ASSESSMENT_CATEGORIES,
   SKILLS,
@@ -64,8 +65,19 @@ const jobFields = initialData => {
       type: FIELDS.date,
       name: 'closingDate',
       label: 'Closing date',
-      value: initialData['closingDate'],
-      validation: yup.string().required('Closing date is required'),
+      value:
+        initialData['closingDate'] ||
+        moment()
+          .add(1, 'days')
+          .toDate(),
+      validation: yup
+        .date()
+        .test(
+          'day-from-now',
+          'Scheduled time must be at least a day from now',
+          value => moment(value).diff(moment(), 'days') >= 1
+        )
+        .required('Required'),
     },
     {
       type: FIELDS.textField,

@@ -76,12 +76,6 @@ function ContentManagerContainer(props) {
       mapping = oneCardMappings.assessment;
       break;
 
-    case ROUTES.eventsManager:
-      fields = eventFields;
-      formTitle = 'Event';
-      collection = COLLECTIONS.events;
-      break;
-
     case ROUTES.announcementsManager:
       fields = announcementFields;
       formTitle = 'Announcements';
