@@ -28,12 +28,14 @@ const emailBlastFields = initialData => {
       type: FIELDS.dateTime,
       name: 'blastsAt',
       label: 'Scheduled date & time',
-      value:
-        initialData['blastsAt'] ||
-        moment()
-          .add(1, 'hours')
-          .add(5, 'minutes')
-          .toDate(),
+      value: initialData['blastsAt']
+        ? initialData['blastsAt'].seconds
+          ? moment.unix(initialData['blastsAt'].seconds)
+          : moment.unix(initialData['blastsAt'])
+        : moment()
+            .add(1, 'hours')
+            .add(5, 'minutes')
+            .toDate(),
       validation: yup
         .date()
         .test(

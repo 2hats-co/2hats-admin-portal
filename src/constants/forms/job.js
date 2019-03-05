@@ -66,11 +66,13 @@ const jobFields = initialData => {
       type: FIELDS.date,
       name: 'closingDate',
       label: 'Closing date',
-      value:
-        initialData['closingDate'] ||
-        moment()
-          .add(1, 'days')
-          .toDate(),
+      value: initialData['closingDate']
+        ? initialData['closingDate'].seconds
+          ? moment.unix(initialData['closingDate'].seconds)
+          : moment.unix(initialData['closingDate'])
+        : moment()
+            .add(1, 'days')
+            .toDate(),
       validation: yup
         .date()
         .test(
