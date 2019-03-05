@@ -6,6 +6,8 @@ import Typography from '@material-ui/core/Typography';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 
+import BlastStatusIcon from '../BlastStatusIcon';
+
 import moment from 'moment';
 import { momentLocales } from '../../../../constants/momentLocales';
 
@@ -19,6 +21,11 @@ const styles = theme => ({
   selectedItem: {
     backgroundColor: `${theme.palette.primary.light} !important`,
     color: `${theme.palette.primary.darkText} !important`,
+  },
+
+  statusIcon: {
+    fontSize: 20,
+    marginRight: theme.spacing.unit,
   },
 
   listItemTextRoot: {
@@ -40,6 +47,8 @@ const styles = theme => ({
     boxOrient: 'vertical',
     overflow: 'hidden',
   },
+
+  secondaryText: { marginLeft: theme.spacing.unit * 3.5 },
 });
 
 function Item(props) {
@@ -63,6 +72,9 @@ function Item(props) {
             alignItems="flex-start"
             className={classes.primaryText}
           >
+            <Grid item>
+              <BlastStatusIcon data={data} className={classes.statusIcon} />
+            </Grid>
             <Grid item xs>
               <Typography
                 variant="subtitle1"
@@ -73,9 +85,9 @@ function Item(props) {
             </Grid>
             <Grid item>
               <Typography variant="body2" className={classes.timestamp}>
-                {data.createdAt &&
-                  data.createdAt.seconds &&
-                  moment.unix(data.createdAt.seconds).fromNow()}
+                {data.blastsAt &&
+                  data.blastsAt.seconds &&
+                  moment.unix(data.blastsAt.seconds).fromNow()}
               </Typography>
             </Grid>
           </Grid>
@@ -85,7 +97,7 @@ function Item(props) {
         }
         classes={{
           root: classes.listItemTextRoot,
-          // secondary: classes.clipBodyText,
+          secondary: classes.secondaryText,
         }}
       />
     </ListItem>

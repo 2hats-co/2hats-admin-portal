@@ -23,13 +23,7 @@ const DateTime = props => {
         {type === FIELDS.dateTime ? (
           <DateTimePicker
             label={label}
-            value={
-              values[name]
-                ? values[name].seconds
-                  ? moment.unix(values[name].seconds)
-                  : moment(values[name])
-                : null
-            }
+            value={values[name] ? moment(values[name]) : null}
             onChange={dt => {
               const asDate = dt.toDate();
               setValues({
@@ -49,13 +43,7 @@ const DateTime = props => {
         ) : (
           <DatePicker
             label={label}
-            value={
-              values[name]
-                ? values[name].seconds
-                  ? moment.unix(values[name].seconds)
-                  : moment(values[name])
-                : null
-            }
+            value={values[name] ? moment(values[name]) : null}
             onChange={dt => {
               const asDate = dt.toDate();
               setValues({

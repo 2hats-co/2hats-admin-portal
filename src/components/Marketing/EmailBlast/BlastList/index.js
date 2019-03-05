@@ -47,7 +47,7 @@ function BlastList(props) {
 
   const [blastsState, blastsDispatch] = useCollection({
     path: COLLECTIONS.emailBlasts,
-    sort: [{ field: 'createdAt', direction: 'desc' }],
+    sort: [{ field: 'blastsAt', direction: 'desc' }],
     filters: [],
   });
   const blasts = blastsState.documents;

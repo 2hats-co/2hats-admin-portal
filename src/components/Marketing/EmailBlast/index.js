@@ -16,7 +16,7 @@ import BlastPreview from './BlastPreview';
 
 import useAuthedUser from '../../../hooks/useAuthedUser';
 import useDocument from '../../../hooks/useDocument';
-import { createDoc } from '../../../utilities/firestore';
+import { createDoc, updateDoc } from '../../../utilities/firestore';
 import { unstable_useMediaQuery as useMediaQuery } from '@material-ui/core/useMediaQuery';
 
 import { COLLECTIONS } from '@bit/sidney2hats.2hats.global.common-constants';
@@ -65,14 +65,39 @@ function EmailBlast(props) {
   const { classes, location, history } = props;
 
   const [showForm, setShowForm] = useState(false);
+  const [formEdit, setFormEdit] = useState(false);
   const [blastState, dispatchBlast] = useDocument();
   let selectedBlast = blastState.doc;
 
   const isMobile = useMediaQuery('(max-width: 704px)');
   const currentUser = useAuthedUser();
 
+  const closeForm = () => {
+    setShowForm(false);
+    setFormEdit(false);
+  };
+
+  const editHandler = () => {
+    setFormEdit(true);
+    setShowForm(true);
+  };
+
   const createBlast = data => {
-    createDoc(COLLECTIONS.emailBlasts, { ...data, createdBy: currentUser.UID });
+    createDoc(COLLECTIONS.emailBlasts, {
+      ...data,
+      createdBy: currentUser.UID,
+      blasted: false,
+      willBlast: false,
+    });
+    closeForm();
+  };
+
+  const editBlast = data => {
+    updateDoc(COLLECTIONS.emailBlasts, selectedBlast.id, {
+      ...data,
+      createdBy: currentUser.UID,
+    });
+    closeForm();
   };
 
   useEffect(
@@ -118,7 +143,7 @@ function EmailBlast(props) {
         </Grid>
         <Grid item xs className={classes.detailsWrapper}>
           {selectedBlast ? (
-            <BlastDetails data={selectedBlast} />
+            <BlastDetails data={selectedBlast} editHandler={editHandler} />
           ) : (
             <Grid
               container
@@ -136,14 +161,13 @@ function EmailBlast(props) {
         </Grid>
       </Grid>
       <Form
-        action="Create"
+        action={formEdit ? 'Edit' : 'Create'}
         actions={{
           Create: createBlast,
-          close: () => {
-            setShowForm(false);
-          },
+          Edit: editBlast,
+          close: closeForm,
         }}
-        data={emailBlastFields()}
+        data={emailBlastFields(formEdit ? selectedBlast : {})}
         open={showForm}
         classes={{
           justFormWrapper: classes.justFormWrapper,
