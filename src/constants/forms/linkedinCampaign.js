@@ -66,6 +66,20 @@ const linkedinCampaignFields = initialData => {
         .max(100)
         .required('Connections per session is required'),
     },
+    {
+      type: FIELDS.slider,
+      name: 'startPage',
+      label: 'Start Page',
+      value: initialData['startPage'],
+      min: 1,
+      max: 100,
+      step: 1,
+      validation: yup
+        .number()
+        .min(5)
+        .max(100)
+        .required('Connections per session is required'),
+    },
   ];
 };
 
