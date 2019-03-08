@@ -125,13 +125,13 @@ const reactSelectValueFormatter = x => {
     return x;
   }
 };
-const youtubeUrlFormatter = x => {
-  if (typeof x === 'string' && x.includes('youtube.com')) {
-    return x.replace('watch?v=', 'embed/').split('&')[0];
-  } else {
-    return x;
-  }
-};
+// const youtubeUrlFormatter = x => {
+//   if (typeof x === 'string' && x.includes('youtube.com')) {
+//     return x.replace('watch?v=', 'embed/').split('&')[0];
+//   } else {
+//     return x;
+//   }
+// };
 
 /* eslint-disable no-sequences */
 const initialValuesReducer = (obj, item) => (
@@ -191,12 +191,12 @@ function Form(props) {
           reactSelectValueFormatter,
           outputValues
         );
-        const youtubeUrlFormatted = map(
+        /* const youtubeUrlFormatted = map(
           youtubeUrlFormatter,
           reactSelectFormattedValues
-        );
+        ); */
 
-        actions[action](youtubeUrlFormatted);
+        actions[action](reactSelectFormattedValues);
       }}
       validationSchema={yup.object().shape(data.reduce(validationReducer, {}))}
     >
