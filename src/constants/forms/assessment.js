@@ -81,6 +81,7 @@ const assessmentFields = initialData => {
       validation: yup.string(),
       placeholder:
         'Make sure it is a valid JSON!\n\nBest to use JSON.stringify() in your browser’s console\n\nYou can set the html, css, js, htmlMode, cssMode, jsMode properties',
+      displayCondition: values => values.submissionType.value === 'ideo',
     },
     {
       type: FIELDS.richTextMulti,
@@ -88,6 +89,9 @@ const assessmentFields = initialData => {
       label: 'Questions (optional)',
       value: initialData['questions'] || [],
       validation: yup.array(yup.string()),
+      displayCondition: values =>
+        values.submissionType.value !== 'mailchimp' &&
+        values.submissionType.value !== 'ideo',
     },
     {
       type: FIELDS.slider,
@@ -112,6 +116,7 @@ const assessmentFields = initialData => {
             })`
           );
       }),
+      displayCondition: values => values.questions.length > 0,
     },
     {
       type: FIELDS.dropzone,

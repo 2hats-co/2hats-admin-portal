@@ -247,6 +247,12 @@ function Form(props) {
             alignContent="flex-start"
           >
             {data.map(x => {
+              if (
+                typeof x.displayCondition === 'function' &&
+                !x.displayCondition(values)
+              )
+                return null;
+
               switch (x.type) {
                 case FIELDS.textField:
                 case FIELDS.textFieldNumber:
