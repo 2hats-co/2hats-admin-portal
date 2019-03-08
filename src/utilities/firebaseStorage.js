@@ -12,3 +12,12 @@ export function uploader(ref, blob, name, callback) {
       });
   });
 }
+
+export async function asyncUploader(ref, file) {
+  const documentRef = firebaseStorage.child(ref);
+  const snapShot = await documentRef.put(file);
+  const downloadUrl = await firebaseStorage
+    .child(snapShot.metadata.fullPath)
+    .getDownloadURL();
+  return downloadUrl;
+}

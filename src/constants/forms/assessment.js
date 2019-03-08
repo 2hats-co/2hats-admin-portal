@@ -35,6 +35,16 @@ const assessmentFields = initialData => {
       width: 6,
     },
     {
+      type: FIELDS.textField,
+      name: 'videoUrl',
+      label: 'Video URL',
+      value: initialData['videoUrl'],
+      validation: yup
+        .string()
+        .url('Invalid URL')
+        .required('Required'),
+    },
+    {
       type: FIELDS.richText,
       name: 'briefing',
       label: 'Briefing',
