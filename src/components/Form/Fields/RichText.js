@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 
 import ReactQuill from 'react-quill';
 import Delta from 'quill-delta';
@@ -34,44 +34,57 @@ const styles = theme => ({
   },
 });
 
+const imageHandler = quillRef => () => {
+  const now = new Date();
+
+  const quill = quillRef.current.getEditor();
+  let fileInput = document.body.querySelector('input.ql-image[type=file]');
+  if (fileInput == null) {
+    fileInput = document.createElement('input');
+    fileInput.setAttribute('type', 'file');
+    fileInput.setAttribute(
+      'accept',
+      'image/png, image/gif, image/jpeg, image/bmp, image/x-icon'
+    );
+    fileInput.classList.add('ql-image');
+    fileInput.addEventListener('change', async () => {
+      if (fileInput.files != null && fileInput.files[0] != null) {
+        const ref = `quill-images/${now.getTime()}/${fileInput.files[0].name}`;
+        const downloadUrl = await asyncUploader(ref, fileInput.files[0]);
+        let range = quill.getSelection(true);
+        quill.updateContents(
+          new Delta()
+            .retain(range.index)
+            .delete(range.length)
+            .insert({ image: downloadUrl }),
+          'user'
+        );
+
+        fileInput.value = '';
+      }
+    });
+    document.body.appendChild(fileInput);
+  }
+  fileInput.click();
+};
+
 const RichText = props => {
   const { classes, label, name, placeholder, formikProps, validator } = props;
   const { values, errors, touched, setValues } = formikProps;
   const [isUploading, setIsUploading] = useState(false);
   const quillRef = useRef(null);
-  const now = new Date();
-  const imageHandler = () => {
-    const quill = quillRef.current.getEditor();
-    let fileInput = document.body.querySelector('input.ql-image[type=file]');
-    if (fileInput == null) {
-      fileInput = document.createElement('input');
-      fileInput.setAttribute('type', 'file');
-      fileInput.setAttribute(
-        'accept',
-        'image/png, image/gif, image/jpeg, image/bmp, image/x-icon'
-      );
-      fileInput.classList.add('ql-image');
-      fileInput.addEventListener('change', async () => {
-        if (fileInput.files != null && fileInput.files[0] != null) {
-          const ref = `quill-images/${now.getTime()}/${
-            fileInput.files[0].name
-          }`;
-          const downloadUrl = await asyncUploader(ref, fileInput.files[0]);
-          let range = quill.getSelection(true);
-          quill.updateContents(
-            new Delta()
-              .retain(range.index)
-              .delete(range.length)
-              .insert({ image: downloadUrl })
-          );
 
-          fileInput.value = '';
-        }
-      });
-      document.body.appendChild(fileInput);
-    }
-    fileInput.click();
-  };
+  useEffect(
+    () => {
+      if (quillRef.current)
+        quillRef.current
+          .getEditor()
+          .getModule('toolbar')
+          .addHandler('image', imageHandler(quillRef));
+    },
+    [quillRef]
+  );
+
   return (
     <Grid item xs={12} className={classes.root}>
       <Typography
@@ -109,9 +122,6 @@ const RichText = props => {
               ['blockquote', 'code-block', 'image', 'video'],
               ['link'],
             ],
-            handlers: {
-              image: imageHandler,
-            },
           },
           clipboard: {
             matchVisual: false,

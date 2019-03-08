@@ -35,26 +35,16 @@ const assessmentFields = initialData => {
       width: 6,
     },
     {
-      type: FIELDS.textField,
-      name: 'videoUrl',
-      label: 'Video URL',
-      value: initialData['videoUrl'],
-      validation: yup
-        .string()
-        .url('Invalid URL')
-        .required('Required'),
-    },
-    {
       type: FIELDS.richText,
       name: 'briefing',
-      label: 'Briefing',
+      label: 'Briefing (BEFORE user clicks Get started)',
       value: initialData['briefing'],
       validation: yup.string().required('Required'),
     },
     {
       type: FIELDS.richText,
       name: 'taskInstructions',
-      label: 'Task instructions',
+      label: 'Task instructions (AFTER user clicks Get started)',
       placeholder:
         'Copy-paste main instructions here. You can also put related material here',
       value: initialData['taskInstructions'],
