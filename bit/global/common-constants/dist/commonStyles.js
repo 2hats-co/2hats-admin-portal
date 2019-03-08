@@ -72,7 +72,7 @@ var QUILL = (exports.QUILL = function QUILL(theme) {
     },
 
     // buttons stroke/fill colour matching
-    '& .ql-snow.ql-toolbar button': {
+    '& .ql-snow.ql-toolbar button, & .ql-snow .ql-picker-label': {
       borderRadius: theme.shape.borderRadius / 2,
       transition: theme.transitions.create('background-color', {
         duration: theme.transitions.duration.shortest,
@@ -108,6 +108,13 @@ var QUILL = (exports.QUILL = function QUILL(theme) {
       '& .ql-fill': {
         fill: theme.palette.primary.main + ' !important',
       },
+    },
+
+    // dropdown styling
+    '& .ql-snow.ql-toolbar button:hover, & .ql-snow .ql-toolbar button:hover, & .ql-snow.ql-toolbar button:focus, & .ql-snow .ql-toolbar button:focus, & .ql-snow.ql-toolbar button.ql-active, & .ql-snow .ql-toolbar button.ql-active, & .ql-snow.ql-toolbar .ql-picker-label:hover, & .ql-snow .ql-toolbar .ql-picker-label:hover, & .ql-snow.ql-toolbar .ql-picker-label.ql-active, & .ql-snow .ql-toolbar .ql-picker-label.ql-active, & .ql-snow.ql-toolbar .ql-picker-item:hover, & .ql-snow .ql-toolbar .ql-picker-item:hover, & .ql-snow.ql-toolbar .ql-picker-item.ql-selected, & .ql-snow .ql-toolbar .ql-picker-item.ql-selected': {
+      color: theme.palette.primary.main,
+
+      '& polygon': { stroke: theme.palette.primary.main + ' !important' },
     },
   };
 });

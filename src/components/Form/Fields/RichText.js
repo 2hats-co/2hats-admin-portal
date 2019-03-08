@@ -115,8 +115,8 @@ const RichText = props => {
           toolbar: {
             container: [
               ['bold', 'italic', 'underline'],
+              [{ header: [1, 2, 3, 4, false] }],
 
-              [{ header: 1 }, { header: 2 }],
               [{ list: 'bullet' }, { list: 'ordered' }],
               [{ indent: '-1' }, { indent: '+1' }],
               ['blockquote', 'code-block', 'image', 'video'],
