@@ -36,32 +36,19 @@ const assessmentFields = initialData => {
     },
     {
       type: FIELDS.richText,
-      name: 'companyDescription',
-      label: 'Company information',
-      value: initialData['companyDescription'],
-      validation: yup.string().required('Required'),
-    },
-    {
-      type: FIELDS.richText,
-      name: 'jobDescription',
-      label: 'Your job',
-      value: initialData['jobDescription'],
+      name: 'briefing',
+      label: 'Briefing',
+      value: initialData['briefing'],
       validation: yup.string().required('Required'),
     },
     {
       type: FIELDS.richText,
       name: 'taskInstructions',
       label: 'Task instructions',
-      placeholder: 'Copy-paste main instructions here',
+      placeholder:
+        'Copy-paste main instructions here. You can also put related material here',
       value: initialData['taskInstructions'],
       validation: yup.string().required('Required'),
-    },
-    {
-      type: FIELDS.richText,
-      name: 'relatedMaterial',
-      label: 'Related material',
-      value: initialData['relatedMaterial'],
-      validation: yup.string(),
     },
     {
       type: FIELDS.autocomplete,
