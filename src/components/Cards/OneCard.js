@@ -158,6 +158,7 @@ function OneCard(props) {
     video,
     gradient,
     history,
+    onClick,
   } = props;
 
   let media;
@@ -189,9 +190,13 @@ function OneCard(props) {
       <CardActionArea
         id={title.replace(/\W/g, '')}
         component="div"
-        onClick={() => {
-          history.push(route);
-        }}
+        onClick={
+          onClick
+            ? onClick
+            : () => {
+                history.push(route);
+              }
+        }
         classes={{ root: classes.cardActionArea }}
         focusVisibleClassName={classes.focusVisible}
         disableRipple
@@ -270,6 +275,8 @@ OneCard.propTypes = {
   image: PropTypes.string,
   video: PropTypes.string,
   gradient: PropTypes.string,
+
+  onClick: PropTypes.func,
 };
 
 export default withRouter(withStyles(styles)(OneCard));

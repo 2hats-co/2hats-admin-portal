@@ -105,7 +105,11 @@ const EditOneCard = props => {
         </Tooltip> */}
       </div>
 
-      {children}
+      {children({
+        onClick: () => {
+          setShowForm(true);
+        },
+      })}
 
       {showForm && (
         <Form
