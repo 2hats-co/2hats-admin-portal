@@ -131,15 +131,15 @@ const CriteriaDialog = props => {
       </Dialog>
 
       <Form
-        action={selectedCriterion ? 'Edit' : 'Create'}
+        action={selectedCriterion ? 'Edit' : 'Add'}
         actions={{
-          Create: handleCreate,
+          Add: handleCreate,
           Edit: handleEdit,
           close: closeForm,
         }}
         open={showForm}
         data={assessmentCriteriaFields(selectedCriterion)}
-        formTitle={'criteria'}
+        formTitle={'criterion'}
       />
     </>
   );

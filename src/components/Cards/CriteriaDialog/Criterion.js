@@ -1,4 +1,5 @@
 import React from 'react';
+import classNames from 'classnames';
 
 import withStyles from '@material-ui/core/styles/withStyles';
 import Grid from '@material-ui/core/Grid';
@@ -15,6 +16,8 @@ import red from '@material-ui/core/colors/red';
 
 import Friction from '../../Friction';
 
+import { STYLES } from '@bit/sidney2hats.2hats.global.common-constants';
+
 const styles = theme => ({
   root: {
     '&+&': {
@@ -26,11 +29,16 @@ const styles = theme => ({
   actionButtons: { marginRight: -theme.spacing.unit * 1.5 },
 
   title: { lineHeight: 1.25 },
+
+  ...STYLES.RENDERED_HTML(theme),
   message: {
     marginBottom: theme.spacing.unit * 2,
     whiteSpace: 'pre-line',
   },
-  messageText: { marginTop: 2 },
+  messageText: {
+    ...theme.typography.body2,
+    marginTop: 2,
+  },
 
   passIcon: {
     marginRight: theme.spacing.unit,
@@ -77,9 +85,10 @@ const Criterion = props => {
           <PassIcon className={classes.passIcon} />
         </Grid>
         <Grid item xs>
-          <Typography variant="body2" className={classes.messageText}>
-            {data.pass}
-          </Typography>
+          <div
+            className={classNames(classes.renderedHtml, classes.messageText)}
+            dangerouslySetInnerHTML={{ __html: data.pass }}
+          />
         </Grid>
       </Grid>
 
@@ -88,9 +97,10 @@ const Criterion = props => {
           <FailIcon className={classes.failIcon} />
         </Grid>
         <Grid item xs>
-          <Typography variant="body2" className={classes.messageText}>
-            {data.fail}
-          </Typography>
+          <div
+            className={classNames(classes.renderedHtml, classes.messageText)}
+            dangerouslySetInnerHTML={{ __html: data.fail }}
+          />
         </Grid>
       </Grid>
     </div>
