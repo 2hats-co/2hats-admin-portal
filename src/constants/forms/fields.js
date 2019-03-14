@@ -11,6 +11,7 @@ const FIELDS = {
 
   autocomplete: 'AUTOCOMPLETE',
   docAutocomplete: 'DOCUMENT_AUTOCOMPLETE',
+  docAutocompleteMulti: 'DOCUMENT_AUTOCOMPLETE_MULTI',
   autocompleteMulti: 'AUTOCOMPLETE_MULTI',
   autocompleteFreeText: 'AUTOCOMPLETE_FREE_TEXT',
   autocompleteMultiFreeText: 'AUTOCOMPLETE_MULTI_FREE_TEXT',

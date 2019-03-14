@@ -35,8 +35,17 @@ const DocumentSelect = props => {
   useEffect(
     () => {
       if (values[name] && suggestions.length > 0) {
-        const filtered = suggestions.filter(x => x.value === values[name]);
-        if (filtered.length > 0) setValues({ ...values, [name]: filtered[0] });
+        if (Array.isArray(values[name])) {
+          const existingValues = values[name].map(v => {
+            const filtered = suggestions.filter(x => x.value === v);
+            return filtered[0];
+          });
+          setValues({ ...values, [name]: existingValues });
+        } else {
+          const filtered = suggestions.filter(x => x.value === values[name]);
+          if (filtered.length > 0)
+            setValues({ ...values, [name]: filtered[0] });
+        }
       }
     },
     [collectionState.documents]
