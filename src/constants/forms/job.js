@@ -44,10 +44,7 @@ const jobFields = initialData => {
       type: FIELDS.docAutocompleteMulti,
       name: 'skillsRequired',
       label: 'Skills required',
-      // value:
-      //   initialData['skillsRequired'] &&
-      //   SKILLS.filter(x => initialData['skillsRequired'].includes(x.value)),
-      // suggestions: SKILLS,
+      value: initialData['skillsRequired'],
       mappings: { label: 'title', value: 'id' },
       collection: 'assessments',
       validation: yup.array(),
