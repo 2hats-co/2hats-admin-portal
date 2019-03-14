@@ -62,7 +62,7 @@ const linkedinCampaignFields = initialData => {
       step: 5,
       validation: yup
         .number()
-        .min(5)
+        .min(1)
         .max(100)
         .required('Connections per session is required'),
     },
@@ -76,7 +76,7 @@ const linkedinCampaignFields = initialData => {
       step: 1,
       validation: yup
         .number()
-        .min(5)
+        .min(1)
         .max(100)
         .required('Connections per session is required'),
     },

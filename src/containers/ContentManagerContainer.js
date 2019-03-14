@@ -118,7 +118,7 @@ function ContentManagerContainer(props) {
                 key={x.id}
                 collection={collection}
               >
-                <OneCard {...mapping(x)} />
+                {extraProps => <OneCard {...extraProps} {...mapping(x)} />}
               </EditOneCard>
             ))}
         </Grid>
