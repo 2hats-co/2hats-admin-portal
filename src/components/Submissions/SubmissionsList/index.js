@@ -65,6 +65,11 @@ const styles = theme => ({
       color: theme.palette.text.disabled,
     },
   },
+
+  scrollyRollyWrapper: {
+    width: '100%',
+    overflowY: 'auto',
+  },
 });
 
 const typeFilter = type => ({ field: 'type', operator: '==', value: type });
@@ -301,7 +306,7 @@ function SubmissionsList(props) {
           </Grid>
         </Grid>
       ) : (
-        <Grid item xs style={{ overflowY: 'scroll' }}>
+        <Grid item xs className={classes.scrollyRollyWrapper}>
           <ScrollyRolly
             classes={{ listLoader: classes.listLoader }}
             dataState={submissionsState}
