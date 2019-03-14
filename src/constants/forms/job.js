@@ -41,13 +41,15 @@ const jobFields = initialData => {
       validation: yup.string().required('Required'),
     },
     {
-      type: FIELDS.autocompleteMulti,
+      type: FIELDS.docAutocompleteMulti,
       name: 'skillsRequired',
       label: 'Skills required',
-      value:
-        initialData['skillsRequired'] &&
-        SKILLS.filter(x => initialData['skillsRequired'].includes(x.value)),
-      suggestions: SKILLS,
+      // value:
+      //   initialData['skillsRequired'] &&
+      //   SKILLS.filter(x => initialData['skillsRequired'].includes(x.value)),
+      // suggestions: SKILLS,
+      mappings: { label: 'title', value: 'id' },
+      collection: 'assessments',
       validation: yup.array(),
       // .min(1)
       // .required('Skills are required'),

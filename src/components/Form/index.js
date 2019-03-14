@@ -342,6 +342,7 @@ function Form(props) {
                     />
                   );
                 case FIELDS.docAutocomplete:
+                case FIELDS.docAutocompleteMulti:
                   return (
                     <DocumentSelect
                       collection={x.collection}
