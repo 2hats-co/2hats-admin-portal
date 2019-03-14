@@ -30,7 +30,7 @@ import Search from '../Search';
 import Notifications from '../Notifications';
 import UserDialog from '../UserDialog';
 import SuperAvatar from '../SuperAvatar';
-
+import Fired from './Fired';
 import metadata from '../../metadata.json';
 import useAuthedUser from '../../hooks/useAuthedUser';
 import DebugContext from '../../contexts/DebugContext';
@@ -166,7 +166,10 @@ export default function withNavigation(WrappedComponent) {
         }
       }
     }
-
+    console.log(currentUser);
+    if (currentUser && currentUser.fired) {
+      return <Fired user={currentUser} />;
+    }
     if (currentUser && uid)
       return (
         <AdminsProvider>
