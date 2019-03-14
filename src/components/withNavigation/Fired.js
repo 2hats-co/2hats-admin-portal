@@ -2,8 +2,8 @@ import React from 'react';
 const Fired = props => (
   <>
     <p>
-      hey {props.user.givenName}, it's good to see you again,but I'm sorry I
-      can't let through no more
+      hey {props.user.givenName}, it's good to see you again,but I can't let you
+      through no more. Because
     </p>
     <img
       alt="you're fired"
