@@ -5,6 +5,10 @@ const Fired = props => (
       hey {props.user.givenName}, it's good to see you again,but I'm sorry I
       can't let through no more
     </p>
+    <img
+      alt="you're fired"
+      src="https://2.bp.blogspot.com/--UJq8DuSO_g/Wc9mbqSC09I/AAAAAAAAbco/sJhoUxuJ4_8AJrsqWIgRfLS2BQEKN-HKACLcBGAs/s1600/Trump_Youre_Fired_02.jpg"
+    />
   </>
 );
 export default Fired;
