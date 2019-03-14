@@ -70,8 +70,8 @@ const jobFields = initialData => {
       label: 'Closing date',
       value: initialData['closingDate']
         ? initialData['closingDate'].seconds
-          ? moment.unix(initialData['closingDate'].seconds)
-          : moment.unix(initialData['closingDate'])
+          ? moment.unix(initialData['closingDate'].seconds).toDate()
+          : moment.unix(initialData['closingDate']).toDate()
         : moment()
             .add(1, 'days')
             .toDate(),
