@@ -15,7 +15,10 @@ const labelReducer = (doc, mappings) => {
       .substr(2);
   else output.label = doc[mappings.label];
 
-  output.value = doc[mappings.value];
+  output.value =
+    typeof mappings.value === 'function'
+      ? mappings.value(doc)
+      : doc[mappings.value];
 
   return output;
 };

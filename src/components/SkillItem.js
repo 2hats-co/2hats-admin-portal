@@ -77,19 +77,17 @@ const SkillItem = props => {
   const [assessmentRoute, setAssessmentRoute] = useState(
     `/assessments?skill=${value}`
   );
-  const setSkillByAssessmentId = async value => {
-    const assessmentDoc = await getDoc('assessments', value);
-    if (assessmentDoc) {
-      setSkillLabel(assessmentDoc.title);
-      setAssessmentRoute(`/assessments?id=${value}`);
-    }
-  };
+
   useEffect(
     () => {
-      setSkillByAssessmentId(value);
+      if (value.title) {
+        setSkillLabel(value.title);
+        setAssessmentRoute(`/assessments?id=${value.id}`);
+      }
     },
     [value]
   );
+
   return (
     <Grid
       onClick={

@@ -45,7 +45,10 @@ const jobFields = initialData => {
       name: 'skillsRequired',
       label: 'Skills required',
       value: initialData['skillsRequired'],
-      mappings: { label: 'title', value: 'id' },
+      mappings: {
+        label: 'title',
+        value: doc => ({ title: doc.title, id: doc.id }),
+      },
       collection: 'assessments',
       validation: yup.array(),
       // .min(1)
