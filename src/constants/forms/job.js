@@ -1,10 +1,7 @@
 import FIELDS from './fields';
 import * as yup from 'yup';
 import moment from 'moment';
-import {
-  ASSESSMENT_CATEGORIES,
-  SKILLS,
-} from '@bit/sidney2hats.2hats.global.common-constants';
+import { ASSESSMENT_CATEGORIES } from '@bit/sidney2hats.2hats.global.common-constants';
 
 const jobFields = initialData => {
   if (!initialData) initialData = {};

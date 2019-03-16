@@ -71,7 +71,10 @@ const imageHandler = quillRef => () => {
 const RichText = props => {
   const { classes, label, name, placeholder, formikProps, validator } = props;
   const { values, errors, touched, setValues } = formikProps;
-  const [isUploading, setIsUploading] = useState(false);
+  const [
+    isUploading,
+    //setIsUploading
+  ] = useState(false);
   const quillRef = useRef(null);
 
   useEffect(

@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { withRouter } from 'react-router-dom';
@@ -9,12 +9,10 @@ import ButtonBase from '@material-ui/core/ButtonBase';
 import Typography from '@material-ui/core/Typography';
 
 import SkillOutlinedIcon from '@material-ui/icons/NewReleasesOutlined';
-import SkillAchievedIcon from '../assets/icons/SkillAchieved';
 import green from '@material-ui/core/colors/green';
 
 import { getSkillLabel } from '@bit/sidney2hats.2hats.global.common-constants';
 
-import { getDoc } from '../utilities/firestore';
 const styles = theme => ({
   root: {
     display: 'inline-flex',
