@@ -17,6 +17,7 @@ import TimeIcon from '@material-ui/icons/AccessTimeOutlined';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 import Question from './Question';
+import DebugButton from '../../DebugButton';
 
 import {
   STYLES,
@@ -25,6 +26,12 @@ import {
 
 const styles = theme => ({
   ...STYLES.DETAIL_VIEW(theme),
+
+  debugButtonsWrapper: {
+    position: 'absolute',
+    top: theme.spacing.unit,
+    right: theme.spacing.unit,
+  },
 
   meta: {
     marginTop: theme.spacing.unit * 1.5,
@@ -58,6 +65,16 @@ const AssessmentSubmission = props => {
   return (
     <div className={classes.root}>
       <main className={classes.content}>
+        <div className={classes.debugButtonsWrapper}>
+          <DebugButton title="Copy submission ID" toCopy={data.id} />
+          <DebugButton title="Copy assessment ID" toCopy={data.assessmentId} />
+          <DebugButton
+            title="Copy user submission doc ID"
+            toCopy={data.userSubmissionDocId}
+          />
+          <DebugButton toCopy={data.UID} />
+        </div>
+
         <Grid container className={classes.meta} alignItems="flex-end">
           <Grid item xs={12} sm={6}>
             <Grid container alignItems="center" className={classes.metaElement}>

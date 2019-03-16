@@ -1,14 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import withStyles from '@material-ui/core/styles/withStyles';
 
+import Grid from '@material-ui/core/Grid';
 import Fab from '@material-ui/core/Fab';
-import FeedbackIcon from '@material-ui/icons/AssignmentTurnedInOutlined';
+import FeedbackIcon from '@material-ui/icons/AssignmentTurnedIn';
 
 import AssessmentSubmission from './AssessmentSubmission';
+import FeedbackForm from './AssessmentSubmission/FeedbackForm';
 import JobSubmission from './JobSubmission';
 
 const styles = theme => ({
-  scrollWrapper: { overflowY: 'auto' },
+  scrollWrapper: {
+    overflowY: 'auto',
+    height: '100vh',
+    position: 'relative',
+  },
 
   feedbackButton: {
     position: 'absolute',
@@ -22,17 +28,24 @@ const SubmissionView = props => {
 
   const [showFeedback, setShowFeedback] = useState(false);
 
+  useEffect(
+    () => {
+      setShowFeedback(false);
+    },
+    [submission.id]
+  );
+
   if (!submission || !submission.type) return null;
 
   switch (submission.type) {
     case 'assessment':
       return (
-        <>
-          <div className={classes.scrollWrapper}>
+        <Grid container>
+          <Grid item xs className={classes.scrollWrapper}>
             <AssessmentSubmission data={submission} />
-          </div>
+          </Grid>
           {showFeedback ? (
-            <div>feedback here</div>
+            <FeedbackForm submission={submission} />
           ) : (
             <Fab
               variant="extended"
@@ -43,10 +56,10 @@ const SubmissionView = props => {
               }}
             >
               <FeedbackIcon />
-              Send Feedback
+              Feedback
             </Fab>
           )}
-        </>
+        </Grid>
       );
     case 'job':
       return (

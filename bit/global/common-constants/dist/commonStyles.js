@@ -210,6 +210,54 @@ var generateOlStyles = function generateOlStyles() {
 
   return output;
 };
+var generateUlStyles = function generateUlStyles() {
+  var output = {};
+
+  for (var i = 0; i < 10; i++) {
+    var marginTop = 0;
+    if (i === 0) marginTop = 8;
+    if (i === 1) marginTop = 4;
+
+    output[i === 0 ? '& ul li' : '& ul li.ql-indent-' + i] = {
+      listStyleType: 'none',
+      paddingLeft: 1.5 + 2 * i + 'em',
+
+      '&::before': {
+        content: '"\u2022"',
+        marginLeft: '-1.5em',
+        marginRight: '0.75em',
+
+        textAlign: 'right',
+        display: 'inline-block',
+        whiteSpace: 'nowrap',
+        width: '0.5em',
+      },
+
+      marginTop: marginTop,
+    };
+  }
+
+  return output;
+};
+var generatePreStyles = function generatePreStyles(theme) {
+  return {
+    '& pre': {
+      backgroundColor: '#222',
+      color: '#fff',
+
+      fontFamily:
+        'SFMono-Regular,Consolas,Liberation Mono,Menlo,Courier,monospace',
+      fontSize: '.875rem',
+
+      overflow: 'visible',
+      whiteSpace: 'pre-wrap',
+
+      margin: theme.spacing.unit / 2 + 'px 0',
+      padding: theme.spacing.unit * 1.5 + 'px ' + theme.spacing.unit * 2 + 'px',
+      borderRadius: theme.shape.borderRadius / 2,
+    },
+  };
+};
 
 var RENDERED_HTML = (exports.RENDERED_HTML = function RENDERED_HTML(theme) {
   return {
@@ -217,12 +265,20 @@ var RENDERED_HTML = (exports.RENDERED_HTML = function RENDERED_HTML(theme) {
       {},
       theme.typography.body1,
       {
-        '& p': { margin: 0 },
+        '& p, & h1, & h2, & h3, & h4, & h5, & h6, & blockquote': {
+          margin: 0,
+          padding: 0,
+        },
         '& a': { color: theme.palette.primary.main + ' !important' },
 
         '& ol, & ul': { padding: 0, margin: 0 },
+
+        '& img': { maxWidth: '100%' },
+        '& iframe': { width: 480, height: 270 },
       },
-      generateOlStyles()
+      generateOlStyles(),
+      generateUlStyles(),
+      generatePreStyles(theme)
     ),
     renderedHtmlOriginal: _extends({}, theme.typography.body2, {
       '& p': { margin: 0 },

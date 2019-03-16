@@ -38,4 +38,5 @@ export const COLLECTIONS = {
   gmails: 'gmails',
   announcements: 'announcements',
   emailBlasts: 'emailBlasts',
+  criteria: 'criteria',
 };

@@ -260,6 +260,7 @@ function SubmissionsList(props) {
                   { value: 'pending', label: 'Pending' },
                   { value: 'pass', label: 'Pass' },
                   { value: 'fail', label: 'Fail' },
+                  { value: 'disqualify', label: 'Disqualified' },
                 ]}
                 selection={selectedFilters.outcome}
                 setSelection={val => {

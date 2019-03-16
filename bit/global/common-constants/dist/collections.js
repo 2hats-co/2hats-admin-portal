@@ -43,6 +43,7 @@ var COLLECTIONS = (exports.COLLECTIONS = {
   gmails: 'gmails',
   announcements: 'announcements',
   emailBlasts: 'emailBlasts',
+  criteria: 'criteria',
 });
 
 //# sourceMappingURL=collections.js.map

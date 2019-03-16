@@ -32,3 +32,5 @@ export const ROUTES = {
   eventsManager: '/contentManager/events',
   announcementsManager: '/contentManager/announcements',
 };
+
+export default ROUTES;

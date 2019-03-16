@@ -28,9 +28,14 @@ const Friction = ({ children, message }) => {
         <DialogTitle>
           {(message && message.title) || 'Are you sure?'}
         </DialogTitle>
-        <DialogContent>
-          <DialogContentText>{message && message.body}</DialogContentText>
-        </DialogContent>
+        {message && (
+          <DialogContent>
+            {message.customBody}
+            {message.body && (
+              <DialogContentText>{message.body}</DialogContentText>
+            )}
+          </DialogContent>
+        )}
         <DialogActions>
           <Button onClick={handleClose} color="primary">
             {(message && message.cancel) || 'Cancel'}
