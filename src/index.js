@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 
 import './index.css';
 import LoadingHat from './components/LoadingHat';
-import registerServiceWorker from './registerServiceWorker';
+import { unregister } from './registerServiceWorker';
 
 const App = lazy(() => import('./App' /* webpackChunkName: "App" */));
 
@@ -13,7 +13,7 @@ ReactDOM.render(
   </Suspense>,
   document.getElementById('root')
 );
-registerServiceWorker();
+unregister();
 
 if (window.location.hostname === 'localhost')
   window.document.title = 'LOCAL 2hats Admin';
