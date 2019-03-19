@@ -45,7 +45,13 @@ fs.writeFile(
       {
         "target": "admin",
         "public": "build",
-        "ignore": ["firebase.json", "**/.*", "**/node_modules/**"]
+        "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+        "rewrites": [
+          {
+            "source": "**",
+            "destination": "/index.html"
+          }
+        ],
       }
     ]
   }
