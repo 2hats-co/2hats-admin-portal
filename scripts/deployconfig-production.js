@@ -51,7 +51,7 @@ fs.writeFile(
             "source": "**",
             "destination": "/index.html"
           }
-        ],
+        ]
       }
     ]
   }
