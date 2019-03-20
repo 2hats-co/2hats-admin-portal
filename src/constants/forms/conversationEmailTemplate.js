@@ -5,6 +5,16 @@ const emailTemplateFields = initialData => {
   if (!initialData) initialData = {};
   return [
     {
+      type: FIELDS.docAutocomplete,
+      name: 'clonedTemplateId',
+      label: 'Template Base',
+      collection: 'emailTemplates',
+      mappings: { label: 'label', value: 'id' },
+      placeholder: 'Template Base',
+      value: initialData['clonedTemplateId'],
+      validation: true,
+    },
+    {
       type: FIELDS.textField,
       name: 'label',
       label: 'Name',

@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import withNavigation from '../components/withNavigation';
 import { ROUTES } from '../constants/routes';
+import Fab from '@material-ui/core/Fab';
+
+import AddIcon from '@material-ui/icons/Add';
 
 import withStyles from '@material-ui/core/styles/withStyles';
 import Grid from '@material-ui/core/Grid';
@@ -16,10 +19,12 @@ import Filter from '../components/Subjects/Filter';
 import SubjectItem from '../components/Subjects/SubjectItem';
 import useCollection from '../hooks/useCollection';
 import LoadingHat from '../components/LoadingHat';
+import { createDoc } from '../utilities/firestore';
 
 import ScrollyRolly from '../components/ScrollyRolly';
 import { COLLECTIONS } from '../constants/firestore';
-
+import Form from '../components/Form';
+import clientFields from '../constants/forms/clients';
 const styles = theme => ({
   root: {
     height: '100vh',
@@ -56,107 +61,25 @@ const styles = theme => ({
     overflowY: 'auto',
     borderTop: `1px solid ${theme.palette.divider}`,
   },
+  fab: {
+    position: 'fixed',
+    bottom: theme.spacing.unit * 2,
+    right: theme.spacing.unit * 2,
+  },
 });
 
-// const FAKE_DATA = [
-//   {
-//     name: 'Prosafia Caming',
-//     email: 'prosafia@caming.xxx',
-//     phone: '000',
-//     industry: 'Baby Showers',
-//     tags: [
-//       { type: 'leads', label: 'opportunity' },
-//       { type: 'stage', label: 'cv' },
-//     ],
-//     note: 'x',
-//   },
-//   {
-//     name: 'Prosafia Caming',
-//     email: 'prosafia@caming.xxx',
-//     phone: '000',
-//     industry: 'Baby Showers',
-//     tags: [
-//       { type: 'leads', label: 'opportunity' },
-//       { type: 'stage', label: 'cv' },
-//     ],
-//     note: '',
-//   },
-//   {
-//     name: 'Prosafia Caming',
-//     email: 'prosafia@caming.xxx',
-//     phone: '000',
-//     industry: 'Bone app the teeth',
-//     tags: [
-//       { type: 'leads', label: 'opportunity' },
-//       { type: 'stage', label: 'cv' },
-//     ],
-//     note: 'x',
-//   },
-//   {
-//     name: 'Prosafia Caming',
-//     email: 'prosafia@caming.xxx',
-//     phone: '000',
-//     industry: 'Baby Showers',
-//     tags: [
-//       { type: 'leads', label: 'opportunity' },
-//       { type: 'stage', label: 'cv' },
-//     ],
-//   },
-// ];
-
-const CANIDIDATE_FILTERS = [
-  {
-    title: 'Submission Status',
-    values: ['Pending', 'Scheduled', 'Placed', 'Cancelled'],
-  },
-  {
-    title: 'Submission Status II',
-    type: 'date',
-    values: ['Pending', 'Scheduled', 'Placed', 'Cancelled'],
-  },
-  {
-    title: 'Company',
-    type: 'search',
-    values: [
-      'Apple',
-      'BP',
-      'Chevron',
-      'Deloitte',
-      'Energizer',
-      'Foursquare',
-      'Google',
-      'Hyundai',
-      'Iglu',
-      'Wumbo',
-    ],
-  },
-];
+const CANIDIDATE_FILTERS = [];
 
 const CLIENT_FILTERS = [
   {
     title: 'Assignee',
     type: 'admin',
   },
+
   {
-    title: 'Submission Status II',
-    type: 'date',
-    values: ['Pending', 'Scheduled', 'Placed', 'Cancelled'],
-  },
-  {
-    title: 'Company',
+    title: 'Industry',
     type: 'search',
-    values: [
-      'Apple',
-      'BP',
-      'Chevron',
-      'Deloitte',
-      'Energizer',
-      'Foursquare',
-      'Google',
-      'Hyundai',
-      'Iglu',
-      'Wumbo',
-    ],
+    values: ['IT', 'HEALTH', 'MARKETING', 'CONSTRUCTION', 'ACCOUNTING'],
   },
 ];
 
@@ -175,10 +98,15 @@ function SubjectsContainer(props) {
 
   let collection = COLLECTIONS.candidates;
   let filters = CANIDIDATE_FILTERS;
+  let fields;
+  let formTitle;
   if (route === ROUTES.clients) {
     filters = CLIENT_FILTERS;
+    fields = clientFields;
+    formTitle = 'Client Account';
     collection = COLLECTIONS.clients;
   }
+  const [showDialog, setShowDialog] = useState(true);
 
   const [queryFilters, setQueryFilters] = useState([]);
   const [subjectsState, subjectsDispatch] = useCollection({
@@ -294,6 +222,27 @@ function SubjectsContainer(props) {
           <span id="message-id">Copied to clipboard: {snackbarContent}</span>
         }
       />
+      <Form
+        //justForm
+        action="create"
+        actions={{
+          create: data => {
+            createDoc(collection, data);
+            setShowDialog(false);
+          },
+          close: () => {
+            setShowDialog(false);
+          },
+        }}
+        open={showDialog}
+        data={fields()}
+        formTitle={formTitle}
+      />
+      {route === ROUTES.clients && (
+        <Fab className={classes.fab} color="primary" onClick={() => {}}>
+          <AddIcon />
+        </Fab>
+      )}
     </>
   );
 }
