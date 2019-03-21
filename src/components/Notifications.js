@@ -31,6 +31,10 @@ import { COLLECTIONS } from '@bit/sidney2hats.2hats.global.common-constants';
 import { ROUTES } from '../constants/routes';
 import { markAllAsRead, markAsRead, archive } from '../utilities/notifications';
 
+import AppBar from '@material-ui/core/AppBar';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
+
 import moment from 'moment';
 import { momentLocales } from '../constants/momentLocales';
 
@@ -85,6 +89,15 @@ const getIcon = type => {
   }
 };
 
+const dropDuplicates = notifications => {
+  if (!notifications) return [];
+  const uniqueNotifications = notifications.map((notification, index) => {
+    if (index === 0 || notification.title !== notifications[index - 1].title) {
+      return notification;
+    }
+  });
+  return uniqueNotifications.filter(n => n);
+};
 function Notifications(props) {
   const { classes, className, history, uid } = props;
 
@@ -104,13 +117,15 @@ function Notifications(props) {
     ? unreadNotificationsState.documents.length
     : 0;
 
-  const [notificationsState, notificationsDispatch] = useCollection({
+  const [notificationsState, notificationsDispatch, loadMore] = useCollection({
     path: `${COLLECTIONS.admins}/${uid}/${COLLECTIONS.notifications}`,
     sort: { field: 'createdAt', direction: 'desc' },
     filters: [{ field: 'archived', operator: '==', value: false }],
   });
   const notifications = notificationsState.documents;
-
+  const uniqueNotifications = dropDuplicates(notifications);
+  const uniqueNotificationsState = { documents: uniqueNotifications };
+  console.log(uniqueNotifications);
   const handleClose = () => {
     setSlideIn(false);
     setTimeout(() => {
@@ -135,10 +150,18 @@ function Notifications(props) {
       handleClose();
     }
   };
-
+  const [tab, setTab] = useState('message');
+  const handleTab = (_, v) => {
+    setTab(v);
+    notificationsDispatch({
+      filters: [
+        { field: 'archived', operator: '==', value: false },
+        { field: 'data.type', operator: '==', value: v },
+      ],
+    });
+  };
   if (notificationsState.loading)
     return <CircularProgress className={classes.loader} size={24} />;
-
   return (
     <>
       <Fade in>
@@ -165,9 +188,16 @@ function Notifications(props) {
         <Modal open={showDialog} onClose={handleClose} disableAutoFocus>
           <Slide in={slideIn} direction="up">
             <Paper elevation={24} classes={{ root: classes.paperRoot }}>
+              <AppBar position="static">
+                <Tabs value={tab} onChange={handleTab}>
+                  <Tab label="Reminders" value="reminder" />
+                  <Tab label="Messages" value="message" />
+                  <Tab label="Notes" value="note" />
+                </Tabs>
+              </AppBar>
               <ScrollyRolly
-                dataState={notificationsState}
-                dataDispatch={notificationsDispatch}
+                dataState={uniqueNotificationsState}
+                loadMore={loadMore}
               >
                 {x => (
                   <ListItem

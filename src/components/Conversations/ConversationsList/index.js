@@ -96,7 +96,7 @@ const categoryFilter = category => ({
 
 function ConversationsList(props) {
   const { classes, setSelectedConversation, selectedConversation, uid } = props;
-  const [conversationsState, conversationsDispatch] = useCollection({
+  const [conversationsState, conversationsDispatch, loadMore] = useCollection({
     path: `conversations`,
     sort: [orderByType, orderbyLastMessage],
     filters: [],
@@ -259,7 +259,7 @@ function ConversationsList(props) {
           <ScrollyRolly
             classes={{ listLoader: classes.listLoader }}
             dataState={conversationsState}
-            dataDispatch={conversationsDispatch}
+            loadMore={loadMore}
             disablePadding
           >
             {data => (
