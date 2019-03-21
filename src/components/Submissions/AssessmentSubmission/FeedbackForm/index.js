@@ -342,6 +342,7 @@ const FeedbackForm = props => {
             submitFeedback(
               submission.id,
               submission.UID,
+              submission.assessmentId,
               outcome,
               generalComments,
               feedback

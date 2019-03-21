@@ -43,7 +43,14 @@ export const handlePass = async submission => {
   }
 };
 
-export const submitFeedback = (id, UID, outcome, generalComments, feedback) => {
+export const submitFeedback = (
+  id,
+  UID,
+  skillId,
+  outcome,
+  generalComments,
+  feedback
+) => {
   const filteredFeedback = feedback.filter(
     x =>
       !!x.outcome &&
@@ -69,7 +76,7 @@ export const submitFeedback = (id, UID, outcome, generalComments, feedback) => {
     feedback: outputFeedback,
   });
 
-  setUserSkills(UID, id, outcome);
+  setUserSkills(UID, skillId, outcome);
 };
 
 const setUserSkills = async (UID, skillId, outcome) => {
