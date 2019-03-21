@@ -137,7 +137,35 @@ const useCollection = intialOverrides => {
     },
     [collectionState.filters, collectionState.limit, collectionState.path]
   );
-  return [collectionState, collectionDispatch];
+  const loadMore = additional => {
+    if (collectionState.limit < CAP) {
+      const increment = additional || 10;
+      const newLimit = collectionState.limit + increment;
+      collectionDispatch({ limit: newLimit });
+    }
+  };
+  const updateDoc = doc => {
+    let docs = collectionState.documents;
+    const docIndex = findIndex(propEq('id', doc.id))(docs);
+    //compare before updating
+    let shouldUpdate = false;
+    for (let field in doc.data) {
+      if (docs[docIndex][field] !== doc.data[field]) {
+        shouldUpdate = true;
+      }
+    }
+    if (!shouldUpdate) {
+      docs[docIndex] = { ...docs[docIndex], ...doc.data };
+      firestore
+        .collection(collectionState.path)
+        .doc(doc.id)
+        .update({
+          ...doc.data,
+          updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+        });
+    }
+  };
+  return [collectionState, collectionDispatch, loadMore, updateDoc];
 };
 
 export default useCollection;
