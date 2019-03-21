@@ -37,11 +37,12 @@ const DocumentSelect = props => {
 
   useEffect(
     () => {
+      //label: "EDM Composition"
+      //value: {title: "EDM Composition", id: "BSCkghUjaE8x4qYuk3Np"}
       if (values[name] && suggestions.length > 0) {
         if (Array.isArray(values[name])) {
           const existingValues = values[name].map(v => {
-            const filtered = suggestions.filter(x => x.value === v);
-            return filtered[0];
+            return { label: v.title, value: v };
           });
           setValues({ ...values, [name]: existingValues });
         } else {
