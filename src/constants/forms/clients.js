@@ -1,7 +1,5 @@
 import FIELDS from './fields';
 import * as yup from 'yup';
-import moment from 'moment';
-import { ASSESSMENT_CATEGORIES } from '@bit/sidney2hats.2hats.global.common-constants';
 
 const clientsFields = initialData => {
   if (!initialData) initialData = {};

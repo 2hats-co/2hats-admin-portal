@@ -16,6 +16,7 @@ import Typography from '@material-ui/core/Typography';
 import LocationIndicator from '../components/LocationIndicator';
 import AdminSelector from '../components/AdminSelector';
 import Filter from '../components/Subjects/Filter';
+import ClientItem from '../components/Subjects/ClientItem';
 import SubjectItem from '../components/Subjects/SubjectItem';
 import useCollection from '../hooks/useCollection';
 import LoadingHat from '../components/LoadingHat';
@@ -122,8 +123,6 @@ function SubjectsContainer(props) {
     },
     [queryFilters]
   );
-  console.log(subjectsState);
-
   const [snackbarContent, setSnackbarContent] = useState('');
   return subjectsState.loading ? (
     <LoadingHat
@@ -200,7 +199,13 @@ function SubjectsContainer(props) {
             disablePadding
           >
             {(x, i) => {
-              return (
+              return route === ROUTES.clients ? (
+                <ClientItem
+                  key={x.id}
+                  data={x}
+                  setSnackbarContent={setSnackbarContent}
+                />
+              ) : (
                 <SubjectItem
                   key={x.id}
                   data={x}
