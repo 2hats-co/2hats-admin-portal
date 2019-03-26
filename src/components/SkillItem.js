@@ -119,7 +119,7 @@ SkillItem.propTypes = {
   classes: PropTypes.object.isRequired,
   className: PropTypes.string,
   style: PropTypes.object,
-  value: PropTypes.string.isRequired,
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.object]).isRequired,
   header: PropTypes.node,
   dense: PropTypes.bool,
   clickable: PropTypes.bool,

@@ -17,7 +17,10 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import SkillItem from '../SkillItem';
 import SuperAvatar from '../SuperAvatar';
 
-import { STYLES } from '@bit/sidney2hats.2hats.global.common-constants';
+import {
+  STYLES,
+  MOMENT_FORMATS,
+} from '@bit/sidney2hats.2hats.global.common-constants';
 
 const styles = theme => ({
   ...STYLES.DETAIL_VIEW(theme),
@@ -101,7 +104,6 @@ const JobSubmission = props => {
   const { classes, data } = props;
 
   const [showPDF, setShowPDF] = useState(false);
-  console.log(data);
 
   return (
     <div className={classes.root}>
@@ -140,7 +142,9 @@ const JobSubmission = props => {
           </Grid>
           <Grid item xs={4} className={classes.gridItem}>
             <Typography variant="h5" className={classes.meta}>
-              {data.closingDate}
+              {moment
+                .unix(data.closingDate.seconds)
+                .format(MOMENT_FORMATS.date)}
             </Typography>
             <Typography variant="body1">Closing date</Typography>
           </Grid>
