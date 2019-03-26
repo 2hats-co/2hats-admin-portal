@@ -91,6 +91,7 @@ const getIcon = type => {
 
 const dropDuplicates = notifications => {
   if (!notifications) return [];
+  /* eslint-disable array-callback-return */
   const uniqueNotifications = notifications.map((notification, index) => {
     if (index === 0 || notification.title !== notifications[index - 1].title) {
       return notification;
@@ -125,7 +126,7 @@ function Notifications(props) {
   const notifications = notificationsState.documents;
   const uniqueNotifications = dropDuplicates(notifications);
   const uniqueNotificationsState = { documents: uniqueNotifications };
-  console.log(uniqueNotifications);
+  // console.log(uniqueNotifications);
   const handleClose = () => {
     setSlideIn(false);
     setTimeout(() => {
