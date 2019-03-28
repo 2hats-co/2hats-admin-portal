@@ -21,6 +21,8 @@ const conversationTags = [
   { label: 'First name', value: '{{firstName}}' },
   { label: 'Last name', value: '{{lastName}}' },
   { label: 'Sender name', value: '{{senderName}}' },
+  { label: 'Sender first name', value: '{{senderFirstName}}' },
+  { label: 'Sender last name', value: '{{senderLastName}}' },
   { label: 'Sender title', value: '{{senderTitle}}' },
 ];
 

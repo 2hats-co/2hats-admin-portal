@@ -205,6 +205,8 @@ function Composer(props) {
           value: `${currentUser.givenName} ${currentUser.familyName}`,
         },
         { tag: '{{senderTitle}}', value: currentUser.title },
+        { tag: '{{senderFirstName}}', value: currentUser.givenName },
+        { tag: '{{senderLastName}}', value: currentUser.familyName },
       ];
 
       let html = data.html;

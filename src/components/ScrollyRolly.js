@@ -55,9 +55,7 @@ function ScrollyRolly(props) {
       <InfiniteScroll
         initialLoad={false}
         pageStart={0}
-        loadMore={() => {
-          loadMore();
-        }}
+        loadMore={loadMore}
         hasMore={hasMore}
         useWindow={false}
         threshold={100}
