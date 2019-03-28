@@ -147,11 +147,12 @@ function ConversationHeader(props) {
   const handleUpdateContactDetails = data => {
     setShowContactDetailsDialog(false);
     const channels = { ...conversation.channels, email: data.email };
-    updateDoc('conversations', conversation.id, {
+    const updates = {
       firstName: data.firstName,
       lastName: data.lastName,
-      channel: channels,
-    });
+      channels: channels,
+    };
+    updateDoc('conversations', conversation.id, updates);
   };
   return (
     <>
