@@ -21,12 +21,16 @@ import Item from './Item';
 import ScrollyRolly from '../../ScrollyRolly';
 
 const styles = theme => ({
+  root: { height: 'calc(100vh - 64px)' },
+
   adminSelectorWrapper: {
     marginTop: -theme.spacing.unit * 7,
     marginBottom: theme.spacing.unit,
     textAlign: 'right',
     paddingRight: theme.spacing.unit,
+    width: '100%',
   },
+  tabsWrapper: { width: '100%' },
   tabs: {
     boxShadow: `0 -1px 0 ${theme.palette.divider} inset`,
   },
@@ -155,7 +159,7 @@ function ConversationsList(props) {
     );
 
   return (
-    <Grid container direction="column" style={{ height: 'calc(100vh - 64px)' }}>
+    <Grid container direction="column" className={classes.root}>
       <Grid item className={classes.adminSelectorWrapper}>
         <CategoryFilter
           onSelect={category => {
@@ -175,7 +179,7 @@ function ConversationsList(props) {
           noneText="Unassigned"
         />
       </Grid>
-      <Grid item>
+      <Grid item className={classes.tabsWrapper}>
         <Tabs
           className={classes.tabs}
           value={filter}

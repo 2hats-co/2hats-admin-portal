@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import withStyles from '@material-ui/core/styles/withStyles';
@@ -6,11 +6,21 @@ import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import Chip from '@material-ui/core/Chip';
+import Button from '@material-ui/core/Button';
 
 import FileIcon from '@material-ui/icons/AttachmentOutlined';
+import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 
 import { globalReplace } from '../../../utilities';
-import { STYLES } from '@bit/sidney2hats.2hats.global.common-constants';
+import {
+  STYLES,
+  COLLECTIONS,
+} from '@bit/sidney2hats.2hats.global.common-constants';
+import {
+  CLOUD_FUNCTIONS,
+  cloudFunction,
+} from '../../../utilities/CloudFunctions';
+import { updateDoc } from '../../../utilities/firestore';
 
 const styles = theme => ({
   root: {
@@ -33,7 +43,54 @@ const styles = theme => ({
     height: 960,
     maxHeight: 'calc(100vh - 100px)',
   },
+
+  goIcon: {
+    'svg&': {
+      marginLeft: theme.spacing.unit / 2,
+      marginRight: -theme.spacing.unit / 2,
+    },
+  },
 });
+
+const checkIdeoSmartLink = data => {
+  console.log('Checking SmartLink…', data.smartLink);
+
+  const regenerateSmartLink = () => {
+    console.log('Re-generating SmartLink…');
+    cloudFunction(
+      CLOUD_FUNCTIONS.CREATE_SMART_LINK,
+      {
+        route: 'ideo',
+        data: { submissionId: data.userSubmissionDocId },
+        UID: data.UID,
+      },
+      res => {
+        updateDoc(COLLECTIONS.submissions, data.id, {
+          smartLink: res.data,
+        }).then(() => {
+          console.log('Successfully re-generated SmartLink');
+        });
+      },
+      err => {
+        console.error('error creating smartlink', err);
+      }
+    );
+  };
+
+  cloudFunction(
+    CLOUD_FUNCTIONS.SMART_LINK,
+    { slKey: data.smartLink.key, slSecret: data.smartLink.secret },
+    res => {
+      if (!res.data.success) {
+        regenerateSmartLink();
+      }
+    },
+    err => {
+      console.error('error checking smartlink', err);
+      regenerateSmartLink();
+    }
+  );
+};
 
 const Question = props => {
   const {
@@ -43,9 +100,15 @@ const Question = props => {
     submissionType,
     answer,
     user,
+    smartLink,
+    submissionDoc,
   } = props;
 
   const [showPDF, setShowPDF] = useState(false);
+
+  useEffect(() => {
+    if (submissionType === 'ideo') checkIdeoSmartLink(submissionDoc);
+  }, []);
 
   let answerInput = null;
   switch (submissionType) {
@@ -101,6 +164,26 @@ const Question = props => {
             dangerouslySetInnerHTML={{ __html: answer.body }}
           />
         </>
+      );
+      break;
+
+    case 'ideo':
+      answerInput = (
+        <Button
+          variant="contained"
+          color="primary"
+          component="a"
+          href={`https://ide.2hats.com/?slKey=${smartLink.key}&slSecret=${
+            smartLink.secret
+          }`}
+          target="_blank"
+          rel="noopener noreferrer"
+          size="large"
+          className={classes.getStartedButton}
+        >
+          View submission
+          <ArrowForwardIcon className={classes.goIcon} />
+        </Button>
       );
       break;
 

@@ -178,6 +178,7 @@ const AssessmentSubmission = props => {
               submissionType={data.submissionType}
               answer={data.submissionContent[i]}
               user={data.user}
+              submissionDoc={data}
             />
           ))}
 
@@ -187,7 +188,9 @@ const AssessmentSubmission = props => {
             questionText=""
             submissionType={data.submissionType}
             answer={data.submissionContent[0]}
+            smartLink={data.smartLink}
             user={data.user}
+            submissionDoc={data}
           />
         )}
       </main>

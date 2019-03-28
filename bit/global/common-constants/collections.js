@@ -37,4 +37,5 @@ export const COLLECTIONS = {
   gmailsToStore: 'gmailsToStore',
   gmails: 'gmails',
   announcements: 'announcements',
+  emailBlasts: 'emailBlasts',
 };

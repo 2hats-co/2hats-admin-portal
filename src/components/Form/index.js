@@ -244,8 +244,9 @@ function Form(props) {
             direction="row"
             spacing={8}
             className={classes.wrapperGrid}
+            alignContent="flex-start"
           >
-            {data.map((x, i) => {
+            {data.map(x => {
               switch (x.type) {
                 case FIELDS.textField:
                 case FIELDS.textFieldNumber:
@@ -338,6 +339,7 @@ function Form(props) {
                   return (
                     <DocumentSelect
                       collection={x.collection}
+                      mappings={x.mappings}
                       key={x.name}
                       placeholder={x.placeholder}
                       name={x.name}
@@ -423,11 +425,18 @@ function Form(props) {
         return (
           <form onSubmit={handleSubmit}>
             {justForm ? (
-              <Grid container>
-                {formHeader}
-                {Fields}
-                {formFooter}
-                {PrimaryButton}
+              <Grid
+                container
+                direction="column"
+                wrap="nowrap"
+                className={classes.justFormWrapper}
+              >
+                <Grid item>{formHeader}</Grid>
+                <Grid item xs>
+                  {Fields}
+                </Grid>
+                <Grid item>{formFooter}</Grid>
+                <Grid item>{PrimaryButton}</Grid>
               </Grid>
             ) : (
               <Dialog
@@ -455,7 +464,9 @@ function Form(props) {
                 <DialogContent classes={{ root: classes.dialogContent }}>
                   {formHeader}
                   {Fields}
-                  {formFooter}
+                  {typeof formFooter === 'function'
+                    ? formFooter(values)
+                    : formFooter}
                 </DialogContent>
 
                 <DialogActions>

@@ -17,6 +17,7 @@ const emailTemplateFields = initialData => {
       name: 'clonedTemplateId',
       label: 'Template Base',
       collection: 'emailTemplates',
+      mappings: { label: 'label', value: 'id' },
       placeholder: 'Template Base',
       value: initialData['clonedTemplateId'],
       validation: true,

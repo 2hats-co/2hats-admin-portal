@@ -14,6 +14,15 @@ const jobFields = initialData => {
       label: 'Job title',
       value: initialData['title'],
       validation: yup.string().required('Required'),
+      width: 6,
+    },
+    {
+      type: FIELDS.textField,
+      name: 'companyName',
+      label: 'Company name',
+      value: initialData['companyName'],
+      validation: yup.string().required('Required'),
+      width: 6,
     },
     {
       type: FIELDS.richText,

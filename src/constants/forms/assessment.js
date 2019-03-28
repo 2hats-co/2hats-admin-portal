@@ -3,13 +3,19 @@ import * as yup from 'yup';
 import {
   ASSESSMENT_CATEGORIES,
   SUBMISSION_TYPES,
-  SKILLS,
 } from '@bit/sidney2hats.2hats.global.common-constants';
 
 const assessmentFields = initialData => {
   if (!initialData) initialData = {};
 
   return [
+    {
+      type: FIELDS.textField,
+      name: 'title',
+      label: 'Title',
+      value: initialData['title'],
+      validation: yup.string().required('Required'),
+    },
     {
       type: FIELDS.autocompleteFreeText,
       name: 'category',
@@ -22,26 +28,11 @@ const assessmentFields = initialData => {
       width: 6,
     },
     {
-      type: FIELDS.autocomplete,
-      name: 'skillAssociated',
-      label: 'Skill associated',
-      value: SKILLS.filter(x => x.value === initialData['skillAssociated'])[0],
-      suggestions: SKILLS,
-      validation: yup.string().required('Skill is required'),
-      width: 6,
-    },
-    {
-      type: FIELDS.textField,
-      name: 'title',
-      label: 'Title',
-      value: initialData['title'],
-      validation: yup.string().required('Required'),
-    },
-    {
       type: FIELDS.textField,
       name: 'duration',
       label: 'Duration',
       value: initialData['duration'],
+      width: 6,
     },
     {
       type: FIELDS.richText,
@@ -85,11 +76,11 @@ const assessmentFields = initialData => {
     {
       type: FIELDS.textFieldMultiline,
       name: 'codePreset',
-      label: 'Code preset (optional – only if submission type is IDEO)',
+      label: 'Code preset (optional – only for IDEO submission type)',
       value: initialData['codePreset'],
-      placeholder:
-        'Make sure to validate your JSON first and that newlines in strings are \\n\n\nYou can set the html, css, js, htmlMode, cssMode, jsMode properties',
       validation: yup.string(),
+      placeholder:
+        'Make sure it is a valid JSON!\n\nBest to use JSON.stringify() in your browser’s console\n\nYou can set the html, css, js, htmlMode, cssMode, jsMode properties',
     },
     {
       type: FIELDS.richTextMulti,

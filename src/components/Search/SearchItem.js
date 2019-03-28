@@ -81,10 +81,10 @@ function SearchItem(props) {
     }
   );
 
-  console.log(
-    'snippetGroups',
-    map(removeField, byField(snippetKeyValuesPairs))
-  );
+  // console.log(
+  //   'snippetGroups',
+  //   map(removeField, byField(snippetKeyValuesPairs))
+  // );
   return (
     <ListItem className={classes.listItem}>
       <ListItemIcon classes={{ root: classes.listIcon }}>

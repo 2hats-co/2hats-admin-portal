@@ -13,8 +13,11 @@ import { momentLocales } from '../constants/momentLocales';
 import withNavigation from '../components/withNavigation';
 import LoadingHat from '../components/LoadingHat';
 
-const LinkedinCampaigns = lazy(() =>
+const LinkedInCampaigns = lazy(() =>
   import('../components/Marketing/LinkedinCampaigns' /* webpackChunkName: "LinkedinCampaigns" */)
+);
+const EmailBlast = lazy(() =>
+  import('../components/Marketing/EmailBlast' /* webpackChunkName: "EmailBlast" */)
 );
 
 const styles = theme => ({
@@ -28,10 +31,13 @@ const styles = theme => ({
 const pathContent = path => {
   switch (path) {
     case ROUTES.marketingLeadGeneration:
-      return <LinkedinCampaigns />;
+      return <LinkedInCampaigns />;
+    case ROUTES.marketingEmailBlast:
+      return <EmailBlast />;
     default:
   }
 };
+
 function MarketingContainer(props) {
   const { classes, location } = props;
 
@@ -43,11 +49,15 @@ function MarketingContainer(props) {
         <Suspense fallback={<LoadingHat />}>
           <LocationIndicator
             title="Marketing"
-            showShadow
+            showBorder
             subRoutes={[
               {
                 label: 'Lead Generation',
                 value: ROUTES.marketingLeadGeneration,
+              },
+              {
+                label: 'EmailBlast❗',
+                value: ROUTES.marketingEmailBlast,
               },
             ]}
           />

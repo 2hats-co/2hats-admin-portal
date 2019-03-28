@@ -1,10 +1,32 @@
 import FIELDS from './fields';
 import * as yup from 'yup';
+import { COLLECTIONS } from '@bit/sidney2hats.2hats.global.common-constants/dist/collections';
 
 const announcementFields = initialData => {
   if (!initialData) initialData = {};
 
   return [
+    {
+      type: FIELDS.docAutocomplete,
+      collection: COLLECTIONS.assessments,
+      mappings: { label: 'title', value: 'id' },
+      name: 'assessmentId',
+      label: 'Assessment',
+      value: initialData['assessmentId'],
+      validation: yup.string().required('Required'),
+      width: 6,
+    },
+    {
+      type: FIELDS.docAutocomplete,
+      collection: COLLECTIONS.jobs,
+      mappings: { label: ['title', 'companyName'], value: 'id' },
+      name: 'jobId',
+      label: 'Job Listing',
+      value: initialData['jobId'],
+      validation: yup.string().required('Required'),
+      width: 6,
+    },
+
     {
       type: FIELDS.textField,
       name: 'title',
@@ -25,23 +47,6 @@ const announcementFields = initialData => {
       label: 'Special labels',
       value: initialData['specialLabel'],
       validation: yup.array().of(yup.string()),
-    },
-
-    {
-      type: FIELDS.textField,
-      name: 'assessmentId',
-      label: 'Assessment ID',
-      value: initialData['assessmentId'],
-      validation: yup.string().required('Required'),
-      width: 6,
-    },
-    {
-      type: FIELDS.textField,
-      name: 'jobId',
-      label: 'Job ID',
-      value: initialData['jobId'],
-      validation: yup.string().required('Required'),
-      width: 6,
     },
   ];
 };
