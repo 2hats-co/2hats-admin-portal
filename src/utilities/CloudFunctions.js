@@ -1,23 +1,23 @@
 import { functions } from '../store';
 
 export const CLOUD_FUNCTIONS = {
-  TAG_TRACKER: 'restApiEventTracker',
+  TAG_TRACKER: 'callablesEventTracker',
   RESUME_SCRAPER: 'callablesAlgoliaResumes',
-  SPEEDY_SIGNUP: 'restApiSpeedySignup',
-  AUTHENTICATE_3RD_PARTY: 'restApiAuthenticate3rdParty',
-  AUTHENTICATE_GOOGLE: 'restApiAuthenticateGoogle',
-  AUTHENTICATE_LINKEDIN: 'callablesAuthenticateLinkedIn',
-  CHECK_EMAIL: 'restApiCheckEmail',
-  SMART_LINK: 'restApiSmartLink',
-  RESET_PASSWORD: 'restApiResetPassword',
-  CREATE_PASSWORD: 'restApiCreatePassword',
-  VALIDATE_EMAIL: 'restApiVaildateEmail',
-  DISABLE_SMART_LINK: 'restApiDisableSmartLink',
-  LEARN_WORLD_SSO: 'callablesLwSingleSignOn',
-  CHARGE_STRIPE_TOKEN: 'callablesChargeStripeToken',
-  LW_SINGLE_SIGN_ON: 'callablesLwSingleSignOn',
+  SPEEDY_SIGNUP: 'callablesAuthSpeedySignup',
+  AUTHENTICATE_3RD_PARTY: 'callablesAuth3rdParty', //not used
+  AUTHENTICATE_GOOGLE: 'callablesAuthGoogle',
+  AUTHENTICATE_LINKEDIN: 'callablesAuthenticateLinkedIn', // Not used
+  CHECK_EMAIL: 'callablesCheckEmail',
+  SMART_LINK: 'callablesSmartLinkActivate',
+  RESET_PASSWORD: 'callablesAuthResetPassword',
+  CREATE_PASSWORD: 'callablesAuthCreatePassword',
+  VALIDATE_EMAIL: 'callablesCheckEmail',
+  DISABLE_SMART_LINK: 'callablesSmartLinkDisable',
+  LEARN_WORLD_SSO: 'callablesLearnWorldSignon',
+  CHARGE_STRIPE_TOKEN: 'callablesStripeChargeToken',
+  LW_SINGLE_SIGN_ON: 'callablesLearnWorldSignon',
   WHATS_NEXT_AI: 'callablesWhatsNextAI',
-  CREATE_SMART_LINK: 'callablesCreateSmartLink',
+  CREATE_SMART_LINK: 'callablesSmartLinkCreate',
 };
 
 export const cloudFunction = (name, input, success, fail) => {
