@@ -82,7 +82,7 @@
   "scripts": {
     "precommit": "pretty-quick --staged",
     "analyze": "source-map-explorer build/static/js/App.*",
-    "start": "node scripts/start.js",
+    "start": "REACT_APP_ENV='STAGING' node scripts/start.js",
     "build": "node generate-build-id.js && node scripts/build.js",
     "test": "node scripts/test.js --env=jsdom"
   },
