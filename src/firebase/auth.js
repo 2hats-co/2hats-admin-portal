@@ -8,7 +8,7 @@ export const authAdmin = (r, callback, failCallback) =>
     //PASS IN  uri: 'http://localhost:3000' if in localhost (without trailing /)
     {
       r,
-      //uri: 'http://localhost:3000'
+      uri: 'http://localhost:3000',
     },
     result => {
       auth.signInWithCustomToken(result.data.token).then(() => {
