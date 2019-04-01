@@ -73,6 +73,10 @@ const styles = theme => ({
     color: theme.palette.common.white,
     backgroundColor: theme.palette.primary.main,
   },
+  scrollyRollyWrapper: {
+    maxHeight: `calc(100vh - ${theme.spacing.unit * 3}px - 56px)`,
+    overflowY: 'auto',
+  },
 });
 
 const getIcon = type => {
@@ -125,7 +129,10 @@ function Notifications(props) {
   });
   const notifications = notificationsState.documents;
   const uniqueNotifications = dropDuplicates(notifications);
-  const uniqueNotificationsState = { documents: uniqueNotifications };
+  const uniqueNotificationsState = {
+    ...notificationsState,
+    documents: uniqueNotifications,
+  };
   // console.log(uniqueNotifications);
   const handleClose = () => {
     setSlideIn(false);
@@ -196,58 +203,62 @@ function Notifications(props) {
                   <Tab label="Notes" value="note" />
                 </Tabs>
               </AppBar>
-              <ScrollyRolly
-                dataState={uniqueNotificationsState}
-                loadMore={loadMore}
-              >
-                {x => (
-                  <ListItem
-                    key={x.id}
-                    button
-                    onClick={() => {
-                      handleClick(x);
-                    }}
-                    classes={{ root: classes.listItemRoot }}
-                  >
-                    <ListItemAvatar>
-                      <Avatar className={x.unread ? classes.unread : ''}>
-                        {getIcon(x.data.type)}
-                      </Avatar>
-                    </ListItemAvatar>
-                    <ListItemText
-                      primary={
-                        <Grid
-                          container
-                          justify="space-between"
-                          alignItems="center"
-                        >
-                          <Typography variant="subtitle1">{x.title}</Typography>
-                          <Typography
-                            variant="body2"
-                            className={classes.timestamp}
-                          >
-                            {moment.unix(x.createdAt.seconds).fromNow()}
-                          </Typography>
-                        </Grid>
-                      }
-                      secondary={x.body}
-                      classes={{
-                        root: classes.listItemTextRoot,
-                        secondary: classes.listItemSecondary,
+              <div className={classes.scrollyRollyWrapper}>
+                <ScrollyRolly
+                  dataState={uniqueNotificationsState}
+                  loadMore={loadMore}
+                >
+                  {x => (
+                    <ListItem
+                      key={x.id}
+                      button
+                      onClick={() => {
+                        handleClick(x);
                       }}
-                    />
-                    <ListItemSecondaryAction>
-                      <IconButton
-                        onClick={() => {
-                          archive(uid, x);
+                      classes={{ root: classes.listItemRoot }}
+                    >
+                      <ListItemAvatar>
+                        <Avatar className={x.unread ? classes.unread : ''}>
+                          {getIcon(x.data.type)}
+                        </Avatar>
+                      </ListItemAvatar>
+                      <ListItemText
+                        primary={
+                          <Grid
+                            container
+                            justify="space-between"
+                            alignItems="center"
+                          >
+                            <Typography variant="subtitle1">
+                              {x.title}
+                            </Typography>
+                            <Typography
+                              variant="body2"
+                              className={classes.timestamp}
+                            >
+                              {moment.unix(x.createdAt.seconds).fromNow()}
+                            </Typography>
+                          </Grid>
+                        }
+                        secondary={x.body}
+                        classes={{
+                          root: classes.listItemTextRoot,
+                          secondary: classes.listItemSecondary,
                         }}
-                      >
-                        <ArchiveIcon />
-                      </IconButton>
-                    </ListItemSecondaryAction>
-                  </ListItem>
-                )}
-              </ScrollyRolly>
+                      />
+                      <ListItemSecondaryAction>
+                        <IconButton
+                          onClick={() => {
+                            archive(uid, x);
+                          }}
+                        >
+                          <ArchiveIcon />
+                        </IconButton>
+                      </ListItemSecondaryAction>
+                    </ListItem>
+                  )}
+                </ScrollyRolly>
+              </div>
             </Paper>
           </Slide>
         </Modal>

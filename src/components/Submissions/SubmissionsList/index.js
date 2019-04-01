@@ -123,7 +123,7 @@ function SubmissionsList(props) {
     uid: '',
   });
 
-  const [submissionsState, submissionsDispatch] = useCollection({
+  const [submissionsState, submissionsDispatch, loadMore] = useCollection({
     path: COLLECTIONS.submissions,
     sort: [orderBySubmissionTime],
     filters: [outcomeFilter('pending')],
@@ -311,7 +311,7 @@ function SubmissionsList(props) {
           <ScrollyRolly
             classes={{ listLoader: classes.listLoader }}
             dataState={submissionsState}
-            dataDispatch={submissionsDispatch}
+            loadMore={loadMore}
             disablePadding
           >
             {data => (
