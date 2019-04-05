@@ -114,6 +114,7 @@ function EventDialog(props) {
   const [customDuration, setCustomDuration] = useState(false);
   const [data, setData] = useState(initialData);
   const [attendeeField, setAttendeeField] = useState('');
+  const currentUser = useAuthedUser();
 
   const updateData = (field, value) => {
     setData({ ...data, [field]: value });
@@ -163,10 +164,13 @@ function EventDialog(props) {
   const titleSuggestions =
     conversation.type === 'client'
       ? [
-          displayName,
-          `Meeting with ${displayName}`,
-          `Call ${displayName}`,
-          `Chat with ${displayName}`,
+          conversation.firstName || displayName,
+          `${currentUser.givenName} / ${conversation.firstName ||
+            displayName} catchup`,
+          `${currentUser.givenName} / ${conversation.firstName ||
+            displayName} call`,
+          `${currentUser.givenName} / ${conversation.firstName ||
+            displayName} chat`,
         ]
       : [
           `${conversation.firstName} Assessment Centre - Marketing`,
@@ -196,7 +200,6 @@ function EventDialog(props) {
     !data.start.dateTime ||
     !data.end.dateTime;
 
-  const currentUser = useAuthedUser();
   const handleAdd = () => {
     const outData = clone(data); // needed for deep clone
     delete outData.end.duration;
