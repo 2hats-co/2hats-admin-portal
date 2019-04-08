@@ -30,6 +30,7 @@ const DocumentSelect = props => {
   const [collectionState] = useCollection({
     path: collection,
     limit: 100,
+    filters,
     // sort: [{ field: 'createdAt', direction: 'desc' }],
   });
   const docs = collectionState.documents;

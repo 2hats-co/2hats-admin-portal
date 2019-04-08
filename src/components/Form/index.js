@@ -346,6 +346,7 @@ function Form(props) {
                   return (
                     <DocumentSelect
                       collection={x.collection}
+                      filters={x.filters}
                       mappings={x.mappings}
                       key={x.name}
                       placeholder={x.placeholder}
