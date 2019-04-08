@@ -24,12 +24,12 @@ const labelReducer = (doc, mappings) => {
 };
 
 const DocumentSelect = props => {
-  const { collection, mappings, formikProps, name, width } = props;
+  const { collection, filters, mappings, formikProps, name, width } = props;
   const { setValues, values } = formikProps;
 
   const [collectionState] = useCollection({
     path: collection,
-    limit: 50,
+    limit: 100,
     // sort: [{ field: 'createdAt', direction: 'desc' }],
   });
   const docs = collectionState.documents;

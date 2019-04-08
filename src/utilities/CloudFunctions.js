@@ -18,11 +18,11 @@ export const CLOUD_FUNCTIONS = {
   LW_SINGLE_SIGN_ON: 'callablesLwSingleSignOn',
   WHATS_NEXT_AI: 'callablesWhatsNextAI',
   CREATE_SMART_LINK: 'callablesCreateSmartLink',
+  CLIENT_INVITE_EMAIL: 'callablesClientInviteEmail',
 };
 
 export const cloudFunction = (name, input, success, fail) => {
   const callable = functions.httpsCallable(name);
-
   callable(input)
     .then(result => {
       if (success) {
