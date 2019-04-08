@@ -30,7 +30,7 @@ const callableCallback = o => {
   console.log(o);
 };
 function ClientDrawer(props) {
-  const { classes, data, setDrawer, history } = props;
+  const { classes, data, setDrawer, history, setClientForm } = props;
   const goToJobs = () => {
     history.push(`/contentManager/jobs?clientId=${data.id}`);
   };
@@ -39,7 +39,7 @@ function ClientDrawer(props) {
   };
   const sendWelcomeEmail = () => {
     cloudFunction(
-      CLOUD_FUNCTIONS.CLIENT_INVITE_EMAIL,
+      CLOUD_FUNCTIONS.CLIENT_WELCOME_EMAIL,
       callableCallback,
       callableCallback
     );
@@ -72,7 +72,12 @@ function ClientDrawer(props) {
           <ListItemText primary="Send invite Email" />
         </ListItem>
 
-        <ListItem button>
+        <ListItem
+          button
+          onClick={() => {
+            setClientForm(data);
+          }}
+        >
           <ListItemIcon>
             <EditIcon />
           </ListItemIcon>
@@ -98,7 +103,7 @@ function ClientDrawer(props) {
           tabIndex={0}
           role="button"
           // onClick={this.toggleDrawer('right', false)}
-          //   onKeyDown={this.toggleDrawer('right', false)}
+          // onKeyDown={this.toggleDrawer('right', false)}
         >
           {sideList}
         </div>

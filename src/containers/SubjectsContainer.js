@@ -20,7 +20,7 @@ import ClientItem from '../components/Subjects/ClientItem';
 import SubjectItem from '../components/Subjects/SubjectItem';
 import useCollection from '../hooks/useCollection';
 import LoadingHat from '../components/LoadingHat';
-import { createDoc } from '../utilities/firestore';
+import { createDoc, updateDoc } from '../utilities/firestore';
 
 import ScrollyRolly from '../components/ScrollyRolly';
 import { COLLECTIONS } from '../constants/firestore';
@@ -233,15 +233,15 @@ function SubjectsContainer(props) {
       />
       {console.log('clientForm', clientForm)}
       <Form
-        action={clientForm !== null ? 'create' : 'edit'}
+        action={clientForm === undefined ? 'create' : 'edit'}
         actions={{
           create: data => {
             createDoc(collection, data);
             setClientForm(null);
           },
           edit: data => {
-            //createDoc(collection, data);
-            console.log(data);
+            console.log('clientForm', clientForm);
+            updateDoc(COLLECTIONS.clients, clientForm.id, data);
             setClientForm(null);
           },
 
@@ -258,7 +258,7 @@ function SubjectsContainer(props) {
           className={classes.fab}
           color="primary"
           onClick={() => {
-            setClientForm({});
+            setClientForm(undefined);
           }}
         >
           <AddIcon />
