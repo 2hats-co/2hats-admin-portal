@@ -13,11 +13,11 @@ import CardActionArea from '@material-ui/core/CardActionArea';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
-import Button from '@material-ui/core/Button';
+// import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 
-import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
+// import ArrowForwardIcon from '@material-ui/icons/ArrowForward';
 import { MOMENT_LOCALES } from '@bit/sidney2hats.2hats.global.common-constants';
 
 export const CARD_WIDTH = 320;
@@ -164,7 +164,7 @@ function OneCard(props) {
     title,
     meta,
     secondaryText,
-    primaryAction,
+    // primaryAction,
     route,
     banner,
     bannerColor,
