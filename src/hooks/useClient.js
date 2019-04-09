@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+// import React,
+import { useState, useEffect } from 'react';
 import { getDoc } from '../utilities/firestore';
 import queryString from 'query-string';
 import { COLLECTIONS } from '../constants/firestore';

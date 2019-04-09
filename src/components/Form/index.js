@@ -383,6 +383,7 @@ function Form(props) {
                       path={x.path}
                       mimeTypes={x.mimeTypes}
                       validator={validator}
+                      crop={x.crop}
                     />
                   );
 

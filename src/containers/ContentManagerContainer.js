@@ -55,12 +55,14 @@ function ContentManagerContainer(props) {
   let formTitle = '';
   let collection = '';
   let mapping = '';
+  let sort = { field: 'createdAt', direction: 'desc' };
   switch (path) {
     case ROUTES.jobsManager:
       fields = jobFields;
       formTitle = 'Job';
       collection = COLLECTIONS.jobs;
       mapping = oneCardMappings.job;
+      sort = { field: 'closingDate', direction: 'desc' };
       break;
 
     case ROUTES.coursesManager:
@@ -90,7 +92,7 @@ function ContentManagerContainer(props) {
 
   const [dataState, collectionDispatch] = useCollection({
     path: collection,
-    sort: { field: 'createdAt', direction: 'desc' },
+    sort,
   });
   const [client, setSearch] = useClient(location.search);
   useEffect(
