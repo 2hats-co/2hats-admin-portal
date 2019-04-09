@@ -44,8 +44,8 @@ const styles = theme => ({
   },
 });
 
-function SubjectItem(props) {
-  const { classes, data, setSnackbarContent } = props;
+function ClientItem(props) {
+  const { classes, data, setSnackbarContent, setClientDrawer } = props;
 
   const {
     linkedin,
@@ -70,7 +70,14 @@ function SubjectItem(props) {
     ));
 
   return (
-    <ListItem classes={{ root: classes.listItemRoot }} divider button>
+    <ListItem
+      classes={{ root: classes.listItemRoot }}
+      divider
+      button
+      onClick={() => {
+        setClientDrawer(data);
+      }}
+    >
       <Grid
         container
         className={classes.gridRoot}
@@ -147,4 +154,4 @@ function SubjectItem(props) {
   );
 }
 
-export default withStyles(styles)(SubjectItem);
+export default withStyles(styles)(ClientItem);

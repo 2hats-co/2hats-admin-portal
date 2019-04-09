@@ -11,6 +11,8 @@ import PushNotifications from './components/PushNotifications';
 import ConversationsContainer from './containers/ConversationsContainer';
 import TestContainer from './containers/TestContainer';
 import ErrorBoundary from './components/ErrorBoundary';
+
+import CurrentUserContext from './contexts/CurrentUserContext';
 //containers
 const Submissions2Container = lazy(() =>
   import('./containers/Submissions2Container' /* webpackChunkName: "Submissions2Container" */)
@@ -72,127 +74,133 @@ function App(props) {
 
   return (
     <MuiThemeProvider theme={Theme}>
-      <Router>
-        <ErrorBoundary>
-          <div className="app" style={appStyle}>
-            <Suspense fallback={<LoadingHat message="Loading container…" />}>
-              <Switch>
-                <Route
-                  exact
-                  path={ROUTES.auth}
-                  component={() => <AuthenticationContainer {...props} />}
-                />
-                <Route
-                  exact
-                  path={ROUTES.stats}
-                  component={() => <StatisticsContainer {...props} />}
-                />
-                <Route
-                  exact
-                  path={ROUTES.subjects}
-                  component={() => <SubjectsContainer {...props} />}
-                />
-                <Route
-                  exact
-                  path={ROUTES.candidates}
-                  component={() => (
-                    <SubjectsContainer route={ROUTES.candidates} {...props} />
-                  )}
-                />
-                <Route
-                  exact
-                  path={ROUTES.clients}
-                  component={() => (
-                    <SubjectsContainer route={ROUTES.clients} {...props} />
-                  )}
-                />
-                <Route
-                  exact
-                  path={ROUTES.conversations}
-                  component={() => <ConversationsContainer {...props} />}
-                />
+      <CurrentUserContext.Provider
+        value={{
+          ...currentUser,
+        }}
+      >
+        <Router>
+          <ErrorBoundary>
+            <div className="app" style={appStyle}>
+              <Suspense fallback={<LoadingHat message="Loading container…" />}>
+                <Switch>
+                  <Route
+                    exact
+                    path={ROUTES.auth}
+                    component={() => <AuthenticationContainer {...props} />}
+                  />
+                  <Route
+                    exact
+                    path={ROUTES.stats}
+                    component={() => <StatisticsContainer {...props} />}
+                  />
+                  <Route
+                    exact
+                    path={ROUTES.subjects}
+                    component={() => <SubjectsContainer {...props} />}
+                  />
+                  <Route
+                    exact
+                    path={ROUTES.candidates}
+                    component={() => (
+                      <SubjectsContainer route={ROUTES.candidates} {...props} />
+                    )}
+                  />
+                  <Route
+                    exact
+                    path={ROUTES.clients}
+                    component={() => (
+                      <SubjectsContainer route={ROUTES.clients} {...props} />
+                    )}
+                  />
+                  <Route
+                    exact
+                    path={ROUTES.conversations}
+                    component={() => <ConversationsContainer {...props} />}
+                  />
 
-                <Route
-                  exact
-                  path={ROUTES.submissions2}
-                  component={() => <Submissions2Container {...props} />}
-                />
+                  <Route
+                    exact
+                    path={ROUTES.submissions2}
+                    component={() => <Submissions2Container {...props} />}
+                  />
 
-                <Route
-                  exact
-                  path={ROUTES.jobsManager || ROUTES.coursesManager}
-                  component={() => <ContentManagerContainer {...props} />}
-                />
-                <Route
-                  exact
-                  path={ROUTES.coursesManager}
-                  component={() => <ContentManagerContainer {...props} />}
-                />
-                <Route
-                  exact
-                  path={ROUTES.assessmentsManager}
-                  component={() => <ContentManagerContainer {...props} />}
-                />
-                <Route
-                  exact
-                  path={ROUTES.eventsManager}
-                  component={() => <ContentManagerContainer {...props} />}
-                />
-                <Route
-                  exact
-                  path={ROUTES.announcementsManager}
-                  component={() => <ContentManagerContainer {...props} />}
-                />
+                  <Route
+                    exact
+                    path={ROUTES.jobsManager || ROUTES.coursesManager}
+                    component={() => <ContentManagerContainer {...props} />}
+                  />
+                  <Route
+                    exact
+                    path={ROUTES.coursesManager}
+                    component={() => <ContentManagerContainer {...props} />}
+                  />
+                  <Route
+                    exact
+                    path={ROUTES.assessmentsManager}
+                    component={() => <ContentManagerContainer {...props} />}
+                  />
+                  <Route
+                    exact
+                    path={ROUTES.eventsManager}
+                    component={() => <ContentManagerContainer {...props} />}
+                  />
+                  <Route
+                    exact
+                    path={ROUTES.announcementsManager}
+                    component={() => <ContentManagerContainer {...props} />}
+                  />
 
-                <Route
-                  exact
-                  path={ROUTES.marketingLeadGeneration}
-                  component={() => <MarketingContainer {...props} />}
-                />
-                <Route
-                  exact
-                  path={ROUTES.marketingEmailBlast}
-                  component={() => <MarketingContainer {...props} />}
-                />
+                  <Route
+                    exact
+                    path={ROUTES.marketingLeadGeneration}
+                    component={() => <MarketingContainer {...props} />}
+                  />
+                  <Route
+                    exact
+                    path={ROUTES.marketingEmailBlast}
+                    component={() => <MarketingContainer {...props} />}
+                  />
 
-                <Route
-                  exact
-                  path={ROUTES.emailCampaigns}
-                  component={() => (
-                    <EmailTemplatesManagerContainer {...props} />
-                  )}
-                />
-                <Route
-                  exact
-                  path={ROUTES.transactionalEmails}
-                  component={() => (
-                    <EmailTemplatesManagerContainer {...props} />
-                  )}
-                />
-                <Route
-                  exact
-                  path={ROUTES.conversationEmails}
-                  component={() => (
-                    <EmailTemplatesManagerContainer {...props} />
-                  )}
-                />
-                <Route
-                  exact
-                  path={'/test'}
-                  component={() => <TestContainer {...props} />}
-                />
-                <Route
-                  exact
-                  path={'/'}
-                  component={() => <Landing {...props} />}
-                />
-                <Route component={() => <div>404</div>} />
-              </Switch>
-            </Suspense>
-          </div>{' '}
-        </ErrorBoundary>
-      </Router>
-      <PushNotifications />
+                  <Route
+                    exact
+                    path={ROUTES.emailCampaigns}
+                    component={() => (
+                      <EmailTemplatesManagerContainer {...props} />
+                    )}
+                  />
+                  <Route
+                    exact
+                    path={ROUTES.transactionalEmails}
+                    component={() => (
+                      <EmailTemplatesManagerContainer {...props} />
+                    )}
+                  />
+                  <Route
+                    exact
+                    path={ROUTES.conversationEmails}
+                    component={() => (
+                      <EmailTemplatesManagerContainer {...props} />
+                    )}
+                  />
+                  <Route
+                    exact
+                    path={'/test'}
+                    component={() => <TestContainer {...props} />}
+                  />
+                  <Route
+                    exact
+                    path={'/'}
+                    component={() => <Landing {...props} />}
+                  />
+                  <Route component={() => <div>404</div>} />
+                </Switch>
+              </Suspense>
+            </div>{' '}
+          </ErrorBoundary>
+        </Router>
+        <PushNotifications />
+      </CurrentUserContext.Provider>
     </MuiThemeProvider>
   );
 }

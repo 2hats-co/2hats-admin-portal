@@ -20,12 +20,13 @@ import ClientItem from '../components/Subjects/ClientItem';
 import SubjectItem from '../components/Subjects/SubjectItem';
 import useCollection from '../hooks/useCollection';
 import LoadingHat from '../components/LoadingHat';
-import { createDoc } from '../utilities/firestore';
+import { createDoc, updateDoc } from '../utilities/firestore';
 
 import ScrollyRolly from '../components/ScrollyRolly';
 import { COLLECTIONS } from '../constants/firestore';
 import Form from '../components/Form';
 import clientFields from '../constants/forms/clients';
+import ClientDrawer from '../components/Subjects/ClientDrawer';
 const styles = theme => ({
   root: {
     height: '100vh',
@@ -107,7 +108,9 @@ function SubjectsContainer(props) {
     formTitle = 'Client Account';
     collection = COLLECTIONS.clients;
   }
-  const [showDialog, setShowDialog] = useState(true);
+
+  const [clientDrawer, setClientDrawer] = useState(null);
+  const [clientForm, setClientForm] = useState(null);
 
   const [queryFilters, setQueryFilters] = useState([]);
   const [subjectsState, subjectsDispatch] = useCollection({
@@ -203,6 +206,7 @@ function SubjectsContainer(props) {
                 <ClientItem
                   key={x.id}
                   data={x}
+                  setClientDrawer={setClientDrawer}
                   setSnackbarContent={setSnackbarContent}
                 />
               ) : (
@@ -227,26 +231,45 @@ function SubjectsContainer(props) {
           <span id="message-id">Copied to clipboard: {snackbarContent}</span>
         }
       />
+      {console.log('clientForm', clientForm)}
       <Form
-        //justForm
-        action="create"
+        action={clientForm === undefined ? 'create' : 'edit'}
         actions={{
           create: data => {
             createDoc(collection, data);
-            setShowDialog(false);
+            setClientForm(null);
           },
+          edit: data => {
+            console.log('clientForm', clientForm);
+            updateDoc(COLLECTIONS.clients, clientForm.id, data);
+            setClientForm(null);
+          },
+
           close: () => {
-            setShowDialog(false);
+            setClientForm(null);
           },
         }}
-        open={showDialog}
-        data={fields()}
+        open={clientForm !== null}
+        data={fields(clientForm)}
         formTitle={formTitle}
       />
       {route === ROUTES.clients && (
-        <Fab className={classes.fab} color="primary" onClick={() => {}}>
+        <Fab
+          className={classes.fab}
+          color="primary"
+          onClick={() => {
+            setClientForm(undefined);
+          }}
+        >
           <AddIcon />
         </Fab>
+      )}
+      {clientDrawer && (
+        <ClientDrawer
+          data={clientDrawer}
+          setDrawer={setClientDrawer}
+          setClientForm={setClientForm}
+        />
       )}
     </>
   );

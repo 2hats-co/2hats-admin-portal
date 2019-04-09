@@ -45,7 +45,6 @@ function GoogleButton(props) {
     props.history.replace(route);
   };
   const handleGoogleAuthFail = error => {
-    console.log('google auth fail', error);
     setFail('Google auth failed: ' + error);
   };
 

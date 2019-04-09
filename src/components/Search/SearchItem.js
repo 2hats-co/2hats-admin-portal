@@ -105,7 +105,7 @@ function SearchItem(props) {
           <Tooltip title="Resume">
             <IconButton
               onClick={() => {
-                window.open(hit.resume.downloadURL, '_blank');
+                window.open(hit.resume.downloadURL || hit.resume.url, '_blank');
               }}
             >
               <ResumeIcon style={{ transform: 'rotate(-45deg)' }} />

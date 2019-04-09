@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-
+import React, { useState, useEffect, useContext } from 'react';
+import CurrentUserContext from '../../../contexts/CurrentUserContext';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
@@ -23,7 +23,6 @@ import moment from 'moment';
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import CustomIcon from '@material-ui/icons/BuildOutlined';
 
-import useAuthedUser from '../../../hooks/useAuthedUser';
 import { addEvent, updateEvent } from '../../../utilities/conversations';
 import clone from 'ramda/es/clone';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
@@ -114,8 +113,8 @@ function EventDialog(props) {
   const [customDuration, setCustomDuration] = useState(false);
   const [data, setData] = useState(initialData);
   const [attendeeField, setAttendeeField] = useState('');
-  const currentUser = useAuthedUser();
-
+  const currentUser = useContext(CurrentUserContext);
+  if (!currentUser) return <div />;
   const updateData = (field, value) => {
     setData({ ...data, [field]: value });
   };
@@ -160,7 +159,7 @@ function EventDialog(props) {
     },
     [data.start.dateTime]
   );
-
+  console.log('currentUser', currentUser);
   const titleSuggestions =
     conversation.type === 'client'
       ? [
