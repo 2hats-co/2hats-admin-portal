@@ -17,7 +17,7 @@ import CriteriaIcon from '@material-ui/icons/AssignmentOutlined';
 import Form from '../Form';
 import CriteriaDialog from './CriteriaDialog';
 
-import { updateDoc } from '../../utilities/firestore';
+import { updateDoc, deleteDoc } from '../../utilities/firestore';
 import { copyToClipboard } from '../../utilities';
 // import { assessment } from '../../constants/oneCardMappings';
 
@@ -113,6 +113,9 @@ const EditOneCard = props => {
 
       {showForm && (
         <Form
+          handleDelete={() => {
+            deleteDoc(collection, data.id);
+          }}
           action="edit"
           actions={{
             edit: d => {

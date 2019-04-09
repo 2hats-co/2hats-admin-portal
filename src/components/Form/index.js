@@ -13,7 +13,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
 import DeleteIcon from '@material-ui/icons/DeleteOutlined';
 import IconButton from '@material-ui/core/IconButton';
-
+import Friction from '../Friction';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import remove from 'ramda/es/remove';
@@ -463,9 +463,16 @@ function Form(props) {
                 >
                   {action} {formTitle}{' '}
                   {handleDelete && (
-                    <IconButton onClick={handleDelete}>
-                      <DeleteIcon />
-                    </IconButton>
+                    <Friction
+                      message={{
+                        title: `Are you sure you want to delete this?`,
+                        body: 'You won’t be able to recover it',
+                      }}
+                    >
+                      <IconButton onClick={handleDelete}>
+                        <DeleteIcon />
+                      </IconButton>
+                    </Friction>
                   )}
                 </DialogTitle>
 
