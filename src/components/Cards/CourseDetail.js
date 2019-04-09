@@ -4,52 +4,46 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 
-import IndustryIcon from '@material-ui/icons/BusinessOutlined';
 import TimeIcon from '@material-ui/icons/AccessTimeOutlined';
 
+import IndustryLabel from './IndustryLabel';
 import SkillsList from './SkillsList';
 
-import {
-  STYLES,
-  getAssessmentCategoryLabel,
-} from '@bit/sidney2hats.2hats.global.common-constants';
+import { STYLES } from '@bit/sidney2hats.2hats.global.common-constants';
 
 const styles = theme => ({
   ...STYLES.RENDERED_HTML(theme),
 
-  description: { whiteSpace: 'pre-wrap' },
+  description: {
+    whiteSpace: 'pre-wrap',
+    marginTop: theme.spacing.unit * 1.5,
+  },
 
-  categoryWrapper: { marginTop: theme.spacing.unit * 1.5 },
-  timeWrapper: { marginTop: theme.spacing.unit / 2 },
+  timeWrapper: { marginTop: -theme.spacing.unit },
   timeIcon: {
-    marginRight: theme.spacing.unit,
+    marginRight: theme.spacing.unit / 2,
     color: theme.palette.text.secondary,
   },
 });
 
 const CourseDetail = ({ classes, data }) => (
   <>
-    <Typography
-      component="p"
-      className={classes.description}
-      color="textSecondary"
-    >
-      {data.description}
-    </Typography>
-
-    <SkillsList values={data.skillsAssociated} header="Skills taught" />
-
-    <Grid container alignItems="flex-end" className={classes.categoryWrapper}>
-      <IndustryIcon className={classes.timeIcon} />
-      <Typography variant="body1">
-        {getAssessmentCategoryLabel(data.category)}
-      </Typography>
-    </Grid>
+    <IndustryLabel value={data.category} />
 
     <Grid container alignItems="flex-end" className={classes.timeWrapper}>
       <TimeIcon className={classes.timeIcon} />
-      <Typography variant="body1">{data.duration}</Typography>
+      <Typography variant="body1" color="textSecondary">
+        {data.duration}
+      </Typography>
     </Grid>
+
+    <Typography component="p" className={classes.description}>
+      {data.description}
+    </Typography>
+
+    {data.skillsAssociated && data.skillsAssociated.length !== 0 && (
+      <SkillsList values={data.skillsAssociated} header="Skills covered" />
+    )}
   </>
 );
 
