@@ -131,7 +131,7 @@ function ContentManagerContainer(props) {
         />
         {client && (
           <Typography component="h3">
-            {client.companyName} {collection}
+            {client.companyName ? client.companyName : 'All'} {collection}
           </Typography>
         )}
         <Grid container>
