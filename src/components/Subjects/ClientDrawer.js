@@ -22,6 +22,7 @@ import BusinessIcon from '@material-ui/icons/BusinessOutlined';
 import ContactIcon from '@material-ui/icons/AccountCircleOutlined';
 
 import AdminSelector from '../AdminSelector';
+import Notes from './Notes';
 
 import { cloudFunction, CLOUD_FUNCTIONS } from '../../utilities/CloudFunctions';
 import { COLLECTIONS } from '@bit/sidney2hats.2hats.global.common-constants';
@@ -109,8 +110,12 @@ function ClientDrawer(props) {
 
         <Grid container alignItems="flex-start" wrap="nowrap">
           <ContactIcon className={classes.icon} />
-          <Typography variant="body1">{data.contactPerson}</Typography>
+          <Typography variant="body1" gutterBottom>
+            {data.contactPerson}
+          </Typography>
         </Grid>
+
+        <Typography variant="caption">{data.id}</Typography>
       </div>
 
       <Divider variant="middle" />
@@ -140,13 +145,7 @@ function ClientDrawer(props) {
       <Divider variant="middle" />
 
       <div className={classes.section}>
-        <TextField
-          multiline
-          variant="filled"
-          label="note"
-          InputProps={{ disableUnderline: true }}
-        />
-        <Button color="primary">Add</Button>
+        <Notes collectionPath={`${COLLECTIONS.clients}/${data.id}/notes`} />
       </div>
     </div>
   );
@@ -154,6 +153,9 @@ function ClientDrawer(props) {
 
 ClientDrawer.propTypes = {
   classes: PropTypes.object.isRequired,
+  data: PropTypes.object.isRequired,
+  history: PropTypes.object.isRequired,
+  setClientForm: PropTypes.func.isRequired,
 };
 
 export default withRouter(withStyles(styles)(ClientDrawer));

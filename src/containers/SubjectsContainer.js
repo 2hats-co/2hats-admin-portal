@@ -28,6 +28,7 @@ import { COLLECTIONS } from '../constants/firestore';
 import Form from '../components/Form';
 import clientFields from '../constants/forms/clients';
 import ClientDrawer from '../components/Subjects/ClientDrawer';
+import CandidateDrawer from '../components/Subjects/CandidateDrawer';
 const styles = theme => ({
   root: {
     height: '100vh',
@@ -226,6 +227,7 @@ function SubjectsContainer(props) {
                 <SubjectItem
                   key={x.id}
                   data={x}
+                  setCandidateDrawer={setCandidateDrawer}
                   setSnackbarContent={setSnackbarContent}
                 />
               );
@@ -306,6 +308,7 @@ function SubjectsContainer(props) {
         {clientDrawer && (
           <ClientDrawer data={clientDrawer} setClientForm={setClientForm} />
         )}
+        {candidateDrawer && <CandidateDrawer data={candidateDrawer} />}
       </Drawer>
     </>
   );

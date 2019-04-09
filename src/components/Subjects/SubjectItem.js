@@ -47,7 +47,7 @@ const styles = theme => ({
 });
 
 function SubjectItem(props) {
-  const { classes, data, setSnackbarContent } = props;
+  const { classes, data, setCandidateDrawer, setSnackbarContent } = props;
 
   const name = data.displayName
     ? data.displayName
@@ -66,7 +66,14 @@ function SubjectItem(props) {
     ));
 
   return (
-    <ListItem classes={{ root: classes.listItemRoot }} divider button>
+    <ListItem
+      classes={{ root: classes.listItemRoot }}
+      divider
+      button
+      onClick={() => {
+        setCandidateDrawer(data);
+      }}
+    >
       <Grid
         container
         className={classes.gridRoot}

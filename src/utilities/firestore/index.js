@@ -68,7 +68,7 @@ export const createDoc = (collection, docData) =>
     createdAt: firebase.firestore.FieldValue.serverTimestamp(),
     updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
   });
-
+export const addDoc = createDoc;
 export const deleteDoc = (collection, docId) =>
   firestore
     .collection(collection)
