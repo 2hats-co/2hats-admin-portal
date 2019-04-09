@@ -113,7 +113,7 @@ function SubjectsContainer(props) {
   const [clientForm, setClientForm] = useState(null);
 
   const [queryFilters, setQueryFilters] = useState([]);
-  const [subjectsState, subjectsDispatch] = useCollection({
+  const [subjectsState, subjectsDispatch, loadMore] = useCollection({
     path: collection,
     sort: { field: 'createdAt', direction: 'desc' },
     filters: queryFilters,
@@ -150,7 +150,7 @@ function SubjectsContainer(props) {
           </Typography>
         </Grid>
 
-        <Grid item className={classes.filterContainer}>
+        {/* <Grid item className={classes.filterContainer}>
           <Grid container alignItems="center">
             <Tooltip title="Clear all filters">
               <IconButton
@@ -193,12 +193,13 @@ function SubjectsContainer(props) {
               }
             })}
           </Grid>
-        </Grid>
+        </Grid> */}
 
         <Grid item xs className={classes.subjectListContainer}>
           <ScrollyRolly
             dataState={subjectsState}
             dataDispatch={subjectsDispatch}
+            loadMore={loadMore}
             disablePadding
           >
             {(x, i) => {
@@ -231,28 +232,30 @@ function SubjectsContainer(props) {
           <span id="message-id">Copied to clipboard: {snackbarContent}</span>
         }
       />
-      {console.log('clientForm', clientForm)}
-      <Form
-        action={clientForm === undefined ? 'create' : 'edit'}
-        actions={{
-          create: data => {
-            createDoc(collection, data);
-            setClientForm(null);
-          },
-          edit: data => {
-            console.log('clientForm', clientForm);
-            updateDoc(COLLECTIONS.clients, clientForm.id, data);
-            setClientForm(null);
-          },
+      {/* {console.log('clientForm', clientForm)} */}
+      {clientForm !== null && (
+        <Form
+          action={clientForm === undefined ? 'create' : 'edit'}
+          actions={{
+            create: data => {
+              createDoc(collection, data);
+              setClientForm(null);
+            },
+            edit: data => {
+              console.log('clientForm', clientForm);
+              updateDoc(COLLECTIONS.clients, clientForm.id, data);
+              setClientForm(null);
+            },
 
-          close: () => {
-            setClientForm(null);
-          },
-        }}
-        open={clientForm !== null}
-        data={fields(clientForm)}
-        formTitle={formTitle}
-      />
+            close: () => {
+              setClientForm(null);
+            },
+          }}
+          open={clientForm !== null}
+          data={fields(clientForm)}
+          formTitle={formTitle}
+        />
+      )}
       {route === ROUTES.clients && (
         <Fab
           className={classes.fab}
@@ -264,6 +267,19 @@ function SubjectsContainer(props) {
           <AddIcon />
         </Fab>
       )}
+
+      {route === ROUTES.clients && (
+        <Fab
+          className={classes.fab}
+          color="primary"
+          onClick={() => {
+            setClientForm(undefined);
+          }}
+        >
+          <AddIcon />
+        </Fab>
+      )}
+
       {clientDrawer && (
         <ClientDrawer
           data={clientDrawer}
