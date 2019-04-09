@@ -78,7 +78,8 @@ const Notes = props => {
                 primary={x.body}
                 secondary={`${
                   adminsContext.getAdmin(x.adminId).givenName
-                } • ${moment.unix(x.updatedAt.seconds).fromNow()}`}
+                } • ${x.createdAt &&
+                  moment.unix(x.createdAt.seconds).fromNow()}`}
               />
               <ListItemSecondaryAction
                 classes={{ root: classes.listItemSecondaryAction }}
