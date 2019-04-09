@@ -8,15 +8,15 @@ import AddIcon from '@material-ui/icons/Add';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Grid from '@material-ui/core/Grid';
 import Snackbar from '@material-ui/core/Snackbar';
-import Tooltip from '@material-ui/core/Tooltip';
-import IconButton from '@material-ui/core/IconButton';
-import FilterIcon from '@material-ui/icons/FilterList';
+// import Tooltip from '@material-ui/core/Tooltip';
+// import IconButton from '@material-ui/core/IconButton';
+// import FilterIcon from '@material-ui/icons/FilterList';
 import Typography from '@material-ui/core/Typography';
 import Drawer from '@material-ui/core/Drawer';
 
 import LocationIndicator from '../components/LocationIndicator';
-import AdminSelector from '../components/AdminSelector';
-import Filter from '../components/Subjects/Filter';
+// import AdminSelector from '../components/AdminSelector';
+// import Filter from '../components/Subjects/Filter';
 import ClientItem from '../components/Subjects/ClientItem';
 import SubjectItem from '../components/Subjects/SubjectItem';
 import useCollection from '../hooks/useCollection';
@@ -29,6 +29,7 @@ import Form from '../components/Form';
 import clientFields from '../constants/forms/clients';
 import ClientDrawer from '../components/Subjects/ClientDrawer';
 import CandidateDrawer from '../components/Subjects/CandidateDrawer';
+
 const styles = theme => ({
   root: {
     height: '100vh',
@@ -72,40 +73,40 @@ const styles = theme => ({
   },
 });
 
-const CANIDIDATE_FILTERS = [];
+// const CANIDIDATE_FILTERS = [];
 
-const CLIENT_FILTERS = [
-  {
-    title: 'Assignee',
-    type: 'admin',
-  },
+// const CLIENT_FILTERS = [
+//   {
+//     title: 'Assignee',
+//     type: 'admin',
+//   },
 
-  {
-    title: 'Industry',
-    type: 'search',
-    values: ['IT', 'HEALTH', 'MARKETING', 'CONSTRUCTION', 'ACCOUNTING'],
-  },
-];
+//   {
+//     title: 'Industry',
+//     type: 'search',
+//     values: ['IT', 'HEALTH', 'MARKETING', 'CONSTRUCTION', 'ACCOUNTING'],
+//   },
+// ];
 
-const assigneeFilter = (currentFilters, uid) => {
-  let filters = currentFilters.filter(x => x.field !== 'assignee');
-  filters.push({
-    field: 'assignee',
-    operator: '==',
-    value: uid,
-  });
-  return filters;
-};
+// const assigneeFilter = (currentFilters, uid) => {
+//   let filters = currentFilters.filter(x => x.field !== 'assignee');
+//   filters.push({
+//     field: 'assignee',
+//     operator: '==',
+//     value: uid,
+//   });
+//   return filters;
+// };
 
 function SubjectsContainer(props) {
   const { classes, theme, route } = props;
 
   let collection = COLLECTIONS.candidates;
-  let filters = CANIDIDATE_FILTERS;
+  // let filters = CANIDIDATE_FILTERS;
   let fields;
   let formTitle;
   if (route === ROUTES.clients) {
-    filters = CLIENT_FILTERS;
+    // filters = CLIENT_FILTERS;
     fields = clientFields;
     formTitle = 'Client Account';
     collection = COLLECTIONS.clients;
@@ -125,7 +126,10 @@ function SubjectsContainer(props) {
 
   const [clientForm, setClientForm] = useState(null);
 
-  const [queryFilters, setQueryFilters] = useState([]);
+  const [
+    queryFilters,
+    // setQueryFilters
+  ] = useState([]);
   const [subjectsState, subjectsDispatch, loadMore] = useCollection({
     path: collection,
     sort: { field: 'createdAt', direction: 'desc' },
