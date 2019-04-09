@@ -12,6 +12,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
 import FilterIcon from '@material-ui/icons/FilterList';
 import Typography from '@material-ui/core/Typography';
+import Drawer from '@material-ui/core/Drawer';
 
 import LocationIndicator from '../components/LocationIndicator';
 import AdminSelector from '../components/AdminSelector';
@@ -110,6 +111,17 @@ function SubjectsContainer(props) {
   }
 
   const [clientDrawer, setClientDrawer] = useState(null);
+  const [candidateDrawer, setCandidateDrawer] = useState(null);
+  const [showDrawer, setShowDrawer] = useState(false);
+
+  useEffect(
+    () => {
+      if (!!clientDrawer || !!candidateDrawer) setShowDrawer(true);
+      else setShowDrawer(false);
+    },
+    [clientDrawer, candidateDrawer]
+  );
+
   const [clientForm, setClientForm] = useState(null);
 
   const [queryFilters, setQueryFilters] = useState([]);
@@ -280,13 +292,21 @@ function SubjectsContainer(props) {
         </Fab>
       )}
 
-      {clientDrawer && (
-        <ClientDrawer
-          data={clientDrawer}
-          setDrawer={setClientDrawer}
-          setClientForm={setClientForm}
-        />
-      )}
+      <Drawer
+        anchor="right"
+        open={showDrawer}
+        onClose={() => {
+          setShowDrawer(false);
+          setTimeout(() => {
+            setClientDrawer(null);
+            setCandidateDrawer(null);
+          }, 333);
+        }}
+      >
+        {clientDrawer && (
+          <ClientDrawer data={clientDrawer} setClientForm={setClientForm} />
+        )}
+      </Drawer>
     </>
   );
 }

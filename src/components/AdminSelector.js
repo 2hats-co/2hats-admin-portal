@@ -7,6 +7,7 @@ import Button from '@material-ui/core/Button';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import Avatar from '@material-ui/core/Avatar';
+import Typography from '@material-ui/core/Typography';
 
 import PersonIcon from '@material-ui/icons/PersonOutlined';
 import DropDownIcon from '@material-ui/icons/ArrowDropDownOutlined';
@@ -30,6 +31,10 @@ const styles = theme => ({
   avatar: {
     marginRight: theme.spacing.unit * 1.5,
   },
+  name: {
+    marginLeft: theme.spacing.unit,
+    marginRight: theme.spacing.unit / 2,
+  },
 });
 
 function AdminSelector(props) {
@@ -42,8 +47,10 @@ function AdminSelector(props) {
     noneText,
     disableNone,
     extraItems,
+    showName,
+    defaultSelection,
   } = props;
-  const [selected, setSelected] = useState('');
+  const [selected, setSelected] = useState(defaultSelection || '');
   const [open, setOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const context = useContext(AdminsContext);
@@ -78,6 +85,11 @@ function AdminSelector(props) {
             <Avatar>
               <PersonIcon />
             </Avatar>
+          )}
+          {showName && (
+            <Typography variant="body1" className={classes.name}>
+              {currentUser ? currentUser.givenName : 'None'}
+            </Typography>
           )}
           <DropDownIcon className={classes.dropdownIcon} />
         </Button>
