@@ -84,7 +84,7 @@ function CandidateDrawer(props) {
       Icon: AssessmentIcon,
       onClick: () =>
         history.push(
-          `${ROUTES.submissions2}?uid=${data.objectID}&type=assessments`
+          `${ROUTES.submissions2}?uid=${data.objectID}&type=assessment`
         ),
     },
     {
@@ -92,7 +92,7 @@ function CandidateDrawer(props) {
       count: jobsCount,
       Icon: JobIcon,
       onClick: () =>
-        history.push(`${ROUTES.submissions2}?uid=${data.objectID}&type=jobs`),
+        history.push(`${ROUTES.submissions2}?uid=${data.objectID}&type=job`),
     },
   ];
 
