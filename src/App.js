@@ -24,6 +24,9 @@ const StatisticsContainer = lazy(() =>
 const SubjectsContainer = lazy(() =>
   import('./containers/SubjectsContainer' /* webpackChunkName: "SubjectsContainer" */)
 );
+const CandidatesContainer = lazy(() =>
+  import('./containers/CandidatesContainer' /* webpackChunkName: "CandidatesContainer" */)
+);
 const AuthenticationContainer = lazy(() =>
   import('./containers/AuthenticationContainer' /* webpackChunkName: "AuthenticationContainer" */)
 );
@@ -102,9 +105,7 @@ function App(props) {
                   <Route
                     exact
                     path={ROUTES.candidates}
-                    component={() => (
-                      <SubjectsContainer route={ROUTES.candidates} {...props} />
-                    )}
+                    component={() => <CandidatesContainer {...props} />}
                   />
                   <Route
                     exact

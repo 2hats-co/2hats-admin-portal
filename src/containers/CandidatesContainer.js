@@ -1,134 +1,188 @@
-// import React,{Component} from 'react'
-// import {withNavigation} from '../components/withNavigation'
-// import Table from '../components/Candidates/Table'
-// import { ALGOLIA_INDEX, createAlgoliaIndex } from '../config/algolia'
-// import SearchBar from '../components/Candidates/SearchBar';
+import React, { useState, useEffect } from 'react';
+import withNavigation from '../components/withNavigation';
+import { ROUTES } from '../constants/routes';
+import Fab from '@material-ui/core/Fab';
 
-// class CandidatesContainer extends Component{
-//     constructor(props){
-//         super(props)
-//         this.state = {
-//             selectedCandidate:'',
-//             hits:[],
-//             searchString:'',
-//             hitsPerPage:20,
-//             currentPage:0,
-//             nHits:0,
-//             fieldRestriction:[],
-//             catFilters:{
-//                 updatedAt: [],
-//                 stage: [],
-//                 status: [],
-//                 careerInterests: [],
-//                 industry: [],
-//                 score: [],
-//             },
-//         }
-//         this.handleChange = this.handleChange.bind(this)
-//         this.handleAddFilter = this.handleAddFilter.bind(this)
-//         this.handleDeleteFilter = this.handleDeleteFilter.bind(this)
-//         this.searchQuery = this.searchQuery.bind(this)
-//         this.handleDismiss = this.handleDismiss.bind(this)
-//     }
-//     handleChange(name,value){
-//         console.log(name,value)
-//         this.setState({[name]:value})
-//     }
-//     handleAddFilter(category, value) {
-//         console.log('addFilter: ', category, value);
-//         const filtersToAppend = {};
-//         filtersToAppend[category] = value;
-//         this.setState((state, props) => ({
-//             catFilters: { ...state.catFilters, ...filtersToAppend }
-//         }));
-//     }
-//     handleDeleteFilter(category, value) {
-//         console.log('deleteFilter:', category, value);
-//         const newFilters = {};
-//         newFilters[category] = this.state.catFilters[category];
-//         newFilters[category].splice(newFilters[category].indexOf(value), 1);
-//         this.setState((state, props) => ({
-//             catFilters: { ...state.catFilters, ...newFilters }
-//         }));
-//     }
-//     handleResults(res){
-//         this.setState({hits:res.hits,nPages:res.nbPages,nHits:res.nbHits})
-//     }
-//     componentDidMount(){
-//         this.searchQuery()
-//     }
-//     handleDismiss(){
-//         this.setState({selectedCandidate:''})
-//     }
-//     componentDidUpdate(prevProps,prevState){
-//         if(prevState.searchString !== this.state.searchString || prevState.currentPage !== this.state.currentPage ||prevState.hitsPerPage !== this.state.hitsPerPage ||prevState.catFilters !== this.state.catFilters ){
-//         this.searchQuery()
-//         }
-//     }
-//     searchQuery(){
-//         const index = createAlgoliaIndex(ALGOLIA_INDEX.candidates);
-//         const filters = ['stage','status']
-//         let queryFilters = ''
-//         filters.forEach(category => {
-//             if (this.state.catFilters[category].length !== 0){
-//               if(queryFilters!==''){
-//                 queryFilters += ' AND '
-//               }
-//                 let categoryQuery =''
-//                 this.state.catFilters[category].forEach(option=>
-//                     {
-//                         if(categoryQuery!==''){
-//                             categoryQuery += ' OR '
-//                           }
-//                           categoryQuery += `${category}:${option}`
-//                     })
-//                     queryFilters += categoryQuery
-//             }else{
+import AddIcon from '@material-ui/icons/Add';
 
-//             }
-//         })
-//         console.log('queryFilters',queryFilters)
-//         index.search(this.state.searchString,{
-//             "filters":queryFilters,
-//             "hitsPerPage": this.state.hitsPerPage,
-//             "page": this.state.currentPage,
-//             "restrictSearchableAttributes": this.state.fieldRestriction,
-//             "analytics": false,
-//             "attributesToRetrieve": "*",
-//         }).then(res => {
-//           this.handleResults(res)
+import withStyles from '@material-ui/core/styles/withStyles';
+import Grid from '@material-ui/core/Grid';
+import Snackbar from '@material-ui/core/Snackbar';
+// import Tooltip from '@material-ui/core/Tooltip';
+// import IconButton from '@material-ui/core/IconButton';
+// import FilterIcon from '@material-ui/icons/FilterList';
+import Typography from '@material-ui/core/Typography';
+import Drawer from '@material-ui/core/Drawer';
 
-//         }).catch(err => {
-//             console.error("Search stage and status total error: ", err.message);
-//         });
-//     }
+import LocationIndicator from '../components/LocationIndicator';
+// import AdminSelector from '../components/AdminSelector';
+// import Filter from '../components/Subjects/Filter';
+import ClientItem from '../components/Subjects/ClientItem';
+import SubjectItem from '../components/Subjects/SubjectItem';
+//import useCollection from '../hooks/useCollection';
+import useAlgolia from '../hooks/useAlgolia';
+import LoadingHat from '../components/LoadingHat';
+import { createDoc, updateDoc } from '../utilities/firestore';
 
-//     render(){
-//         const {searchString,
-//             hitsPerPage,
-//             currentPage,
-//             nHits,hits,
-//            // selectedCandidate
-//         } = this.state
+import ScrollyRolly from '../components/AlgoliaScrollyRolly';
+import Form from '../components/Form';
+import clientFields from '../constants/forms/clients';
+import ClientDrawer from '../components/Subjects/ClientDrawer';
+import CandidateDrawer from '../components/Subjects/CandidateDrawer';
 
-//             const resultData = {currentPage,nHits,hitsPerPage}
-//         return(
-//             <div>
-//                 <SearchBar
-//                     value={searchString}
-//                     changeHandler={this.handleChange}
-//                     catFilters={this.state.catFilters}
-//                     deleteFilterHandler={this.handleDeleteFilter}
-//                 />
-//                 <Table style={{width:'100%', height:'calc(100vh - 64px)', overflowX:'hidden', verflowY:'auto'}}
-//                     candidateData={hits}
-//                     resultData={resultData}
-//                     changeHandler={this.handleChange}
-//                     addFilterHandler={this.handleAddFilter}
-//                     catFilters={this.state.catFilters}
-//                 />
-//             </div>
-//         )
-//     }
-// }
-// export default withNavigation(CandidatesContainer)
+const styles = theme => ({
+  root: {
+    height: '100vh',
+    backgroundColor:
+      theme.palette.type === 'dark'
+        ? theme.palette.background.default
+        : theme.palette.background.paper,
+  },
+  locationIndicator: {
+    zIndex: 10,
+  },
+  count: {
+    position: 'absolute',
+    top: theme.spacing.unit * 2.25,
+    right: theme.spacing.unit * 3,
+    zIndex: 50,
+  },
+  filterContainer: {
+    padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit * 3}px`,
+    boxShadow:
+      theme.palette.type !== 'dark'
+        ? theme.shadows[1]
+        : `0 0 0 1px ${theme.palette.divider}`,
+    zIndex: 9,
+  },
+  clearFilterButton: {
+    padding: 0,
+    marginRight: theme.spacing.unit,
+    width: 36,
+    height: 36,
+  },
+  subjectListContainer: {
+    width: '100%',
+    overflowY: 'auto',
+    borderTop: `1px solid ${theme.palette.divider}`,
+  },
+  fab: {
+    position: 'fixed',
+    bottom: theme.spacing.unit * 2,
+    right: theme.spacing.unit * 2,
+  },
+});
+
+// const CANIDIDATE_FILTERS = [];
+
+// const CLIENT_FILTERS = [
+//   {
+//     title: 'Assignee',
+//     type: 'admin',
+//   },
+
+//   {
+//     title: 'Industry',
+//     type: 'search',
+//     values: ['IT', 'HEALTH', 'MARKETING', 'CONSTRUCTION', 'ACCOUNTING'],
+//   },
+// ];
+
+// const assigneeFilter = (currentFilters, uid) => {
+//   let filters = currentFilters.filter(x => x.field !== 'assignee');
+//   filters.push({
+//     field: 'assignee',
+//     operator: '==',
+//     value: uid,
+//   });
+//   return filters;
+// };
+
+function SubjectsContainer(props) {
+  const { classes, theme, route } = props;
+
+  const [candidateDrawer, setCandidateDrawer] = useState(null);
+  const [showDrawer, setShowDrawer] = useState(false);
+
+  useEffect(
+    () => {
+      if (!!candidateDrawer) setShowDrawer(true);
+      else setShowDrawer(false);
+    },
+    [candidateDrawer]
+  );
+
+  const [hits, setQuery, loadMore] = useAlgolia();
+  const subjects = hits;
+
+  const [snackbarContent, setSnackbarContent] = useState('');
+
+  return (
+    <>
+      <Grid container direction="column" wrap="nowrap" className={classes.root}>
+        <Grid item>
+          <LocationIndicator
+            classes={{ root: classes.locationIndicator }}
+            showBorder
+            title="Directory"
+            subRoutes={[
+              { label: 'Clients', value: ROUTES.clients },
+              { label: 'Candidates', value: ROUTES.candidates },
+            ]}
+          />
+          <Typography variant="subtitle1" className={classes.count}>
+            {subjects && subjects.length}
+          </Typography>
+        </Grid>
+
+        <Grid item xs className={classes.subjectListContainer}>
+          <ScrollyRolly hits={hits} loadMore={loadMore} disablePadding>
+            {(x, i) => {
+              return route === ROUTES.clients ? (
+                <ClientItem
+                  key={x.id}
+                  data={x}
+                  setSnackbarContent={setSnackbarContent}
+                />
+              ) : (
+                <SubjectItem
+                  key={x.id}
+                  data={x}
+                  setCandidateDrawer={setCandidateDrawer}
+                  setSnackbarContent={setSnackbarContent}
+                />
+              );
+            }}
+          </ScrollyRolly>
+        </Grid>
+      </Grid>
+      <Snackbar
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+        open={snackbarContent.length > 0}
+        autoHideDuration={1500}
+        onClose={() => {
+          setSnackbarContent('');
+        }}
+        message={
+          <span id="message-id">Copied to clipboard: {snackbarContent}</span>
+        }
+      />
+      <Drawer
+        anchor="right"
+        open={showDrawer}
+        onClose={() => {
+          setShowDrawer(false);
+          setTimeout(() => {
+            setCandidateDrawer(null);
+          }, 333);
+        }}
+      >
+        {candidateDrawer && <CandidateDrawer data={candidateDrawer} />}
+      </Drawer>
+    </>
+  );
+}
+
+export default withNavigation(
+  withStyles(styles, { withTheme: true })(SubjectsContainer)
+);

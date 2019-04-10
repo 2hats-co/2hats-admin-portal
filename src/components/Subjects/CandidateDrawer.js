@@ -49,18 +49,17 @@ const styles = theme => ({
 
 function CandidateDrawer(props) {
   const { classes, history, data } = props;
-
   const assessmentsCount = useAnalytics({
     collection: COLLECTIONS.submissions,
     filters: [
-      { property: 'UID', operation: '==', value: data.id },
+      { property: 'UID', operation: '==', value: data.objectID },
       { property: 'type', operation: '==', value: 'assessment' },
     ],
   });
   const jobsCount = useAnalytics({
     collection: COLLECTIONS.submissions,
     filters: [
-      { property: 'UID', operation: '==', value: data.id },
+      { property: 'UID', operation: '==', value: data.objectID },
       { property: 'type', operation: '==', value: 'job' },
     ],
   });
@@ -69,27 +68,31 @@ function CandidateDrawer(props) {
     {
       label: 'Go to conversation',
       Icon: ConversationIcon,
-      onClick: () => history.push(`${ROUTES.conversations}?uid=${data.id}`),
+      onClick: () =>
+        history.push(`${ROUTES.conversations}?uid=${data.objectID}`),
     },
 
     {
       label: 'Set reminder',
       Icon: ReminderIcon,
-      onClick: () => history.push(`${ROUTES.conversations}?uid=${data.id}`),
+      onClick: () =>
+        history.push(`${ROUTES.conversations}?uid=${data.objectID}`),
     },
     {
       label: 'View assessments',
       count: assessmentsCount,
       Icon: AssessmentIcon,
       onClick: () =>
-        history.push(`${ROUTES.submissions2}?uid=${data.id}&type=assessments`),
+        history.push(
+          `${ROUTES.submissions2}?uid=${data.objectID}&type=assessments`
+        ),
     },
     {
       label: 'View job submissions',
       count: jobsCount,
       Icon: JobIcon,
       onClick: () =>
-        history.push(`${ROUTES.submissions2}?uid=${data.id}&type=jobs`),
+        history.push(`${ROUTES.submissions2}?uid=${data.objectID}&type=jobs`),
     },
   ];
 
@@ -103,7 +106,7 @@ function CandidateDrawer(props) {
             <Typography variant="h5" className={classes.name} gutterBottom>
               {data.firstName} {data.lastName}
             </Typography>
-            <Typography variant="caption">{data.id}</Typography>
+            <Typography variant="caption">{data.objectID}</Typography>
           </Grid>
         </Grid>
       </div>
@@ -130,7 +133,9 @@ function CandidateDrawer(props) {
       <Divider variant="middle" />
 
       <div className={classes.section}>
-        <Notes collectionPath={`${COLLECTIONS.candidates}/${data.id}/notes`} />
+        <Notes
+          collectionPath={`${COLLECTIONS.candidates}/${data.objectID}/notes`}
+        />
       </div>
     </div>
   );
