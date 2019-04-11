@@ -11,15 +11,17 @@ import { getAssessmentCategoryLabel } from '@bit/sidney2hats.2hats.global.common
 const styles = theme => ({
   industryWrapper: {
     width: 'auto',
-    marginTop: theme.spacing.unit,
-    marginBottom: theme.spacing.unit / 2,
+    marginTop: -theme.spacing.unit / 4,
+    marginBottom: theme.spacing.unit,
   },
   industryIcon: {
     marginRight: theme.spacing.unit / 2,
-    marginLeft: -theme.spacing.unit / 4,
-    color: theme.palette.text.primary,
+    color: theme.palette.text.secondary,
   },
-  industryText: { fontWeight: 500 },
+  industryText: {
+    fontWeight: 500,
+    color: theme.palette.text.secondary,
+  },
 });
 
 const IndustryLabel = props => {
@@ -31,7 +33,7 @@ const IndustryLabel = props => {
         <IndustryIcon className={classes.industryIcon} />
       </Grid>
       <Grid item xs>
-        <Typography variant="subtitle1" className={classes.industryText}>
+        <Typography variant="body1" className={classes.industryText}>
           {getAssessmentCategoryLabel(value)}
         </Typography>
       </Grid>

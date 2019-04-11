@@ -166,7 +166,7 @@ export default function withNavigation(WrappedComponent) {
         }
       }
     }
-    console.log(currentUser);
+    // console.log(currentUser);
     if (currentUser && currentUser.fired) {
       return <Fired user={currentUser} />;
     }

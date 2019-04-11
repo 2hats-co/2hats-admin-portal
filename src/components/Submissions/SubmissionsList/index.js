@@ -154,25 +154,27 @@ function SubmissionsList(props) {
   useEffect(
     () => {
       const parsedQuery = queryString.parse(location.search);
-      if (parsedQuery.assessmentId)
-        setSelectedFilters({
-          ...selectedFilters,
-          assessment: parsedQuery.assessmentId,
-          type: 'assessment',
-        });
-      if (parsedQuery.jobId)
-        setSelectedFilters({
-          ...selectedFilters,
-          job: parsedQuery.jobId,
-          type: 'job',
-        });
-      if (parsedQuery.uid)
-        setSelectedFilters({
-          ...selectedFilters,
-          uid: parsedQuery.uid,
-          type: '',
-          outcome: '',
-        });
+
+      const newFilters = {};
+
+      if (parsedQuery.assessmentId) {
+        newFilters.assessment = parsedQuery.assessmentId;
+        newFilters.type = 'assessment';
+      }
+      if (parsedQuery.jobId) {
+        newFilters.job = parsedQuery.jobId;
+        newFilters.type = 'job';
+      }
+      if (parsedQuery.uid) {
+        newFilters.uid = parsedQuery.uid;
+        newFilters.type = '';
+        newFilters.outcome = '';
+      }
+      if (parsedQuery.type) {
+        newFilters.type = parsedQuery.type;
+      }
+
+      setSelectedFilters({ ...selectedFilters, ...newFilters });
     },
     [location.search]
   );
@@ -231,7 +233,7 @@ function SubmissionsList(props) {
               }}
               color="primary"
             >
-              Set filters
+              Reset filters
             </Button>
           ) : (
             <>

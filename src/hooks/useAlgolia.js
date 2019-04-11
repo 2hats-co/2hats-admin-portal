@@ -1,61 +1,48 @@
-import { useEffect, useReducer } from 'react';
+import { useEffect, useState } from 'react';
 import { ALGOLIA_INDEX, createAlgoliaIndex } from '../config/algolia';
-
-const searchReducer = (prevState, action) => {
-  switch (action.type) {
-    case 'more':
-      return { ...prevState, limit: prevState.limit + 10 };
-    default:
-      return { ...prevState, ...action };
-  }
-};
-
-const updateQuery = async (index, search, filters, limit, searchDispatch) => {
-  searchDispatch({
-    prevSearch: search,
-    prevFilters: filters,
-    prevLimit: limit,
-    limit,
-    loading: true,
-  });
-  const results = await index.search(search, {
-    hitsPerPage: limit,
-  });
-  searchDispatch({ results, loading: false });
-};
-
+const hitsPerPage = 50;
 function useAlgolia() {
-  const [searchState, searchDispatch] = useReducer(searchReducer, {
-    search: '',
-    filters: [],
-    prevSearch: '',
-    prevFilters: [],
-    results: [],
-    limit: 20,
-    prevLimit: 20,
-  });
   const index = createAlgoliaIndex(ALGOLIA_INDEX.users);
+  const [results, setResults] = useState([]);
+  const [hits, setHits] = useState([]);
+  const [query, setQuery] = useState('');
+  const [page, setPage] = useState(0);
+  const updateQuery = async () => {
+    const results = await index.search(query, {
+      hitsPerPage,
+      page,
+    });
+    setResults(results);
+    setHits([...hits, ...results.hits]);
+  };
+  const resetQuery = async () => {
+    const results = await index.search(query, {
+      hitsPerPage,
+      page,
+    });
+    setResults(results);
+    setHits(results.hits);
+  };
   useEffect(
     () => {
-      const {
-        search,
-        prevSearch,
-        filters,
-        limit,
-        prevLimit,
-        prevFilters,
-      } = searchState;
-      if (search !== prevSearch || filters !== prevFilters) {
-        updateQuery(index, search, filters, 20, searchDispatch);
-      } else if (prevLimit !== limit) {
-        updateQuery(index, search, filters, limit, searchDispatch);
+      if (query.length > 2) {
+        resetQuery();
       }
-      return () => {};
     },
-    [searchState]
+    [query]
   );
 
-  return [searchState, searchDispatch];
+  useEffect(
+    () => {
+      updateQuery();
+    },
+    [page]
+  );
+  const loadMore = () => {
+    setPage(page + 1);
+  };
+
+  return [hits, setQuery, results, loadMore];
 }
 
 export default useAlgolia;

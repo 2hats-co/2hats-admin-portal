@@ -165,6 +165,26 @@ var DROPZONE = (exports.DROPZONE = function DROPZONE(theme) {
       marginTop: theme.spacing.unit,
     },
     fileIcon: { transform: 'rotate(-45deg)' },
+
+    previewWrapper: {
+      height: 172,
+      textAlign: 'center',
+    },
+    previewImg: { height: 172 - 32 - theme.spacing.unit / 2 },
+    changeButton: {
+      margin: '0 auto',
+      marginTop: theme.spacing.unit / 2,
+      display: 'flex',
+    },
+
+    loadingWrapper: {
+      height: 172,
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+
+      '& > *': { width: '100%' },
+    },
   };
 });
 

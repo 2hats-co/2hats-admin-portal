@@ -133,7 +133,8 @@ const jobFields = initialData => {
       label: 'Cover image',
       value: initialData['image'],
       mimeTypes: 'image/*',
-      path: 'studentPortal/',
+      path: 'studentPortal',
+      crop: { aspect: 1, x: 0, y: 0, width: 320 },
       // validation: yup.object().shape({
       //   name: yup.string().required(),
       //   url: yup

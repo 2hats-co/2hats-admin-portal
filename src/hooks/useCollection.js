@@ -77,10 +77,11 @@ const useCollection = intialOverrides => {
       prevPath: collectionState.path,
     });
     let query = firestore.collection(collectionState.path);
-
-    filters.forEach(filter => {
-      query = query.where(filter.field, filter.operator, filter.value);
-    });
+    if (filters) {
+      filters.forEach(filter => {
+        query = query.where(filter.field, filter.operator, filter.value);
+      });
+    }
     if (sort) {
       if (Array.isArray(sort)) {
         sort.forEach(order => {
