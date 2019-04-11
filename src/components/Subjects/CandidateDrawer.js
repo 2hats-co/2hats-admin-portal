@@ -15,6 +15,7 @@ import ConversationIcon from '@material-ui/icons/MessageOutlined';
 import ReminderIcon from '@material-ui/icons/NotificationsOutlined';
 import AssessmentIcon from '@material-ui/icons/AssignmentOutlined';
 import JobIcon from '@material-ui/icons/BusinessCenterOutlined';
+import DocIcon from '@material-ui/icons/DescriptionOutlined';
 
 import SuperAvatar from '../SuperAvatar';
 import Notes from './Notes';
@@ -49,6 +50,11 @@ const styles = theme => ({
 
 function CandidateDrawer(props) {
   const { classes, history, data } = props;
+  const route = path => {
+    window.open(path, '_blank');
+    // history.push(path):
+  };
+
   const assessmentsCount = useAnalytics({
     collection: COLLECTIONS.submissions,
     filters: [
@@ -68,33 +74,38 @@ function CandidateDrawer(props) {
     {
       label: 'Go to conversation',
       Icon: ConversationIcon,
-      onClick: () =>
-        history.push(`${ROUTES.conversations}?uid=${data.objectID}`),
+      onClick: () => route(`${ROUTES.conversations}?uid=${data.objectID}`),
     },
 
     {
       label: 'Set reminder',
       Icon: ReminderIcon,
-      onClick: () =>
-        history.push(`${ROUTES.conversations}?uid=${data.objectID}`),
+      onClick: () => route(`${ROUTES.conversations}?uid=${data.objectID}`),
     },
     {
       label: 'View assessments',
       count: assessmentsCount,
       Icon: AssessmentIcon,
       onClick: () =>
-        history.push(
-          `${ROUTES.submissions2}?uid=${data.objectID}&type=assessment`
-        ),
+        route(`${ROUTES.submissions2}?uid=${data.objectID}&type=assessment`),
     },
     {
       label: 'View job submissions',
       count: jobsCount,
       Icon: JobIcon,
       onClick: () =>
-        history.push(`${ROUTES.submissions2}?uid=${data.objectID}&type=job`),
+        route(`${ROUTES.submissions2}?uid=${data.objectID}&type=job`),
     },
   ];
+  if (data.resume) {
+    listItems.push({
+      label: 'view Resume',
+
+      Icon: DocIcon,
+
+      onClick: () => window.open(data.resume.url || data.resume.downloadURL),
+    });
+  }
 
   return (
     <div className={classes.root}>

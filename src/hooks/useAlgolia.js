@@ -15,10 +15,19 @@ function useAlgolia() {
     setResults(results);
     setHits([...hits, ...results.hits]);
   };
+  const resetQuery = async () => {
+    const results = await index.search(query, {
+      hitsPerPage,
+      page,
+    });
+    setResults(results);
+    setHits(results.hits);
+  };
   useEffect(
     () => {
-      setResults([]); //clearResults
-      updateQuery();
+      if (query.length > 2) {
+        resetQuery();
+      }
     },
     [query]
   );
@@ -33,7 +42,7 @@ function useAlgolia() {
     setPage(page + 1);
   };
 
-  return [hits, setQuery, loadMore];
+  return [hits, setQuery, results, loadMore];
 }
 
 export default useAlgolia;
