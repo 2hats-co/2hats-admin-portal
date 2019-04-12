@@ -26,6 +26,7 @@ import CustomIcon from '@material-ui/icons/BuildOutlined';
 import { addEvent, updateEvent } from '../../../utilities/conversations';
 import clone from 'ramda/es/clone';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
+import LocationField from './LocationField';
 const styles = theme => ({
   root: {
     minWidth: 480,
@@ -418,7 +419,7 @@ function EventDialog(props) {
         </div>
 
         <div className={classes.block}>
-          <TextField
+          {/* <TextField
             label="Location"
             variant="outlined"
             fullWidth
@@ -429,6 +430,9 @@ function EventDialog(props) {
             className={classes.locationField}
             margin="dense"
             autoComplete="street-address"
+          /> */}
+          <LocationField
+            changeHandler={location => updateData('location', location)}
           />
 
           {data.location !== STREET_ADDRESS && (

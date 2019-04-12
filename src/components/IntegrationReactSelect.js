@@ -248,6 +248,7 @@ function IntegrationReactSelect(props) {
     creatable,
     error,
     helperText,
+    inputProps,
   } = props;
 
   const selectStyles = {
@@ -277,6 +278,7 @@ function IntegrationReactSelect(props) {
               autoFocus,
               error,
               helperText,
+              ...inputProps,
             }}
             value={value}
             isMulti={isMulti}
@@ -301,6 +303,7 @@ function IntegrationReactSelect(props) {
             autoFocus,
             error,
             helperText,
+            ...inputProps,
           }}
           value={value}
           isMulti={isMulti}
