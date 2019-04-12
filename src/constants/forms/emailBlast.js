@@ -38,11 +38,11 @@ const emailBlastFields = initialData => {
             .toDate(),
       validation: yup
         .date()
-        .test(
-          'hour-from-now',
-          'Scheduled time must be at least an hour from now',
-          value => moment(value).diff(moment(), 'hours') >= 1
-        )
+        // .test(
+        //   'hour-from-now',
+        //   'Scheduled time must be at least an hour from now',
+        //   value => moment(value).diff(moment(), 'hours') >= 1
+        // )
         .required('Required'),
       width: 6,
     },

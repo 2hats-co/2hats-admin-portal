@@ -51,7 +51,10 @@ const styles = theme => ({
     backgroundColor: theme.palette.primary.light,
     fontSize: theme.spacing.unit * 12,
     cursor: 'none',
-    '&:hover': { animation: 'spin-me 2s linear infinite' },
+
+    animation: 'spin-me 2s linear infinite',
+    animationPlayState: 'paused',
+    '&:hover': { animationPlayState: 'running' },
   },
   '@keyframes spin-me': {
     from: { transform: 'rotate(0deg)' },

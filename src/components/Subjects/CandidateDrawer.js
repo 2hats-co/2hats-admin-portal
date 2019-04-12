@@ -15,6 +15,8 @@ import ConversationIcon from '@material-ui/icons/MessageOutlined';
 import ReminderIcon from '@material-ui/icons/NotificationsOutlined';
 import AssessmentIcon from '@material-ui/icons/AssignmentOutlined';
 import JobIcon from '@material-ui/icons/BusinessCenterOutlined';
+import EmailIcon from '@material-ui/icons/MailOutline';
+import PhoneIcon from '@material-ui/icons/PhoneOutlined';
 import DocIcon from '@material-ui/icons/DescriptionOutlined';
 
 import SuperAvatar from '../SuperAvatar';
@@ -121,6 +123,29 @@ function CandidateDrawer(props) {
           </Grid>
         </Grid>
       </div>
+
+      <List>
+        <ListItem>
+          <ListItemIcon>
+            <EmailIcon />
+          </ListItemIcon>
+          <ListItemText
+            primary={data.email}
+            secondary={!data.email && 'No email'}
+          />
+        </ListItem>
+        <ListItem>
+          <ListItemIcon>
+            <PhoneIcon />
+          </ListItemIcon>
+          <ListItemText
+            primary={data.mobileNumber || data.phoneNumber}
+            secondary={
+              !(data.mobileNumber || data.phoneNumber) && 'No mobile number'
+            }
+          />
+        </ListItem>
+      </List>
 
       <Divider variant="middle" />
 

@@ -8,11 +8,14 @@ import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
 // import Avatar from '@material-ui/core/Avatar';
 import Chip from '@material-ui/core/Chip';
+import Checkbox from '@material-ui/core/Checkbox';
 
 import LinkedInIcon from '../../assets/icons/LinkedIn';
 import MailIcon from '@material-ui/icons/MailOutline';
 import PhoneIcon from '@material-ui/icons/PhoneOutlined';
 // import PersonIcon from '@material-ui/icons/Person';
+import AddIcon from '@material-ui/icons/AddCircleOutline';
+import RemoveIcon from '@material-ui/icons/RemoveCircle';
 
 import SuperAvatar from '../SuperAvatar';
 import { TAG_COLORS } from '../../constants/tags';
@@ -47,7 +50,15 @@ const styles = theme => ({
 });
 
 function SubjectItem(props) {
-  const { classes, data, setCandidateDrawer, setSnackbarContent } = props;
+  const {
+    classes,
+    data,
+    setCandidateDrawer,
+    setSnackbarContent,
+    selectHandler,
+  } = props;
+
+  // console.log('render');
 
   const name = data.displayName
     ? data.displayName
@@ -80,6 +91,20 @@ function SubjectItem(props) {
         alignItems="center"
         spacing={16}
       >
+        <Grid item>
+          <Checkbox
+            icon={<AddIcon />}
+            checked={false}
+            checkedIcon={<RemoveIcon />}
+            value={data.objectID}
+            onClick={e => {
+              e.stopPropagation();
+            }}
+            onChange={(e, v) => {
+              selectHandler(data);
+            }}
+          />
+        </Grid>
         <Grid item>
           <Grid container direction="column" justify="space-evenly">
             {linkedin && (
