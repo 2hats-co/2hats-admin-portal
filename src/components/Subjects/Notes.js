@@ -12,6 +12,7 @@ import IconButton from '@material-ui/core/IconButton';
 
 import AddIcon from '@material-ui/icons/Add';
 import DeleteIcon from '@material-ui/icons/DeleteOutlined';
+import EditIcon from '@material-ui/icons/EditOutlined';
 
 import CurrentUserContext from '../../contexts/CurrentUserContext';
 import { AdminsContext } from '../../contexts/AdminsContext';
@@ -45,6 +46,10 @@ const Notes = props => {
 
   const handleDeleteNote = id => () => {
     deleteDoc(collectionPath, id);
+  };
+  const handleEditNote = note => () => {
+    setNote(note.body);
+    deleteDoc(collectionPath, note.id);
   };
 
   return (
@@ -84,6 +89,9 @@ const Notes = props => {
               <ListItemSecondaryAction
                 classes={{ root: classes.listItemSecondaryAction }}
               >
+                <IconButton onClick={handleEditNote(x)}>
+                  <EditIcon />
+                </IconButton>
                 <IconButton onClick={handleDeleteNote(x.id)}>
                   <DeleteIcon />
                 </IconButton>
