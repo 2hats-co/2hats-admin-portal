@@ -8,7 +8,7 @@ import withTheme from '@material-ui/core/styles/withTheme';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 
-function ScrollyRolly(props) {
+function AlgoliaScrollyRolly(props) {
   const {
     classes,
     theme,
@@ -89,4 +89,4 @@ function ScrollyRolly(props) {
   return null;
 }
 
-export default withTheme()(ScrollyRolly);
+export default withTheme()(AlgoliaScrollyRolly);

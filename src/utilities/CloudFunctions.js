@@ -19,6 +19,7 @@ export const CLOUD_FUNCTIONS = {
   WHATS_NEXT_AI: 'callablesWhatsNextAI',
   CREATE_SMART_LINK: 'callablesCreateSmartLink',
   CLIENT_WELCOME_EMAIL: 'callablesClientSendWelcomeEmail',
+  CAMPAIGN_SEND_TARGETED_BY_ID: 'callablesCampaignSendTargetedById',
 };
 
 export const cloudFunction = (name, input, success, fail) => {

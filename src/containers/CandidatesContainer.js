@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import queryString from 'query-string';
 import withNavigation from '../components/withNavigation';
 import { ROUTES } from '../constants/routes';
-import Fab from '@material-ui/core/Fab';
-
-import AddIcon from '@material-ui/icons/Add';
 
 import withStyles from '@material-ui/core/styles/withStyles';
 import Grid from '@material-ui/core/Grid';
@@ -24,13 +22,20 @@ import useAlgolia from '../hooks/useAlgolia';
 import LoadingHat from '../components/LoadingHat';
 import { createDoc, updateDoc } from '../utilities/firestore';
 
-import ScrollyRolly from '../components/AlgoliaScrollyRolly';
+import AlgoliaScrollyRolly from '../components/AlgoliaScrollyRolly';
 import Form from '../components/Form';
 import clientFields from '../constants/forms/clients';
 import ClientDrawer from '../components/Subjects/ClientDrawer';
 import CandidateDrawer from '../components/Subjects/CandidateDrawer';
+import BottomSheet from '../components/Subjects/BottomSheet';
+import SubjectSearch from '../components/Subjects/SubjectSearch';
 
 const styles = theme => ({
+  wrapper: {
+    height: '100vh',
+    overflow: 'hidden',
+    position: 'relative',
+  },
   root: {
     height: '100vh',
     backgroundColor:
@@ -41,12 +46,14 @@ const styles = theme => ({
   locationIndicator: {
     zIndex: 10,
   },
-  count: {
+
+  searchBox: {
     position: 'absolute',
-    top: theme.spacing.unit * 2.25,
-    right: theme.spacing.unit * 3,
+    top: theme.spacing.unit * 1.5,
+    right: theme.spacing.unit * 2,
     zIndex: 50,
   },
+
   filterContainer: {
     padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit * 3}px`,
     boxShadow:
@@ -98,16 +105,43 @@ const styles = theme => ({
 //   return filters;
 // };
 
-function SubjectsContainer(props) {
-  const { classes, theme, route } = props;
+function CandidatesContainer(props) {
+  const { classes, route, history, location } = props;
 
   const [candidateDrawer, setCandidateDrawer] = useState(null);
   const [showDrawer, setShowDrawer] = useState(false);
+  const [selected, setSelected] = useState([]);
+
+  const handleSelect = data => {
+    const index = selected.findIndex(x => x.objectID === data.objectID);
+    // Add to array if not already in array
+    if (index === -1) setSelected([data, ...selected]);
+  };
+  const removeFromSelected = index => {
+    const newSelected = [...selected];
+    newSelected.splice(index, 1);
+    setSelected(newSelected);
+  };
+  // useEffect(
+  //   () => {
+  //     console.log(selected);
+  //   },
+  //   [selected]
+  // );
 
   useEffect(
     () => {
       if (!!candidateDrawer) setShowDrawer(true);
       else setShowDrawer(false);
+
+      const parsedQuery = queryString.parse(location.search);
+      if (candidateDrawer && candidateDrawer.objectID)
+        parsedQuery.id = candidateDrawer.objectID;
+      else if (parsedQuery.id) delete parsedQuery.id;
+
+      const searchString = queryString.stringify(parsedQuery);
+
+      history.push(`${location.pathname}?${searchString}`);
     },
     [candidateDrawer]
   );
@@ -118,7 +152,7 @@ function SubjectsContainer(props) {
   const [snackbarContent, setSnackbarContent] = useState('');
 
   return (
-    <>
+    <div className={classes.wrapper}>
       <Grid container direction="column" wrap="nowrap" className={classes.root}>
         <Grid item>
           <LocationIndicator
@@ -130,30 +164,33 @@ function SubjectsContainer(props) {
               { label: 'Candidates', value: ROUTES.candidates },
             ]}
           />
-          <Typography variant="subtitle1" className={classes.count}>
-            {subjects && subjects.length}
-          </Typography>
+          <SubjectSearch
+            count={subjects && subjects.length}
+            className={classes.searchBox}
+            setQuery={setQuery}
+          />
         </Grid>
 
         <Grid item xs className={classes.subjectListContainer}>
-          <ScrollyRolly hits={hits} loadMore={loadMore} disablePadding>
+          <AlgoliaScrollyRolly hits={hits} loadMore={loadMore} disablePadding>
             {(x, i) => {
               return route === ROUTES.clients ? (
                 <ClientItem
-                  key={x.id}
+                  key={x.objectID}
                   data={x}
                   setSnackbarContent={setSnackbarContent}
                 />
               ) : (
                 <SubjectItem
-                  key={x.id}
+                  key={x.objectID}
                   data={x}
                   setCandidateDrawer={setCandidateDrawer}
                   setSnackbarContent={setSnackbarContent}
+                  selectHandler={handleSelect}
                 />
               );
             }}
-          </ScrollyRolly>
+          </AlgoliaScrollyRolly>
         </Grid>
       </Grid>
       <Snackbar
@@ -167,6 +204,7 @@ function SubjectsContainer(props) {
           <span id="message-id">Copied to clipboard: {snackbarContent}</span>
         }
       />
+
       <Drawer
         anchor="right"
         open={showDrawer}
@@ -179,10 +217,14 @@ function SubjectsContainer(props) {
       >
         {candidateDrawer && <CandidateDrawer data={candidateDrawer} />}
       </Drawer>
-    </>
+
+      <BottomSheet
+        selected={selected}
+        setCandidateDrawer={setCandidateDrawer}
+        removeFromSelected={removeFromSelected}
+      />
+    </div>
   );
 }
 
-export default withNavigation(
-  withStyles(styles, { withTheme: true })(SubjectsContainer)
-);
+export default withNavigation(withStyles(styles)(CandidatesContainer));

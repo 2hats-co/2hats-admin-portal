@@ -44,10 +44,6 @@ const styles = theme => ({
     height: '100%',
   },
 
-  // wrapperGrid: {
-  //   minHeight: 400,
-  // },
-
   noBlasts: {
     height: '100%',
     color: theme.palette.text.secondary,
@@ -169,10 +165,6 @@ function EmailBlast(props) {
         }}
         data={emailBlastFields(formEdit ? selectedBlast : {})}
         open={showForm}
-        classes={{
-          justFormWrapper: classes.justFormWrapper,
-          wrapperGrid: classes.wrapperGrid,
-        }}
         formFooter={values => (
           <BlastPreview query={values.query} template={values.templateId} />
         )}
