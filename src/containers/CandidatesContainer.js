@@ -5,6 +5,7 @@ import { ROUTES } from '../constants/routes';
 
 import withStyles from '@material-ui/core/styles/withStyles';
 import Grid from '@material-ui/core/Grid';
+import TextField from '@material-ui/core/TextField';
 import Snackbar from '@material-ui/core/Snackbar';
 // import Tooltip from '@material-ui/core/Tooltip';
 // import IconButton from '@material-ui/core/IconButton';
@@ -146,7 +147,7 @@ function CandidatesContainer(props) {
     [candidateDrawer]
   );
 
-  const [hits, setQuery, loadMore] = useAlgolia();
+  const [hits, setQuery, results, loadMore] = useAlgolia();
   const subjects = hits;
 
   const [snackbarContent, setSnackbarContent] = useState('');

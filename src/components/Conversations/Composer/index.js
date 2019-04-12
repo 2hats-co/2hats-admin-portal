@@ -405,7 +405,7 @@ function Composer(props) {
       ) : (
         <InputBase
           autoFocus
-          disabled={composerType === 'linkedin'}
+          //disabled={composerType === 'linkedin'}
           value={messageText}
           onChange={e => {
             setMessageText(e.target.value);
@@ -421,7 +421,8 @@ function Composer(props) {
           // } here…`}
           placeholder={
             composerType === 'linkedin'
-              ? 'This service is currently under reconstruction due to internet reliablity issues, please use the linkedin icon above to be direct to the clients linkedin message thread. We are working hard on bring back this service, sorry for the inconvience, and thank you for your understanding.'
+              ? // ? 'This service is currently under reconstruction due to internet reliablity issues, please use the linkedin icon above to be direct to the clients linkedin message thread. We are working hard on bring back this service, sorry for the inconvience, and thank you for your understanding.'
+                'type your message here'
               : 'Type your note here'
           }
         />

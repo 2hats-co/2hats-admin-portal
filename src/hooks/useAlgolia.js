@@ -42,7 +42,7 @@ function useAlgolia() {
     setPage(page + 1);
   };
 
-  return [hits, setQuery, loadMore];
+  return [hits, setQuery, results, loadMore];
 }
 
 export default useAlgolia;
