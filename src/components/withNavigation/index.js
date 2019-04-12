@@ -103,11 +103,11 @@ const navigationRoutes = [
     route: ROUTES.conversations,
   },
   {
-    label: 'Subjects',
+    label: 'Candidates',
     icon: <SupervisorAccountIcon />,
-    route: ROUTES.clients,
-    subRoutes: [ROUTES.clients, ROUTES.candidates, ROUTES.subjects],
-    incomplete: true,
+    route: ROUTES.candidates,
+    subRoutes: [ROUTES.clients, ROUTES.candidates],
+    //incomplete: true,
   },
   {
     label: 'Marketing',
