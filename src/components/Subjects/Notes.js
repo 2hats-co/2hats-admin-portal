@@ -9,8 +9,12 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import IconButton from '@material-ui/core/IconButton';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
 
 import AddIcon from '@material-ui/icons/Add';
+import MoreVertIcon from '@material-ui/icons/MoreVert';
 import DeleteIcon from '@material-ui/icons/DeleteOutlined';
 import EditIcon from '@material-ui/icons/EditOutlined';
 
@@ -21,6 +25,12 @@ import { addDoc, deleteDoc } from '../../utilities/firestore';
 
 const styles = theme => ({
   root: {},
+
+  input: {
+    paddingTop: theme.spacing.unit * 1.75,
+    paddingBottom: theme.spacing.unit * 1.75,
+  },
+  addButton: { marginRight: -theme.spacing.unit },
 
   listItemSecondaryAction: { right: -8 },
 });
@@ -38,6 +48,7 @@ const Notes = props => {
   const notes = notesState.documents;
 
   const [note, setNote] = useState('');
+  const [menuAnchor, setMenuAnchor] = useState(null);
 
   const handleAddNote = () => {
     addDoc(collectionPath, { adminId: currentUser.UID, body: note });
@@ -54,25 +65,34 @@ const Notes = props => {
 
   return (
     <div className={classes.root}>
-      <Grid container wrap="nowrap">
-        <TextField
-          fullWidth
-          value={note}
-          onChange={e => {
-            setNote(e.target.value);
-          }}
-          multiline
-          variant="filled"
-          label="Note"
-          InputProps={{ disableUnderline: true }}
-        />
-        <IconButton
-          onClick={handleAddNote}
-          color="primary"
-          disabled={note.length === 0}
-        >
-          <AddIcon />
-        </IconButton>
+      <Grid container wrap="nowrap" alignItems="flex-end">
+        <Grid item xs>
+          <TextField
+            fullWidth
+            value={note}
+            onChange={e => {
+              setNote(e.target.value);
+            }}
+            multiline
+            variant="filled"
+            margin="none"
+            placeholder="Note"
+            InputProps={{
+              disableUnderline: true,
+              classes: { root: classes.input },
+            }}
+          />
+        </Grid>
+        <Grid item>
+          <IconButton
+            onClick={handleAddNote}
+            color="primary"
+            disabled={note.length === 0}
+            className={classes.addButton}
+          >
+            <AddIcon />
+          </IconButton>
+        </Grid>
       </Grid>
 
       <List>
@@ -83,18 +103,39 @@ const Notes = props => {
                 primary={x.body}
                 secondary={`${
                   adminsContext.getAdmin(x.adminId).givenName
-                } • ${x.createdAt &&
+                }\u00a0\u00a0•\u00a0\u00a0${x.createdAt &&
                   moment.unix(x.createdAt.seconds).fromNow()}`}
               />
               <ListItemSecondaryAction
                 classes={{ root: classes.listItemSecondaryAction }}
               >
-                <IconButton onClick={handleEditNote(x)}>
-                  <EditIcon />
+                <IconButton
+                  onClick={e => {
+                    setMenuAnchor(e.currentTarget);
+                  }}
+                >
+                  <MoreVertIcon />
                 </IconButton>
-                <IconButton onClick={handleDeleteNote(x.id)}>
-                  <DeleteIcon />
-                </IconButton>
+                <Menu
+                  anchorEl={menuAnchor}
+                  open={!!menuAnchor}
+                  onClose={() => {
+                    setMenuAnchor(null);
+                  }}
+                >
+                  <MenuItem onClick={handleEditNote(x)}>
+                    <ListItemIcon>
+                      <EditIcon />
+                    </ListItemIcon>
+                    Edit
+                  </MenuItem>
+                  <MenuItem onClick={handleDeleteNote(x.id)}>
+                    <ListItemIcon>
+                      <DeleteIcon />
+                    </ListItemIcon>
+                    Delete
+                  </MenuItem>
+                </Menu>
               </ListItemSecondaryAction>
             </ListItem>
           ))}

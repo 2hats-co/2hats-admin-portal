@@ -12,7 +12,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 
 import LinkedInIcon from '../../assets/icons/LinkedIn';
 import MailIcon from '@material-ui/icons/MailOutline';
-import PhoneIcon from '@material-ui/icons/PhoneOutlined';
+import PhoneIcon from '@material-ui/icons/Phone';
 // import PersonIcon from '@material-ui/icons/Person';
 import AddIcon from '@material-ui/icons/AddCircleOutline';
 import RemoveIcon from '@material-ui/icons/RemoveCircle';
@@ -26,9 +26,9 @@ const styles = theme => ({
     padding: 0,
   },
   gridRoot: {
-    height: 72,
+    // height: 72,
     margin: 0,
-    padding: '0 18px',
+    padding: '0 4px',
     // borderBottom: `1px solid ${theme.palette.divider}`,
     // width: '100%',
   },
@@ -63,18 +63,14 @@ function SubjectItem(props) {
   const name = data.displayName
     ? data.displayName
     : `${data.firstName} ${data.lastName}`;
-  const { linkedin, email, phoneNumber, industry, tags, note } = data;
-
-  const tagChips =
-    tags &&
-    tags.map((x, i) => (
-      <Chip
-        key={i}
-        label={x.label}
-        className={classes.chip}
-        style={{ backgroundColor: TAG_COLORS[x.type][x.label] }}
-      />
-    ));
+  const {
+    linkedin,
+    email,
+    phoneNumber,
+    // note,
+    touchedAssessments,
+    touchedJobs,
+  } = data;
 
   return (
     <ListItem
@@ -84,12 +80,13 @@ function SubjectItem(props) {
       onClick={() => {
         setCandidateDrawer(data);
       }}
+      disableGutters
     >
       <Grid
         container
         className={classes.gridRoot}
         alignItems="center"
-        spacing={16}
+        spacing={8}
       >
         <Grid item>
           <Checkbox
@@ -105,49 +102,6 @@ function SubjectItem(props) {
             }}
           />
         </Grid>
-        <Grid item>
-          <Grid container direction="column" justify="space-evenly">
-            {linkedin && (
-              <Tooltip title={linkedin.profileURL}>
-                <IconButton
-                  className={classes.iconButton}
-                  onClick={() => {
-                    copyToClipboard(linkedin.profileURL);
-                    setSnackbarContent(linkedin.profileURL);
-                  }}
-                >
-                  <LinkedInIcon className={classes.smallIcon} />
-                </IconButton>
-              </Tooltip>
-            )}
-            {email && (
-              <Tooltip title={email}>
-                <IconButton
-                  className={classes.iconButton}
-                  onClick={() => {
-                    copyToClipboard(email);
-                    setSnackbarContent(email);
-                  }}
-                >
-                  <MailIcon className={classes.smallIcon} />
-                </IconButton>
-              </Tooltip>
-            )}
-            {phoneNumber && (
-              <Tooltip title={phoneNumber}>
-                <IconButton
-                  className={classes.iconButton}
-                  onClick={() => {
-                    copyToClipboard(phoneNumber);
-                    setSnackbarContent(phoneNumber);
-                  }}
-                >
-                  <PhoneIcon className={classes.smallIcon} />
-                </IconButton>
-              </Tooltip>
-            )}
-          </Grid>
-        </Grid>
 
         <Grid item>
           <SuperAvatar data={data} />
@@ -156,22 +110,62 @@ function SubjectItem(props) {
         <Grid item xs={2}>
           <Grid container direction="column">
             <Typography variant="subtitle1">{name}</Typography>
-            {industry && <Typography variant="body2">{industry}</Typography>}
           </Grid>
         </Grid>
 
-        <Grid item xs>
-          <Grid container direction="column">
-            <Grid item xs={6}>
-              {tagChips}
-            </Grid>
-            {note ? (
-              <Grid item xs={6} style={{ paddingLeft: 12 }}>
-                <Typography variant="body2">Note: {note}</Typography>
-              </Grid>
-            ) : null}
-          </Grid>
+        <Grid item xs={1}>
+          {linkedin && (
+            <Tooltip title={linkedin.profileURL}>
+              <IconButton
+                className={classes.iconButton}
+                onClick={() => {
+                  copyToClipboard(linkedin.profileURL);
+                  setSnackbarContent(linkedin.profileURL);
+                }}
+              >
+                <LinkedInIcon className={classes.smallIcon} />
+              </IconButton>
+            </Tooltip>
+          )}
+          {email && (
+            <Tooltip title={email}>
+              <IconButton
+                className={classes.iconButton}
+                onClick={() => {
+                  copyToClipboard(email);
+                  setSnackbarContent(email);
+                }}
+              >
+                <MailIcon className={classes.smallIcon} />
+              </IconButton>
+            </Tooltip>
+          )}
+          {phoneNumber && (
+            <Tooltip title={phoneNumber}>
+              <IconButton
+                className={classes.iconButton}
+                onClick={() => {
+                  copyToClipboard(phoneNumber);
+                  setSnackbarContent(phoneNumber);
+                }}
+              >
+                <PhoneIcon className={classes.smallIcon} />
+              </IconButton>
+            </Tooltip>
+          )}
         </Grid>
+
+        {Array.isArray(touchedAssessments) && (
+          <Grid item xs={2}>
+            {touchedAssessments.length} assessments started
+          </Grid>
+        )}
+
+        {Array.isArray(touchedJobs) && (
+          <Grid item xs={2}>
+            {touchedJobs.length} job submissions
+          </Grid>
+        )}
       </Grid>
     </ListItem>
   );

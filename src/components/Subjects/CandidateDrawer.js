@@ -10,6 +10,7 @@ import Divider from '@material-ui/core/Divider';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 
 import ConversationIcon from '@material-ui/icons/MessageOutlined';
 import ReminderIcon from '@material-ui/icons/NotificationsOutlined';
@@ -18,6 +19,7 @@ import JobIcon from '@material-ui/icons/BusinessCenterOutlined';
 import EmailIcon from '@material-ui/icons/MailOutline';
 import PhoneIcon from '@material-ui/icons/PhoneOutlined';
 import DocIcon from '@material-ui/icons/DescriptionOutlined';
+import ExternalIcon from '@material-ui/icons/Launch';
 
 import SuperAvatar from '../SuperAvatar';
 import Notes from './Notes';
@@ -27,13 +29,9 @@ import ROUTES from '../../constants/routes';
 import useAnalytics from '../../hooks/useAnalytics';
 
 const styles = theme => ({
-  root: {
-    width: 320,
-  },
+  root: { width: 320 },
 
-  section: {
-    padding: theme.spacing.unit * 2,
-  },
+  section: { padding: theme.spacing.unit * 2 },
 
   icon: {
     marginRight: theme.spacing.unit,
@@ -45,8 +43,11 @@ const styles = theme => ({
   },
 
   avatar: { marginRight: theme.spacing.unit * 2 },
-  name: {
-    marginTop: theme.spacing.unit * 0.75,
+  name: { marginTop: theme.spacing.unit * 0.75 },
+
+  count: {
+    marginRight: -theme.spacing.unit * 0.75 + 1,
+    color: theme.palette.text.secondary,
   },
 });
 
@@ -101,10 +102,8 @@ function CandidateDrawer(props) {
   ];
   if (data.resume) {
     listItems.push({
-      label: 'view Resume',
-
+      label: 'View resume',
       Icon: DocIcon,
-
       onClick: () => window.open(data.resume.url || data.resume.downloadURL),
     });
   }
@@ -158,7 +157,8 @@ function CandidateDrawer(props) {
             <ListItemText
               primary={
                 <Grid container justify="space-between">
-                  <span>{x.label}</span> <span>{x.count}</span>
+                  <span>{x.label}</span>{' '}
+                  <span className={classes.count}>{x.count}</span>
                 </Grid>
               }
             />

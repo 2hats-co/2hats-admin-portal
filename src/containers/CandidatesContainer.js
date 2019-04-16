@@ -147,8 +147,21 @@ function CandidatesContainer(props) {
     [candidateDrawer]
   );
 
-  const [hits, setQuery, results, loadMore] = useAlgolia();
+  const parsedQuery = queryString.parse(location.search);
+
+  const [hits, setQuery, results, loadMore] = useAlgolia(parsedQuery.query);
   const subjects = hits;
+
+  // helper function to sync search query to URL params
+  const searchForQuery = query => {
+    setQuery(query);
+
+    const parsedQuery = queryString.parse(location.search);
+    if (query.trim().length > 0) parsedQuery.query = query;
+    else if ('query' in parsedQuery) delete parsedQuery.query;
+    const searchString = queryString.stringify(parsedQuery);
+    history.push(`${location.pathname}?${searchString}`);
+  };
 
   const [snackbarContent, setSnackbarContent] = useState('');
 
@@ -166,9 +179,11 @@ function CandidatesContainer(props) {
             ]}
           />
           <SubjectSearch
-            count={subjects && subjects.length}
             className={classes.searchBox}
-            setQuery={setQuery}
+            searchForQuery={searchForQuery}
+            location={location}
+            numDisplayedResults={hits && hits.length}
+            numResults={results && results.nbHits}
           />
         </Grid>
 
