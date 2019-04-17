@@ -163,7 +163,10 @@ function ContentManagerContainer(props) {
           action="create"
           actions={{
             create: data => {
-              createDoc(collection, { ...data, clientId: client.id });
+              createDoc(collection, {
+                ...data,
+                // clientId: client.id
+              });
               setShowDialog(false);
             },
             close: () => {
