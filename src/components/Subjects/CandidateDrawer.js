@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import withStyles from '@material-ui/core/styles/withStyles';
@@ -25,7 +25,7 @@ import Notes from './Notes';
 import { COLLECTIONS } from '@bit/sidney2hats.2hats.global.common-constants';
 import ROUTES from '../../constants/routes';
 import useAnalytics from '../../hooks/useAnalytics';
-
+import IntegrationReactSelect from '../IntegrationReactSelect';
 const styles = theme => ({
   root: {
     width: 320,
@@ -108,7 +108,7 @@ function CandidateDrawer(props) {
       onClick: () => window.open(data.resume.url || data.resume.downloadURL),
     });
   }
-
+  const [status, setStatus] = useState(data.status);
   return (
     <div className={classes.root}>
       <div className={classes.section}>
@@ -123,7 +123,15 @@ function CandidateDrawer(props) {
           </Grid>
         </Grid>
       </div>
-
+      <IntegrationReactSelect
+        changeHandler={v => {
+          setStatus(v);
+        }}
+        suggestions={[
+          { label: 'Placed', value: 'placed' },
+          { label: 'Failed interview', value: 'failed-interview' },
+        ]}
+      />
       <List>
         <ListItem>
           <ListItemIcon>

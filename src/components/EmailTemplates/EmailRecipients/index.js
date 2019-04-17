@@ -45,7 +45,8 @@ function EmailRecipientsContent(props) {
 
   const [recipientsState, recipientsDispatch] = useCollection({
     path: collectionPath,
-    sort: { field: 'createdAt', direction: 'desc' },
+    // sort: { field: 'createdAt', direction: 'desc' },
+    sort: { field: 'clicks', direction: 'desc' },
   });
   const recipients = recipientsState.documents;
 
