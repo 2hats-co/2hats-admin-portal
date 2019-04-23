@@ -21,7 +21,7 @@ import EventDialog from './EventDialog';
 import ReminderDialog from './ReminderDialog';
 import EmailWarning from './EmailWarning';
 import useKeyPress from '../../../hooks/useKeypress';
-
+import EmailSignature from './EmailSignature';
 import GooglePicker from '../../GooglePicker';
 import AdminSelector from '../../AdminSelector';
 
@@ -78,7 +78,6 @@ const atButton = handleSelect => (
     </Tooltip>
   </AdminSelector>
 );
-
 const styles = theme => ({
   actionsWrapper: {
     marginLeft: -theme.spacing.unit * 1.5,
@@ -165,6 +164,7 @@ const ComposerActions = React.memo(props => {
           setShowEventDialog(true);
         }),
         fileButton(actions.file, pickerToken, setPickerToken),
+        <EmailSignature setSignature={actions.signature} />,
       ];
       break;
     case 'linkedin':
@@ -212,7 +212,6 @@ const ComposerActions = React.memo(props => {
           </Grid>
         </Grid>
       </Grid>
-
       {/* <EmojiDialog
         showDialog={showEmojiDialog}
         setShowDialog={setShowEmojiDialog}

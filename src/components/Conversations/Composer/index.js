@@ -157,6 +157,7 @@ function Composer(props) {
   const [messageText, setMessageText] = useState('');
   const [messageHtml, setMessageHtml] = useState('');
   const [attachments, setAttachments] = useState([]);
+  const [signature, setSignature] = useState('');
   const [cc, setCc] = useState('');
   const [hasTemplate, setHasTemplate] = useState(false);
   const [notifyList, setNotifyList] = useState([]);
@@ -227,7 +228,7 @@ function Composer(props) {
   const handleSendEmail = () => {
     const email = {
       subject: emailSubject,
-      body: messageHtml,
+      body: messageHtml + signature,
     };
     const recipient = {
       email: conversation.channels.email,
@@ -473,6 +474,7 @@ function Composer(props) {
           addText,
           at: handleAt,
           file: handleFile,
+          signature: setSignature,
         }}
         composerType={composerType}
         conversation={conversation}
