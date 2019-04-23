@@ -6,7 +6,7 @@ import { withRouter } from 'react-router-dom';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 
-import CopyIcon from '@material-ui/icons/FileCopyOutlined';
+import CopyIdIcon from '@material-ui/icons/Code';
 import ApplicantsIcon from '@material-ui/icons/AssignmentIndOutlined';
 import EditIcon from '@material-ui/icons/EditOutlined';
 // import DeleteIcon from '@material-ui/icons/DeleteOutlined';
@@ -74,7 +74,7 @@ const EditOneCard = props => {
               copyToClipboard(data.id);
             }}
           >
-            <CopyIcon />
+            <CopyIdIcon />
           </IconButton>
         </Tooltip>
         <Tooltip title="Edit">
