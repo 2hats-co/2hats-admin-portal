@@ -12,18 +12,16 @@ function EmojiDialog(props) {
 
   return (
     <Dialog open={showDialog} onClose={handleNo}>
-      <DialogTitle>Are you sure you want to send this email?</DialogTitle>
-
-      <DialogContent>
-        <DialogContentText>Your email has no subject</DialogContentText>
-      </DialogContent>
+      <DialogTitle>
+        This email has no subject! Are you sure you want to send this email?
+      </DialogTitle>
 
       <DialogActions>
         <Button onClick={handleNo} color="primary">
           No, cancel
         </Button>
         <Button onClick={handleYes} color="primary" variant="contained">
-          Yes, send
+          Yes, send without subject
         </Button>
       </DialogActions>
     </Dialog>
