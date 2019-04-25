@@ -1,29 +1,29 @@
 import React, { useState } from 'react';
-
 import withStyles from '@material-ui/core/styles/withStyles';
 import { withRouter } from 'react-router-dom';
 
+import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 
-import CopyIdIcon from '@material-ui/icons/Code';
 import ApplicantsIcon from '@material-ui/icons/AssignmentIndOutlined';
 import EditIcon from '@material-ui/icons/EditOutlined';
-// import DeleteIcon from '@material-ui/icons/DeleteOutlined';
 import PublishedIcon from '@material-ui/icons/VisibilityOutlined';
-import UnpublishedIcon from '@material-ui/icons/VisibilityOffOutlined';
+import UnpublishedIcon from '@material-ui/icons/VisibilityOff';
 import CriteriaIcon from '@material-ui/icons/AssignmentOutlined';
 
 import Form from '../Form';
 import Friction from '../Friction';
 import CriteriaDialog from './CriteriaDialog';
+import DebugButton from '../DebugButton';
 
 import { updateDoc, deleteDoc } from '../../utilities/firestore';
-import { copyToClipboard } from '../../utilities';
-// import { assessment } from '../../constants/oneCardMappings';
 
 const styles = theme => ({
-  root: { marginTop: theme.spacing.unit },
+  root: {
+    marginTop: theme.spacing.unit,
+    width: 'auto',
+  },
 
   buttonBar: {
     marginBottom: -theme.spacing.unit,
@@ -38,8 +38,8 @@ const EditOneCard = props => {
   const [showCriteriaDialog, setShowCriteriaDialog] = useState(false);
 
   return (
-    <div className={classes.root}>
-      <div className={classes.buttonBar}>
+    <Grid container direction="column" className={classes.root}>
+      <Grid item className={classes.buttonBar}>
         {collection === 'assessments' && (
           <Tooltip title="Edit criteria">
             <IconButton
@@ -68,15 +68,8 @@ const EditOneCard = props => {
           </Tooltip>
         )}
 
-        <Tooltip title="Copy ID">
-          <IconButton
-            onClick={() => {
-              copyToClipboard(data.id);
-            }}
-          >
-            <CopyIdIcon />
-          </IconButton>
-        </Tooltip>
+        <DebugButton toCopy={data.id} title="Copy ID" />
+
         <Tooltip title="Edit">
           <IconButton
             onClick={() => {
@@ -101,27 +94,23 @@ const EditOneCard = props => {
               onClick={() => {
                 updateDoc(collection, data.id, { published: !data.published });
               }}
+              color={data.published ? 'default' : 'primary'}
             >
               {data.published ? <PublishedIcon /> : <UnpublishedIcon />}
             </IconButton>
           </Friction>
         </Tooltip>
-        {/* <Tooltip title="Delete">
-          <IconButton
-            onClick={() => {
-              deleteDoc(collection, data.id);
-            }}
-          >
-            <DeleteIcon />
-          </IconButton>
-        </Tooltip> */}
-      </div>
+      </Grid>
 
-      {children({
-        onClick: () => {
-          setShowForm(true);
-        },
-      })}
+      <Grid item xs>
+        {children({
+          onClick: () => {
+            setShowForm(true);
+          },
+          published: data.published,
+          fullHeight: true,
+        })}
+      </Grid>
 
       {showForm && (
         <Form
@@ -151,7 +140,7 @@ const EditOneCard = props => {
           data={data}
         />
       )}
-    </div>
+    </Grid>
   );
 };
 
