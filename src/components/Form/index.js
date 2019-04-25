@@ -56,6 +56,8 @@ export const styles = theme => ({
     },
   },
 
+  deleteButton: { marginRight: theme.spacing.unit },
+
   wrapperGrid: {
     overflowX: 'hidden',
     paddingBottom: theme.spacing.unit,
@@ -383,7 +385,7 @@ function Form(props) {
                       path={x.path}
                       mimeTypes={x.mimeTypes}
                       validator={validator}
-                      crop={x.crop}
+                      aspectRatio={x.aspectRatio}
                     />
                   );
 
@@ -458,24 +460,33 @@ function Form(props) {
                 className={isMobile ? classes.mobile : ''}
                 TransitionComponent={Transition}
               >
-                <DialogTitle
-                  className={classes.capitalise}
-                  classes={{ root: classes.dialogTitle }}
-                >
-                  {action} {formTitle}{' '}
-                  {handleDelete && (
-                    <Friction
-                      message={{
-                        title: `Are you sure you want to delete this?`,
-                        body: 'You won’t be able to recover it',
-                      }}
+                <Grid container justify="space-between" alignItems="center">
+                  <Grid item xs>
+                    <DialogTitle
+                      className={classes.capitalise}
+                      classes={{ root: classes.dialogTitle }}
                     >
-                      <IconButton onClick={handleDelete}>
-                        <DeleteIcon />
-                      </IconButton>
-                    </Friction>
+                      {action} {formTitle}
+                    </DialogTitle>
+                  </Grid>
+                  {handleDelete && (
+                    <Grid item>
+                      <Friction
+                        message={{
+                          title: `Are you sure you want to delete this?`,
+                          body: 'You won’t be able to recover it',
+                        }}
+                      >
+                        <IconButton
+                          onClick={handleDelete}
+                          className={classes.deleteButton}
+                        >
+                          <DeleteIcon />
+                        </IconButton>
+                      </Friction>
+                    </Grid>
                   )}
-                </DialogTitle>
+                </Grid>
 
                 <DialogContent classes={{ root: classes.dialogContent }}>
                   {formHeader}

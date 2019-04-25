@@ -134,7 +134,7 @@ const jobFields = initialData => {
       value: initialData['image'],
       mimeTypes: 'image/*',
       path: 'studentPortal',
-      crop: { aspect: 1, x: 0, y: 0, width: 320 },
+      aspectRatio: 1,
       // validation: yup.object().shape({
       //   name: yup.string().required(),
       //   url: yup

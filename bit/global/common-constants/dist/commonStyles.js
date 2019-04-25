@@ -119,6 +119,7 @@ var QUILL = (exports.QUILL = function QUILL(theme) {
   };
 });
 
+var DROPZONE_HEIGHT = (exports.DROPZONE_HEIGHT = 196);
 var DROPZONE = (exports.DROPZONE = function DROPZONE(theme) {
   return {
     dropzone: {
@@ -126,10 +127,14 @@ var DROPZONE = (exports.DROPZONE = function DROPZONE(theme) {
       borderColor: theme.palette.divider,
       borderStyle: 'dashed',
       borderWidth: theme.spacing.unit / 2,
+
       padding: theme.spacing.unit * 2,
       paddingBottom: theme.spacing.unit * 3,
+
+      height: DROPZONE_HEIGHT,
+      boxSizing: 'border-box',
+
       textAlign: 'center',
-      minHeight: theme.spacing.unit * 12,
       cursor: 'pointer',
       userSelect: 'none',
       outline: 'none',
@@ -167,18 +172,25 @@ var DROPZONE = (exports.DROPZONE = function DROPZONE(theme) {
     fileIcon: { transform: 'rotate(-45deg)' },
 
     previewWrapper: {
-      height: 172,
+      height: DROPZONE_HEIGHT,
       textAlign: 'center',
     },
-    previewImg: { height: 172 - 32 - theme.spacing.unit / 2 },
+    previewImg: { height: DROPZONE_HEIGHT - 32 - theme.spacing.unit / 2 },
     changeButton: {
       margin: '0 auto',
       marginTop: theme.spacing.unit / 2,
       display: 'flex',
     },
+    editButtonsWrapper: {
+      display: 'flex',
+      justifyContent: 'center',
+      '& > button': {
+        margin: theme.spacing.unit / 2,
+      },
+    },
 
     loadingWrapper: {
-      height: 172,
+      height: DROPZONE_HEIGHT,
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
