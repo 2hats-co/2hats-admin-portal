@@ -44,12 +44,14 @@ const jobFields = initialData => {
       value: initialData['skillsRequired'],
       mappings: {
         label: 'title',
-        value: doc => ({ title: doc.title, id: doc.id }),
+        value: doc => ({
+          title: doc.title,
+          id: doc.id,
+          toString: () => doc.id,
+        }),
       },
       collection: 'assessments',
       validation: yup.array(),
-      // .min(1)
-      // .required('Skills are required'),
     },
     {
       type: FIELDS.autocompleteFreeText,

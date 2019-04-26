@@ -244,7 +244,7 @@ function Form(props) {
           <Grid
             container
             direction="row"
-            spacing={8}
+            spacing={16}
             className={classes.wrapperGrid}
             alignContent="flex-start"
           >
