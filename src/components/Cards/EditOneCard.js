@@ -120,14 +120,8 @@ const EditOneCard = props => {
           action="edit"
           actions={{
             edit: d => {
-              console.log(d);
-
-              {
-                /* updateDoc(collection, data.id, d); */
-              }
-              {
-                /* setShowForm(false); */
-              }
+              updateDoc(collection, data.id, d);
+              setShowForm(false);
             },
             close: () => {
               setShowForm(false);
