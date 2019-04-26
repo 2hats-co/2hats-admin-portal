@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
-import PlacesAutocomplete, {
-  geocodeByAddress,
-  getLatLng,
-} from 'react-places-autocomplete';
+import PlacesAutocomplete from // getLatLng, // geocodeByAddress,
+'react-places-autocomplete';
 import IntegrationReactSelect from '../../IntegrationReactSelect';
 
 const LocationSearchInput = props => {
@@ -14,12 +12,12 @@ const LocationSearchInput = props => {
     setAddress(address);
   };
 
-  const handleSelect = address => {
-    geocodeByAddress(address)
-      .then(results => getLatLng(results[0]))
-      .then(latLng => console.log('Success', latLng))
-      .catch(error => console.error('Error', error));
-  };
+  // const handleSelect = address => {
+  //   geocodeByAddress(address)
+  //     .then(results => getLatLng(results[0]))
+  //     .then(latLng => console.log('Success', latLng))
+  //     .catch(error => console.error('Error', error));
+  // };
 
   const searchOptions = {
     location: { lat: () => -34, lng: () => 151 },

@@ -10,7 +10,6 @@ import Divider from '@material-ui/core/Divider';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 
 import ConversationIcon from '@material-ui/icons/MessageOutlined';
 import ReminderIcon from '@material-ui/icons/NotificationsOutlined';
@@ -19,7 +18,6 @@ import JobIcon from '@material-ui/icons/BusinessCenterOutlined';
 import EmailIcon from '@material-ui/icons/MailOutline';
 import PhoneIcon from '@material-ui/icons/PhoneOutlined';
 import DocIcon from '@material-ui/icons/DescriptionOutlined';
-import ExternalIcon from '@material-ui/icons/Launch';
 
 import SuperAvatar from '../SuperAvatar';
 import Notes from './Notes';
@@ -52,7 +50,11 @@ const styles = theme => ({
 });
 
 function CandidateDrawer(props) {
-  const { classes, history, data } = props;
+  const {
+    classes,
+    // history,
+    data,
+  } = props;
   const route = path => {
     window.open(path, '_blank');
     // history.push(path):

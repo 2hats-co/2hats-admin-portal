@@ -6,7 +6,6 @@ import Select from 'react-select';
 import CreatableSelect from 'react-select/lib/Creatable';
 
 import withStyles from '@material-ui/core/styles/withStyles';
-import Typography from '@material-ui/core/Typography';
 import NoSsr from '@material-ui/core/NoSsr';
 import TextField from '@material-ui/core/TextField';
 import Paper from '@material-ui/core/Paper';

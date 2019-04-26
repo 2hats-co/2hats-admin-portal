@@ -7,7 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
 // import Avatar from '@material-ui/core/Avatar';
-import Chip from '@material-ui/core/Chip';
+// import Chip from '@material-ui/core/Chip';
 import Checkbox from '@material-ui/core/Checkbox';
 
 import LinkedInIcon from '../../assets/icons/LinkedIn';
@@ -18,7 +18,7 @@ import AddIcon from '@material-ui/icons/AddCircleOutline';
 import RemoveIcon from '@material-ui/icons/RemoveCircle';
 
 import SuperAvatar from '../SuperAvatar';
-import { TAG_COLORS } from '../../constants/tags';
+// import { TAG_COLORS } from '../../constants/tags';
 import { copyToClipboard } from '../../utilities';
 
 const styles = theme => ({
