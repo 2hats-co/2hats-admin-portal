@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroller';
 
 import LinearProgress from '@material-ui/core/LinearProgress';
@@ -20,8 +20,8 @@ function AlgoliaScrollyRolly(props) {
     hits,
   } = props;
 
-  const [hasMore, setHasMore] = useState(true);
-  const [loading, setLoading] = useState(false);
+  const [hasMore] = useState(true);
+  const [loading] = useState(false);
   if (hits)
     return (
       <>

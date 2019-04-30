@@ -889,7 +889,9 @@
     to-fast-properties "^2.0.0"
 
 "@bit/sidney2hats.2hats.global.common-constants@file:./bit/global/common-constants":
-  version "0.0.46"
+  version "0.0.48"
+  dependencies:
+    "@material-ui/core" "3.8.3"
 
 "@date-io/core@^1.0.1":
   version "1.0.1"
@@ -1105,6 +1107,40 @@
   resolved "https://registry.yarnpkg.com/@icons/material/-/material-0.2.4.tgz#e90c9f71768b3736e76d7dd6783fc6c2afa88bc8"
   integrity sha512-QPcGmICAPbGLGb6F/yNf/KzKqvFx8z5qx3D1yFqVAjoFmXK35EgyW+cJ57Te3CNsmzblwtzakLGFqHPqrfb4Tw==
 
+"@material-ui/core@3.8.3":
+  version "3.8.3"
+  resolved "https://registry.yarnpkg.com/@material-ui/core/-/core-3.8.3.tgz#5173ceb114e781b01d239a02d851ff6ffbdbc0b0"
+  integrity sha512-jgWx5uwpo+mCj+Y6JdygFRji8ZHDYZdbylqCXvpK42c2n6m/jsr4Y5Y7RnlgllkIqftKFGNnik/rd1gTLaF+Ig==
+  dependencies:
+    "@babel/runtime" "^7.2.0"
+    "@material-ui/system" "^3.0.0-alpha.0"
+    "@material-ui/utils" "^3.0.0-alpha.2"
+    "@types/jss" "^9.5.6"
+    "@types/react-transition-group" "^2.0.8"
+    brcast "^3.0.1"
+    classnames "^2.2.5"
+    csstype "^2.5.2"
+    debounce "^1.1.0"
+    deepmerge "^3.0.0"
+    dom-helpers "^3.2.1"
+    hoist-non-react-statics "^3.2.1"
+    is-plain-object "^2.0.4"
+    jss "^9.8.7"
+    jss-camel-case "^6.0.0"
+    jss-default-unit "^8.0.2"
+    jss-global "^3.0.0"
+    jss-nested "^6.0.1"
+    jss-props-sort "^6.0.0"
+    jss-vendor-prefixer "^7.0.0"
+    keycode "^2.1.9"
+    normalize-scroll-left "^0.1.2"
+    popper.js "^1.14.1"
+    prop-types "^15.6.0"
+    react-event-listener "^0.6.2"
+    react-transition-group "^2.2.1"
+    recompose "0.28.0 - 0.30.0"
+    warning "^4.0.1"
+
 "@material-ui/core@^3.6.2":
   version "3.9.0"
   resolved "https://registry.yarnpkg.com/@material-ui/core/-/core-3.9.0.tgz#7e74cf1979ee65f9fd388145764b3e58f48da6c6"
@@ -1218,13 +1254,6 @@
   integrity sha512-IhW3fPW+bkt9MLNlycw8u8fWb7oO7W5URC9MfZYHBlA24rex9rs23D5DETChu1zvgVdc5ka64ICjJOgQMr6Shw==
   dependencies:
     parchment "^1.1.2"
-
-"@types/react-image-crop@^6.0.1":
-  version "6.0.2"
-  resolved "https://registry.yarnpkg.com/@types/react-image-crop/-/react-image-crop-6.0.2.tgz#3cac5d61ef4826ae10cc7c989176341cc9bf531b"
-  integrity sha512-jsLqP2jKRFiyCSHHI3xSJ+KYX8ieQXID0P+ZJLgoE9kzkZ6IUIIjMm1p6z4P0vJds3YuHvi1fMzDUUXSA9bCTg==
-  dependencies:
-    "@types/react" "*"
 
 "@types/react-text-mask@^5.4.3":
   version "5.4.3"
@@ -2916,6 +2945,11 @@ create-react-context@^0.2.2:
   dependencies:
     fbjs "^0.8.0"
     gud "^1.0.0"
+
+cropperjs@v1.0.0-rc.3:
+  version "1.0.0-rc.3"
+  resolved "https://registry.yarnpkg.com/cropperjs/-/cropperjs-1.0.0-rc.3.tgz#50a7c7611befc442702f845ede77d7df4572e82b"
+  integrity sha512-3w3Rg95zHeVSAidvsoCzkYo9IycuTkU7pdP+lckQg2PY72HnFjj4JtS1L4sPumVzOU++e14BYp20ZbVczvVN1Q==
 
 cross-spawn@5.1.0, cross-spawn@^5.0.1, cross-spawn@^5.1.0:
   version "5.1.0"
@@ -7962,7 +7996,7 @@ prop-types@15.x, prop-types@^15.5.10, prop-types@^15.5.4, prop-types@^15.5.6, pr
     loose-envify "^1.3.1"
     object-assign "^4.1.1"
 
-prop-types@>=15.5.8, prop-types@^15.6.2:
+prop-types@^15.6.2:
   version "15.7.2"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.7.2.tgz#52c41e75b8c87e72b9d9360e0206b99dcbffa6c5"
   integrity sha512-8QQikdH7//R2vurIJSutZ1smHYTcLpRWEOlHnzcWHmBYrOGUysKwSsrC89BCiFj3CbrfJ/nXFdJepOVrY1GCHQ==
@@ -8211,6 +8245,15 @@ react-color@^2.14.1:
     reactcss "^1.2.0"
     tinycolor2 "^1.4.1"
 
+react-cropper@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/react-cropper/-/react-cropper-1.2.0.tgz#f0e51adbf4bdc91b19d0c766e8b7d87d89057a47"
+  integrity sha512-Ubg7tb6eCfbOSpXx7G07uRD/GTy2H9gF1K1Dz7/Jo8kHux1uMiy8uy9DSuU6UxEDXGsedNDx1TibbjC23yPpTg==
+  dependencies:
+    babel-core "7.0.0-bridge.0"
+    cropperjs v1.0.0-rc.3
+    prop-types "^15.5.8"
+
 react-dev-utils@^5.0.2:
   version "5.0.3"
   resolved "https://registry.yarnpkg.com/react-dev-utils/-/react-dev-utils-5.0.3.tgz#92f97668f03deb09d7fa11ea288832a8c756e35e"
@@ -8317,14 +8360,6 @@ react-grid-layout@^0.16.6:
     prop-types "15.x"
     react-draggable "3.x"
     react-resizable "1.x"
-
-react-image-crop@^6.0.18:
-  version "6.0.18"
-  resolved "https://registry.yarnpkg.com/react-image-crop/-/react-image-crop-6.0.18.tgz#9c025233d22da18ffdd9504faa51556fb48de59d"
-  integrity sha512-YHmN0uYb6ifpW+naXnGZmcRLkg6bBIy0DyYFRA7onnxy2baM/U2xajConCNBIWdLePETQz55vfQK8Cfi1nqqPQ==
-  dependencies:
-    "@types/react-image-crop" "^6.0.1"
-    prop-types ">=15.5.8"
 
 react-infinite-scroller@^1.2.2:
   version "1.2.4"

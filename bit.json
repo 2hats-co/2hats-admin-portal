@@ -3,7 +3,7 @@
     "compiler": "bit.envs/compilers/react@0.0.14"
   },
   "dependencies": {
-    "sidney2hats.2hats/global/common-constants": "0.0.46"
+    "sidney2hats.2hats/global/common-constants": "0.0.48"
   },
   "componentsDefaultDirectory": "bit/{namespace}/{name}",
   "packageManager": "yarn"

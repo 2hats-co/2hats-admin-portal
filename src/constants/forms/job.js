@@ -44,12 +44,14 @@ const jobFields = initialData => {
       value: initialData['skillsRequired'],
       mappings: {
         label: 'title',
-        value: doc => ({ title: doc.title, id: doc.id }),
+        value: doc => ({
+          title: doc.title,
+          id: doc.id,
+          toString: () => doc.id,
+        }),
       },
       collection: 'assessments',
       validation: yup.array(),
-      // .min(1)
-      // .required('Skills are required'),
     },
     {
       type: FIELDS.autocompleteFreeText,
@@ -134,7 +136,7 @@ const jobFields = initialData => {
       value: initialData['image'],
       mimeTypes: 'image/*',
       path: 'studentPortal',
-      crop: { aspect: 1, x: 0, y: 0, width: 320 },
+      aspectRatio: 1,
       // validation: yup.object().shape({
       //   name: yup.string().required(),
       //   url: yup

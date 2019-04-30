@@ -44,6 +44,7 @@ const styles = theme => ({
       transitionDuration: '.2s',
     },
   },
+  fullHeight: { height: `calc(100% - ${CARD_PADDING}px)` },
   withVideo: {},
   // withBanner: {},
 
@@ -156,6 +157,8 @@ const styles = theme => ({
   primaryButton: {
     '&:hover': { backgroundColor: 'transparent' },
   },
+
+  unpublished: { opacity: 0.5 },
 });
 
 function OneCard(props) {
@@ -172,6 +175,8 @@ function OneCard(props) {
     video,
     gradient,
     history,
+    published,
+    fullHeight,
   } = props;
 
   let media;
@@ -201,7 +206,12 @@ function OneCard(props) {
   return (
     <Card
       classes={{
-        root: classNames(classes.root, video && classes.withVideo),
+        root: classNames(
+          classes.root,
+          video && classes.withVideo,
+          !published && classes.unpublished,
+          fullHeight && classes.fullHeight
+        ),
       }}
     >
       <CardActionArea

@@ -35,7 +35,7 @@ const DateTime = props => {
             showTodayButton
             className={classes.dateTimePicker}
             variant="filled"
-            margin="dense"
+            margin="none"
             fullWidth
             InputProps={{ disableUnderline: true }}
             error={!!(errors[name] && touched[name])}
@@ -55,7 +55,7 @@ const DateTime = props => {
             showTodayButton
             className={classes.dateTimePicker}
             variant="filled"
-            margin="dense"
+            margin="none"
             fullWidth
             InputProps={{ disableUnderline: true }}
             error={!!(errors[name] && touched[name])}

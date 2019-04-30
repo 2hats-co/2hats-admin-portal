@@ -81,16 +81,21 @@ export const QUILL = theme => ({
   },
 });
 
+export const DROPZONE_HEIGHT = 196;
 export const DROPZONE = theme => ({
   dropzone: {
     borderRadius: theme.shape.borderRadius,
     borderColor: theme.palette.divider,
     borderStyle: 'dashed',
     borderWidth: theme.spacing.unit / 2,
+
     padding: theme.spacing.unit * 2,
     paddingBottom: theme.spacing.unit * 3,
+
+    height: DROPZONE_HEIGHT,
+    boxSizing: 'border-box',
+
     textAlign: 'center',
-    minHeight: theme.spacing.unit * 12,
     cursor: 'pointer',
     userSelect: 'none',
     outline: 'none',
@@ -128,18 +133,25 @@ export const DROPZONE = theme => ({
   fileIcon: { transform: 'rotate(-45deg)' },
 
   previewWrapper: {
-    height: 172,
+    height: DROPZONE_HEIGHT,
     textAlign: 'center',
   },
-  previewImg: { height: 172 - 32 - theme.spacing.unit / 2 },
+  previewImg: { height: DROPZONE_HEIGHT - 32 - theme.spacing.unit / 2 },
   changeButton: {
     margin: '0 auto',
     marginTop: theme.spacing.unit / 2,
     display: 'flex',
   },
+  editButtonsWrapper: {
+    display: 'flex',
+    justifyContent: 'center',
+    '& > button': {
+      margin: theme.spacing.unit / 2,
+    },
+  },
 
   loadingWrapper: {
-    height: 172,
+    height: DROPZONE_HEIGHT,
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',

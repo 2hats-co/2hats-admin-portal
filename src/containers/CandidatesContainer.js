@@ -5,28 +5,15 @@ import { ROUTES } from '../constants/routes';
 
 import withStyles from '@material-ui/core/styles/withStyles';
 import Grid from '@material-ui/core/Grid';
-import TextField from '@material-ui/core/TextField';
 import Snackbar from '@material-ui/core/Snackbar';
-// import Tooltip from '@material-ui/core/Tooltip';
-// import IconButton from '@material-ui/core/IconButton';
-// import FilterIcon from '@material-ui/icons/FilterList';
-import Typography from '@material-ui/core/Typography';
 import Drawer from '@material-ui/core/Drawer';
 
 import LocationIndicator from '../components/LocationIndicator';
-// import AdminSelector from '../components/AdminSelector';
-// import Filter from '../components/Subjects/Filter';
 import ClientItem from '../components/Subjects/ClientItem';
 import SubjectItem from '../components/Subjects/SubjectItem';
-//import useCollection from '../hooks/useCollection';
 import useAlgolia from '../hooks/useAlgolia';
-import LoadingHat from '../components/LoadingHat';
-import { createDoc, updateDoc } from '../utilities/firestore';
 
 import AlgoliaScrollyRolly from '../components/AlgoliaScrollyRolly';
-import Form from '../components/Form';
-import clientFields from '../constants/forms/clients';
-import ClientDrawer from '../components/Subjects/ClientDrawer';
 import CandidateDrawer from '../components/Subjects/CandidateDrawer';
 import BottomSheet from '../components/Subjects/BottomSheet';
 import SubjectSearch from '../components/Subjects/SubjectSearch';
@@ -110,7 +97,6 @@ function CandidatesContainer(props) {
   const [hits, setQuery, results, loadMore, select, unselect] = useAlgolia(
     parsedQuery.query
   );
-  const subjects = hits;
 
   const handleSelect = data => {
     const index = selected.findIndex(x => x.objectID === data.objectID);

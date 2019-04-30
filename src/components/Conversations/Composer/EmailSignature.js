@@ -2,6 +2,8 @@ import React, { useContext } from 'react';
 import CurrentUserContext from '../../../contexts/CurrentUserContext';
 import Switch from '@material-ui/core/Switch';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
+import withStyles from '@material-ui/core/styles/withStyles';
+
 const signatureGenerator = (
   firstName,
   title,
@@ -39,10 +41,22 @@ e:&nbsp;<a href="mailto:${email}" style="color:rgb(17,85,204)" target="_blank"><
 </tr>
 </tbody>
 </table>`;
+
+const styles = theme => ({
+  root: { marginLeft: 0 },
+  formControlLabel: {
+    display: 'inline-block',
+    verticalAlign: 'middle',
+  },
+});
+
 const EmailSignature = props => {
+  const { classes, setSignature } = props;
+
   const currentUser = useContext(CurrentUserContext);
-  const { setSignature } = props;
+
   if (!currentUser) return <div />;
+
   const emailSignature = signatureGenerator(
     currentUser.givenName,
     currentUser.title,
@@ -53,12 +67,14 @@ const EmailSignature = props => {
     if (v) setSignature(emailSignature);
     else setSignature('');
   };
+
   return (
     <FormControlLabel
       control={<Switch onChange={handleChange} value="email" />}
-      label="Email Signature"
+      label="Email signature"
+      classes={{ root: classes.root, label: classes.formControlLabel }}
     />
   );
 };
 
-export default EmailSignature;
+export default withStyles(styles)(EmailSignature);

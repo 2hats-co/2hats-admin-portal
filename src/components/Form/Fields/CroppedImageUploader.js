@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import Dropzone from 'react-dropzone';
-import ReactCrop from 'react-image-crop';
-import 'react-image-crop/dist/ReactCrop.css';
+
+import Cropper from 'react-cropper';
+import 'cropperjs/dist/cropper.css';
 
 import withStyles from '@material-ui/core/styles/withStyles';
 import Grid from '@material-ui/core/Grid';
@@ -23,17 +24,24 @@ const styles = theme => ({
 });
 
 const CroppedImageUploader = props => {
-  const { label, name, mimeTypes, path, formikProps, classes } = props;
+  const {
+    label,
+    name,
+    mimeTypes,
+    path,
+    formikProps,
+    aspectRatio,
+    classes,
+  } = props;
   const { setValues, values, errors, touched } = formikProps;
 
   const [fileBlob, setFileBlob] = useState(null);
-  const [imageRef, setImageRef] = useState(null);
-  const [crop, setCrop] = useState(props.crop);
-  const [pixelCrop, setPixelCrop] = useState(null);
 
   const [showPreview, setShowPreview] = useState(
     values[name] ? !!values[name].url : false
   );
+
+  const cropperRef = useRef(null);
 
   const [uploadUrl, setUploadUrl] = useState(null);
   useEffect(
@@ -48,24 +56,14 @@ const CroppedImageUploader = props => {
     [uploadUrl]
   );
 
-  const finishCrop = async () => {
-    setShowPreview(true);
-    const canvas = document.createElement('canvas');
-    canvas.width = pixelCrop.width;
-    canvas.height = pixelCrop.height;
-    const ctx = canvas.getContext('2d');
+  const finishCrop = () => {
+    if (!cropperRef.current) console.error('Cropper ref is null');
 
-    ctx.drawImage(
-      imageRef,
-      pixelCrop.x,
-      pixelCrop.y,
-      pixelCrop.width,
-      pixelCrop.height,
-      0,
-      0,
-      pixelCrop.width,
-      pixelCrop.height
-    );
+    const canvas = cropperRef.current.getCroppedCanvas({
+      fillColor: '#fff',
+    });
+
+    setShowPreview(true);
 
     canvas.toBlob(blob => {
       if (!blob) {
@@ -78,6 +76,12 @@ const CroppedImageUploader = props => {
         setUploadUrl(url);
       });
     }, fileBlob.type);
+  };
+
+  const handleEditCrop = () => {
+    setFileBlob({ name: values[name].name, preview: values[name].url });
+    setShowPreview(false);
+    setValues({ ...values, [name]: { name: values[name].name } });
   };
 
   const dropZone = (
@@ -107,16 +111,14 @@ const CroppedImageUploader = props => {
 
   const cropper = fileBlob ? (
     <div className={classes.previewWrapper}>
-      <ReactCrop
+      <Cropper
+        ref={cropperRef}
         src={fileBlob.preview}
-        crop={crop}
-        onImageLoaded={image => setImageRef(image)}
-        onChange={(crop, pixelCrop) => {
-          setCrop(crop);
-          setPixelCrop(pixelCrop);
-        }}
-        keepSelection
+        aspectRatio={aspectRatio}
         className={classes.previewImg}
+        guides={true}
+        autoCropArea={1}
+        modal={false}
       />
       <Button
         onClick={finishCrop}
@@ -143,21 +145,26 @@ const CroppedImageUploader = props => {
           alt="If you read this text something’s gone wrong"
         />
       </a>
-      <Button
-        color="primary"
-        variant="outlined"
-        onClick={() => {
-          setValues({
-            ...values,
-            [name]: null,
-          });
-          setShowPreview(false);
-        }}
-        className={classes.changeButton}
-        size="small"
-      >
-        Change {label.toLowerCase()}
-      </Button>
+
+      <div className={classes.editButtonsWrapper}>
+        <Button
+          color="primary"
+          variant="outlined"
+          onClick={() => {
+            setValues({
+              ...values,
+              [name]: null,
+            });
+            setShowPreview(false);
+          }}
+          size="small"
+        >
+          Change {label.toLowerCase()}
+        </Button>
+        <Button variant="outlined" onClick={handleEditCrop} size="small">
+          Edit crop
+        </Button>
+      </div>
     </div>
   );
 
