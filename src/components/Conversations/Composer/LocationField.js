@@ -37,6 +37,7 @@ const LocationSearchInput = props => {
       {({ getInputProps, suggestions, getSuggestionItemProps, loading }) => {
         return (
           <IntegrationReactSelect
+            creatable
             inputProps={getInputProps({
               placeholder: 'Search Places ...',
               //className: 'location-search-input',
