@@ -6,9 +6,21 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import TextField from '@material-ui/core/TextField';
 
-const Friction = ({ children, message }) => {
+import withStyles from '@material-ui/core/styles/withStyles';
+
+const styles = theme => ({
+  dryWrapper: {
+    marginTop: theme.spacing.unit * 2,
+    userSelect: 'none',
+  },
+  dryField: { marginTop: theme.spacing.unit },
+});
+
+const Friction = ({ classes, children, message, dryCommand }) => {
   const [showDialog, setShowDialog] = useState(false);
+  const [dryText, setDryText] = useState('');
 
   const handleClose = () => {
     setShowDialog(false);
@@ -34,6 +46,26 @@ const Friction = ({ children, message }) => {
             {message.body && (
               <DialogContentText>{message.body}</DialogContentText>
             )}
+            {dryCommand && (
+              <div className={classes.dryWrapper}>
+                <DialogContentText>
+                  Type {dryCommand} below to continue:
+                </DialogContentText>
+                <TextField
+                  value={dryText}
+                  variant="filled"
+                  onChange={e => {
+                    setDryText(e.target.value);
+                  }}
+                  className={classes.dryField}
+                  InputProps={{ disableUnderline: true }}
+                  autoFocus
+                  margin="dense"
+                  label={dryCommand}
+                  fullWidth
+                />
+              </div>
+            )}
           </DialogContent>
         )}
         <DialogActions>
@@ -48,6 +80,7 @@ const Friction = ({ children, message }) => {
             color="primary"
             variant="contained"
             autoFocus
+            disabled={dryCommand ? dryText !== dryCommand : false}
           >
             {(message && message.confirm) || 'Confirm'}
           </Button>
@@ -57,4 +90,4 @@ const Friction = ({ children, message }) => {
   );
 };
 
-export default Friction;
+export default withStyles(styles)(Friction);

@@ -476,6 +476,7 @@ function Form(props) {
                   {handleDelete && (
                     <Grid item>
                       <Friction
+                        dryCommand="DELETE ME"
                         message={{
                           title: `Are you sure you want to delete this?`,
                           body: 'You won’t be able to recover it',
