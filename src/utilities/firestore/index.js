@@ -62,12 +62,21 @@ export const getfirstIdOfQuery = async (collectionPath, filters) => {
   }
 };
 
-export const createDoc = (collection, docData) =>
-  firestore.collection(collection).add({
+export const createDoc = (collection, docData, docId) => {
+  const doc = {
     ...docData,
     createdAt: firebase.firestore.FieldValue.serverTimestamp(),
     updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
-  });
+  };
+  if (docId) {
+    firestore
+      .collection(collection)
+      .doc(docId)
+      .set(doc);
+  } else {
+    firestore.collection(collection).add(doc);
+  }
+};
 export const addDoc = createDoc;
 export const deleteDoc = (collection, docId) =>
   firestore
