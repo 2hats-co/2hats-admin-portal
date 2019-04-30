@@ -1,16 +1,18 @@
 import React from 'react';
 import Form from '../../Form';
 import jobShortListFields from '../../../constants/forms/jobShortList';
-import { shortListCandidates } from '../../../';
+import { shortListCandidates } from '../../../utilities/candidates';
 const JobShortlist = props => {
   const { selected } = props;
-  const shortListCandidates = data => {};
+  const handleSubmit = data => {
+    shortListCandidates(data.jobId, selected);
+  };
   return (
     <Form
       justForm
       action="ShortList"
       actions={{
-        ShortList: shortListCandidates,
+        ShortList: handleSubmit,
       }}
       classes={
         {
