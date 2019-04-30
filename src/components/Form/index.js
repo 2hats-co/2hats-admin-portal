@@ -444,7 +444,11 @@ function Form(props) {
                 <Grid item xs>
                   {Fields}
                 </Grid>
-                <Grid item>{formFooter}</Grid>
+                <Grid item>
+                  {typeof formFooter === 'function'
+                    ? formFooter(values)
+                    : formFooter}
+                </Grid>
                 <Grid item>{PrimaryButton}</Grid>
               </Grid>
             ) : (

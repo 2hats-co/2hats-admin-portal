@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import withStyles from '@material-ui/core/styles/withStyles';
 import ListItem from '@material-ui/core/ListItem';
@@ -56,9 +56,8 @@ function SubjectItem(props) {
     setCandidateDrawer,
     setSnackbarContent,
     selectHandler,
+    unselectHandler,
   } = props;
-
-  // console.log('render');
 
   const name = data.displayName
     ? data.displayName
@@ -70,8 +69,8 @@ function SubjectItem(props) {
     // note,
     touchedAssessments,
     touchedJobs,
+    selected,
   } = data;
-
   return (
     <ListItem
       classes={{ root: classes.listItemRoot }}
@@ -91,14 +90,18 @@ function SubjectItem(props) {
         <Grid item>
           <Checkbox
             icon={<AddIcon />}
-            checked={false}
+            key={`${data.objectID}-uncontrolled`}
             checkedIcon={<RemoveIcon />}
             value={data.objectID}
             onClick={e => {
               e.stopPropagation();
             }}
             onChange={(e, v) => {
-              selectHandler(data);
+              if (v) {
+                selectHandler(data);
+              } else {
+                unselectHandler(data, false);
+              }
             }}
           />
         </Grid>

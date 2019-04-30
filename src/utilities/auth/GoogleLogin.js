@@ -1,13 +1,13 @@
-import React, { Component } from 'react'
-import PropTypes from 'prop-types'
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 class GoogleLogin extends Component {
   constructor(props) {
-    super(props)
-    this.signIn = this.signIn.bind(this)
-    this.enableButton = this.enableButton.bind(this)
+    super(props);
+    this.signIn = this.signIn.bind(this);
+    this.enableButton = this.enableButton.bind(this);
     this.state = {
-      disabled: true
-    }
+      disabled: true,
+    };
   }
   componentDidMount() {
     const {
@@ -25,21 +25,21 @@ class GoogleLogin extends Component {
       scope,
       accessType,
       responseType,
-      jsSrc
-    } = this.props
-    ;((d, s, id, cb) => {
-      const element = d.getElementsByTagName(s)[0]
-      const fjs = element
-      let js = element
-      js = d.createElement(s)
-      js.id = id
-      js.src = jsSrc
+      jsSrc,
+    } = this.props;
+    ((d, s, id, cb) => {
+      const element = d.getElementsByTagName(s)[0];
+      const fjs = element;
+      let js = element;
+      js = d.createElement(s);
+      js.id = id;
+      js.src = jsSrc;
       if (fjs && fjs.parentNode) {
-        fjs.parentNode.insertBefore(js, fjs)
+        fjs.parentNode.insertBefore(js, fjs);
       } else {
-        d.head.appendChild(js)
+        d.head.appendChild(js);
       }
-      js.onload = cb
+      js.onload = cb;
     })(document, 'script', 'google-login', () => {
       const params = {
         client_id: clientId,
@@ -51,84 +51,104 @@ class GoogleLogin extends Component {
         ux_mode: uxMode,
         redirect_uri: redirectUri,
         scope,
-        access_type: accessType
-      }
+        access_type: accessType,
+      };
 
       if (responseType === 'code') {
-        params.access_type = 'offline'
+        params.access_type = 'offline';
       }
 
       window.gapi.load('auth2', () => {
-        this.enableButton()
+        this.enableButton();
         if (!window.gapi.auth2.getAuthInstance()) {
           window.gapi.auth2.init(params).then(
             res => {
               if (isSignedIn && res.isSignedIn.get()) {
-                this.handleSigninSuccess(res.currentUser.get())
+                this.handleSigninSuccess(res.currentUser.get());
               }
             },
             err => onFailure(err)
-          )
+          );
         }
         if (autoLoad) {
-          this.signIn()
+          this.signIn();
         }
-      })
-    })
+      });
+    });
   }
   componentWillUnmount() {
-    this.enableButton = () => {}
+    this.enableButton = () => {};
   }
   enableButton() {
     this.setState({
-      disabled: false
-    })
+      disabled: false,
+    });
   }
   signIn(e) {
     if (e) {
-      e.preventDefault()
+      e.preventDefault();
     }
     if (!this.state.disabled) {
-      const auth2 = window.gapi.auth2.getAuthInstance()
-      const { onSuccess, onRequest, onFailure, prompt, responseType } = this.props
+      const auth2 = window.gapi.auth2.getAuthInstance();
+      const {
+        onSuccess,
+        onRequest,
+        onFailure,
+        prompt,
+        responseType,
+      } = this.props;
       const options = {
-        prompt
-      }
-      onRequest()
+        prompt,
+      };
+      onRequest();
       if (responseType === 'code') {
-        auth2.grantOfflineAccess(options).then(res => onSuccess(res), err => onFailure(err))
+        auth2
+          .grantOfflineAccess(options)
+          .then(res => onSuccess(res), err => onFailure(err));
       } else {
-        auth2.signIn(options).then(res => this.handleSigninSuccess(res), err => onFailure(err))
+        auth2
+          .signIn(options)
+          .then(res => this.handleSigninSuccess(res), err => onFailure(err));
       }
     }
   }
   handleSigninSuccess(res) {
-    const basicProfile = res.getBasicProfile()
-    const authResponse = res.getAuthResponse()
-    res.googleId = basicProfile.getId()
-    res.tokenObj = authResponse
-    res.tokenId = authResponse.id_token
-    res.accessToken = authResponse.access_token
+    const basicProfile = res.getBasicProfile();
+    const authResponse = res.getAuthResponse();
+    res.googleId = basicProfile.getId();
+    res.tokenObj = authResponse;
+    res.tokenId = authResponse.id_token;
+    res.accessToken = authResponse.access_token;
     res.profileObj = {
       googleId: basicProfile.getId(),
       imageUrl: basicProfile.getImageUrl(),
       email: basicProfile.getEmail(),
       name: basicProfile.getName(),
       givenName: basicProfile.getGivenName(),
-      familyName: basicProfile.getFamilyName()
-    }
-    this.props.onSuccess(res)
+      familyName: basicProfile.getFamilyName(),
+    };
+    this.props.onSuccess(res);
   }
 
   render() {
-    const { tag, type, style, className, disabledStyle, buttonText, children, render } = this.props
-    const disabled = this.state.disabled || this.props.disabled
+    const {
+      tag,
+      type,
+      style,
+      className,
+      disabledStyle,
+      buttonText,
+      children,
+      render,
+    } = this.props;
+    const disabled = this.state.disabled || this.props.disabled;
 
     if (render) {
-      return render({ onClick: this.signIn })
+      return render({ onClick: this.signIn });
     }
 
-    const initialStyle = { // ke: not using this button anymore
+    const initialStyle = {
+      // ke: not using this button anymore
       display: 'inline-block',
       background: '#d14836',
       color: '#fff',
@@ -139,24 +159,24 @@ class GoogleLogin extends Component {
       border: '1px solid transparent',
       fontSize: 16,
       fontWeight: 'bold',
-      fontFamily: 'Roboto'
-    }
+      fontFamily: 'Roboto',
+    };
     const styleProp = (() => {
       if (style) {
-        return style
+        return style;
       } else if (className && !style) {
-        return {}
+        return {};
       }
 
-      return initialStyle
-    })()
+      return initialStyle;
+    })();
     const defaultStyle = (() => {
       if (disabled) {
-        return Object.assign({}, styleProp, disabledStyle)
+        return Object.assign({}, styleProp, disabledStyle);
       }
 
-      return styleProp
-    })()
+      return styleProp;
+    })();
     const googleLoginButton = React.createElement(
       tag,
       {
@@ -164,12 +184,12 @@ class GoogleLogin extends Component {
         style: defaultStyle,
         type,
         disabled,
-        className
+        className,
       },
       children || buttonText
-    )
+    );
 
-    return googleLoginButton
+    return googleLoginButton;
   }
 }
 
@@ -200,8 +220,8 @@ GoogleLogin.propTypes = {
   responseType: PropTypes.string,
   type: PropTypes.string,
   accessType: PropTypes.string,
-  render: PropTypes.func
-}
+  render: PropTypes.func,
+};
 
 GoogleLogin.defaultProps = {
   type: 'button',
@@ -210,15 +230,16 @@ GoogleLogin.defaultProps = {
   scope: 'profile email',
   accessType: 'online',
   prompt: '',
-  cookiePolicy: 'single_host_origin',
+  //cookiePolicy: 'single_host_origin',
+  cookiePolicy: 'none',
   fetchBasicProfile: true,
   isSignedIn: false,
   uxMode: 'popup',
   disabledStyle: {
-    opacity: 0.6
+    opacity: 0.6,
   },
   onRequest: () => {},
-  jsSrc: 'https://apis.google.com/js/client:platform.js' // ke, dont change the api endpoint url
-}
+  jsSrc: 'https://apis.google.com/js/client:platform.js', // ke, dont change the api endpoint url
+};
 
-export default GoogleLogin
+export default GoogleLogin;

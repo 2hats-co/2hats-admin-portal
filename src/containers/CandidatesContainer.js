@@ -81,54 +81,12 @@ const styles = theme => ({
   },
 });
 
-// const CANIDIDATE_FILTERS = [];
-
-// const CLIENT_FILTERS = [
-//   {
-//     title: 'Assignee',
-//     type: 'admin',
-//   },
-
-//   {
-//     title: 'Industry',
-//     type: 'search',
-//     values: ['IT', 'HEALTH', 'MARKETING', 'CONSTRUCTION', 'ACCOUNTING'],
-//   },
-// ];
-
-// const assigneeFilter = (currentFilters, uid) => {
-//   let filters = currentFilters.filter(x => x.field !== 'assignee');
-//   filters.push({
-//     field: 'assignee',
-//     operator: '==',
-//     value: uid,
-//   });
-//   return filters;
-// };
-
 function CandidatesContainer(props) {
   const { classes, route, history, location } = props;
 
   const [candidateDrawer, setCandidateDrawer] = useState(null);
   const [showDrawer, setShowDrawer] = useState(false);
   const [selected, setSelected] = useState([]);
-
-  const handleSelect = data => {
-    const index = selected.findIndex(x => x.objectID === data.objectID);
-    // Add to array if not already in array
-    if (index === -1) setSelected([data, ...selected]);
-  };
-  const removeFromSelected = index => {
-    const newSelected = [...selected];
-    newSelected.splice(index, 1);
-    setSelected(newSelected);
-  };
-  // useEffect(
-  //   () => {
-  //     console.log(selected);
-  //   },
-  //   [selected]
-  // );
 
   useEffect(
     () => {
@@ -149,8 +107,27 @@ function CandidatesContainer(props) {
 
   const parsedQuery = queryString.parse(location.search);
 
-  const [hits, setQuery, results, loadMore] = useAlgolia(parsedQuery.query);
+  const [hits, setQuery, results, loadMore, select, unselect] = useAlgolia(
+    parsedQuery.query
+  );
   const subjects = hits;
+
+  const handleSelect = data => {
+    const index = selected.findIndex(x => x.objectID === data.objectID);
+    // Add to array if not already in array
+    if (index === -1) {
+      setSelected([data, ...selected]);
+      select(data.objectID);
+    }
+  };
+  const removeFromSelected = (data, shouldReload) => {
+    const newSelected = selected.filter(
+      item => item.objectID !== data.objectID
+    );
+    unselect(data.objectID, shouldReload);
+
+    setSelected(newSelected);
+  };
 
   // helper function to sync search query to URL params
   const searchForQuery = query => {
@@ -203,6 +180,7 @@ function CandidatesContainer(props) {
                   setCandidateDrawer={setCandidateDrawer}
                   setSnackbarContent={setSnackbarContent}
                   selectHandler={handleSelect}
+                  unselectHandler={removeFromSelected}
                 />
               );
             }}

@@ -4,8 +4,6 @@ import withStyles from '@material-ui/core/styles/withStyles';
 
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-import Snackbar from '@material-ui/core/Snackbar';
-import SnackbarContent from '@material-ui/core/SnackbarContent';
 
 import EmailIcon from '@material-ui/icons/EmailOutlined';
 import green from '@material-ui/core/colors/green';
@@ -52,14 +50,7 @@ const TemplatePreview = ({ template }) => {
 };
 
 const MultiEmail = props => {
-  const { classes, className, selected } = props;
-
-  const [showForm, setShowForm] = useState(false);
-  const [snackbar, setSnackbar] = useState({
-    show: false,
-    message: '',
-    variant: 'normal',
-  });
+  const { classes, selected, setSnackbar } = props;
 
   const sendEmail = data => {
     const targets = selected.map(x => x.objectID);
@@ -84,57 +75,25 @@ const MultiEmail = props => {
         });
       }
     );
-    setShowForm(false);
   };
 
   return (
     <>
-      <Button
-        className={className}
-        variant="contained"
-        disabled={selected.length === 0}
-        onClick={() => {
-          setShowForm(true);
-        }}
-      >
-        <EmailIcon />
-        Send email
-      </Button>
-
       <Form
+        justForm
         action="Send"
         actions={{
           Send: sendEmail,
-          close: () => {
-            setShowForm(false);
-          },
         }}
         classes={{
           dialogContent: classes.dialogContent,
           wrapperGrid: classes.wrapperGrid,
         }}
         data={subjectMultiEmailFields()}
-        open={showForm}
+        open={true}
         formFooter={values => <TemplatePreview template={values.templateId} />}
         formTitle="email"
       />
-
-      <Snackbar
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-        open={snackbar.show}
-        autoHideDuration={snackbar.variant === 'normal' ? null : 3000}
-        onClose={() => {
-          setSnackbar(false);
-        }}
-      >
-        <SnackbarContent
-          className={classNames(
-            classes.snackbar,
-            classes['snackbar-' + snackbar.variant]
-          )}
-          message={snackbar.message}
-        />
-      </Snackbar>
     </>
   );
 };
