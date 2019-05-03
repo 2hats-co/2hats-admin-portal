@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useMemo, useEffect, useContext } from 'react';
 
 import withStyles from '@material-ui/core/styles/withStyles';
 import Grid from '@material-ui/core/Grid';
@@ -119,14 +119,20 @@ function Composer(props) {
   const { classes, conversation, channels } = props;
 
   const adminsContext = useContext(AdminsContext);
+  const lastMessageType = conversation.lastMessage.type;
+  console.log(conversation, lastMessageType);
 
   const [composerType, setComposerType] = useState(
-    channels.email ? 'email' : 'linkedin'
+    lastMessageType ? lastMessageType : 'email'
   );
   useEffect(
     () => {
-      if (channels.email) setComposerType('email');
-      else if (channels.linkedin) setComposerType('linkedin');
+      if (lastMessageType === 'email' || lastMessageType === 'linkedin')
+        setComposerType(lastMessageType);
+      else {
+        if (channels.email) setComposerType('email');
+        else if (channels.linkedin) setComposerType('linkedin');
+      }
     },
     [channels]
   );
