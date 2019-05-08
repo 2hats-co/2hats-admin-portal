@@ -47,7 +47,6 @@ const courseFields = initialData => {
         value: doc => ({
           title: doc.title,
           id: doc.id,
-          toString: () => doc.id,
         }),
       },
       collection: 'assessments',
