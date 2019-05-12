@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { withRouter } from 'react-router-dom';
 
 import withStyles from '@material-ui/core/styles/withStyles';
@@ -35,6 +35,7 @@ import metadata from '../../metadata.json';
 import useAuthedUser from '../../hooks/useAuthedUser';
 import DebugContext from '../../contexts/DebugContext';
 import { AdminsProvider } from '../../contexts/AdminsContext';
+import CurrentUserContext from '../../contexts/CurrentUserContext';
 
 import withAuthentication from '../withAuthentication';
 const styles = theme => ({
@@ -146,7 +147,7 @@ export default function withNavigation(WrappedComponent) {
 
     const [showSearch, setShowSearch] = useState(false);
     const [showUserDialog, setShowUserDialog] = useState(false);
-    const currentUser = useAuthedUser();
+    const currentUser = useContext(CurrentUserContext);
 
     const goTo = route => {
       history.push(route);
