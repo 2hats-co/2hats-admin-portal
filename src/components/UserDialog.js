@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import classNames from 'classnames';
 
 import withStyles from '@material-ui/core/styles/withStyles';
@@ -67,6 +67,7 @@ const styles = theme => ({
   UID: {
     opacity: 0.67,
   },
+  logOutButton: { marginTop: theme.spacing.unit * 1.5 },
 
   borderedSection: {
     marginTop: theme.spacing.unit * 3,
@@ -103,13 +104,8 @@ const styles = theme => ({
     bottom: 0,
     left: 0,
   },
-  darkThemeSwitch: {
+  resetThemeButton: {
     marginLeft: theme.spacing.unit * 4,
-  },
-
-  themeButtons: {
-    marginTop: theme.spacing.unit,
-    textAlign: 'center',
   },
 
   snackbar: {
@@ -123,12 +119,8 @@ function UserDialog(props) {
 
   const [slideIn, setSlideIn] = useState(true);
   const [greeting] = useState(randomGreeting());
-  const [darkTheme, setDarkTheme] = useState(
-    (user.adminPortal && user.adminPortal.theme === 'dark') || false
-  );
-  const [themeColor, setThemeColor] = useState(
-    (user.adminPortal && user.adminPortal.themeColor) || ORANGE_COLOR
-  );
+  const [darkTheme, setDarkTheme] = useState(user.theme.type === 'dark');
+  const [themeColor, setThemeColor] = useState(user.theme.color);
   const [showColorPicker, setShowColorPicker] = useState(false);
   const [defaultRoute, setDefaultRoute] = useState(user.defaultRoute);
   const [snackbarMessage, setSnackbarMessage] = useState('');
@@ -142,6 +134,20 @@ function UserDialog(props) {
     }, 100);
   };
 
+  useEffect(
+    () => {
+      if (
+        darkTheme !== (user.theme.type === 'dark') ||
+        themeColor !== user.theme.color
+      )
+        user.setTheme({
+          type: darkTheme ? 'dark' : 'light',
+          color: themeColor,
+        });
+    },
+    [darkTheme, themeColor]
+  );
+
   const updateTheme = () => {
     updateDoc(COLLECTIONS.admins, user.UID, {
       adminPortal: {
@@ -149,10 +155,7 @@ function UserDialog(props) {
         theme: darkTheme ? 'dark' : 'light',
       },
     });
-    setSnackbarMessage('Saved theme! Reloading…');
-    setTimeout(() => {
-      window.location.reload();
-    }, 1000);
+    setSnackbarMessage('Saved theme');
   };
 
   const updateDefaultRoute = val => {
@@ -160,9 +163,11 @@ function UserDialog(props) {
     updateDoc(COLLECTIONS.admins, user.UID, { defaultRoute: val });
     setSnackbarMessage('Saved default route!');
   };
+
   const handleLogout = () => {
     auth.signOut();
   };
+
   return (
     <>
       <Modal open={showDialog} onClose={onClose} disableAutoFocus>
@@ -171,14 +176,25 @@ function UserDialog(props) {
             <Grid container direction="column" justify="center">
               <Grid item className={classes.header}>
                 <SuperAvatar data={user} className={classes.avatar} />
+
                 <Typography variant="h4" className={classes.greeting}>
                   {greeting}, {user.givenName}!
                 </Typography>
+
                 {debugContext.enabled && (
                   <Typography variant="body2" className={classes.UID}>
                     {user.UID}
                   </Typography>
                 )}
+
+                <Button
+                  onClick={handleLogout}
+                  color="primary"
+                  variant="contained"
+                  className={classes.logOutButton}
+                >
+                  Log out
+                </Button>
               </Grid>
 
               <Grid item className={classes.borderedSection}>
@@ -227,6 +243,19 @@ function UserDialog(props) {
 
               <Grid item className={classes.borderedSection}>
                 <Grid container alignItems="center" justify="center">
+                  <FormControlLabel
+                    control={
+                      <Switch
+                        checked={darkTheme}
+                        onChange={e => {
+                          setDarkTheme(e.target.checked);
+                        }}
+                        value="checkedDarkTheme"
+                      />
+                    }
+                    label="Dark theme"
+                  />
+
                   <IconButton
                     onClick={() => {
                       setShowColorPicker(!showColorPicker);
@@ -244,7 +273,7 @@ function UserDialog(props) {
                       setShowColorPicker(!showColorPicker);
                     }}
                   >
-                    Theme colour
+                    Colour
                   </Typography>
                   {showColorPicker ? (
                     <Fade in>
@@ -269,46 +298,17 @@ function UserDialog(props) {
                     </Fade>
                   ) : null}
 
-                  <FormControlLabel
-                    className={classes.darkThemeSwitch}
-                    control={
-                      <Switch
-                        checked={darkTheme}
-                        onChange={e => {
-                          setDarkTheme(e.target.checked);
-                        }}
-                        value="checkedDarkTheme"
-                      />
-                    }
-                    label="Dark theme"
-                  />
+                  <Button
+                    onClick={() => {
+                      setThemeColor(ORANGE_COLOR);
+                      setDarkTheme(false);
+                    }}
+                    color="primary"
+                    className={classes.resetThemeButton}
+                  >
+                    Reset
+                  </Button>
                 </Grid>
-              </Grid>
-
-              <Grid item className={classes.themeButtons}>
-                <Button onClick={handleLogout}>logout</Button>
-                <Button
-                  onClick={updateTheme}
-                  color="primary"
-                  variant="contained"
-                  disabled={
-                    user.adminPortal
-                      ? themeColor === user.adminPortal.themeColor &&
-                        darkTheme === (user.adminPortal.theme === 'dark')
-                      : false
-                  }
-                >
-                  Save and Reload
-                </Button>
-                <Button
-                  onClick={() => {
-                    setThemeColor(ORANGE_COLOR);
-                    setDarkTheme(false);
-                  }}
-                  color="primary"
-                >
-                  Reset
-                </Button>
               </Grid>
             </Grid>
           </Paper>

@@ -266,7 +266,7 @@ function generateTheme(theme, themeColor) {
       },
       MuiTab: {
         ...baseTheme.overrides.MuiTab,
-        selected: { color: `${primaryDarkText} !important` },
+        root: { '&$selected': { color: `${primaryDarkText} !important` } },
         textColorPrimary: { color: '#fff' },
       },
       MuiBackdrop: {
@@ -275,13 +275,13 @@ function generateTheme(theme, themeColor) {
         },
       },
       MuiFormLabel: {
-        focused: { color: `${primaryDarkText} !important` },
+        root: { $focused: { color: `${primaryDarkText} !important` } },
       },
       MuiCheckbox: {
-        checked: { color: `${primaryDarkText} !important` },
+        root: { $checked: { color: `${primaryDarkText} !important` } },
       },
       MuiSwitch: {
-        checked: { color: `${primaryDarkText} !important` },
+        root: { $checked: { color: `${primaryDarkText} !important` } },
       },
     },
   });
