@@ -3,6 +3,7 @@ export const COLLECTIONS = {
   shortList: 'shortList',
   users: 'users',
   candidates: 'candidates',
+  campaigns: 'campaigns',
   clients: 'clients',
   communications: 'communications',
   conversations: 'conversations',
