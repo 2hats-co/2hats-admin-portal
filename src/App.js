@@ -1,4 +1,4 @@
-import React, { Suspense, lazy } from 'react';
+import React, { useState, Suspense, lazy, useEffect } from 'react';
 import MuiThemeProvider from '@material-ui/core/styles/MuiThemeProvider';
 
 //routing
@@ -47,18 +47,32 @@ const EmailTemplatesManagerContainer = lazy(() =>
 );
 
 function App(props) {
+  const [theme, setTheme] = useState({ type: 'light', color: ORANGE_COLOR });
   const currentUser = useAuthedUser();
+
+  useEffect(
+    () => {
+      if (
+        currentUser &&
+        currentUser.adminPortal &&
+        (currentUser.adminPortal.theme !== theme.type ||
+          currentUser.adminPortal.themeColor !== theme.color)
+      ) {
+        console.log('update theme from currentUser');
+        setTheme({
+          type: currentUser.adminPortal.theme,
+          color: currentUser.adminPortal.themeColor,
+        });
+      }
+    },
+    [currentUser]
+  );
+
+  console.log('App render');
 
   if (currentUser && currentUser.isLoading) return <LoadingHat />;
 
-  const Theme = generateTheme(
-    (currentUser && currentUser.adminPortal && currentUser.adminPortal.theme) ||
-      'light',
-    (currentUser &&
-      currentUser.adminPortal &&
-      currentUser.adminPortal.themeColor) ||
-      ORANGE_COLOR
-  );
+  const Theme = generateTheme(theme.type, theme.color);
 
   if (
     currentUser &&
@@ -80,6 +94,8 @@ function App(props) {
       <CurrentUserContext.Provider
         value={{
           ...currentUser,
+          theme,
+          setTheme,
         }}
       >
         <Router>

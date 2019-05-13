@@ -163,6 +163,7 @@ function ContentManagerContainer(props) {
           action="create"
           actions={{
             create: data => {
+              console.log(data);
               createDoc(collection, {
                 ...data,
                 // clientId: client.id

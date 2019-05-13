@@ -35,8 +35,10 @@ function TemplateEditor(props) {
   useEffect(
     () => {
       if (editor.current) {
-        const loadedDesign = JSON.parse(template.design);
-        editor.current.loadDesign(loadedDesign);
+        if (template.design) {
+          const loadedDesign = JSON.parse(template.design);
+          editor.current.loadDesign(loadedDesign);
+        }
       }
     },
     [editor.current]

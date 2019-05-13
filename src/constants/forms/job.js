@@ -47,7 +47,6 @@ const jobFields = initialData => {
         value: doc => ({
           title: doc.title,
           id: doc.id,
-          toString: () => doc.id,
         }),
       },
       collection: 'assessments',
@@ -72,7 +71,7 @@ const jobFields = initialData => {
           ? moment.unix(initialData['closingDate'].seconds).toDate()
           : moment.unix(initialData['closingDate']).toDate()
         : moment()
-            .add(1, 'days')
+            .add(2, 'days')
             .toDate(),
       validation: yup
         .date()

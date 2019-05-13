@@ -242,6 +242,8 @@ function IntegrationReactSelect(props) {
     }),
   };
 
+  const getOptionValue = x => x.label + x.value.toString();
+
   if (creatable)
     return (
       <div className={classes.root}>
@@ -263,6 +265,7 @@ function IntegrationReactSelect(props) {
             }}
             value={value}
             isMulti={isMulti}
+            getOptionValue={getOptionValue}
           />
         </NoSsr>
       </div>
@@ -288,6 +291,7 @@ function IntegrationReactSelect(props) {
           }}
           value={value}
           isMulti={isMulti}
+          getOptionValue={getOptionValue}
         />
       </NoSsr>
     </div>

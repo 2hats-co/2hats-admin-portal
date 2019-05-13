@@ -80,7 +80,7 @@ function BlastList(props) {
           </Grid>
         </Grid>
       ) : (
-        <div style={{ overflowY: 'scroll' }}>
+        <div style={{ overflowY: 'scroll', height: '100%' }}>
           <ScrollyRolly
             classes={{ listLoader: classes.listLoader }}
             dataState={blastsState}
