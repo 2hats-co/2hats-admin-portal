@@ -71,7 +71,7 @@ function EmailCampaignCard(props) {
               <Grid item xs>
                 <Typography variant="h6">{campaign.label} </Typography>
                 <Typography variant="body2">
-                  emai: {campaign.email} - created&nbsp;
+                  email: {campaign.email} - created&nbsp;
                   {campaign.createdAt
                     ? moment.unix(campaign.createdAt.seconds).fromNow()
                     : 'at unknown time'}

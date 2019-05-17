@@ -109,7 +109,7 @@ function EmailTemplatesManagerContainer(props) {
 
       case ROUTES.emailCampaigns:
         if (campaignId) {
-          templateDoc.type = 'promotional';
+          templateDoc.type = 'campaign';
           templateDoc.campaignId = campaignId;
           const queryFilters = [
             { field: 'campaignId', operator: '==', value: campaignId },

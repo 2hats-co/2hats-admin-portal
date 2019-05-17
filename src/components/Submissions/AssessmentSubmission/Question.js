@@ -51,7 +51,7 @@ const styles = theme => ({
     },
   },
 });
-
+//TODO: seprate types into components
 const checkIdeoSmartLink = data => {
   console.log('Checking SmartLink…', data.smartLink);
 
@@ -156,13 +156,38 @@ const Question = props => {
       break;
 
     case 'mailchimp':
+      const emailBody = (
+        <div
+          id="capture"
+          className={classes.renderedHtmlOriginal}
+          dangerouslySetInnerHTML={{ __html: answer.body }}
+        />
+      );
       answerInput = (
         <>
           <Typography variant="h6">Answer</Typography>
-          <div
-            className={classes.renderedHtmlOriginal}
-            dangerouslySetInnerHTML={{ __html: answer.body }}
-          />
+          <Button
+            onClick={() => {
+              const fileName = 'edm';
+              const fileType = 'text/html';
+              const blob = new Blob([answer.body], { type: fileType });
+
+              var a = document.createElement('a');
+              a.download = fileName;
+              a.href = URL.createObjectURL(blob);
+              a.dataset.downloadurl = [fileType, a.download, a.href].join(':');
+              a.style.display = 'none';
+              document.body.appendChild(a);
+              a.click();
+              document.body.removeChild(a);
+              setTimeout(function() {
+                URL.revokeObjectURL(a.href);
+              }, 1500);
+            }}
+          >
+            Click to save
+          </Button>
+          {emailBody}
         </>
       );
       break;
