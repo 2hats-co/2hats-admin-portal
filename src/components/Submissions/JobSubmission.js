@@ -105,6 +105,8 @@ const JobSubmission = props => {
 
   const [showPDF, setShowPDF] = useState(false);
 
+  console.log('job data', data);
+
   return (
     <div className={classes.root}>
       <main className={classes.content}>
@@ -225,8 +227,8 @@ const JobSubmission = props => {
             <Grid item xs={4}>
               <Typography variant="body2">Can start in</Typography>
               <Typography variant="h6">
-                {data.submissionContent.startWeek} week
-                {data.submissionContent.startWeek !== 1 && 's'}
+                {data.submissionContent.startWeek.label ||
+                  data.submissionContent.startWeek + ' week(s)'}
               </Typography>
             </Grid>
 
