@@ -13,6 +13,9 @@ import { sendEmail } from '../../utilities/email/send';
 import useAuthedUser from '../../hooks/useAuthedUser';
 import useWindowSize from '../../hooks/useWindowSize';
 import { globalReplace, copyToClipboard } from '../../utilities';
+
+import { cloudFunction, CLOUD_FUNCTIONS } from '../../utilities/CloudFunctions';
+
 const basicTags = [
   { label: 'First name', value: '{{firstName}}' },
   { label: 'Last name', value: '{{lastName}}' },
@@ -59,21 +62,37 @@ function TemplateEditor(props) {
     });
   };
   const handleSendTest = () => {
-    editor.current.exportHtml(data => {
-      const { html } = data;
+    cloudFunction(
+      CLOUD_FUNCTIONS.EMAIL_TEMPLATE_SEND_TEST,
+      {
+        email: currentUser.email,
+        templateId: template.id,
+      },
+      e => {
+        console.log('success send test', e);
+      },
+      e => {
+        console.error('fail send test', e);
+      }
+    );
 
-      let emailSubject = template.subject;
-      let body = html;
-      replaceables.forEach(r => {
-        body = globalReplace(body, r.label, r.value);
-        emailSubject = globalReplace(emailSubject, r.label, r.value);
-      });
-      sendEmail({
-        email: { subject: emailSubject, body: body },
-        recipient: { UID: 'TESTUID', email: currentUser.email },
-        sender: { UID: currentUser.UID, email: template.senderEmail },
-      });
-    });
+    // editor.current.exportHtml(data => {
+
+    // const { html } = data;
+
+    // let emailSubject = template.subject;
+    // let body = html;
+    // replaceables.forEach(r => {
+    //   body = globalReplace(body, r.label, r.value);
+    //   emailSubject = globalReplace(emailSubject, r.label, r.value);
+    // });
+
+    // sendEmail({
+    //   email: { subject: emailSubject, body: body },
+    //   recipient: { UID: 'TESTUID', email: currentUser.email },
+    //   sender: { UID: currentUser.UID, email: template.senderEmail },
+    // });
+    // });
   };
   //console.log(emailTemplate(template));
   const clipboardButton = tag => {

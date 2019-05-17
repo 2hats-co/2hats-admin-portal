@@ -428,6 +428,7 @@ function Form(props) {
             type="submit"
             id="submit"
             classes={{ label: classes.capitalise }}
+            disabled={Object.keys(errors).length > 0}
           >
             {action[0].toUpperCase()}
             {action.substr(1)}

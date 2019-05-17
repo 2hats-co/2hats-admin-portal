@@ -16,8 +16,11 @@ import BlastPreview from './BlastPreview';
 
 import useAuthedUser from '../../../hooks/useAuthedUser';
 import useDocument from '../../../hooks/useDocument';
-import { createDoc, updateDoc } from '../../../utilities/firestore';
 import { unstable_useMediaQuery as useMediaQuery } from '@material-ui/core/useMediaQuery';
+import {
+  cloudFunction,
+  CLOUD_FUNCTIONS,
+} from '../../../utilities/CloudFunctions';
 
 import { COLLECTIONS } from '@bit/sidney2hats.2hats.global.common-constants';
 import { ROUTES } from '../../../constants/routes';
@@ -79,21 +82,44 @@ function EmailBlast(props) {
   };
 
   const createBlast = data => {
-    createDoc(COLLECTIONS.emailBlasts, {
-      ...data,
-      createdBy: currentUser.UID,
-      blasted: false,
-      willBlast: false,
-    });
-    closeForm();
+    cloudFunction(
+      CLOUD_FUNCTIONS.EMAIL_BLASTS_ACTIONS,
+      {
+        action: 'create',
+        args: {
+          ...data,
+          createdBy: currentUser.UID,
+        },
+      },
+      d => {
+        console.log('success', d);
+        closeForm();
+      },
+      f => {
+        console.error('fail', f);
+      }
+    );
   };
 
   const editBlast = data => {
-    updateDoc(COLLECTIONS.emailBlasts, selectedBlast.id, {
-      ...data,
-      createdBy: currentUser.UID,
-    });
-    closeForm();
+    cloudFunction(
+      CLOUD_FUNCTIONS.EMAIL_BLASTS_ACTIONS,
+      {
+        action: 'update',
+        blastId: selectedBlast.id,
+        args: {
+          ...data,
+          createdBy: currentUser.UID,
+        },
+      },
+      d => {
+        console.log('success', d);
+        closeForm();
+      },
+      f => {
+        console.error('fail', f);
+      }
+    );
   };
 
   useEffect(

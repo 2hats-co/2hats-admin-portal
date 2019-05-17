@@ -20,11 +20,13 @@ export const CLOUD_FUNCTIONS = {
   CREATE_SMART_LINK: 'callablesCreateSmartLink',
   CLIENT_WELCOME_EMAIL: 'callablesClientSendWelcomeEmail',
   CAMPAIGN_SEND_TARGETED_BY_ID: 'callablesCampaignSendTargetedById',
+  EMAIL_BLASTS_ACTIONS: 'callablesEmailBlastsActions',
+  EMAIL_TEMPLATE_SEND_TEST: 'callablesEmailTemplateSendTest',
 };
 
 export const cloudFunction = (name, input, success, fail) => {
   const callable = functions.httpsCallable(name);
-  callable(input)
+  callable(JSON.parse(JSON.stringify(input)))
     .then(result => {
       if (success) {
         success(result);

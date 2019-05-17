@@ -45,7 +45,7 @@ const styles = theme => ({
 function BlastList(props) {
   const { classes, setSelectedBlast, selectedBlast } = props;
 
-  const [blastsState, blastsDispatch] = useCollection({
+  const [blastsState, blastsDispatch, loadMore] = useCollection({
     path: COLLECTIONS.emailBlasts,
     sort: [{ field: 'blastsAt', direction: 'desc' }],
     filters: [],
@@ -85,6 +85,7 @@ function BlastList(props) {
             classes={{ listLoader: classes.listLoader }}
             dataState={blastsState}
             dataDispatch={blastsDispatch}
+            loadMore={loadMore}
             disablePadding
           >
             {data => (

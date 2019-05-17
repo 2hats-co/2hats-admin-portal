@@ -19,7 +19,10 @@ import EmailAnalytics from '../../EmailTemplates/EmailAnalytics';
 import EmailRecipients from '../../EmailTemplates/EmailRecipients';
 
 import useDocument from '../../../hooks/useDocument';
-import { updateDoc } from '../../../utilities/firestore';
+import {
+  cloudFunction,
+  CLOUD_FUNCTIONS,
+} from '../../../utilities/CloudFunctions';
 import { AdminsContext } from '../../../contexts/AdminsContext';
 
 import {
@@ -77,7 +80,19 @@ const BlastDetails = props => {
   );
 
   const blastHandler = () => {
-    updateDoc(COLLECTIONS.emailBlasts, data.id, { willBlast: !data.willBlast });
+    cloudFunction(
+      CLOUD_FUNCTIONS.EMAIL_BLASTS_ACTIONS,
+      {
+        action: data.willBlast ? 'pause' : 'unpause',
+        blastId: data.id,
+      },
+      d => {
+        console.log('success', d);
+      },
+      f => {
+        console.error('fail', f);
+      }
+    );
   };
 
   return (
