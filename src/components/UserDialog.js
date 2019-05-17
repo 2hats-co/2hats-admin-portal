@@ -104,9 +104,6 @@ const styles = theme => ({
     bottom: 0,
     left: 0,
   },
-  resetThemeButton: {
-    marginLeft: theme.spacing.unit * 4,
-  },
 
   snackbar: {
     marginLeft: theme.spacing.unit * 11.5,
@@ -134,28 +131,23 @@ function UserDialog(props) {
     }, 100);
   };
 
-  useEffect(
-    () => {
-      if (
-        darkTheme !== (user.theme.type === 'dark') ||
-        themeColor !== user.theme.color
-      )
-        user.setTheme({
-          type: darkTheme ? 'dark' : 'light',
-          color: themeColor,
-        });
-    },
-    [darkTheme, themeColor]
-  );
-
   const updateTheme = () => {
-    updateDoc(COLLECTIONS.admins, user.UID, {
-      adminPortal: {
-        themeColor,
-        theme: darkTheme ? 'dark' : 'light',
-      },
-    });
-    setSnackbarMessage('Saved theme');
+    if (
+      darkTheme !== (user.theme.type === 'dark') ||
+      themeColor !== user.theme.color
+    ) {
+      user.setTheme({
+        type: darkTheme ? 'dark' : 'light',
+        color: themeColor,
+      });
+      updateDoc(COLLECTIONS.admins, user.UID, {
+        adminPortal: {
+          themeColor,
+          theme: darkTheme ? 'dark' : 'light',
+        },
+      });
+      setSnackbarMessage('Saved theme');
+    }
   };
 
   const updateDefaultRoute = val => {
@@ -242,72 +234,86 @@ function UserDialog(props) {
               </Grid>
 
               <Grid item className={classes.borderedSection}>
-                <Grid container alignItems="center" justify="center">
-                  <FormControlLabel
-                    control={
-                      <Switch
-                        checked={darkTheme}
-                        onChange={e => {
-                          setDarkTheme(e.target.checked);
-                        }}
-                        value="checkedDarkTheme"
+                <Grid container justify="space-between" alignItems="center">
+                  <Grid item>
+                    <Grid container justify="space-between" alignItems="center">
+                      <FormControlLabel
+                        control={
+                          <Switch
+                            checked={darkTheme}
+                            onChange={e => {
+                              setDarkTheme(e.target.checked);
+                            }}
+                            value="checkedDarkTheme"
+                          />
+                        }
+                        label="Dark"
                       />
-                    }
-                    label="Dark theme"
-                  />
-
-                  <IconButton
-                    onClick={() => {
-                      setShowColorPicker(!showColorPicker);
-                    }}
-                  >
-                    <div
-                      className={classes.swatch}
-                      style={{ background: themeColor }}
-                    />
-                  </IconButton>
-                  <Typography
-                    variant="body2"
-                    style={{ cursor: 'pointer' }}
-                    onClick={() => {
-                      setShowColorPicker(!showColorPicker);
-                    }}
-                  >
-                    Colour
-                  </Typography>
-                  {showColorPicker ? (
-                    <Fade in>
-                      <div className={classes.popover}>
+                      <IconButton
+                        onClick={() => {
+                          setShowColorPicker(!showColorPicker);
+                        }}
+                      >
                         <div
-                          className={classes.cover}
-                          onClick={() => {
-                            setShowColorPicker(!showColorPicker);
-                          }}
+                          className={classes.swatch}
+                          style={{ background: themeColor }}
                         />
-                        <ChromePicker
-                          color={themeColor}
-                          onChange={val => {
-                            setThemeColor(
-                              `hsl(${Math.floor(val.hsl.h)}, ${Math.floor(
-                                val.hsl.s * 100
-                              )}%, ${Math.floor(val.hsl.l * 100)}%)`
-                            );
-                          }}
-                        />
-                      </div>
-                    </Fade>
-                  ) : null}
+                      </IconButton>
+                      <Typography
+                        variant="body2"
+                        style={{ cursor: 'pointer' }}
+                        onClick={() => {
+                          setShowColorPicker(!showColorPicker);
+                        }}
+                      >
+                        Colour
+                      </Typography>
+                      {showColorPicker ? (
+                        <Fade in>
+                          <div className={classes.popover}>
+                            <div
+                              className={classes.cover}
+                              onClick={() => {
+                                setShowColorPicker(!showColorPicker);
+                              }}
+                            />
+                            <ChromePicker
+                              color={themeColor}
+                              onChangeComplete={val => {
+                                setThemeColor(
+                                  `hsl(${Math.floor(val.hsl.h)}, ${Math.floor(
+                                    val.hsl.s * 100
+                                  )}%, ${Math.floor(val.hsl.l * 100)}%)`
+                                );
+                              }}
+                            />
+                          </div>
+                        </Fade>
+                      ) : null}
+                    </Grid>
+                  </Grid>
 
-                  <Button
-                    onClick={() => {
-                      setThemeColor(ORANGE_COLOR);
-                      setDarkTheme(false);
-                    }}
-                    color="primary"
-                    className={classes.resetThemeButton}
-                  >
-                    Reset
-                  </Button>
+                  <Grid>
+                    <Button
+                      onClick={() => {
+                        updateTheme();
+                      }}
+                      color="primary"
+                      variant="contained"
+                      className={classes.saveThemeButton}
+                    >
+                      Save
+                    </Button>
+                    <Button
+                      onClick={() => {
+                        setThemeColor(ORANGE_COLOR);
+                        setDarkTheme(false);
+                      }}
+                      color="primary"
+                    >
+                      Reset
+                    </Button>
+                  </Grid>
                 </Grid>
               </Grid>
             </Grid>
