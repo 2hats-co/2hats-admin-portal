@@ -61,6 +61,7 @@ const imageHandler = quillRef => () => {
         );
 
         fileInput.value = '';
+        document.body.removeChild(fileInput);
       }
     });
     document.body.appendChild(fileInput);
