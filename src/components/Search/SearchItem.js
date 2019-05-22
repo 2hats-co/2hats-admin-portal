@@ -11,12 +11,14 @@ import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 
-// import SubmissionIcon from '@material-ui/icons/DescriptionOutlined';
+import SubmissionIcon from '@material-ui/icons/AssignmentOutlined';
 import ConversationIcon from '@material-ui/icons/ChatOutlined';
 import ResumeIcon from '@material-ui/icons/AttachmentOutlined';
+import GoIcon from '@material-ui/icons/ArrowForward';
 
 import ConversationTypeIcon from '../Conversations/ConversationTypeIcon';
 import { flattenSearchHighlight } from '../../utilities/objects';
+import { ROUTES } from '../../constants/routes';
 // import groupBy from 'ramda/es/groupBy';
 // import map from 'ramda/es/map';
 
@@ -50,8 +52,29 @@ const styles = theme => ({
 // });
 // const removeField = x => x.map(i => i.value);
 
+const getSubmissionRoute = ({ objectID }) =>
+  `${ROUTES.submissions2}?uid=${objectID}`;
+const getConversationRoute = ({ conversationId, objectID }) =>
+  conversationId
+    ? `${ROUTES.conversations}?id=${conversationId}`
+    : `${ROUTES.conversations}?uid=${objectID}`;
+const getSubjectRoute = hit => {
+  const { type, objectID } = hit;
+
+  switch (type) {
+    case 'client':
+      return `${ROUTES.clients}?id=${objectID}`;
+
+    case 'candidate':
+      return `${ROUTES.candidates}?id=${objectID}`;
+
+    default:
+      break;
+  }
+};
+
 function SearchItem(props) {
-  const { classes, hit, handleRoutes } = props;
+  const { classes, hit } = props;
 
   const highlighted = flattenSearchHighlight(hit._snippetResult).map(x => {
     return (
@@ -87,7 +110,12 @@ function SearchItem(props) {
   //   map(removeField, byField(snippetKeyValuesPairs))
   // );
   return (
-    <ListItem className={classes.listItem}>
+    <ListItem
+      className={classes.listItem}
+      button
+      href={getSubjectRoute(hit)}
+      component="a"
+    >
       <ListItemIcon classes={{ root: classes.listIcon }}>
         <ConversationTypeIcon type={hit.type} />
       </ListItemIcon>
@@ -104,33 +132,29 @@ function SearchItem(props) {
         {hit.resume && (
           <Tooltip title="Resume">
             <IconButton
-              onClick={() => {
-                window.open(hit.resume.downloadURL || hit.resume.url, '_blank');
-              }}
+              href={hit.resume.downloadURL || hit.resume.url}
+              component="a"
             >
               <ResumeIcon style={{ transform: 'rotate(-45deg)' }} />
             </IconButton>
           </Tooltip>
         )}
 
-        {/* {hit.status !== 'incomplete' && (
-          <Tooltip title="Submission">
-            <IconButton
-              onClick={() => {
-                handleRoutes.submission(hit);
-              }}
-            >
-              <SubmissionIcon />
-            </IconButton>
-          </Tooltip>
-        )} */}
+        <Tooltip title="Submissions">
+          <IconButton href={getSubmissionRoute(hit)} component="a">
+            <SubmissionIcon />
+          </IconButton>
+        </Tooltip>
+
         <Tooltip title="Conversation">
-          <IconButton
-            onClick={() => {
-              handleRoutes.conversation(hit);
-            }}
-          >
+          <IconButton href={getConversationRoute(hit)} component="a">
             <ConversationIcon />
+          </IconButton>
+        </Tooltip>
+
+        <Tooltip title="View user">
+          <IconButton href={getSubjectRoute(hit)} component="a">
+            <GoIcon />
           </IconButton>
         </Tooltip>
       </ListItemSecondaryAction>

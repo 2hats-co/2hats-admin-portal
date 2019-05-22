@@ -59,7 +59,7 @@ function useAlgolia(initialQuery) {
       setHits(newHits);
     }
   };
-  return [hits, setQuery, results, loadMore, select, unselect];
+  return [hits, setQuery, results, loadMore, select, unselect, index];
 }
 
 export default useAlgolia;

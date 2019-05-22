@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import withStyles from '@material-ui/core/styles/withStyles';
-import { withRouter } from 'react-router-dom';
 import InfiniteScroll from 'react-infinite-scroller';
 
 import Paper from '@material-ui/core/Paper';
@@ -18,7 +17,6 @@ import SearchIcon from '@material-ui/icons/Search';
 import useWindowSize from '../../hooks/useWindowSize';
 import SearchItem from './SearchItem';
 import { useSearch } from '../../hooks/useSearch';
-import { ROUTES } from '../../constants/routes';
 // import { sleep } from '../../utilities';
 // import last from 'ramda/es/last';
 // import gloria from '../../assets/gloria.jpg';
@@ -120,7 +118,6 @@ const styles = theme => ({
 
 function Search(props) {
   const {
-    history,
     classes,
     showSearch,
     setShowSearch,
@@ -162,36 +159,10 @@ function Search(props) {
     }, 100);
   };
 
-  // const handleSubmissionRoute = hit => {
-  //   const { status, objectID } = hit;
-  //   if (
-  //     status !== 'pre-review' ||
-  //     status !== 'incomplete' ||
-  //     status !== 'complete'
-  //   ) {
-  //     history.push(`${ROUTES.submissions}?uid=${objectID}`);
-  //     handleClose();
-  //   }
-  // };
-  const handleConversationRoute = hit => {
-    const { conversationId, objectID } = hit;
-    if (conversationId)
-      history.push(`${ROUTES.conversations}?id=${conversationId}`);
-    else history.push(`${ROUTES.conversations}?uid=${objectID}`);
-    handleClose();
-  };
-
   let resultItems = [];
   if (results.hits && results.hits.length > 0) {
     resultItems = results.hits.map((hit, i) => (
-      <SearchItem
-        key={i}
-        hit={hit}
-        handleRoutes={{
-          //submission: handleSubmissionRoute,
-          conversation: handleConversationRoute,
-        }}
-      />
+      <SearchItem key={i} hit={hit} />
     ));
   }
 
@@ -263,4 +234,4 @@ function Search(props) {
     </Modal>
   );
 }
-export default withRouter(withStyles(styles)(Search));
+export default withStyles(styles)(Search);

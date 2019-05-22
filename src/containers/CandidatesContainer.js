@@ -18,6 +18,8 @@ import CandidateDrawer from '../components/Subjects/CandidateDrawer';
 import BottomSheet from '../components/Subjects/BottomSheet';
 import SubjectSearch from '../components/Subjects/SubjectSearch';
 
+import useDocument from '../hooks/useDocument';
+
 const styles = theme => ({
   wrapper: {
     height: '100vh',
@@ -74,11 +76,15 @@ function CandidatesContainer(props) {
   const [candidateDrawer, setCandidateDrawer] = useState(null);
   const [showDrawer, setShowDrawer] = useState(false);
   const [selected, setSelected] = useState([]);
+  const [documentState, documentDispatch] = useDocument();
 
   useEffect(
     () => {
       if (!!candidateDrawer) setShowDrawer(true);
-      else setShowDrawer(false);
+      else {
+        setShowDrawer(false);
+        return;
+      }
 
       const parsedQuery = queryString.parse(location.search);
       if (candidateDrawer && candidateDrawer.objectID)
@@ -92,11 +98,31 @@ function CandidatesContainer(props) {
     [candidateDrawer]
   );
 
-  const parsedQuery = queryString.parse(location.search);
+  useEffect(
+    () => {
+      const parsedQuery = queryString.parse(location.search);
 
-  const [hits, setQuery, results, loadMore, select, unselect] = useAlgolia(
-    parsedQuery.query
+      if (!parsedQuery.id) return;
+      if (candidateDrawer && candidateDrawer.id === parsedQuery.id) return;
+
+      (async () => {
+        const result = await alogliaIndex.getObject(parsedQuery.id);
+        setCandidateDrawer(result);
+      })();
+    },
+    [location.search]
   );
+
+  const parsedQuery = queryString.parse(location.search);
+  const [
+    hits,
+    setQuery,
+    results,
+    loadMore,
+    select,
+    unselect,
+    alogliaIndex,
+  ] = useAlgolia(parsedQuery.query);
 
   const handleSelect = data => {
     const index = selected.findIndex(x => x.objectID === data.objectID);
