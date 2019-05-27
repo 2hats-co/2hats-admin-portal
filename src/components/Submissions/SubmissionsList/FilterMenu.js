@@ -47,7 +47,8 @@ const FilterMenu = props => {
         title={
           selection ? (
             <>
-              Filtered by {title}:{' '}
+              Filtered by {title}
+              <br />
               <b>{items.filter(x => x.value === selection)[0].label}</b>
             </>
           ) : (

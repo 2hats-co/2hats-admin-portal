@@ -16,6 +16,8 @@ import JobIcon from '@material-ui/icons/BusinessCenterOutlined';
 import AssessmentIcon from '@material-ui/icons/AssignmentOutlined';
 import SkillIcon from '../../../assets/icons/SkillAchieved';
 import IndustryIcon from '@material-ui/icons/Business';
+import TimeIcon from '@material-ui/icons/AccessTime';
+import ArrowIcon from '@material-ui/icons/ArrowUpward';
 
 import FilterMenu from './FilterMenu';
 import DocsFilterMenu from './DocsFilterMenu';
@@ -45,13 +47,30 @@ const styles = theme => ({
     paddingLeft: theme.spacing.unit * 2,
     boxShadow: `0 -1px 0 ${theme.palette.divider} inset`,
   },
-  filterLabel: {
-    userSelect: 'none',
-    marginLeft: theme.spacing.unit,
-    marginRight: theme.spacing.unit,
-
-    fontWeight: 500,
+  timeSortButton: {
+    marginLeft: -theme.spacing.unit * 0.75,
+    '&::after': {
+      content: '""',
+      display: 'block',
+      width: 1,
+      height: 24,
+      background: theme.palette.divider,
+      position: 'relative',
+      right: -theme.spacing.unit,
+    },
+  },
+  timeDirectionIcon: {
+    transition: theme.transitions.create('transform', {
+      duration: theme.transitions.duration.shorter,
+    }),
     color: theme.palette.text.secondary,
+
+    fontSize: 18,
+    marginRight: '0 !important',
+    marginLeft: -theme.spacing.unit * 0.75,
+  },
+  resetFiltersButton: {
+    marginLeft: theme.spacing.unit * 0.75,
   },
 
   noConvs: {
@@ -102,7 +121,10 @@ const outcomeFilter = outcome => ({
 });
 const uidFilter = UID => ({ field: 'UID', operator: '==', value: UID });
 
-const orderBySubmissionTime = { field: 'createdAt', direction: 'asc' };
+const orderBySubmissionTime = desc => ({
+  field: 'createdAt',
+  direction: desc ? 'desc' : 'asc',
+});
 
 function SubmissionsList(props) {
   const {
@@ -123,12 +145,15 @@ function SubmissionsList(props) {
     uid: '',
   });
 
+  const [sortTimeDesc, setSortTimeDesc] = useState(false);
+
   const [submissionsState, submissionsDispatch, loadMore] = useCollection({
     path: COLLECTIONS.submissions,
-    sort: [orderBySubmissionTime],
+    sort: [orderBySubmissionTime(false)],
     filters: [outcomeFilter('pending')],
   });
   const submissions = submissionsState.documents;
+  console.log(submissions && submissions[0]);
 
   useEffect(
     () => {
@@ -149,6 +174,13 @@ function SubmissionsList(props) {
       submissionsDispatch({ filters });
     },
     [selectedFilters]
+  );
+
+  useEffect(
+    () => {
+      submissionsDispatch({ sort: [orderBySubmissionTime(sortTimeDesc)] });
+    },
+    [sortTimeDesc]
   );
 
   useEffect(
@@ -222,9 +254,32 @@ function SubmissionsList(props) {
 
       <Grid item className={classes.filterBar}>
         <Grid container alignItems="center">
-          <Typography variant="body2" className={classes.filterLabel}>
-            Filters:
-          </Typography>
+          <Tooltip
+            title={
+              <>
+                Sorted by time
+                <br />
+                <b>{sortTimeDesc ? 'Latest first' : 'Oldest first'}</b>
+              </>
+            }
+          >
+            <Button
+              aria-haspopup="true"
+              onClick={() => {
+                setSortTimeDesc(val => !val);
+              }}
+              className={classes.timeSortButton}
+            >
+              <TimeIcon />
+              <ArrowIcon
+                className={classes.timeDirectionIcon}
+                style={{
+                  transform: `rotate(${sortTimeDesc ? '180' : '0'}deg)`,
+                }}
+              />
+            </Button>
+          </Tooltip>
+
           {selectedFilters.uid ? (
             <Button
               onClick={() => {
@@ -232,8 +287,9 @@ function SubmissionsList(props) {
                 window.location.reload();
               }}
               color="primary"
+              className={classes.resetFiltersButton}
             >
-              Reset filters
+              View all users’ submissions
             </Button>
           ) : (
             <>

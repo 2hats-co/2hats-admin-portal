@@ -75,6 +75,7 @@ const useCollection = intialOverrides => {
       prevFilters: filters,
       prevLimit: limit,
       prevPath: collectionState.path,
+      prevSort: sort,
     });
     let query = firestore.collection(collectionState.path);
     if (filters) {
@@ -120,13 +121,15 @@ const useCollection = intialOverrides => {
         limit,
         prevPath,
         path,
+        prevSort,
         sort,
         unsubscribe,
       } = collectionState;
       if (
         !equals(prevFilters, filters) ||
         prevLimit !== limit ||
-        prevPath !== path
+        prevPath !== path ||
+        prevSort !== sort
       ) {
         if (path) getDocuments(filters, limit, sort);
       }
@@ -136,7 +139,12 @@ const useCollection = intialOverrides => {
         }
       };
     },
-    [collectionState.filters, collectionState.limit, collectionState.path]
+    [
+      collectionState.filters,
+      collectionState.limit,
+      collectionState.path,
+      collectionState.sort,
+    ]
   );
   const loadMore = additional => {
     if (collectionState.limit < CAP) {
