@@ -9,7 +9,6 @@ const emailTemplateFields = initialData => {
       name: 'clonedTemplateId',
       label: 'Template Base',
       collection: 'emailTemplates',
-      filters: [{ field: 'type', operator: '==', value: 'conversational' }],
       mappings: { label: 'label', value: 'id' },
       placeholder: 'Template Base',
       value: initialData['clonedTemplateId'],
