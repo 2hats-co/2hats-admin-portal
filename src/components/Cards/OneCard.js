@@ -177,6 +177,7 @@ function OneCard(props) {
     history,
     published,
     fullHeight,
+    onClick,
   } = props;
 
   let media;
@@ -217,9 +218,7 @@ function OneCard(props) {
       <CardActionArea
         id={title.replace(/\W/g, '')}
         component="div"
-        onClick={() => {
-          history.push(route);
-        }}
+        onClick={onClick}
         classes={{ root: classes.cardActionArea }}
         focusVisibleClassName={classes.focusVisible}
         disableRipple
