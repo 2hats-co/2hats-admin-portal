@@ -13,6 +13,7 @@ export const createTemplate = async templateObject => {
     keys,
     isAdminPortal: true,
     createdAt: new Date(),
+    duplicateAllowed: false,
   };
   console.log(TemplateDoc);
   return await firestore
@@ -31,6 +32,7 @@ export const setTemplateBase = async templateObject => {
     subject,
     keys,
     createdAt: new Date(),
+    duplicateAllowed: false,
   };
   return await firestore
     .collection(COLLECTIONS.emailTemplates)
@@ -49,6 +51,7 @@ export const newTemplate = async (campaignId, type) => {
     createdAt: new Date(),
     campaignId,
     design: JSON.stringify(design),
+    duplicateAllowed: false,
   };
   console.log(templateDoc);
   return await firestore
@@ -84,6 +87,7 @@ export const updateTemplate = async templateObject => {
     delay,
     senderEmail,
     updatedAt: new Date(),
+    duplicateAllowed: false,
   };
   return await firestore
     .collection(COLLECTIONS.emailTemplates)

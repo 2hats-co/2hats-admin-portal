@@ -57,6 +57,7 @@ function TemplateEditor(props) {
       updateDoc(COLLECTIONS.emailTemplates, template.id, {
         design: JSON.stringify(design),
         html,
+        duplicateAllowed: false,
       });
       setTemplate(null);
     });
