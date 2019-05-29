@@ -160,7 +160,6 @@ function EventDialog(props) {
     },
     [data.start.dateTime]
   );
-  console.log('currentUser', currentUser);
   const titleSuggestions =
     conversation.type === 'client'
       ? [

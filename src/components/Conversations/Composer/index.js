@@ -120,7 +120,7 @@ function Composer(props) {
 
   const adminsContext = useContext(AdminsContext);
   const lastMessageType = conversation.lastMessage.type;
-  console.log(conversation, lastMessageType);
+  // console.log(conversation, lastMessageType);
 
   const [composerType, setComposerType] = useState(
     lastMessageType ? lastMessageType : 'email'
