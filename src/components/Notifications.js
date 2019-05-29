@@ -58,6 +58,7 @@ const styles = theme => ({
     left: theme.spacing.unit * 9,
     overflowY: 'auto',
   },
+  tabs: { boxShadow: `0 -1px 0 ${theme.palette.divider} inset` },
   listItemRoot: { paddingRight: theme.spacing.unit * 7 },
   listItemTextRoot: { paddingRight: 0 },
   timestamp: {
@@ -196,13 +197,18 @@ function Notifications(props) {
         <Modal open={showDialog} onClose={handleClose} disableAutoFocus>
           <Slide in={slideIn} direction="up">
             <Paper elevation={24} classes={{ root: classes.paperRoot }}>
-              <AppBar position="static">
-                <Tabs value={tab} onChange={handleTab}>
-                  <Tab label="Reminders" value="reminder" />
-                  <Tab label="Messages" value="message" />
-                  <Tab label="Notes" value="note" />
-                </Tabs>
-              </AppBar>
+              <Tabs
+                value={tab}
+                onChange={handleTab}
+                indicatorColor="primary"
+                textColor="primary"
+                variant="fullWidth"
+                className={classes.tabs}
+              >
+                <Tab label="Reminders" value="reminder" />
+                <Tab label="Messages" value="message" />
+                <Tab label="Notes" value="note" />
+              </Tabs>
               <div className={classes.scrollyRollyWrapper}>
                 <ScrollyRolly
                   dataState={uniqueNotificationsState}

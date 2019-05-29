@@ -266,7 +266,10 @@ function generateTheme(theme, themeColor) {
       },
       MuiTab: {
         ...baseTheme.overrides.MuiTab,
-        root: { '&$selected': { color: `${primaryDarkText} !important` } },
+        root: {
+          ...baseTheme.overrides.MuiTab.root,
+          '&$selected': { color: `${primaryDarkText} !important` },
+        },
         textColorPrimary: { color: '#fff' },
       },
       MuiBackdrop: {

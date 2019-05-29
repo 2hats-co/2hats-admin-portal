@@ -165,6 +165,7 @@ function Search(props) {
       <SearchItem key={i} hit={hit} />
     ));
   }
+  console.log(results);
 
   return (
     <Modal open={showSearch} onClose={handleClose} disableAutoFocus>

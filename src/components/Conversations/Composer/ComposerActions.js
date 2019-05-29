@@ -164,7 +164,7 @@ const ComposerActions = React.memo(props => {
           setShowEventDialog(true);
         }),
         fileButton(actions.file, pickerToken, setPickerToken),
-        <EmailSignature setSignature={actions.signature} />,
+        <EmailSignature key="signature" setSignature={actions.signature} />,
       ];
       break;
     case 'linkedin':

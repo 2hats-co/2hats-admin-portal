@@ -285,7 +285,6 @@ const statusIndecator = status => {
 };
 function Message(props) {
   const { data, classes, firstOfType, lastOfType, editEvent } = props;
-  console.log(data);
   moment.updateLocale('en', momentLocales);
 
   const timestamp = moment(data.sentAt.seconds * 1000).format(
