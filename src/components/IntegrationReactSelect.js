@@ -31,7 +31,7 @@ const styles = theme => ({
     alignItems: 'center',
   },
   collapseInput: {
-    paddingTop: theme.spacing.unit * 0.75,
+    paddingTop: theme.spacing.unit * 1.25,
   },
   chip: {
     margin: `${theme.spacing.unit / 4}px !important`,

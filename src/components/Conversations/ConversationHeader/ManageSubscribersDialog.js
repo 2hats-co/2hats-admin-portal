@@ -97,7 +97,7 @@ function ManageSubscribersDialog(props) {
               subscribersUIDs.includes(x.id)
             );
             const notSubscribedAdmins = context.admins
-              .filter(x => !subscribersUIDs.includes(x.id))
+              .filter(x => !subscribersUIDs.includes(x.id) && !x.fired)
               .map(x => ({
                 label: `${x.givenName} ${x.familyName}`,
                 value: x.id,
