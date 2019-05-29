@@ -41,6 +41,7 @@ const styles = theme => ({
   icon: {
     marginRight: theme.spacing.unit,
     opacity: 0.67,
+    color: theme.palette.text.primary,
   },
 
   expansionPanel: { boxShadow: 'none' },
