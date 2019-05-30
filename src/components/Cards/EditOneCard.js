@@ -11,6 +11,7 @@ import EditIcon from '@material-ui/icons/EditOutlined';
 import PublishedIcon from '@material-ui/icons/VisibilityOutlined';
 import UnpublishedIcon from '@material-ui/icons/VisibilityOff';
 import CriteriaIcon from '@material-ui/icons/AssignmentOutlined';
+import PreviewIcon from '@material-ui/icons/PageviewOutlined';
 
 import Form from '../Form';
 import Friction from '../Friction';
@@ -36,6 +37,21 @@ const EditOneCard = props => {
 
   const [showForm, setShowForm] = useState(false);
   const [showCriteriaDialog, setShowCriteriaDialog] = useState(false);
+
+  let url = 'https://students.2hats.com/';
+  switch (collection) {
+    case 'courses':
+      url += 'courses';
+      break;
+
+    case 'assessments':
+    case 'jobs':
+      url += `${collection.slice(0, -1)}?id=${data.id}`;
+      break;
+
+    default:
+      break;
+  }
 
   return (
     <Grid container direction="column" className={classes.root}>
@@ -69,6 +85,19 @@ const EditOneCard = props => {
         )}
 
         <DebugButton toCopy={data.id} title="Copy ID" />
+
+        {url && (
+          <Tooltip title="View on Student Portal">
+            <IconButton
+              component="a"
+              href={url}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <PreviewIcon />
+            </IconButton>
+          </Tooltip>
+        )}
 
         <Tooltip title="Edit">
           <IconButton
