@@ -80,13 +80,11 @@ function CandidatesContainer(props) {
 
   useEffect(
     () => {
-      if (!!candidateDrawer) setShowDrawer(true);
-      else {
-        setShowDrawer(false);
-        return;
-      }
-
       const parsedQuery = queryString.parse(location.search);
+
+      if (!!candidateDrawer) setShowDrawer(true);
+      else setShowDrawer(false);
+
       if (candidateDrawer && candidateDrawer.objectID)
         parsedQuery.id = candidateDrawer.objectID;
       else if (parsedQuery.id) delete parsedQuery.id;
@@ -154,6 +152,13 @@ function CandidatesContainer(props) {
 
   const [snackbarContent, setSnackbarContent] = useState('');
 
+  const handleCloseDrawer = () => {
+    setShowDrawer(false);
+    setTimeout(() => {
+      setCandidateDrawer(null);
+    }, 333);
+  };
+
   return (
     <div className={classes.wrapper}>
       <Grid container direction="column" wrap="nowrap" className={classes.root}>
@@ -211,16 +216,7 @@ function CandidatesContainer(props) {
         }
       />
 
-      <Drawer
-        anchor="right"
-        open={showDrawer}
-        onClose={() => {
-          setShowDrawer(false);
-          setTimeout(() => {
-            setCandidateDrawer(null);
-          }, 333);
-        }}
-      >
+      <Drawer anchor="right" open={showDrawer} onClose={handleCloseDrawer}>
         {candidateDrawer && <CandidateDrawer data={candidateDrawer} />}
       </Drawer>
 
