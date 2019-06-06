@@ -176,6 +176,9 @@ const BlastDetails = props => {
         {' '}
         Note: Email blasts send 120 emails every 10 mins between 5pm-8pm daily.
       </Typography>
+      <Typography variant="body2">
+        Will duplicate and create a new template.
+      </Typography>
 
       <Grid container spacing={40}>
         <Grid item>
