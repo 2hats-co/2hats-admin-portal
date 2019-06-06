@@ -61,9 +61,11 @@ const MultiEmail = props => {
       o => {
         setSnackbar({
           show: true,
-          message: `${selected.length} email${
-            selected.length === 1 ? '' : 's'
-          } sent!`,
+          message: JSON.stringify(o),
+          //Emails changed to show which ones sent which ones didnt
+          // message: `${selected.length} email${
+          //   selected.length === 1 ? '' : 's'
+          // } sent!`,
           variant: 'success',
         });
       },
