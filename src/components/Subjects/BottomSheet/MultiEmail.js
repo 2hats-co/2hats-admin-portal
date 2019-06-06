@@ -70,7 +70,7 @@ const MultiEmail = props => {
       o => {
         setSnackbar({
           show: true,
-          message: 'ERROR: ' + o.code,
+          message: 'ERROR: ' + o.message,
           variant: 'error',
         });
       }
