@@ -5,15 +5,15 @@ import { functions } from '../store';
 function CallablesTestContainer(props) {
   const [response, setResponse] = useState('');
 
-  // useEffect(() => {
-  //   adminFetch('http://localhost:8000/protected', {
-  //     method: 'post',
-  //     body: JSON.stringify({ hello: 'sfaff' }),
-  //     headers: { 'Content-Type': 'application/json' },
-  //   })
-  //     .then(r => console.log(r))
-  //     .catch(r => console.log(r));
-  // }, []);
+  useEffect(() => {
+    adminFetch('http://localhost:8000/protected', {
+      method: 'post',
+      body: JSON.stringify({ hello: 'sfaff' }),
+      headers: { 'Content-Type': 'application/json' },
+    })
+      .then(r => console.log(r))
+      .catch(r => console.log(r));
+  }, []);
 
   //Prepare callable function
   // const emailBlastActions = functions.httpsCallable(

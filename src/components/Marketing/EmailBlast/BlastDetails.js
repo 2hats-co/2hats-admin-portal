@@ -163,6 +163,47 @@ const BlastDetails = props => {
         </Grid>
       </Grid>
 
+      {/** Sort of ugly divider here just to show Email Blast meta data - Victor */}
+      <Divider className={classes.divider} />
+      <Grid container>
+        <Grid item>
+          <Typography variant="h6" gutterBottom>
+            Details
+          </Typography>
+        </Grid>
+      </Grid>
+      <Typography variant="body2">
+        {' '}
+        Note: Email blasts send 120 emails every 10 mins between 5pm-8pm daily.
+      </Typography>
+
+      <Grid container spacing={40}>
+        <Grid item>
+          <Typography variant="h5">{`${(data && data.attempted) ||
+            0}`}</Typography>
+          <Typography variant="body2">Attempted</Typography>
+        </Grid>
+        <Grid item>
+          <Typography variant="h5">{`${(data && data.delivers) ||
+            0}`}</Typography>
+          <Typography variant="body2">Delivers</Typography>
+        </Grid>
+        <Grid item>
+          <Typography variant="h5">{`${(data && data.fails) || 0}`}</Typography>
+          <Typography variant="body2">Fails</Typography>
+        </Grid>
+        <Grid item>
+          <Typography variant="h5">{`${(data && data.opens) || 0}`}</Typography>
+          <Typography variant="body2">Opens</Typography>
+        </Grid>
+        <Grid item>
+          <Typography variant="h5">{`${(data && data.clicks) ||
+            0}`}</Typography>
+          <Typography variant="body2">Clicks</Typography>
+        </Grid>
+      </Grid>
+      {/** End here */}
+
       <Divider className={classes.divider} />
 
       <Grid container>
