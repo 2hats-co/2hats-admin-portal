@@ -87,7 +87,8 @@ const assessmentFields = initialData => {
       name: 'randomiseQuestionOrder',
       label: 'Randomise question order',
       value: initialData['randomiseQuestionOrder'],
-      displayCondition: values => values.questions.length > 0,
+      displayCondition: values =>
+        values.questions.length > 0 || values.randomiseQuestionOrder,
     },
     {
       type: FIELDS.slider,
@@ -104,7 +105,7 @@ const assessmentFields = initialData => {
           schema
             .min(1, 'Must show at least 1 question')
             .max(
-              questions.length,
+              questions.length > 0 ? questions.length : 1,
               `Cannot show more than the total number of questions (${
                 questions.length
               })`
