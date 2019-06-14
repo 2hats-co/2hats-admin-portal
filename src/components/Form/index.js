@@ -138,7 +138,9 @@ const reactSelectValueFormatter = x => {
 /* eslint-disable no-sequences */
 const initialValuesReducer = (obj, item) => (
   (obj[item.name] =
-    item.value || (item.type === FIELDS.slider ? item.min : '')),
+    item.value ||
+    (item.type === FIELDS.slider && item.min) ||
+    (item.type === FIELDS.checkbox ? false : '')) || '',
   obj
 );
 const validationReducer = (obj, item) => (
@@ -428,10 +430,11 @@ function Form(props) {
             type="submit"
             id="submit"
             classes={{ label: classes.capitalise }}
-            disabled={Object.keys(errors).length > 0}
           >
+            {Object.keys(errors).length > 0 && 'Can’t '}
             {action[0].toUpperCase()}
             {action.substr(1)}
+            {Object.keys(errors).length > 0 && ' – Fix Errors'}
           </Button>
         );
         return (

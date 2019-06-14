@@ -38,7 +38,9 @@ const assessmentFields = initialData => {
       type: FIELDS.richText,
       name: 'briefing',
       label: 'Briefing (BEFORE user clicks Get started)',
-      value: initialData['briefing'],
+      value:
+        initialData['briefing'] ||
+        initialData['companyDescription'] + initialData['jobDescription'],
       validation: yup.string().required('Required'),
     },
     {
@@ -81,29 +83,34 @@ const assessmentFields = initialData => {
         values.submissionType.value !== 'ideo',
     },
     {
+      type: FIELDS.checkbox,
+      name: 'randomiseQuestionOrder',
+      label: 'Randomise question order',
+      value: initialData['randomiseQuestionOrder'],
+      displayCondition: values => values.questions.length > 0,
+    },
+    {
       type: FIELDS.slider,
       name: 'questionsDisplayed',
       label: 'Questions displayed',
       value: initialData['questionsDisplayed'],
       units: 'questions',
-      min: 0,
+      min: 1,
       max: 20,
       step: 1,
-      validation: yup.number().when('questions', (questions, schema) => {
-        if (questions.length === 0)
-          return schema
-            .min(0, 'Must be 0 since there are no questions')
-            .max(0, 'Must be 0 since there are no questions');
-        return schema
-          .min(1, 'Must show at least 1 question')
-          .max(
-            questions.length,
-            `Cannot show more than the total number of questions (${
-              questions.length
-            })`
-          );
-      }),
-      displayCondition: values => values.questions.length > 0,
+      validation: yup
+        .number()
+        .when('questions', (questions, schema) =>
+          schema
+            .min(1, 'Must show at least 1 question')
+            .max(
+              questions.length,
+              `Cannot show more than the total number of questions (${
+                questions.length
+              })`
+            )
+        ),
+      displayCondition: values => values.randomiseQuestionOrder,
     },
     {
       type: FIELDS.dropzone,
