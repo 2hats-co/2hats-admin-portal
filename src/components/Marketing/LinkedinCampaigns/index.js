@@ -22,6 +22,16 @@ const runCampaign = id => {
     });
 };
 
+const rerunCampaign = id => {
+  firestore
+    .collection(COLLECTIONS.linkedinCampaigns)
+    .doc(id)
+    .update({
+      needsToRun: true,
+      startPage: 1,
+    });
+};
+
 const deleteCampaign = id => {
   firestore
     .collection(COLLECTIONS.linkedinCampaigns)
@@ -67,6 +77,7 @@ function LinkedinCampaigns(props) {
             key={i}
             actions={{
               run: runCampaign,
+              rerun: rerunCampaign,
               delete: deleteCampaign,
               edit: () => {
                 setCampaign(x);

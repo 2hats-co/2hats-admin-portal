@@ -11,7 +11,8 @@ import IconButton from '@material-ui/core/IconButton';
 
 import DeleteIcon from '@material-ui/icons/DeleteOutlined';
 import EditIcon from '@material-ui/icons/EditOutlined';
-import StartIcon from '@material-ui/icons/PlayCircleFilled';
+import StartIcon from '@material-ui/icons/PlayCircleOutline';
+import ReplayIcon from '@material-ui/icons/Replay';
 import InfoIcon from '@material-ui/icons/InfoOutlined';
 import ErrorIcon from '@material-ui/icons/Error';
 
@@ -50,24 +51,40 @@ function CampaignCard(props) {
 
   const [showDetailsDialog, setShowDetailsDialog] = useState(false);
 
+  let primaryButton = (
+    <Tooltip title="Run Campaign">
+      <IconButton
+        className={classes.runButton}
+        onClick={() => {
+          actions.run(data.id);
+        }}
+      >
+        <StartIcon fontSize="large" />
+      </IconButton>
+    </Tooltip>
+  );
+
+  if (data.startPage >= 100)
+    primaryButton = (
+      <Tooltip title="Re-run Campaign">
+        <IconButton
+          className={classes.runButton}
+          onClick={() => {
+            actions.rerun(data.id);
+          }}
+        >
+          <ReplayIcon fontSize="large" />
+        </IconButton>
+      </Tooltip>
+    );
+
   return (
     <>
       <Card classes={{ root: classes.root }} elevation={0}>
         <Grid container justify="space-between" alignItems="center">
           <Grid item xs={7}>
             <Grid container>
-              <Grid item>
-                <Tooltip title="Run Campaign">
-                  <IconButton
-                    className={classes.runButton}
-                    onClick={() => {
-                      actions.run(data.id);
-                    }}
-                  >
-                    <StartIcon fontSize="large" />
-                  </IconButton>
-                </Tooltip>
-              </Grid>
+              <Grid item>{primaryButton}</Grid>
               <Grid item xs>
                 <Typography variant="h6">
                   {data.query}
