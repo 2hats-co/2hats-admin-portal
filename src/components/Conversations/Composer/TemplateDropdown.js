@@ -6,6 +6,8 @@ import MenuItem from '@material-ui/core/MenuItem';
 import useCollection from '../../../hooks/useCollection';
 import { COLLECTIONS } from '../../../constants/firestore';
 
+const disabled = x => x.html && x.html.includes('<route>');
+
 const TemplateDropdown = props => {
   const { classes, setTemplate } = props;
 
@@ -42,8 +44,9 @@ const TemplateDropdown = props => {
       <MenuItem value={-1}>No template</MenuItem>
       {templates &&
         templates.map((x, i) => (
-          <MenuItem key={`${x}-${i}`} value={i}>
+          <MenuItem key={`${x}-${i}`} value={i} disabled={disabled(x)}>
             {x.label}
+            {disabled(x) && ' (DISABLED – contains invalid link)'}
           </MenuItem>
         ))}
     </TextField>

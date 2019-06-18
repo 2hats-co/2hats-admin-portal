@@ -436,19 +436,21 @@ function Composer(props) {
       )}
 
       <div className={classes.chipWrapper}>
-        {attachments.map((x, i) => (
-          <Chip
-            key={x.id}
-            label={x.name}
-            icon={<img src={x.iconUrl} alt={x.mimeType} />}
-            onDelete={() => {
-              const newAttachments = attachments;
-              newAttachments.splice(i, 1);
-              setAttachments(newAttachments);
-            }}
-            classes={{ icon: classes.chipIcon }}
-          />
-        ))}
+        {Array.isArray(attachments) &&
+          attachments.length > 0 &&
+          attachments.map((x, i) => (
+            <Chip
+              key={x.id}
+              label={x.name}
+              icon={<img src={x.iconUrl} alt={x.mimeType} />}
+              onDelete={() => {
+                const newAttachments = attachments;
+                newAttachments.splice(i, 1);
+                setAttachments(newAttachments);
+              }}
+              classes={{ icon: classes.chipIcon }}
+            />
+          ))}
       </div>
 
       {composerType === 'note' && (
