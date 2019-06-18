@@ -46,7 +46,7 @@ function useAlgolia(initialQuery) {
     [page]
   );
   const loadMore = () => {
-    if (results.nbPages > page) setPage(page + 1);
+    if (results.nbPages > page + 1 && results.page === page) setPage(page + 1);
   };
   const select = id => {
     setSelectedIds([...selectedIds, id]);
@@ -59,6 +59,7 @@ function useAlgolia(initialQuery) {
       setHits(newHits);
     }
   };
+
   return [hits, setQuery, results, loadMore, select, unselect, index];
 }
 
