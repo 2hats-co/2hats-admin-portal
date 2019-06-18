@@ -54,6 +54,14 @@ function TemplateEditor(props) {
   const handleSave = () => {
     editor.current.exportHtml(data => {
       const { design, html } = data;
+
+      // Warn user if template has broken smartlink
+      if (html.includes('<route>') && template.type === 'conversations') {
+        alert(
+          'WARNING: This template has a smart link to the student portal that will not work properly and will be DISABLED in the conversations email template chooser.'
+        );
+      }
+
       updateDoc(COLLECTIONS.emailTemplates, template.id, {
         design: JSON.stringify(design),
         html,
