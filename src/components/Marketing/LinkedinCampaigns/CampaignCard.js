@@ -4,6 +4,7 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import Card from '@material-ui/core/Card';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
+import Tooltip from '@material-ui/core/Tooltip';
 
 import moment from 'moment';
 import IconButton from '@material-ui/core/IconButton';
@@ -12,7 +13,7 @@ import DeleteIcon from '@material-ui/icons/DeleteOutlined';
 import EditIcon from '@material-ui/icons/EditOutlined';
 import StartIcon from '@material-ui/icons/PlayCircleFilled';
 import InfoIcon from '@material-ui/icons/InfoOutlined';
-import Tooltip from '@material-ui/core/Tooltip';
+import ErrorIcon from '@material-ui/icons/Error';
 
 import CampaignDetails from './CampaignDetails';
 
@@ -38,6 +39,10 @@ const styles = theme => ({
   },
   rightAligned: {
     textAlign: 'right',
+  },
+  errorIcon: {
+    verticalAlign: 'text-bottom',
+    marginRight: theme.spacing.unit / 2,
   },
 });
 function CampaignCard(props) {
@@ -67,7 +72,7 @@ function CampaignCard(props) {
                 <Typography variant="h6">
                   {data.query}
                   {data.needsToRun && (
-                    <span className={classes.live}>Live</span>
+                    <span className={classes.live}>Pending</span>
                   )}
                 </Typography>
                 <Typography variant="body2">
@@ -84,10 +89,32 @@ function CampaignCard(props) {
             <Typography variant="h6">{data.requestsCount}</Typography>
             <Typography variant="body2">Connection requests</Typography>
           </Grid>
-          <Grid item xs={1} className={classes.rightAligned}>
-            <Typography variant="h6">{data.startPage}</Typography>
-            <Typography variant="body2">Last page</Typography>
-          </Grid>
+          {data.startPage >= 100 ? (
+            <Tooltip
+              title={
+                <>
+                  This campaign has hit the LinkedIn search result limit. Please{' '}
+                  <b>re-run the campaign</b> and optionally modify the search
+                  term slightly.
+                </>
+              }
+            >
+              <Grid item xs={1} className={classes.rightAligned}>
+                <Typography variant="h6" color="error">
+                  <ErrorIcon color="error" className={classes.errorIcon} />
+                  {data.startPage}
+                </Typography>
+                <Typography variant="body2" color="error">
+                  Last page
+                </Typography>
+              </Grid>
+            </Tooltip>
+          ) : (
+            <Grid item xs={1} className={classes.rightAligned}>
+              <Typography variant="h6">{data.startPage}</Typography>
+              <Typography variant="body2">Last page</Typography>
+            </Grid>
+          )}
 
           <Grid item xs={2} className={classes.rightAligned}>
             <Tooltip title="Edit Campaign">
