@@ -58,7 +58,7 @@ const Slider = props => {
 
   let valueLabel = `${
     step < 0.999 ? values[name].toFixed(1) : values[name]
-  } ${units}`;
+  } ${units || ''}`;
   if (calcValueLabel) valueLabel = calcValueLabel(values[name]);
 
   return (
