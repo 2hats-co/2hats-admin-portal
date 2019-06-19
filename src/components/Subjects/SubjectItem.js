@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import moment from 'moment';
 
 import withStyles from '@material-ui/core/styles/withStyles';
 import ListItem from '@material-ui/core/ListItem';
@@ -22,6 +23,8 @@ import JobIcon from '@material-ui/icons/BusinessCenter';
 import SuperAvatar from '../SuperAvatar';
 // import { TAG_COLORS } from '../../constants/tags';
 import { flattenSearchHighlight } from '../../utilities/objects';
+
+import { MOMENT_LOCALES } from '@bit/sidney2hats.2hats.global.common-constants';
 
 const styles = theme => ({
   listItemRoot: {
@@ -75,7 +78,10 @@ function SubjectItem(props) {
     touchedJobs,
     // selected,
     _snippetResult,
+    updatedAt,
   } = data;
+
+  moment.updateLocale('en', MOMENT_LOCALES);
 
   const highlighted = flattenSearchHighlight(_snippetResult).map(x => {
     return (
@@ -137,6 +143,9 @@ function SubjectItem(props) {
         <Grid item xs={2}>
           <Grid container direction="column">
             <Typography variant="subtitle1">{name}</Typography>
+            <Typography variant="caption">
+              Last updated {moment.unix(updatedAt).fromNow()}
+            </Typography>
           </Grid>
         </Grid>
 
