@@ -218,7 +218,6 @@ export default function withNavigation(WrappedComponent) {
                       </Grid>
                       <Grid item>
                         <NavigationItems
-                          goTo={goTo}
                           currentLocation={path}
                           selectedIndex={index}
                           navigationRoutes={navigationRoutes}

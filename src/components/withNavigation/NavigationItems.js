@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import classNames from 'classnames';
 
 import withStyles from '@material-ui/core/styles/withStyles';
@@ -103,11 +104,10 @@ function NavigationItems(props) {
         <Tooltip title={x.label} placement="right" key={i}>
           <ListItem
             button
+            component={Link}
+            to={x.route}
             disableGutters
             key={x.route}
-            onClick={() => {
-              goTo(x.route);
-            }}
             className={classes.item}
             selected={selectedIndex === i}
             classes={{
