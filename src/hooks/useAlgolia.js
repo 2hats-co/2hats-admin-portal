@@ -32,6 +32,7 @@ function useAlgolia(initialQuery) {
     setResults(results);
     const newHits = setSelectedField(results.hits);
     setHits(newHits);
+    setPage(0);
   };
   useEffect(
     () => {
