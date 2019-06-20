@@ -19,6 +19,7 @@ const runCampaign = id => {
     .doc(id)
     .update({
       needsToRun: true,
+      isComplete: false,
     });
 };
 
@@ -28,6 +29,7 @@ const rerunCampaign = id => {
     .doc(id)
     .update({
       needsToRun: true,
+      isComplete: false,
       startPage: 1,
     });
 };
