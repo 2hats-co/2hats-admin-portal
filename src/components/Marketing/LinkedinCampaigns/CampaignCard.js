@@ -83,20 +83,37 @@ function CampaignCard(props) {
       <Card classes={{ root: classes.root }} elevation={0}>
         <Grid container justify="space-between" alignItems="center">
           <Grid item xs={7}>
-            <Grid container>
+            <Grid container alignItems="center">
               <Grid item>{primaryButton}</Grid>
               <Grid item xs>
-                <Typography variant="h6">
+                <Typography variant="subtitle1">
                   {data.query}
                   {data.needsToRun && (
                     <span className={classes.live}>Pending</span>
                   )}
                 </Typography>
+
                 <Typography variant="body2">
-                  {data.email} · created&nbsp;
+                  {data.lastConnection.createdAt ? (
+                    <>
+                      last connected&nbsp;
+                      <b>
+                        {moment
+                          .unix(data.lastConnection.createdAt.seconds)
+                          .fromNow()}
+                      </b>
+                    </>
+                  ) : (
+                    'not run before'
+                  )}
+                  &nbsp;· created&nbsp;
                   {data.createdAt
                     ? moment.unix(data.createdAt.seconds).fromNow()
                     : 'at unknown time'}
+                </Typography>
+
+                <Typography variant="body2" color="textSecondary">
+                  {data.message}
                 </Typography>
               </Grid>
             </Grid>

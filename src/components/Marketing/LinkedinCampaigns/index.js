@@ -20,6 +20,7 @@ const runCampaign = id => {
     .update({
       needsToRun: true,
       isComplete: false,
+      updatedAt: new Date(),
     });
 };
 
@@ -31,6 +32,7 @@ const rerunCampaign = id => {
       needsToRun: true,
       isComplete: false,
       startPage: 1,
+      updatedAt: new Date(),
     });
 };
 
