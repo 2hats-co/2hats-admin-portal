@@ -12,7 +12,6 @@ const emailTemplateFields = initialData => {
       collection: 'emailTemplates',
       placeholder: 'Template Base',
       value: initialData['clonedTemplateId'],
-      validation: true,
     },
     {
       type: FIELDS.textField,
@@ -42,7 +41,7 @@ const emailTemplateFields = initialData => {
       type: FIELDS.slider,
       name: 'delay',
       label: 'Delay',
-      value: initialData['delay'],
+      value: initialData['delay'] || 0,
       units: 'days',
       min: 0,
       max: 20,

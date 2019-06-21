@@ -69,12 +69,12 @@ export const createDoc = (collection, docData, docId) => {
     updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
   };
   if (docId) {
-    firestore
+    return firestore
       .collection(collection)
       .doc(docId)
       .set(doc);
   } else {
-    firestore.collection(collection).add(doc);
+    return firestore.collection(collection).add(doc);
   }
 };
 export const addDoc = createDoc;

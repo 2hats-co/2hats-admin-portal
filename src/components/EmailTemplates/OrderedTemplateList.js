@@ -1,16 +1,24 @@
 import React, { useEffect } from 'react';
 import { withRouter } from 'react-router-dom';
+
+import Grid from '@material-ui/core/Typography';
+import IconButton from '@material-ui/core/IconButton';
+import Typography from '@material-ui/core/Typography';
+
+import BackIcon from '@material-ui/icons/ArrowBack';
+
 import EmailTemplateCard from './EmailTemplateCard';
 import LoadingHat from '../LoadingHat';
-import useCollection from '../../hooks/useCollection';
+
+import useDocumentMulti from '../../hooks/useDocumentMulti';
+
 import { COLLECTIONS } from '../../constants/firestore';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import { updateDoc } from '../../utilities/firestore';
+import ROUTES from '../../constants/routes';
 
-import sortWith from 'ramda/es/sortWith';
-import ascend from 'ramda/es/ascend';
-import prop from 'ramda/es/prop';
 const grid = 1;
-const sortByIndex = sortWith([ascend(prop('index'))]);
+
 const getItemStyle = (isDragging, draggableStyle) => ({
   // some basic styles to make the items look a bit nicer
   userSelect: 'none',
@@ -31,79 +39,70 @@ const getListStyle = isDraggingOver => ({
 });
 
 function OrderedTemplateList(props) {
-  const { setTemplate, type, campaignId, editTemplate } = props;
-  let filters = [];
+  const { setTemplate, campaign, campaignId, editTemplate, history } = props;
 
-  const [templatesState, templatesDispatch] = useCollection({
+  // get all templates
+  const [templatesState, templatesDispatch] = useDocumentMulti({
     path: COLLECTIONS.emailTemplates,
-    filters,
-    sort: { field: 'index', direction: 'asc' },
   });
-  const onDragEnd = async result => {
-    // dropped outside the list
+  const templates = templatesState.docs;
 
-    if (result.destination.index !== result.source.index) {
-      //update index of moved element
-      templatesDispatch({
-        type: 'updateDoc',
-        id: result.draggableId,
-        data: { index: result.destination.index },
-      });
-      if (result.destination.index < result.source.index) {
-        // items effect have index < destination.index
-        const affectedTemplates = templatesState.documents.filter(
-          doc =>
-            doc.index < result.source.index &&
-            doc.index > result.destination.index - 1
-        );
-        affectedTemplates.forEach(doc => {
-          templatesDispatch({
-            type: 'updateDoc',
-            id: doc.id,
-            data: { index: doc.index + 1 },
-          });
+  useEffect(
+    () => {
+      // when campaign doc is received, get templates
+      if (campaign && campaign.templates && campaign.templates.length > 0)
+        templatesDispatch({
+          docIds: campaign.templates.map(x => x.templateId),
         });
-        console.log('affectedTemplates drag up', affectedTemplates);
-      } else {
-        const affectedTemplates = templatesState.documents.filter(
-          doc =>
-            doc.index > result.source.index &&
-            doc.index <= result.destination.index
-        );
-        affectedTemplates.forEach(doc => {
-          templatesDispatch({
-            type: 'updateDoc',
-            id: doc.id,
-            data: { index: doc.index - 1 },
-          });
-        });
-        console.log('affectedTemplates drag down', affectedTemplates);
-      }
-    }
+    },
+    [campaign]
+  );
+
+  if (!campaign) return <LoadingHat message="Loading campaign…" />;
+
+  const onDragEnd = async result => {
+    // Store new order here - initially gets all elems in the array that is
+    // not the elem to be moved
+    const newTemplateOrder = campaign.templates.filter(
+      x => x.templateId !== result.draggableId
+    );
+
+    // Then, store elem to be moved in correct position
+    const elemToMove = campaign.templates.filter(
+      x => x.templateId === result.draggableId
+    )[0];
+    newTemplateOrder.splice(result.destination.index, 0, elemToMove);
+
+    updateDoc(COLLECTIONS.campaigns, campaignId, {
+      templates: newTemplateOrder,
+    });
   };
-  useEffect(
-    () => {
-      if (type) {
-        filters = [{ field: 'type', operator: '==', value: type }];
-        templatesDispatch({ filters });
-      }
-    },
-    [type]
-  );
-  useEffect(
-    () => {
-      if (campaignId) {
-        filters = [{ field: 'campaignId', operator: '==', value: campaignId }];
-        templatesDispatch({ filters });
-      }
-    },
-    [campaignId]
-  );
-  let templates = templatesState.documents;
-  if (templates) {
-    templates = sortByIndex(templates);
-    console.log(templates);
-    return (
+
+  return (
+    <>
+      <Grid
+        container
+        spacing={16}
+        direction="row"
+        wrap="nowrap"
+        style={{ padding: 16 }}
+      >
+        <Grid item>
+          <IconButton
+            onClick={() => {
+              history.push(ROUTES.emailCampaigns);
+            }}
+            color="primary"
+          >
+            <BackIcon />
+          </IconButton>
+        </Grid>
+        <Grid item xs>
+          <Typography variant="subtitle2">Editing campaign</Typography>
+          <Typography variant="h5">{campaign.label}</Typography>
+        </Grid>
+      </Grid>
+
       <DragDropContext onDragEnd={onDragEnd}>
         <Droppable droppableId={campaignId}>
           {(provided, snapshot) => (
@@ -111,42 +110,53 @@ function OrderedTemplateList(props) {
               ref={provided.innerRef}
               style={getListStyle(snapshot.isDraggingOver)}
             >
-              {templates.map((item, index) => (
-                <Draggable key={item.id} draggableId={item.id} index={index}>
-                  {(provided, snapshot) => (
-                    <div
-                      ref={provided.innerRef}
-                      {...provided.draggableProps}
-                      {...provided.dragHandleProps}
-                      style={getItemStyle(
-                        snapshot.isDragging,
-                        provided.draggableProps.style
-                      )}
+              {campaign.templates &&
+                campaign.templates.map((item, index) => {
+                  const { templateId } = item;
+                  const templateDoc = templates[templateId];
+                  if (!templateDoc) return null;
+
+                  return (
+                    <Draggable
+                      key={templateId}
+                      draggableId={templateId}
+                      index={index}
                     >
-                      <EmailTemplateCard
-                        data={item}
-                        key={index}
-                        actions={{
-                          edit: () => {
-                            setTemplate(item);
-                            editTemplate(item);
-                          },
-                          editTemplate: () => {
-                            setTemplate(item);
-                          },
-                        }}
-                      />
-                    </div>
-                  )}
-                </Draggable>
-              ))}
+                      {(provided, snapshot) => (
+                        <div
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                          {...provided.dragHandleProps}
+                          style={getItemStyle(
+                            snapshot.isDragging,
+                            provided.draggableProps.style
+                          )}
+                        >
+                          <EmailTemplateCard
+                            data={{ ...templateDoc, delay: item.delay }}
+                            key={templateId}
+                            actions={{
+                              edit: () => {
+                                setTemplate(templateDoc);
+                                editTemplate(templateDoc);
+                              },
+                              editTemplate: () => {
+                                setTemplate(templateDoc);
+                              },
+                            }}
+                          />
+                        </div>
+                      )}
+                    </Draggable>
+                  );
+                })}
               {provided.placeholder}
             </div>
           )}
         </Droppable>
       </DragDropContext>
-    );
-  } else return <LoadingHat message="Loading templates…" />;
+    </>
+  );
 }
 
 export default withRouter(OrderedTemplateList);

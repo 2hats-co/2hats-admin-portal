@@ -21,7 +21,6 @@ const emailTemplateFields = initialData => {
       mappings: { label: 'label', value: 'id' },
       placeholder: 'Template Base',
       value: initialData['clonedTemplateId'],
-      validation: true,
     },
     {
       type: FIELDS.textField,
