@@ -126,14 +126,14 @@ function EmailTemplatesManagerContainer(props) {
         break;
     }
     if (!campaignId && path === ROUTES.emailCampaigns) {
-      createDoc(COLLECTIONS.emailCampaigns, data);
+      createDoc(COLLECTIONS.campaigns, data);
     } else {
       createDoc(COLLECTIONS.emailTemplates, templateDoc);
     }
   };
   const handleDelete = () => {
     if (!campaignId && path === ROUTES.emailCampaigns) {
-      deleteDoc(COLLECTIONS.emailCampaigns, campaign.id);
+      deleteDoc(COLLECTIONS.campaigns, campaign.id);
     } else {
       deleteDoc(COLLECTIONS.emailTemplates, template.id);
     }
@@ -143,7 +143,7 @@ function EmailTemplatesManagerContainer(props) {
   };
   const handleUpdate = data => {
     if (!campaignId && path === ROUTES.emailCampaigns) {
-      updateDoc(COLLECTIONS.emailCampaigns, campaign.id, data);
+      updateDoc(COLLECTIONS.campaigns, campaign.id, data);
     } else {
       updateDoc(COLLECTIONS.emailTemplates, template.id, data);
     }
