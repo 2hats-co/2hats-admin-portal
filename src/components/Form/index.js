@@ -212,6 +212,7 @@ function Form(props) {
           errors,
           touched,
         } = formikProps;
+
         if (hasNewData) {
           setValues({ ...values, ...initialValues });
           hasNewData = false;
