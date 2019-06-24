@@ -7,6 +7,7 @@ export const CLOUD_FUNCTIONS = {
   refreshAccessToken: 'callablesRefreshAccessToken',
   grantDrivePermissions: 'callablesDriveGrantPermissions',
   callablesSendTargeted: 'callablesCampaignSendTargeted',
+  smartLinkCreate: 'smartLinkCreate',
 };
 
 export const callable = (name, input, success, fail) => {
@@ -24,3 +25,6 @@ export const callable = (name, input, success, fail) => {
       }
     });
 };
+
+export const callCallable = (callable, data) =>
+  functions.httpsCallable(callable)(data);
