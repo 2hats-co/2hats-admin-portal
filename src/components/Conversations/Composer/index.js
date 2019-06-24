@@ -230,6 +230,7 @@ function Composer(props) {
 
       // added route logic here
       if (conversation.UID) {
+        const matchOperatorsRegex = /[|\\{}()[\]^$+*?.-]/g;
         const routePattern = /{{<route>.*?<route>}}/gm;
         const matches = html.match(routePattern) || [];
         const UID = conversation.UID;
@@ -237,7 +238,8 @@ function Composer(props) {
         matches
           .reduce(async (acc, match) => {
             const text = await acc;
-            const route = escaperegex(match)
+            const route = match
+              .replace(matchOperatorsRegex, '\\$&')
               .replace('{{', '')
               .replace('}}', '')
               .replace(/<route>/g, '')
