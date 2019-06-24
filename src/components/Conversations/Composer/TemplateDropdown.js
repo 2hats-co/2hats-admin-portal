@@ -6,10 +6,10 @@ import MenuItem from '@material-ui/core/MenuItem';
 import useCollection from '../../../hooks/useCollection';
 import { COLLECTIONS } from '../../../constants/firestore';
 
-const disabled = x => x.html && x.html.includes('<route>');
-
 const TemplateDropdown = props => {
-  const { classes, setTemplate } = props;
+  const { classes, setTemplate, UID } = props;
+
+  const disabled = x => !UID && x.html && x.html.includes('<route>');
 
   const [templatesState] = useCollection({
     path: COLLECTIONS.emailTemplates,
