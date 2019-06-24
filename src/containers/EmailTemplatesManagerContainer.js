@@ -226,13 +226,16 @@ function EmailTemplatesManagerContainer(props) {
             { label: 'transactional', value: ROUTES.transactionalEmails },
           ]}
         />
-
+        {/* Added a message here - Victor */}
+        {path === ROUTES.emailCampaigns &&
+          `Note: Start triggers can only be used once, dont add another campaign
+        with the same start trigger (it will just ignore it)`}
+        {/* End */}
         {template && !showForm ? (
           <TemplateEditor template={template} setTemplate={setTemplate} />
         ) : (
           renderList(path)
         )}
-
         {!template && (
           <Fab
             className={classes.fab}
@@ -246,7 +249,6 @@ function EmailTemplatesManagerContainer(props) {
             <AddIcon />
           </Fab>
         )}
-
         {fields && (
           <Form
             //justForm
