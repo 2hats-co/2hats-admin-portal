@@ -56,7 +56,7 @@ const MultiEmail = props => {
     const targets = selected.map(x => x.objectID);
     setSnackbar({ show: true, message: 'Sending…', variant: 'normal' });
     cloudFunction(
-      CLOUD_FUNCTIONS.CAMPAIGN_SEND_TARGETED_BY_ID,
+      CLOUD_FUNCTIONS.EMAIL_SEND_BY_ID,
       { targets, templateId: data.templateId },
       o => {
         setSnackbar({

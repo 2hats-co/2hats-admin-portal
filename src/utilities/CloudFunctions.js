@@ -19,7 +19,8 @@ export const CLOUD_FUNCTIONS = {
   WHATS_NEXT_AI: 'callablesWhatsNextAI',
   CREATE_SMART_LINK: 'callablesCreateSmartLink',
   CLIENT_WELCOME_EMAIL: 'callablesClientSendWelcomeEmail',
-  CAMPAIGN_SEND_TARGETED_BY_ID: 'callablesCampaignSendTargetedById',
+  CAMPAIGN_SEND_TARGETED_BY_ID: 'callablesCampaignSendTargetedById', //cloudfunctionsts code
+  EMAIL_SEND_BY_ID: 'emailSendById', //cloudfunctionsts2 code
   EMAIL_BLASTS_ACTIONS: 'callablesEmailBlastsActions',
   EMAIL_TEMPLATE_SEND_TEST: 'callablesEmailTemplateSendTest',
 };
