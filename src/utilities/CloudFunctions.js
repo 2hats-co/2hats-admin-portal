@@ -21,7 +21,7 @@ export const CLOUD_FUNCTIONS = {
   CLIENT_WELCOME_EMAIL: 'callablesClientSendWelcomeEmail',
   CAMPAIGN_SEND_TARGETED_BY_ID: 'callablesCampaignSendTargetedById', //cloudfunctionsts code
   EMAIL_SEND_BY_ID: 'emailSendById', //cloudfunctionsts2 code
-  EMAIL_BLASTS_ACTIONS: 'callablesEmailBlastsActions',
+  EMAIL_BLASTS_ACTIONS: 'emailBlastActions', //Changed from callablesEmailBlastActions to ts2 code
   EMAIL_TEMPLATE_SEND_TEST: 'callablesEmailTemplateSendTest',
 };
 
