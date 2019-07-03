@@ -15,21 +15,21 @@ import Tooltip from '@material-ui/core/Tooltip';
 import useAnalytics from '../../hooks/useAnalytics';
 const campaginSubscriptions = id => ({
   filters: [{ property: 'campaignId', operation: '==', value: id }],
-  collection: 'campaignSubscriptions',
+  collection: 'emailSubscriptions',
 });
 const campaginCompleted = id => ({
   filters: [
     { property: 'campaignId', operation: '==', value: id },
-    { property: 'isFinished', operation: '==', value: true },
+    { property: 'finished', operation: '==', value: true },
   ],
-  collection: 'campaignSubscriptions',
+  collection: 'emailSubscriptions',
 });
 const campaginConverted = id => ({
   filters: [
     { property: 'campaignId', operation: '==', value: id },
-    { property: 'isPaused', operation: '==', value: true },
+    { property: 'converted', operation: '==', value: true },
   ],
-  collection: 'campaignSubscriptions',
+  collection: 'emailSubscriptions',
 });
 const styles = theme => ({
   root: {

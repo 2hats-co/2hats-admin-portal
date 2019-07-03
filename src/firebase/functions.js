@@ -2,7 +2,8 @@ import { functions } from '../store';
 
 export const CLOUD_FUNCTIONS = {
   tracker: 'callablesEventTracker',
-  stats: 'callablesCachedStats',
+  // stats: 'callablesCachedStats', //Old function
+  stats: 'cachedStats', //ts2 function
   auth: 'callablesAuthAdmin',
   refreshAccessToken: 'callablesRefreshAccessToken',
   grantDrivePermissions: 'callablesDriveGrantPermissions',

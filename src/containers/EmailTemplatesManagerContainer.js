@@ -270,7 +270,16 @@ function EmailTemplatesManagerContainer(props) {
         {path === ROUTES.emailCampaigns &&
           `Note: Start triggers can only be used once, dont add another campaign
         with the same start trigger (it will just ignore it)`}
+        {
+          <p>
+            View more detailed template analytics here:
+            <a href="https://app.mailgun.com/app/sending/domains/2hats.com/analytics">
+              MAILGUN (but you need to login)
+            </a>
+          </p>
+        }
         {/* End */}
+
         {template && !showForm ? (
           <TemplateEditor template={template} setTemplate={setTemplate} />
         ) : (
