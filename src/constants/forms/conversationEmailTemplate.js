@@ -29,6 +29,14 @@ const emailTemplateFields = initialData => {
       value: initialData['subject'],
       validation: yup.string().required('Required'),
     },
+    {
+      type: FIELDS.textField,
+      name: 'senderEmail',
+      label: 'Sender email – yourname@2hats.com ONLY (optional)',
+      placeholder: '2hats <2hats@2hats.com>',
+      value: initialData['senderEmail'],
+      validation: yup.string(),
+    },
   ];
 };
 
