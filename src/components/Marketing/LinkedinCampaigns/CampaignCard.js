@@ -94,7 +94,7 @@ function CampaignCard(props) {
                 </Typography>
 
                 <Typography variant="body2">
-                  {data.lastConnection.createdAt ? (
+                  {data.lastConnection && data.lastConnection.createdAt ? (
                     <>
                       last connected&nbsp;
                       <b>
