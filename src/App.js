@@ -178,6 +178,11 @@ function App(props) {
                     path={ROUTES.marketingEmailBlast}
                     component={() => <MarketingContainer {...props} />}
                   />
+                  <Route
+                    exact
+                    path={ROUTES.marketingReferrals}
+                    component={() => <MarketingContainer {...props} />}
+                  />
 
                   <Route
                     exact
