@@ -86,7 +86,10 @@ const notSpamFilter = {
   operator: '<',
   value: 'spam',
 };
-const orderbyLastMessage = { field: 'lastMessage.sentAt', direction: 'desc' };
+const orderbyLastMessage = {
+  field: 'lastMessage.createdAt',
+  direction: 'desc',
+};
 const orderByType = { field: 'type', direction: 'asc' };
 const categoryFilter = category => ({
   field: 'category',
