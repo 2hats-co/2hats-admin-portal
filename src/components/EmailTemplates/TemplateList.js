@@ -13,6 +13,7 @@ function TemplateList(props) {
   const [templatesState, templatesDispatch] = useCollection({
     path: COLLECTIONS.emailTemplates,
     filters,
+    sort: { field: 'updatedAt', order: 'desc' },
   });
   let templates = templatesState.documents;
   useEffect(
