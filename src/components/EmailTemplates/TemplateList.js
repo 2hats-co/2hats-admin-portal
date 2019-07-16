@@ -5,14 +5,16 @@ import EmailRecipients from './EmailRecipients';
 import LoadingHat from '../LoadingHat';
 import useCollection from '../../hooks/useCollection';
 import { COLLECTIONS } from '../../constants/firestore';
+import ScrollyRolly from '../ScrollyRolly';
 
 function TemplateList(props) {
   const { setTemplate, type, campaignId, editTemplate } = props;
 
   let filters = [];
-  const [templatesState, templatesDispatch] = useCollection({
+  const [templatesState, templatesDispatch, loadMore] = useCollection({
     path: COLLECTIONS.emailTemplates,
     filters,
+    // i can't figure out why this isn't sorting properly  — Sidney
     sort: { field: 'updatedAt', order: 'desc' },
   });
   let templates = templatesState.documents;
@@ -40,26 +42,28 @@ function TemplateList(props) {
   if (templates)
     return (
       <>
-        {templates.map((x, i) => (
-          <EmailTemplateCard
-            data={x}
-            key={i}
-            actions={{
-              edit: () => {
-                setTemplate(x);
-                editTemplate(x);
-                // history.push(`marketingEmail?id=${x.id}`);
-              },
-              editTemplate: () => {
-                setTemplate(x);
-                // history.push(`marketingEmail?id=${x.id}`);
-              },
-              viewRecipients: () => {
-                setRecipientsId(x.id);
-              },
-            }}
-          />
-        ))}
+        <ScrollyRolly dataState={templatesState} loadMore={loadMore}>
+          {(x, i) => (
+            <EmailTemplateCard
+              data={x}
+              key={i}
+              actions={{
+                edit: () => {
+                  setTemplate(x);
+                  editTemplate(x);
+                  // history.push(`marketingEmail?id=${x.id}`);
+                },
+                editTemplate: () => {
+                  setTemplate(x);
+                  // history.push(`marketingEmail?id=${x.id}`);
+                },
+                viewRecipients: () => {
+                  setRecipientsId(x.id);
+                },
+              }}
+            />
+          )}
+        </ScrollyRolly>
 
         {!!recipientsId && (
           <EmailRecipients
