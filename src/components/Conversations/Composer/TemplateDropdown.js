@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
 
+import ScrollyRolly from '../../ScrollyRolly';
 import useCollection from '../../../hooks/useCollection';
 import { COLLECTIONS } from '../../../constants/firestore';
 
@@ -11,7 +12,7 @@ const TemplateDropdown = props => {
 
   const disabled = x => !UID && x.html && x.html.includes('<route>');
 
-  const [templatesState] = useCollection({
+  const [templatesState, templatesDispatch, loadMore] = useCollection({
     path: COLLECTIONS.emailTemplates,
     filters: [
       {
@@ -20,6 +21,7 @@ const TemplateDropdown = props => {
         value: 'conversations',
       },
     ],
+    sort: { field: 'updatedAt', order: 'desc' },
   });
   const templates = templatesState.documents;
 
@@ -42,13 +44,14 @@ const TemplateDropdown = props => {
       style={{ margin: 0, textAlign: 'left' }}
     >
       <MenuItem value={-1}>No template</MenuItem>
-      {templates &&
-        templates.map((x, i) => (
+      <ScrollyRolly dataState={templatesState} loadMore={loadMore}>
+        {(x, i) => (
           <MenuItem key={`${x}-${i}`} value={i} disabled={disabled(x)}>
             {x.label}
             {disabled(x) && ' (DISABLED – contains invalid link)'}
           </MenuItem>
-        ))}
+        )}
+      </ScrollyRolly>
     </TextField>
   );
 };
