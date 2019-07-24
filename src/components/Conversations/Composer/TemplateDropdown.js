@@ -46,7 +46,15 @@ const TemplateDropdown = props => {
       <MenuItem value={-1}>No template</MenuItem>
       <ScrollyRolly dataState={templatesState} loadMore={loadMore}>
         {(x, i) => (
-          <MenuItem key={`${x}-${i}`} value={i} disabled={disabled(x)}>
+          <MenuItem
+            key={`${x}-${i}`}
+            value={i}
+            disabled={disabled(x)}
+            onClick={() => {
+              setTemplateIndex(i);
+              setTemplate(templates[i]);
+            }}
+          >
             {x.label}
             {disabled(x) && ' (DISABLED – contains invalid link)'}
           </MenuItem>
