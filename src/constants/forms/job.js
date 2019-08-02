@@ -75,11 +75,11 @@ const jobFields = initialData => {
             .toDate(),
       validation: yup
         .date()
-        .test(
-          'day-from-now',
-          'Scheduled time must be at least a day from now',
-          value => moment(value).diff(moment(), 'days') >= 1
-        )
+        // .test(
+        //   'day-from-now',
+        //   'Scheduled time must be at least a day from now',
+        //   value => moment(value).diff(moment(), 'days') >= 1
+        // )
         .required('Required'),
     },
     {
