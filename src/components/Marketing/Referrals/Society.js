@@ -22,6 +22,7 @@ import BankIcon from '@material-ui/icons/AccountBalance';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import AddIcon from '@material-ui/icons/Add';
+import LinkIcon from '@material-ui/icons/Link';
 import WarningIcon from '@material-ui/icons/Warning';
 
 import StatCardGrid from './StatCardGrid';
@@ -180,6 +181,22 @@ const Society = props => {
             </Grid>
           </Grid>
 
+          <Button
+            color="primary"
+            variant="contained"
+            component="a"
+            href={`https://society.2hats.com/dashboard?societyId=${id}`}
+            target="_blank"
+            disabled={
+              !referralProgramsState.documents ||
+              referralProgramsState.documents.length === 0
+            }
+            size="large"
+          >
+            <LinkIcon />
+            Society Links
+          </Button>
+
           <Divider className={classes.divider} />
 
           {referralPrograms}
@@ -188,11 +205,13 @@ const Society = props => {
           Currently, society portal does not support this */}
           <Button
             color="primary"
+            variant="contained"
             onClick={() => setAddFormOpen(true)}
             disabled={
               referralProgramsState.documents &&
               referralProgramsState.documents.length > 0
             }
+            size="large"
           >
             <AddIcon /> Add Referral Program
           </Button>
