@@ -81,6 +81,7 @@ const FeedbackPreview = props => {
     outcome,
     generalComments,
     assessmentTitle,
+    disableSubmissions,
   } = props;
 
   const validGeneralComments =
@@ -145,6 +146,16 @@ const FeedbackPreview = props => {
           {title}
         </Typography>
         <Typography variant="body1">{body}</Typography>
+
+        <Divider className={classes.divider} />
+
+        {disableSubmissions && (
+          <Typography variant="body1">
+            This user cannot make any further submissions for this assessment
+            for the next 6 months.
+          </Typography>
+        )}
+
         <div className={classes.feedback}>
           {(feedback.length > 0 || validGeneralComments) && (
             <>
@@ -175,6 +186,7 @@ FeedbackPreview.propTypes = {
   outcome: PropTypes.string.isRequired,
   generalComments: PropTypes.string.isRequired,
   assessmentTitle: PropTypes.string.isRequired,
+  disableSubmissions: PropTypes.bool.isRequired,
 };
 
 export default withStyles(styles)(FeedbackPreview);

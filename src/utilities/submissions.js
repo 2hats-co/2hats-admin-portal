@@ -49,7 +49,8 @@ export const submitFeedback = (
   skillId,
   outcome,
   generalComments,
-  feedback
+  feedback,
+  disableSubmissions
 ) => {
   const filteredFeedback = feedback.filter(
     x =>
@@ -74,6 +75,7 @@ export const submitFeedback = (
     outcome,
     screened: true,
     feedback: outputFeedback,
+    disableSubmissions: !!disableSubmissions,
   });
 
   setUserSkills(UID, skillId, outcome);

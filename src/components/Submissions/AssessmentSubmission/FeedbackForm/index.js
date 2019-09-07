@@ -12,6 +12,8 @@ import Button from '@material-ui/core/Button';
 import ToggleButton from '@material-ui/lab/ToggleButton';
 import ToggleButtonGroup from '@material-ui/lab/ToggleButtonGroup';
 import Tooltip from '@material-ui/core/Tooltip';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
 
 import green from '@material-ui/core/colors/green';
 import red from '@material-ui/core/colors/red';
@@ -66,6 +68,10 @@ export const passFailStyles = theme => ({
       marginLeft: -theme.spacing.unit / 4,
     },
   },
+  disableSubmissionsCheckbox: {
+    marginTop: theme.spacing.unit * 2,
+    marginBottom: theme.spacing.unit * 2,
+  },
 
   renderedHtml: {
     ...STYLES.RENDERED_HTML(theme).renderedHtml,
@@ -119,6 +125,9 @@ const FeedbackForm = props => {
   const [outcome, setOutcome] = useState('');
   const [generalComments, setGeneralComments] = useState('');
   const [feedback, setFeedback] = useState([]);
+  const [disableSubmissions, setDisableSubmissions] = useState(
+    !!submission.disableSubmissions
+  );
 
   // get default feedback
   useEffect(() => {
@@ -249,6 +258,25 @@ const FeedbackForm = props => {
         </ToggleButton>
       </ToggleButtonGroup>
 
+      {(outcome === 'fail' || outcome === 'disqualify') && (
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={disableSubmissions}
+              onChange={e => setDisableSubmissions(e.target.checked)}
+              value="disableSubmissions"
+            />
+          }
+          label={
+            <>
+              <strong>Disable new submissions</strong> from this user for this
+              assessment for the next 6 months
+            </>
+          }
+          className={classes.disableSubmissionsCheckbox}
+        />
+      )}
+
       <Grid
         container
         alignItems="baseline"
@@ -330,6 +358,7 @@ const FeedbackForm = props => {
               generalComments={generalComments}
               outcome={outcome}
               assessmentTitle={submission.title}
+              disableSubmissions={disableSubmissions}
             />
           ),
         }}
@@ -345,7 +374,8 @@ const FeedbackForm = props => {
               submission.assessmentId,
               outcome,
               generalComments,
-              feedback
+              feedback,
+              disableSubmissions
             );
           }}
           disabled={!outcome || outcome.length <= 0}
