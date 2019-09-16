@@ -28,7 +28,7 @@ const styles = theme => ({
 
   buttonBar: {
     marginBottom: -theme.spacing.unit,
-    textAlign: 'right',
+    // textAlign: 'right',
   },
 });
 
