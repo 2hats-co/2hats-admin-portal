@@ -6,6 +6,7 @@ import withStyles from '@material-ui/core/styles/withStyles';
 
 const signatureGenerator = (
   firstName,
+  lastName,
   title,
   email
 ) => `<table border="0" cellspacing="0" cellpadding="0" style="font-size:12.8px;width:360pt">
@@ -23,7 +24,7 @@ const signatureGenerator = (
 </td>
 </tr>
 <tr>
-<td style="padding:3.75pt 0cm 0cm"><font face="Arial, sans-serif"><span style="color:rgb(59,56,56);font-weight:bold;font-size:17.3333px">${firstName}</span><br>
+<td style="padding:3.75pt 0cm 0cm"><font face="Arial, sans-serif"><span style="color:rgb(59,56,56);font-weight:bold;font-size:17.3333px">${firstName} ${lastName}</span><br>
 <span style="font-weight:bold"><font color="#999999" size="2">${title}&nbsp;</font></span><font size="2" style="color:rgb(59,56,56)"><br>
 e:&nbsp;<a href="mailto:${email}" style="color:rgb(17,85,204)" target="_blank"><span>${email}</span></a>&nbsp;| w:&nbsp;<a href="http://www.2hats.com.au/" style="color:rgb(17,85,204)" target="_blank" data-saferedirecturl="https://www.google.com/url?q=http://www.2hats.com.au/&amp;source=gmail&amp;ust=1553833672194000&amp;usg=AFQjCNGO6PxKnkaR9L32zX-xsC7FF-uXHA">www.2hats.com.au</a><br>
 </font><br>
@@ -59,6 +60,7 @@ const EmailSignature = props => {
 
   const emailSignature = signatureGenerator(
     currentUser.givenName,
+    currentUser.familyName,
     currentUser.title,
     currentUser.email
   );
