@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef } from 'react';
 
 import EmailEditor from 'react-email-editor';
 import Button from '@material-ui/core/Button';
@@ -8,11 +8,11 @@ import Grid from '@material-ui/core/Grid';
 //import Typography from '@material-ui/core/Typography';
 import Tooltip from '@material-ui/core/Tooltip';
 import Chip from '@material-ui/core/Chip';
-import { sendEmail } from '../../utilities/email/send';
+// import { sendEmail } from '../../utilities/email/send';
 
 import useAuthedUser from '../../hooks/useAuthedUser';
 import useWindowSize from '../../hooks/useWindowSize';
-import { globalReplace, copyToClipboard } from '../../utilities';
+import { copyToClipboard } from '../../utilities';
 
 import { cloudFunction, CLOUD_FUNCTIONS } from '../../utilities/CloudFunctions';
 
@@ -35,24 +35,18 @@ function TemplateEditor(props) {
   const currentUser = useAuthedUser();
   const windowSize = useWindowSize();
 
-  useEffect(
-    () => {
-      if (editor.current) {
-        if (template.design) {
-          const loadedDesign = JSON.parse(template.design);
-          editor.current.loadDesign(loadedDesign);
-        }
-      }
-    },
-    [editor.current]
-  );
+  const handleEditorLoad = () => {
+    if (editor.current && template.design)
+      editor.current.loadDesign(JSON.parse(template.design));
+  };
+
   if (!currentUser) return <p>loadin</p>;
-  const replaceables = [
-    { label: '{{firstName}}', value: currentUser.givenName },
-    { label: '{{lastName}}', value: currentUser.FamilyName },
-  ];
+  // const replaceables = [
+  //   { label: '{{firstName}}', value: currentUser.givenName },
+  //   { label: '{{lastName}}', value: currentUser.FamilyName },
+  // ];
   const handleSave = () => {
-    editor.current.exportHtml(data => {
+    editor.current.exportHtml(async data => {
       const { design, html } = data;
 
       // Warn user if template has broken smartlink
@@ -62,12 +56,13 @@ function TemplateEditor(props) {
         );
       }
 
-      updateDoc(COLLECTIONS.emailTemplates, template.id, {
+      await updateDoc(COLLECTIONS.emailTemplates, template.id, {
         design: JSON.stringify(design),
         html,
         duplicateAllowed: false,
       });
-      setTemplate(null);
+
+      alert('Saved template');
     });
   };
   const handleSendTest = () => {
@@ -104,18 +99,17 @@ function TemplateEditor(props) {
     // });
   };
   //console.log(emailTemplate(template));
-  const clipboardButton = tag => {
-    return (
-      <Tooltip title="click to copy">
-        <Chip
-          label={tag.label}
-          onClick={() => {
-            copyToClipboard(tag.value);
-          }}
-        />
-      </Tooltip>
-    );
-  };
+  const clipboardButton = tag => (
+    <Tooltip title="click to copy" key={`${tag.label}-${tag.value}`}>
+      <Chip
+        label={tag.label}
+        onClick={() => {
+          copyToClipboard(tag.value);
+        }}
+      />
+    </Tooltip>
+  );
+
   const availableTags = () => {
     switch (template.type) {
       case 'conversations':
@@ -132,15 +126,20 @@ function TemplateEditor(props) {
             setTemplate(null);
           }}
         >
-          back
+          Back
         </Button>
-        Tags :{availableTags()}
-        <Button onClick={handleSave} variant="extended">
+        Tags: {availableTags()}
+        <Button onClick={handleSave} color="primary" variant="contained">
           Save
         </Button>
         <Button onClick={handleSendTest}>Send test</Button>
       </Grid>
-      {<EmailEditor ref={editor} minHeight={`${windowSize.height - 102}px`} />}
+
+      <EmailEditor
+        ref={editor}
+        onLoad={handleEditorLoad}
+        minHeight={`${windowSize.height - 102}px`}
+      />
     </div>
   );
 }

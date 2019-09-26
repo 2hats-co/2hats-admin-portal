@@ -8309,10 +8309,10 @@ react-dropzone@^4.2.11:
     attr-accept "^1.1.3"
     prop-types "^15.5.7"
 
-react-email-editor@^0.9.0:
-  version "0.9.5"
-  resolved "https://registry.yarnpkg.com/react-email-editor/-/react-email-editor-0.9.5.tgz#ff9d54ee77de176c29ca262dfbc6f0e579b997d7"
-  integrity sha512-ZdbnK9W+r04eyWVsgRo8aUijEBrSjiYhsJJwVC/QVjmOqcaa+uSu5LUi/tk07QEV5g4lpCNcisVXx85Oe1aY8g==
+react-email-editor@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/react-email-editor/-/react-email-editor-1.0.0.tgz#f7b2a4e6918f7551d838b12aa95463c5c876916d"
+  integrity sha512-Q/AwzJqh4pxbXytjpiNe4yVSxb8QwJ+ksbvp/f+eKoYTQ1Qz09cElKTxiBSIC78DK2RfFblDft1sUXDq6utgtw==
   dependencies:
     react-load-script "^0.0.6"
 
