@@ -6,16 +6,16 @@ const announcementFields = initialData => {
   if (!initialData) initialData = {};
 
   return [
-    {
-      type: FIELDS.docAutocomplete,
-      collection: COLLECTIONS.assessments,
-      mappings: { label: 'title', value: 'id' },
-      name: 'assessmentId',
-      label: 'Assessment',
-      value: initialData['assessmentId'],
-      validation: yup.string().required('Required'),
-      width: 6,
-    },
+    // {
+    //   type: FIELDS.docAutocomplete,
+    //   collection: COLLECTIONS.assessments,
+    //   mappings: { label: 'title', value: 'id' },
+    //   name: 'assessmentId',
+    //   label: 'Assessment',
+    //   value: initialData['assessmentId'],
+    //   validation: yup.string().required('Required'),
+    //   width: 6,
+    // },
     {
       type: FIELDS.docAutocomplete,
       collection: COLLECTIONS.jobs,
@@ -24,7 +24,7 @@ const announcementFields = initialData => {
       label: 'Job Listing',
       value: initialData['jobId'],
       validation: yup.string().required('Required'),
-      width: 6,
+      // width: 6,
     },
 
     {

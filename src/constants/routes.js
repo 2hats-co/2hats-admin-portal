@@ -21,6 +21,7 @@ export const ROUTES = {
 
   marketingLeadGeneration: '/marketing/leadGeneration',
   marketingEmailBlast: '/marketing/emailBlast',
+  marketingReferrals: '/marketing/referrals',
 
   conversationEmails: '/conversationEmails',
   emailCampaigns: '/emailCampaigns',
@@ -32,3 +33,5 @@ export const ROUTES = {
   eventsManager: '/contentManager/events',
   announcementsManager: '/contentManager/announcements',
 };
+
+export default ROUTES;

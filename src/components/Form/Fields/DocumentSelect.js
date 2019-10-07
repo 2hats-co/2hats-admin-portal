@@ -15,17 +15,22 @@ const labelReducer = (doc, mappings) => {
       .substr(2);
   else output.label = doc[mappings.label];
 
-  output.value = doc[mappings.value];
+  output.value =
+    typeof mappings.value === 'function'
+      ? mappings.value(doc)
+      : doc[mappings.value];
 
   return output;
 };
 
 const DocumentSelect = props => {
-  const { collection, mappings, formikProps, name, width } = props;
+  const { collection, filters, mappings, formikProps, name, width } = props;
   const { setValues, values } = formikProps;
 
   const [collectionState] = useCollection({
     path: collection,
+    limit: 500,
+    filters,
     // sort: [{ field: 'createdAt', direction: 'desc' }],
   });
   const docs = collectionState.documents;
@@ -34,9 +39,19 @@ const DocumentSelect = props => {
 
   useEffect(
     () => {
+      //label: "EDM Composition"
+      //value: {title: "EDM Composition", id: "BSCkghUjaE8x4qYuk3Np"}
       if (values[name] && suggestions.length > 0) {
-        const filtered = suggestions.filter(x => x.value === values[name]);
-        if (filtered.length > 0) setValues({ ...values, [name]: filtered[0] });
+        if (Array.isArray(values[name])) {
+          const existingValues = values[name].map(v => {
+            return { label: v.title, value: v };
+          });
+          setValues({ ...values, [name]: existingValues });
+        } else {
+          const filtered = suggestions.filter(x => x.value === values[name]);
+          if (filtered.length > 0)
+            setValues({ ...values, [name]: filtered[0] });
+        }
       }
     },
     [collectionState.documents]

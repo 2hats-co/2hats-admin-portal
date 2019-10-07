@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import withStyles from '@material-ui/core/styles/withStyles';
 import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
 import Fade from '@material-ui/core/Fade';
 import Fab from '@material-ui/core/Fab';
 
@@ -26,9 +27,9 @@ import Form from '../components/Form';
 import courseFields from '../constants/forms/course';
 import assessmentFields from '../constants/forms/assessment';
 import jobFields from '../constants/forms/job';
-import eventFields from '../constants/forms/event';
+// import eventFields from '../constants/forms/event';
 import announcementFields from '../constants/forms/announcement';
-
+import useClient from '../hooks/useClient';
 const styles = theme => ({
   root: {
     backgroundColor: theme.palette.background.default,
@@ -54,12 +55,14 @@ function ContentManagerContainer(props) {
   let formTitle = '';
   let collection = '';
   let mapping = '';
+  let sort = { field: 'createdAt', direction: 'desc' };
   switch (path) {
     case ROUTES.jobsManager:
       fields = jobFields;
       formTitle = 'Job';
       collection = COLLECTIONS.jobs;
       mapping = oneCardMappings.job;
+      sort = { field: 'closingDate', direction: 'desc' };
       break;
 
     case ROUTES.coursesManager:
@@ -76,12 +79,6 @@ function ContentManagerContainer(props) {
       mapping = oneCardMappings.assessment;
       break;
 
-    case ROUTES.eventsManager:
-      fields = eventFields;
-      formTitle = 'Event';
-      collection = COLLECTIONS.events;
-      break;
-
     case ROUTES.announcementsManager:
       fields = announcementFields;
       formTitle = 'Announcements';
@@ -93,12 +90,31 @@ function ContentManagerContainer(props) {
       break;
   }
 
-  const [dataState] = useCollection({
+  const [dataState, collectionDispatch] = useCollection({
     path: collection,
-    sort: { field: 'createdAt', direction: 'desc' },
+    sort,
   });
+  const [client, setSearch] = useClient(location.search);
+  useEffect(
+    () => {
+      if (client.id)
+        collectionDispatch({
+          filters: [{ field: 'clientId', operator: '==', value: client.id }],
+        });
+      else
+        collectionDispatch({
+          filters: [],
+        });
+    },
+    [client.id]
+  );
+  useEffect(
+    () => {
+      setSearch(location.search);
+    },
+    [location.search]
+  );
   const docs = dataState.documents;
-  // console.log(docs);
 
   return (
     <Fade in>
@@ -110,11 +126,14 @@ function ContentManagerContainer(props) {
             { label: 'Jobs', value: ROUTES.jobsManager },
             { label: 'Courses', value: ROUTES.coursesManager },
             { label: 'Assessments', value: ROUTES.assessmentsManager },
-            //  { label: 'Events', value: ROUTES.eventsManager },
             { label: 'Announcements', value: ROUTES.announcementsManager },
           ]}
         />
-
+        {client && (
+          <Typography component="h3">
+            {client.companyName ? client.companyName : 'All'} {collection}
+          </Typography>
+        )}
         <Grid container>
           {docs &&
             docs.map(x => (
@@ -124,7 +143,7 @@ function ContentManagerContainer(props) {
                 key={x.id}
                 collection={collection}
               >
-                <OneCard {...mapping(x)} />
+                {extraProps => <OneCard {...extraProps} {...mapping(x)} />}
               </EditOneCard>
             ))}
         </Grid>
@@ -144,7 +163,11 @@ function ContentManagerContainer(props) {
           action="create"
           actions={{
             create: data => {
-              createDoc(collection, data);
+              console.log(data);
+              createDoc(collection, {
+                ...data,
+                // clientId: client.id
+              });
               setShowDialog(false);
             },
             close: () => {
@@ -152,7 +175,7 @@ function ContentManagerContainer(props) {
             },
           }}
           open={showDialog}
-          data={fields()}
+          data={client ? fields({ companyName: client.companyName }) : fields()}
           formTitle={formTitle}
         />
       </div>

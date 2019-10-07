@@ -64,7 +64,7 @@ function generateTheme(theme, themeColor) {
       h4: { fontWeight: 500 },
       h5: { fontWeight: 500 },
       subtitle1: { fontWeight: 500 },
-      h6: { textTransform: 'none' },
+      h6: { textTransform: 'none', lineHeight: 1.4 },
       body2: { lineHeight: 1.45 },
       button: {
         textTransform: 'none',
@@ -266,7 +266,10 @@ function generateTheme(theme, themeColor) {
       },
       MuiTab: {
         ...baseTheme.overrides.MuiTab,
-        selected: { color: `${primaryDarkText} !important` },
+        root: {
+          ...baseTheme.overrides.MuiTab.root,
+          '&$selected': { color: `${primaryDarkText} !important` },
+        },
         textColorPrimary: { color: '#fff' },
       },
       MuiBackdrop: {
@@ -275,13 +278,13 @@ function generateTheme(theme, themeColor) {
         },
       },
       MuiFormLabel: {
-        focused: { color: `${primaryDarkText} !important` },
+        root: { $focused: { color: `${primaryDarkText} !important` } },
       },
       MuiCheckbox: {
-        checked: { color: `${primaryDarkText} !important` },
+        root: { $checked: { color: `${primaryDarkText} !important` } },
       },
       MuiSwitch: {
-        checked: { color: `${primaryDarkText} !important` },
+        root: { $checked: { color: `${primaryDarkText} !important` } },
       },
     },
   });

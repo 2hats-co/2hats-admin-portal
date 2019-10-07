@@ -1,10 +1,7 @@
 import FIELDS from './fields';
 import * as yup from 'yup';
 
-import {
-  SKILLS,
-  ASSESSMENT_CATEGORIES,
-} from '@bit/sidney2hats.2hats.global.common-constants';
+import { ASSESSMENT_CATEGORIES } from '@bit/sidney2hats.2hats.global.common-constants';
 
 const courseFields = initialData => {
   if (!initialData) initialData = {};
@@ -41,14 +38,20 @@ const courseFields = initialData => {
       validation: yup.string().required('Required'),
     },
     {
-      type: FIELDS.autocompleteMulti,
+      type: FIELDS.docAutocompleteMulti,
       name: 'skillsAssociated',
       label: 'Skills associated',
-      value:
-        initialData['skillsAssociated'] &&
-        SKILLS.filter(x => initialData['skillsAssociated'].includes(x.value)),
-      suggestions: SKILLS,
-      validation: yup.array().min(0),
+      value: initialData['skillsAssociated'],
+      mappings: {
+        label: 'title',
+        value: doc => ({
+          title: doc.title,
+          id: doc.id,
+        }),
+      },
+      collection: 'assessments',
+      validation: yup.array(),
+      // .min(1)
       // .required('Skills are required'),
     },
     {

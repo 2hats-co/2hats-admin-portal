@@ -51,7 +51,7 @@ const collectionIntialState = {
   path: null,
   filters: [],
   prevLimit: 0,
-  limit: 30,
+  limit: 50,
   loading: true,
   cap: CAP,
 };
@@ -75,12 +75,14 @@ const useCollection = intialOverrides => {
       prevFilters: filters,
       prevLimit: limit,
       prevPath: collectionState.path,
+      prevSort: sort,
     });
     let query = firestore.collection(collectionState.path);
-
-    filters.forEach(filter => {
-      query = query.where(filter.field, filter.operator, filter.value);
-    });
+    if (filters) {
+      filters.forEach(filter => {
+        query = query.where(filter.field, filter.operator, filter.value);
+      });
+    }
     if (sort) {
       if (Array.isArray(sort)) {
         sort.forEach(order => {
@@ -119,13 +121,15 @@ const useCollection = intialOverrides => {
         limit,
         prevPath,
         path,
+        prevSort,
         sort,
         unsubscribe,
       } = collectionState;
       if (
         !equals(prevFilters, filters) ||
         prevLimit !== limit ||
-        prevPath !== path
+        prevPath !== path ||
+        prevSort !== sort
       ) {
         if (path) getDocuments(filters, limit, sort);
       }
@@ -135,9 +139,42 @@ const useCollection = intialOverrides => {
         }
       };
     },
-    [collectionState.filters, collectionState.limit, collectionState.path]
+    [
+      collectionState.filters,
+      collectionState.limit,
+      collectionState.path,
+      collectionState.sort,
+    ]
   );
-  return [collectionState, collectionDispatch];
+  const loadMore = additional => {
+    if (collectionState.limit < CAP) {
+      const increment = additional || 10;
+      const newLimit = collectionState.limit + increment;
+      collectionDispatch({ limit: newLimit });
+    }
+  };
+  const updateDoc = doc => {
+    let docs = collectionState.documents;
+    const docIndex = findIndex(propEq('id', doc.id))(docs);
+    //compare before updating
+    let shouldUpdate = false;
+    for (let field in doc.data) {
+      if (docs[docIndex][field] !== doc.data[field]) {
+        shouldUpdate = true;
+      }
+    }
+    if (!shouldUpdate) {
+      docs[docIndex] = { ...docs[docIndex], ...doc.data };
+      firestore
+        .collection(collectionState.path)
+        .doc(doc.id)
+        .update({
+          ...doc.data,
+          updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+        });
+    }
+  };
+  return [collectionState, collectionDispatch, loadMore, updateDoc];
 };
 
 export default useCollection;

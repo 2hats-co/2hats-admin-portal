@@ -16,8 +16,11 @@ import BlastPreview from './BlastPreview';
 
 import useAuthedUser from '../../../hooks/useAuthedUser';
 import useDocument from '../../../hooks/useDocument';
-import { createDoc } from '../../../utilities/firestore';
 import { unstable_useMediaQuery as useMediaQuery } from '@material-ui/core/useMediaQuery';
+import {
+  cloudFunction,
+  CLOUD_FUNCTIONS,
+} from '../../../utilities/CloudFunctions';
 
 import { COLLECTIONS } from '@bit/sidney2hats.2hats.global.common-constants';
 import { ROUTES } from '../../../constants/routes';
@@ -44,10 +47,6 @@ const styles = theme => ({
     height: '100%',
   },
 
-  // wrapperGrid: {
-  //   minHeight: 400,
-  // },
-
   noBlasts: {
     height: '100%',
     color: theme.palette.text.secondary,
@@ -65,14 +64,62 @@ function EmailBlast(props) {
   const { classes, location, history } = props;
 
   const [showForm, setShowForm] = useState(false);
+  const [formEdit, setFormEdit] = useState(false);
   const [blastState, dispatchBlast] = useDocument();
   let selectedBlast = blastState.doc;
 
   const isMobile = useMediaQuery('(max-width: 704px)');
   const currentUser = useAuthedUser();
 
+  const closeForm = () => {
+    setShowForm(false);
+    setFormEdit(false);
+  };
+
+  const editHandler = () => {
+    setFormEdit(true);
+    setShowForm(true);
+  };
+
   const createBlast = data => {
-    createDoc(COLLECTIONS.emailBlasts, { ...data, createdBy: currentUser.UID });
+    cloudFunction(
+      CLOUD_FUNCTIONS.EMAIL_BLASTS_ACTIONS,
+      {
+        action: 'create',
+        args: {
+          ...data,
+          createdBy: currentUser.UID,
+        },
+      },
+      d => {
+        console.log('success', d);
+        closeForm();
+      },
+      f => {
+        console.error('fail', f);
+      }
+    );
+  };
+
+  const editBlast = data => {
+    cloudFunction(
+      CLOUD_FUNCTIONS.EMAIL_BLASTS_ACTIONS,
+      {
+        action: 'update',
+        blastId: selectedBlast.id,
+        args: {
+          ...data,
+          createdBy: currentUser.UID,
+        },
+      },
+      d => {
+        console.log('success', d);
+        closeForm();
+      },
+      f => {
+        console.error('fail', f);
+      }
+    );
   };
 
   useEffect(
@@ -118,7 +165,7 @@ function EmailBlast(props) {
         </Grid>
         <Grid item xs className={classes.detailsWrapper}>
           {selectedBlast ? (
-            <BlastDetails data={selectedBlast} />
+            <BlastDetails data={selectedBlast} editHandler={editHandler} />
           ) : (
             <Grid
               container
@@ -136,20 +183,18 @@ function EmailBlast(props) {
         </Grid>
       </Grid>
       <Form
-        action="Blast!"
+        action={formEdit ? 'Edit' : 'Create'}
         actions={{
-          'Blast!': createBlast,
-          close: () => {
-            setShowForm(false);
-          },
+          Create: createBlast,
+          Edit: editBlast,
+          close: closeForm,
         }}
-        data={emailBlastFields()}
+        data={emailBlastFields(formEdit ? selectedBlast : {})}
         open={showForm}
-        classes={{
-          justFormWrapper: classes.justFormWrapper,
-          wrapperGrid: classes.wrapperGrid,
-        }}
-        formFooter={values => <BlastPreview query={values.query} />}
+        formFooter={values => (
+          <BlastPreview query={values.query} template={values.templateId} />
+        )}
+        formTitle="Blast!"
       />
     </>
   );

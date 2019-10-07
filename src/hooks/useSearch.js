@@ -24,9 +24,9 @@ const updateQuery = async (index, search, filters, limit, searchDispatch) => {
   searchDispatch({ results, loading: false });
 };
 
-export function useSearch(initIndex) {
+export function useSearch(initIndex, initSearch) {
   const [searchState, searchDispatch] = useReducer(searchReducer, {
-    search: '',
+    search: initSearch || '',
     filters: [],
     prevSearch: '',
     prevFilters: [],

@@ -19,6 +19,20 @@ const runCampaign = id => {
     .doc(id)
     .update({
       needsToRun: true,
+      isComplete: false,
+      updatedAt: new Date(),
+    });
+};
+
+const rerunCampaign = id => {
+  firestore
+    .collection(COLLECTIONS.linkedinCampaigns)
+    .doc(id)
+    .update({
+      needsToRun: true,
+      isComplete: false,
+      startPage: 1,
+      updatedAt: new Date(),
     });
 };
 
@@ -67,6 +81,7 @@ function LinkedinCampaigns(props) {
             key={i}
             actions={{
               run: runCampaign,
+              rerun: rerunCampaign,
               delete: deleteCampaign,
               edit: () => {
                 setCampaign(x);

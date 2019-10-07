@@ -11,9 +11,7 @@ import Submissions2Icon from '@material-ui/icons/RateReviewOutlined';
 import LocationIndicator from '../components/LocationIndicator';
 import LoadingHat from '../components/LoadingHat';
 import SubmissionsList from '../components/Submissions/SubmissionsList';
-import SubmissionHeader from '../components/Submissions/SubmissionHeader';
-import AssessmentSubmission from '../components/Submissions/AssessmentSubmission';
-import JobSubmission from '../components/Submissions/JobSubmission';
+import SubmissionView from '../components/Submissions/SubmissionView';
 import ResumeSubmission from '../components/Submissions/ResumeSubmission';
 
 import useDocument from '../hooks/useDocument';
@@ -22,17 +20,13 @@ import { ROUTES } from '../constants/routes';
 const styles = theme => ({
   messagesContainer: {
     height: '100vh',
-    // marginTop: -64,
+    marginTop: -64,
 
     backgroundColor:
       theme.palette.type === 'dark'
         ? theme.palette.background.default
         : theme.palette.background.paper,
     borderLeft: `1px solid ${theme.palette.divider}`,
-  },
-
-  messagesWrapper: {
-    overflowY: 'auto',
   },
 
   nothingSelected: {
@@ -57,21 +51,6 @@ const styles = theme => ({
     margin: `${theme.spacing.unit * 5}px auto`,
   },
 });
-
-function SubmissionView(props) {
-  const { submission } = props;
-
-  if (!submission || !submission.type) return null;
-
-  switch (submission.type) {
-    case 'assessment':
-      return <AssessmentSubmission data={submission} />;
-    case 'job':
-      return <JobSubmission data={submission} />;
-    default:
-      return null;
-  }
-}
 
 function Submissions2Container(props) {
   const { classes, location, history } = props;
@@ -118,20 +97,7 @@ function Submissions2Container(props) {
     content = <LoadingHat altBg message="Finding submission…" />;
   if (selectedSubmission) {
     if (selectedSubmission.user)
-      content = (
-        <Grid
-          container
-          direction="column"
-          wrap="nowrap"
-          style={{ height: '100vh' }}
-        >
-          <SubmissionHeader submission={selectedSubmission} />
-
-          <Grid item xs className={classes.messagesWrapper}>
-            <SubmissionView submission={selectedSubmission} />
-          </Grid>
-        </Grid>
-      );
+      content = <SubmissionView submission={selectedSubmission} />;
     else
       content = (
         <div className={classes.resumeSubmissionWrapper}>
@@ -163,12 +129,7 @@ function Submissions2Container(props) {
             }}
           />
         </Grid>
-        <Grid
-          item
-          xs
-          className={classes.messagesContainer}
-          style={{ marginTop: '-64px' }}
-        >
+        <Grid item xs className={classes.messagesContainer}>
           {content}
         </Grid>
       </Grid>

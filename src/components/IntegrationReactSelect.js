@@ -1,20 +1,23 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+
 import Select from 'react-select';
 import CreatableSelect from 'react-select/lib/Creatable';
+
 import withStyles from '@material-ui/core/styles/withStyles';
-import Typography from '@material-ui/core/Typography';
 import NoSsr from '@material-ui/core/NoSsr';
 import TextField from '@material-ui/core/TextField';
 import Paper from '@material-ui/core/Paper';
 import Chip from '@material-ui/core/Chip';
 import Avatar from '@material-ui/core/Avatar';
 import MenuItem from '@material-ui/core/MenuItem';
-import CancelIcon from '@material-ui/icons/CancelOutlined';
-import DropdownIcon from '@material-ui/icons/KeyboardArrowDown';
 import IconButton from '@material-ui/core/IconButton';
 import Grow from '@material-ui/core/Grow';
+
+import CancelIcon from '@material-ui/icons/CancelOutlined';
+import DropdownIcon from '@material-ui/icons/KeyboardArrowDown';
+
 import { emphasize } from '@material-ui/core/styles/colorManipulator';
 
 const styles = theme => ({
@@ -23,23 +26,15 @@ const styles = theme => ({
   },
   input: {
     display: 'flex',
-    // padding: 0,
     paddingLeft: theme.spacing.unit * 1.5,
     paddingRight: theme.spacing.unit * 0.75,
+    alignItems: 'center',
   },
   collapseInput: {
-    paddingTop: theme.spacing.unit * 0.75,
-  },
-  valueContainer: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    flex: 1,
-    alignItems: 'center',
-    overflow: 'hidden',
-    minHeight: theme.spacing.unit * 3.5,
+    paddingTop: theme.spacing.unit * 1.25,
   },
   chip: {
-    marginRight: `${theme.spacing.unit / 2}px !important`,
+    margin: `${theme.spacing.unit / 4}px !important`,
     height: theme.spacing.unit * 3.5,
     '& svg': { marginRight: theme.spacing.unit / 4 },
   },
@@ -50,18 +45,6 @@ const styles = theme => ({
         : theme.palette.grey[700],
       0.08
     ),
-  },
-  noOptionsMessage: {
-    padding: `${theme.spacing.unit}px ${theme.spacing.unit * 2}px`,
-  },
-  singleValue: {
-    fontSize: 16,
-  },
-  placeholder: {
-    userSelect: 'none',
-    fontSize: 16,
-    position: 'absolute',
-    left: theme.spacing.unit * 1.5,
   },
 
   menuWrapper: { position: 'relative' },
@@ -79,18 +62,6 @@ const styles = theme => ({
   },
 });
 
-function NoOptionsMessage(props) {
-  return (
-    <Typography
-      color="textSecondary"
-      className={props.selectProps.classes.noOptionsMessage}
-      {...props.innerProps}
-    >
-      {props.children}
-    </Typography>
-  );
-}
-
 function inputComponent({ inputRef, ...props }) {
   return <div ref={inputRef} {...props} />;
 }
@@ -100,7 +71,7 @@ function Control(props) {
     <TextField
       fullWidth
       variant="filled"
-      margin="dense"
+      margin="none"
       InputProps={{
         disableUnderline: true,
         inputComponent,
@@ -135,37 +106,6 @@ function Option(props) {
       {props.data.avatarURL && <Avatar scr={props.data.avatarURL}> </Avatar>}
       {props.children}
     </MenuItem>
-  );
-}
-
-function Placeholder(props) {
-  return (
-    <Typography
-      color="textSecondary"
-      className={props.selectProps.classes.placeholder}
-      {...props.innerProps}
-    >
-      {props.children}
-    </Typography>
-  );
-}
-
-function SingleValue(props) {
-  return (
-    <Typography
-      className={props.selectProps.classes.singleValue}
-      {...props.innerProps}
-    >
-      {props.children}
-    </Typography>
-  );
-}
-
-function ValueContainer(props) {
-  return (
-    <div className={props.selectProps.classes.valueContainer}>
-      {props.children}
-    </div>
   );
 }
 
@@ -223,11 +163,7 @@ const components = {
   Control,
   Menu,
   MultiValue,
-  NoOptionsMessage,
   Option,
-  Placeholder,
-  SingleValue,
-  ValueContainer,
   DropdownIndicator,
   ClearIndicator,
   IndicatorSeparator: null,
@@ -248,17 +184,65 @@ function IntegrationReactSelect(props) {
     creatable,
     error,
     helperText,
+    inputProps,
   } = props;
 
   const selectStyles = {
     input: base => ({
       ...base,
+
+      height: '1.1875rem',
+      margin: 0,
+      padding: 0,
+
+      alignItems: 'center',
+
       color: theme.palette.text.primary,
-      '& input': {
-        font: 'inherit',
-      },
+      '& input': { font: 'inherit' },
+    }),
+
+    valueContainer: base => ({
+      ...base,
+      display: 'flex',
+      flexWrap: 'wrap',
+      flex: 1,
+      alignItems: 'center',
+      overflow: 'hidden',
+      minHeight: '1.1875rem',
+      padding: 0,
+    }),
+    singleValue: base => ({
+      ...base,
+      ...theme.typography.body1,
+      padding: 0,
+      margin: 0,
+
+      // fontSize: 16,
+      lineHeight: '1.1875rem',
+    }),
+
+    indicatorsContainer: base => ({
+      ...base,
+      height: '1.1875rem',
+      alignSelf: 'auto',
+    }),
+
+    noOptionsMessage: base => ({
+      ...base,
+      color: theme.palette.text.secondary,
+      padding: `${theme.spacing.unit}px ${theme.spacing.unit * 2}px`,
+      textAlign: 'left',
+      userSelect: 'none',
+    }),
+
+    placeholder: base => ({
+      ...base,
+      color: theme.palette.text.secondary,
+      userSelect: 'none',
     }),
   };
+
+  const getOptionValue = x => x.label + x.value.toString();
 
   if (creatable)
     return (
@@ -277,9 +261,11 @@ function IntegrationReactSelect(props) {
               autoFocus,
               error,
               helperText,
+              ...inputProps,
             }}
             value={value}
             isMulti={isMulti}
+            getOptionValue={getOptionValue}
           />
         </NoSsr>
       </div>
@@ -301,9 +287,11 @@ function IntegrationReactSelect(props) {
             autoFocus,
             error,
             helperText,
+            ...inputProps,
           }}
           value={value}
           isMulti={isMulti}
+          getOptionValue={getOptionValue}
         />
       </NoSsr>
     </div>

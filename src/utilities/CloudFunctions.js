@@ -3,27 +3,31 @@ import { functions } from '../store';
 export const CLOUD_FUNCTIONS = {
   TAG_TRACKER: 'callablesEventTracker',
   RESUME_SCRAPER: 'callablesAlgoliaResumes',
-  SPEEDY_SIGNUP: 'callablesAuthSpeedySignup',
-  AUTHENTICATE_3RD_PARTY: 'callablesAuth3rdParty', //not used
-  AUTHENTICATE_GOOGLE: 'callablesAuthGoogle',
-  AUTHENTICATE_LINKEDIN: 'callablesAuthenticateLinkedIn', // Not used
-  CHECK_EMAIL: 'callablesCheckEmail',
-  SMART_LINK: 'callablesSmartLinkActivate',
-  RESET_PASSWORD: 'callablesAuthResetPassword',
-  CREATE_PASSWORD: 'callablesAuthCreatePassword',
-  VALIDATE_EMAIL: 'callablesCheckEmail',
-  DISABLE_SMART_LINK: 'callablesSmartLinkDisable',
-  LEARN_WORLD_SSO: 'callablesLearnWorldSignon',
-  CHARGE_STRIPE_TOKEN: 'callablesStripeChargeToken',
-  LW_SINGLE_SIGN_ON: 'callablesLearnWorldSignon',
+  SPEEDY_SIGNUP: 'restApiSpeedySignup',
+  AUTHENTICATE_3RD_PARTY: 'restApiAuthenticate3rdParty',
+  AUTHENTICATE_GOOGLE: 'restApiAuthenticateGoogle',
+  AUTHENTICATE_LINKEDIN: 'callablesAuthenticateLinkedIn',
+  CHECK_EMAIL: 'restApiCheckEmail',
+  SMART_LINK: 'smartLinkActivate',
+  RESET_PASSWORD: 'restApiResetPassword',
+  CREATE_PASSWORD: 'restApiCreatePassword',
+  VALIDATE_EMAIL: 'restApiVaildateEmail',
+  DISABLE_SMART_LINK: 'smartLinkDisable',
+  LEARN_WORLD_SSO: 'callablesLwSingleSignOn',
+  CHARGE_STRIPE_TOKEN: 'callablesChargeStripeToken',
+  LW_SINGLE_SIGN_ON: 'callablesLwSingleSignOn',
   WHATS_NEXT_AI: 'callablesWhatsNextAI',
-  CREATE_SMART_LINK: 'callablesSmartLinkCreate',
+  CREATE_SMART_LINK: 'callablesCreateSmartLink',
+  CLIENT_WELCOME_EMAIL: 'callablesClientSendWelcomeEmail',
+  CAMPAIGN_SEND_TARGETED_BY_ID: 'callablesCampaignSendTargetedById', //cloudfunctionsts code
+  EMAIL_SEND_BY_ID: 'emailSendById', //cloudfunctionsts2 code
+  EMAIL_BLASTS_ACTIONS: 'emailBlastActions', //Changed from callablesEmailBlastActions to ts2 code
+  EMAIL_TEMPLATE_SEND_TEST: 'callablesEmailTemplateSendTest',
 };
 
 export const cloudFunction = (name, input, success, fail) => {
   const callable = functions.httpsCallable(name);
-
-  callable(input)
+  callable(JSON.parse(JSON.stringify(input)))
     .then(result => {
       if (success) {
         success(result);

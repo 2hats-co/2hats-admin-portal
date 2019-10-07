@@ -19,6 +19,9 @@ const LinkedInCampaigns = lazy(() =>
 const EmailBlast = lazy(() =>
   import('../components/Marketing/EmailBlast' /* webpackChunkName: "EmailBlast" */)
 );
+const Referrals = lazy(() =>
+  import('../components/Marketing/Referrals' /* webpackChunkName: "Referrals" */)
+);
 
 const styles = theme => ({
   root: {
@@ -34,6 +37,8 @@ const pathContent = path => {
       return <LinkedInCampaigns />;
     case ROUTES.marketingEmailBlast:
       return <EmailBlast />;
+    case ROUTES.marketingReferrals:
+      return <Referrals />;
     default:
   }
 };
@@ -58,6 +63,10 @@ function MarketingContainer(props) {
               {
                 label: 'EmailBlast❗',
                 value: ROUTES.marketingEmailBlast,
+              },
+              {
+                label: 'Referrals',
+                value: ROUTES.marketingReferrals,
               },
             ]}
           />

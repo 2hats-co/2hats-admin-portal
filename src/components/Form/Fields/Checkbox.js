@@ -25,7 +25,7 @@ const Checkbox = props => {
         <FormControlLabel
           control={
             <MuiCheckbox
-              checked={values[name]}
+              checked={!!values[name]}
               onChange={handleChange}
               name={name}
             />

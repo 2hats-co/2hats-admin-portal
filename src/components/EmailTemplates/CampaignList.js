@@ -10,7 +10,7 @@ import { withRouter } from 'react-router-dom';
 function CampaignList(props) {
   const { history, setCampaign, editCampaign } = props;
   const [campaignsState] = useCollection({
-    path: COLLECTIONS.emailCampaigns,
+    path: COLLECTIONS.campaigns,
   });
   const campaigns = campaignsState.documents;
   if (campaigns) {

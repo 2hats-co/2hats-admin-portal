@@ -2,11 +2,13 @@ import { functions } from '../store';
 
 export const CLOUD_FUNCTIONS = {
   tracker: 'callablesEventTracker',
-  stats: 'callablesCachedStats',
+  // stats: 'callablesCachedStats', //Old function
+  stats: 'cachedStats', //ts2 function
   auth: 'callablesAuthAdmin',
-  refreshAccessToken: 'callablesRefreshAccessToken', //Skipped
+  refreshAccessToken: 'callablesRefreshAccessToken',
   grantDrivePermissions: 'callablesDriveGrantPermissions',
   callablesSendTargeted: 'callablesCampaignSendTargeted',
+  smartLinkCreate: 'smartLinkCreate',
 };
 
 export const callable = (name, input, success, fail) => {
@@ -24,3 +26,6 @@ export const callable = (name, input, success, fail) => {
       }
     });
 };
+
+export const callCallable = (callable, data) =>
+  functions.httpsCallable(callable)(data);

@@ -9,9 +9,13 @@ import moment from 'moment';
 import IconButton from '@material-ui/core/IconButton';
 
 import EditIcon from '@material-ui/icons/EditOutlined';
-import CopyIcon from '@material-ui/icons/FileCopyOutlined';
 import Tooltip from '@material-ui/core/Tooltip';
 import OpenIcon from '@material-ui/icons/ArrowForwardIos';
+import RecipientsIcon from '@material-ui/icons/GroupOutlined';
+
+import EmailAnalytics from './EmailAnalytics';
+
+import { COLLECTIONS } from '@bit/sidney2hats.2hats.global.common-constants';
 
 const styles = theme => ({
   root: {
@@ -35,8 +39,11 @@ const styles = theme => ({
   },
   rightAligned: {
     textAlign: 'right',
+
+    '& > *': { justifyContent: 'flex-end' },
   },
 });
+
 function EmailTemplateCard(props) {
   const { classes, data, actions } = props;
   return (
@@ -47,12 +54,26 @@ function EmailTemplateCard(props) {
             <Grid container>
               <Grid item>{''}</Grid>
               <Grid item xs>
-                <Typography variant="h6">
+                <Typography variant="subtitle1">
                   {data.label}
-                  {data.delay ? `(after ${data.delay} days)` : ''}
+                  <Typography
+                    variant="subtitle1"
+                    color="textSecondary"
+                    component="span"
+                    style={{ display: 'inline' }}
+                  >
+                    {data.delay ? ` · sent after ${data.delay} days` : ''}
+                  </Typography>
                 </Typography>
-                <Typography variant="body2">
-                  subject: {data.subject} - created&nbsp;
+                <Typography variant="body2" gutterBottom>
+                  <b>Subject:</b> {data.subject}
+                </Typography>
+                <Typography variant="caption" color="textSecondary">
+                  last updated&nbsp;
+                  {data.updatedAt
+                    ? moment.unix(data.updatedAt.seconds).fromNow()
+                    : 'at unknown time'}
+                  &nbsp;•&nbsp;created&nbsp;
                   {data.createdAt
                     ? moment.unix(data.createdAt.seconds).fromNow()
                     : 'at unknown time'}
@@ -61,25 +82,27 @@ function EmailTemplateCard(props) {
             </Grid>
           </Grid>
 
-          <Grid item xs={2} className={classes.rightAligned}>
-            <Typography variant="h6">{'--%'}</Typography>
-            <Typography variant="body2">Open Rate</Typography>
-          </Grid>
-          <Grid item xs={2} className={classes.rightAligned}>
-            <Typography variant="h6">{'--%'}</Typography>
-            <Typography variant="body2">Click Rate</Typography>
-          </Grid>
-          <Grid item xs={2} className={classes.rightAligned}>
-            <Typography variant="h6">{'--%'}</Typography>
-            <Typography variant="body2">Bounce Rate</Typography>
+          <Grid item xs={6} className={classes.rightAligned}>
+            <EmailAnalytics
+              analyticsCollection={`${COLLECTIONS.emailTemplates}/${
+                data.id
+              }/analytics`}
+            />
           </Grid>
 
           <Grid item xs={2} className={classes.rightAligned}>
-            <Tooltip title="Edit Template">
+            <Tooltip title="View recipients">
+              <IconButton onClick={actions.viewRecipients}>
+                <RecipientsIcon />
+              </IconButton>
+            </Tooltip>
+
+            <Tooltip title="Edit Template Properties">
               <IconButton onClick={actions.edit}>
                 <EditIcon />
               </IconButton>
             </Tooltip>
+
             <Tooltip title="View Template">
               <IconButton onClick={actions.editTemplate}>
                 <OpenIcon />

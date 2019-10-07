@@ -1,12 +1,11 @@
 import FIELDS from './fields';
 import * as yup from 'yup';
-import {
-  ASSESSMENT_CATEGORIES,
-  SKILLS,
-} from '@bit/sidney2hats.2hats.global.common-constants';
+import moment from 'moment';
+import { ASSESSMENT_CATEGORIES } from '@bit/sidney2hats.2hats.global.common-constants';
 
 const jobFields = initialData => {
   if (!initialData) initialData = {};
+
   return [
     {
       type: FIELDS.textField,
@@ -39,16 +38,19 @@ const jobFields = initialData => {
       validation: yup.string().required('Required'),
     },
     {
-      type: FIELDS.autocompleteMulti,
+      type: FIELDS.docAutocompleteMulti,
       name: 'skillsRequired',
       label: 'Skills required',
-      value:
-        initialData['skillsRequired'] &&
-        SKILLS.filter(x => initialData['skillsRequired'].includes(x.value)),
-      suggestions: SKILLS,
+      value: initialData['skillsRequired'],
+      mappings: {
+        label: 'title',
+        value: doc => ({
+          title: doc.title,
+          id: doc.id,
+        }),
+      },
+      collection: 'assessments',
       validation: yup.array(),
-      // .min(1)
-      // .required('Skills are required'),
     },
     {
       type: FIELDS.autocompleteFreeText,
@@ -64,8 +66,21 @@ const jobFields = initialData => {
       type: FIELDS.date,
       name: 'closingDate',
       label: 'Closing date',
-      value: initialData['closingDate'],
-      validation: yup.string().required('Closing date is required'),
+      value: initialData['closingDate']
+        ? initialData['closingDate'].seconds
+          ? moment.unix(initialData['closingDate'].seconds).toDate()
+          : moment.unix(initialData['closingDate']).toDate()
+        : moment()
+            .add(2, 'days')
+            .toDate(),
+      validation: yup
+        .date()
+        // .test(
+        //   'day-from-now',
+        //   'Scheduled time must be at least a day from now',
+        //   value => moment(value).diff(moment(), 'days') >= 1
+        // )
+        .required('Required'),
     },
     {
       type: FIELDS.textField,
@@ -119,7 +134,8 @@ const jobFields = initialData => {
       label: 'Cover image',
       value: initialData['image'],
       mimeTypes: 'image/*',
-      path: 'studentPortal/',
+      path: 'studentPortal',
+      aspectRatio: 1,
       // validation: yup.object().shape({
       //   name: yup.string().required(),
       //   url: yup

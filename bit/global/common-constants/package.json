@@ -1,9 +1,11 @@
 {
   "name": "@bit/sidney2hats.2hats.global.common-constants",
-  "version": "0.0.39",
+  "version": "0.0.48",
   "homepage": "https://bitsrc.io/sidney2hats/2hats/global/common-constants",
   "main": "dist/index.js",
-  "dependencies": {},
+  "dependencies": {
+    "@material-ui/core": "3.8.3"
+  },
   "devDependencies": {},
   "peerDependencies": {},
   "license": "SEE LICENSE IN LICENSE"

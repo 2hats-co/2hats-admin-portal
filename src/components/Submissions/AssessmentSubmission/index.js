@@ -1,4 +1,5 @@
 import React from 'react';
+import moment from 'moment';
 
 import withStyles from '@material-ui/core/styles/withStyles';
 import Grid from '@material-ui/core/Grid';
@@ -8,11 +9,15 @@ import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 
+import PersonIcon from '@material-ui/icons/PersonOutlined';
+import AssessmentIcon from '@material-ui/icons/AssignmentOutlined';
+import SubmittedIcon from '@material-ui/icons/SendOutlined';
 import IndustryIcon from '@material-ui/icons/BusinessOutlined';
 import TimeIcon from '@material-ui/icons/AccessTimeOutlined';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
 import Question from './Question';
+import DebugButton from '../../DebugButton';
 
 import {
   STYLES,
@@ -22,19 +27,21 @@ import {
 const styles = theme => ({
   ...STYLES.DETAIL_VIEW(theme),
 
+  debugButtonsWrapper: {
+    position: 'absolute',
+    top: theme.spacing.unit,
+    right: theme.spacing.unit,
+  },
+
   meta: {
     marginTop: theme.spacing.unit * 1.5,
     marginBottom: theme.spacing.unit * 3,
-    textAlign: 'center',
   },
-  metaWrapper: {
-    display: 'inline-flex',
-    width: 'auto',
-    '& + &': { marginLeft: theme.spacing.unit * 2 },
-  },
+  metaElement: { marginBottom: theme.spacing.unit / 2 },
   icon: {
     marginRight: theme.spacing.unit,
     opacity: 0.67,
+    color: theme.palette.text.primary,
   },
 
   expansionPanel: { boxShadow: 'none' },
@@ -59,32 +66,64 @@ const AssessmentSubmission = props => {
   return (
     <div className={classes.root}>
       <main className={classes.content}>
-        <div
-          style={
-            data.image && data.image.url
-              ? { backgroundImage: `url(${data.image.url})` }
-              : {}
-          }
-          className={classes.coverImage}
-        />
-
-        <Typography variant="h4" className={classes.title}>
-          {data.title}
-        </Typography>
-
-        <div className={classes.meta}>
-          <Grid container alignItems="flex-end" className={classes.metaWrapper}>
-            <IndustryIcon className={classes.icon} />
-            <Typography variant="body1">
-              {getAssessmentCategoryLabel(data.category)}
-            </Typography>
-          </Grid>
-
-          <Grid container alignItems="flex-end" className={classes.metaWrapper}>
-            <TimeIcon className={classes.icon} />
-            <Typography variant="body1">{data.duration}</Typography>
-          </Grid>
+        <div className={classes.debugButtonsWrapper}>
+          <DebugButton title="Copy submission ID" toCopy={data.id} />
+          <DebugButton title="Copy assessment ID" toCopy={data.assessmentId} />
+          <DebugButton
+            title="Copy user submission doc ID"
+            toCopy={data.userSubmissionDocId}
+          />
+          <DebugButton toCopy={data.UID} />
         </div>
+
+        <Grid container className={classes.meta} alignItems="flex-end">
+          <Grid item xs={12} sm={6}>
+            <Grid container alignItems="center" className={classes.metaElement}>
+              <PersonIcon className={classes.icon} />
+              <Typography variant="h5">
+                {data.user.firstName} {data.user.lastName}
+              </Typography>
+            </Grid>
+
+            <Grid container alignItems="center" className={classes.metaElement}>
+              <AssessmentIcon className={classes.icon} />
+              <Typography variant="subtitle1">{data.title}</Typography>
+            </Grid>
+
+            <Grid
+              container
+              alignItems="flex-end"
+              className={classes.metaElement}
+            >
+              <SubmittedIcon className={classes.icon} />
+              <Typography variant="body1">
+                Submitted {moment(data.createdAt.seconds * 1000).fromNow()}
+              </Typography>
+            </Grid>
+          </Grid>
+
+          <Grid item xs={12} sm={6}>
+            <Grid
+              container
+              alignItems="flex-end"
+              className={classes.metaElement}
+            >
+              <IndustryIcon className={classes.icon} />
+              <Typography variant="body1">
+                {getAssessmentCategoryLabel(data.category)}
+              </Typography>
+            </Grid>
+
+            <Grid
+              container
+              alignItems="flex-end"
+              className={classes.metaElement}
+            >
+              <TimeIcon className={classes.icon} />
+              <Typography variant="body1">Duration: {data.duration}</Typography>
+            </Grid>
+          </Grid>
+        </Grid>
 
         <div className={classes.section}>
           <ExpansionPanel classes={{ root: classes.expansionPanel }}>
@@ -103,33 +142,46 @@ const AssessmentSubmission = props => {
             <ExpansionPanelDetails
               classes={{ root: classes.expansionPanelDetails }}
             >
-              <div>
-                <Typography
-                  variant="subtitle1"
-                  gutterBottom
-                  className={classes.subtitle}
-                >
-                  The company
-                </Typography>
-                <div
-                  className={classes.renderedHtml}
-                  dangerouslySetInnerHTML={{ __html: data.companyDescription }}
-                />
-              </div>
+              {data.briefing && data.briefing.length > 0 ? (
+                <div>
+                  <div
+                    className={classes.renderedHtml}
+                    dangerouslySetInnerHTML={{ __html: data.briefing }}
+                  />
+                </div>
+              ) : (
+                <>
+                  <div>
+                    <Typography
+                      variant="subtitle1"
+                      gutterBottom
+                      className={classes.subtitle}
+                    >
+                      The company
+                    </Typography>
+                    <div
+                      className={classes.renderedHtml}
+                      dangerouslySetInnerHTML={{
+                        __html: data.companyDescription,
+                      }}
+                    />
+                  </div>
 
-              <div className={classes.section}>
-                <Typography
-                  variant="subtitle1"
-                  gutterBottom
-                  className={classes.subtitle}
-                >
-                  Your job
-                </Typography>
-                <div
-                  className={classes.renderedHtml}
-                  dangerouslySetInnerHTML={{ __html: data.jobDescription }}
-                />
-              </div>
+                  <div className={classes.section}>
+                    <Typography
+                      variant="subtitle1"
+                      gutterBottom
+                      className={classes.subtitle}
+                    >
+                      Your job
+                    </Typography>
+                    <div
+                      className={classes.renderedHtml}
+                      dangerouslySetInnerHTML={{ __html: data.jobDescription }}
+                    />
+                  </div>
+                </>
+              )}
 
               {data.relatedMaterial && (
                 <div className={classes.section}>

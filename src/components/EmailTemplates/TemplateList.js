@@ -1,18 +1,23 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import EmailTemplateCard from './EmailTemplateCard';
+import EmailRecipients from './EmailRecipients';
 import LoadingHat from '../LoadingHat';
 import useCollection from '../../hooks/useCollection';
 import { COLLECTIONS } from '../../constants/firestore';
+import ScrollyRolly from '../ScrollyRolly';
 
 function TemplateList(props) {
   const { setTemplate, type, campaignId, editTemplate } = props;
-  let filters = [];
 
-  const [templatesState, templatesDispatch] = useCollection({
+  let filters = [];
+  const [templatesState, templatesDispatch, loadMore] = useCollection({
     path: COLLECTIONS.emailTemplates,
     filters,
+    // i can't figure out why this isn't sorting properly  — Sidney
+    sort: { field: 'updatedAt', order: 'desc' },
   });
+  let templates = templatesState.documents;
   useEffect(
     () => {
       if (type) {
@@ -31,29 +36,45 @@ function TemplateList(props) {
     },
     [campaignId]
   );
-  let templates = templatesState.documents;
-  console.log(templatesState);
+
+  const [recipientsId, setRecipientsId] = useState('');
+
   if (templates)
     return (
-      <React.Fragment>
-        {templates.map((x, i) => (
-          <EmailTemplateCard
-            data={x}
-            key={i}
-            actions={{
-              edit: () => {
-                setTemplate(x);
-                editTemplate(x);
-                // history.push(`marketingEmail?id=${x.id}`);
-              },
-              editTemplate: () => {
-                setTemplate(x);
-                // history.push(`marketingEmail?id=${x.id}`);
-              },
-            }}
+      <>
+        <ScrollyRolly dataState={templatesState} loadMore={loadMore}>
+          {(x, i) => (
+            <EmailTemplateCard
+              data={x}
+              key={i}
+              actions={{
+                edit: () => {
+                  setTemplate(x);
+                  editTemplate(x);
+                  // history.push(`marketingEmail?id=${x.id}`);
+                },
+                editTemplate: () => {
+                  setTemplate(x);
+                  // history.push(`marketingEmail?id=${x.id}`);
+                },
+                viewRecipients: () => {
+                  setRecipientsId(x.id);
+                },
+              }}
+            />
+          )}
+        </ScrollyRolly>
+
+        {!!recipientsId && (
+          <EmailRecipients
+            showDialog={!!recipientsId}
+            setShowDialog={setRecipientsId}
+            collectionPath={`${
+              COLLECTIONS.emailTemplates
+            }/${recipientsId}/analytics`}
           />
-        ))}
-      </React.Fragment>
+        )}
+      </>
     );
   else return <LoadingHat message="Loading templates…" />;
 }

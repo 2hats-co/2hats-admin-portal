@@ -1,61 +1,67 @@
-import { useEffect, useReducer } from 'react';
+import { useEffect, useState } from 'react';
 import { ALGOLIA_INDEX, createAlgoliaIndex } from '../config/algolia';
-
-const searchReducer = (prevState, action) => {
-  switch (action.type) {
-    case 'more':
-      return { ...prevState, limit: prevState.limit + 10 };
-    default:
-      return { ...prevState, ...action };
-  }
-};
-
-const updateQuery = async (index, search, filters, limit, searchDispatch) => {
-  searchDispatch({
-    prevSearch: search,
-    prevFilters: filters,
-    prevLimit: limit,
-    limit,
-    loading: true,
-  });
-  const results = await index.search(search, {
-    hitsPerPage: limit,
-  });
-  searchDispatch({ results, loading: false });
-};
-
-function useAlgolia() {
-  const [searchState, searchDispatch] = useReducer(searchReducer, {
-    search: '',
-    filters: [],
-    prevSearch: '',
-    prevFilters: [],
-    results: [],
-    limit: 20,
-    prevLimit: 20,
-  });
+const hitsPerPage = 50;
+function useAlgolia(initialQuery) {
   const index = createAlgoliaIndex(ALGOLIA_INDEX.users);
+  const [results, setResults] = useState([]);
+  const [selectedIds, setSelectedIds] = useState([]);
+  const [hits, setHits] = useState([]);
+  const [query, setQuery] = useState(initialQuery || '');
+  const [page, setPage] = useState(0);
+
+  const setSelectedField = hits => {
+    return hits.map(hit => {
+      if (selectedIds.includes(hit.objectID)) return { ...hit, selected: true };
+      else return { ...hit, selected: false };
+    });
+  };
+  const updateQuery = async () => {
+    const results = await index.search(query, {
+      hitsPerPage,
+      page,
+    });
+    setResults(results);
+    const newHits = setSelectedField(results.hits);
+    setHits([...hits, ...newHits]);
+  };
+  const resetQuery = async () => {
+    const results = await index.search(query, {
+      hitsPerPage,
+      page,
+    });
+    setResults(results);
+    const newHits = setSelectedField(results.hits);
+    setHits(newHits);
+    setPage(0);
+  };
   useEffect(
     () => {
-      const {
-        search,
-        prevSearch,
-        filters,
-        limit,
-        prevLimit,
-        prevFilters,
-      } = searchState;
-      if (search !== prevSearch || filters !== prevFilters) {
-        updateQuery(index, search, filters, 20, searchDispatch);
-      } else if (prevLimit !== limit) {
-        updateQuery(index, search, filters, limit, searchDispatch);
-      }
-      return () => {};
+      resetQuery();
     },
-    [searchState]
+    [query]
   );
+  useEffect(
+    () => {
+      updateQuery();
+    },
+    [page]
+  );
+  const loadMore = () => {
+    if (results.nbPages > page + 1 && results.page === page) setPage(page + 1);
+  };
+  const select = id => {
+    setSelectedIds([...selectedIds, id]);
+  };
+  const unselect = (id, shouldReload) => {
+    const newSelectedIds = selectedIds.filter(selectedId => selectedId !== id);
+    setSelectedIds(newSelectedIds);
+    if (shouldReload) {
+      const newHits = setSelectedField(hits);
+      setHits(newHits);
+    }
+  };
 
-  return [searchState, searchDispatch];
+  return [hits, setQuery, results, loadMore, select, unselect, index];
 }
 
 export default useAlgolia;

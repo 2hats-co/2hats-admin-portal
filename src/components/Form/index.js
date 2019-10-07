@@ -13,7 +13,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogActions from '@material-ui/core/DialogActions';
 import DeleteIcon from '@material-ui/icons/DeleteOutlined';
 import IconButton from '@material-ui/core/IconButton';
-
+import Friction from '../Friction';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 import remove from 'ramda/es/remove';
@@ -33,7 +33,7 @@ import Checkbox from './Fields/Checkbox';
 import RadioButtons from './Fields/RadioButtons';
 import DocumentSelect from './Fields/DocumentSelect';
 
-const styles = theme => ({
+export const styles = theme => ({
   mobile: {},
   paperRoot: {
     width: `calc(100% - ${theme.spacing.unit * 4}px)`,
@@ -55,6 +55,8 @@ const styles = theme => ({
       padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit * 2.5}px`,
     },
   },
+
+  deleteButton: { marginRight: theme.spacing.unit },
 
   wrapperGrid: {
     overflowX: 'hidden',
@@ -125,18 +127,20 @@ const reactSelectValueFormatter = x => {
     return x;
   }
 };
-const youtubeUrlFormatter = x => {
-  if (typeof x === 'string' && x.includes('youtube.com')) {
-    return x.replace('watch?v=', 'embed/').split('&')[0];
-  } else {
-    return x;
-  }
-};
+// const youtubeUrlFormatter = x => {
+//   if (typeof x === 'string' && x.includes('youtube.com')) {
+//     return x.replace('watch?v=', 'embed/').split('&')[0];
+//   } else {
+//     return x;
+//   }
+// };
 
 /* eslint-disable no-sequences */
 const initialValuesReducer = (obj, item) => (
   (obj[item.name] =
-    item.value || (item.type === FIELDS.slider ? item.min : '')),
+    item.value ||
+    (item.type === FIELDS.slider && item.min) ||
+    (item.type === FIELDS.checkbox ? false : '')) || '',
   obj
 );
 const validationReducer = (obj, item) => (
@@ -191,12 +195,12 @@ function Form(props) {
           reactSelectValueFormatter,
           outputValues
         );
-        const youtubeUrlFormatted = map(
+        /* const youtubeUrlFormatted = map(
           youtubeUrlFormatter,
           reactSelectFormattedValues
-        );
+        ); */
 
-        actions[action](youtubeUrlFormatted);
+        actions[action](reactSelectFormattedValues);
       }}
       validationSchema={yup.object().shape(data.reduce(validationReducer, {}))}
     >
@@ -208,6 +212,7 @@ function Form(props) {
           errors,
           touched,
         } = formikProps;
+
         if (hasNewData) {
           setValues({ ...values, ...initialValues });
           hasNewData = false;
@@ -242,11 +247,17 @@ function Form(props) {
           <Grid
             container
             direction="row"
-            spacing={8}
+            spacing={16}
             className={classes.wrapperGrid}
             alignContent="flex-start"
           >
             {data.map(x => {
+              if (
+                typeof x.displayCondition === 'function' &&
+                !x.displayCondition(values)
+              )
+                return null;
+
               switch (x.type) {
                 case FIELDS.textField:
                 case FIELDS.textFieldNumber:
@@ -336,9 +347,11 @@ function Form(props) {
                     />
                   );
                 case FIELDS.docAutocomplete:
+                case FIELDS.docAutocompleteMulti:
                   return (
                     <DocumentSelect
                       collection={x.collection}
+                      filters={x.filters}
                       mappings={x.mappings}
                       key={x.name}
                       placeholder={x.placeholder}
@@ -375,6 +388,7 @@ function Form(props) {
                       path={x.path}
                       mimeTypes={x.mimeTypes}
                       validator={validator}
+                      aspectRatio={x.aspectRatio}
                     />
                   );
 
@@ -418,8 +432,10 @@ function Form(props) {
             id="submit"
             classes={{ label: classes.capitalise }}
           >
+            {Object.keys(errors).length > 0 && 'Can’t '}
             {action[0].toUpperCase()}
             {action.substr(1)}
+            {Object.keys(errors).length > 0 && ' – Fix Errors'}
           </Button>
         );
         return (
@@ -435,7 +451,11 @@ function Form(props) {
                 <Grid item xs>
                   {Fields}
                 </Grid>
-                <Grid item>{formFooter}</Grid>
+                <Grid item>
+                  {typeof formFooter === 'function'
+                    ? formFooter(values)
+                    : formFooter}
+                </Grid>
                 <Grid item>{PrimaryButton}</Grid>
               </Grid>
             ) : (
@@ -449,17 +469,34 @@ function Form(props) {
                 className={isMobile ? classes.mobile : ''}
                 TransitionComponent={Transition}
               >
-                <DialogTitle
-                  className={classes.capitalise}
-                  classes={{ root: classes.dialogTitle }}
-                >
-                  {action} {formTitle}{' '}
+                <Grid container justify="space-between" alignItems="center">
+                  <Grid item xs>
+                    <DialogTitle
+                      className={classes.capitalise}
+                      classes={{ root: classes.dialogTitle }}
+                    >
+                      {action} {formTitle}
+                    </DialogTitle>
+                  </Grid>
                   {handleDelete && (
-                    <IconButton onClick={handleDelete}>
-                      <DeleteIcon />
-                    </IconButton>
+                    <Grid item>
+                      <Friction
+                        dryCommand="DELETE ME"
+                        message={{
+                          title: `Are you sure you want to delete this?`,
+                          body: 'You won’t be able to recover it',
+                        }}
+                      >
+                        <IconButton
+                          onClick={handleDelete}
+                          className={classes.deleteButton}
+                        >
+                          <DeleteIcon />
+                        </IconButton>
+                      </Friction>
+                    </Grid>
                   )}
-                </DialogTitle>
+                </Grid>
 
                 <DialogContent classes={{ root: classes.dialogContent }}>
                   {formHeader}

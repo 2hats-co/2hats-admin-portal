@@ -5,9 +5,13 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import Typography from '@material-ui/core/Typography';
 import Avatar from '@material-ui/core/Avatar';
 import Tooltip from '@material-ui/core/Tooltip';
+import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
 
 import PersonIcon from '@material-ui/icons/PersonOutlined';
+import ErrorIcon from '@material-ui/icons/ErrorOutlined';
+import SuccessIcon from '@material-ui/icons/CheckCircleOutlined';
+import PendingIcon from '@material-ui/icons/ScheduleOutlined';
 import EditIcon from '@material-ui/icons/EditOutlined';
 
 import { isOnlyEmojis } from '../../../utilities/emoji';
@@ -267,6 +271,18 @@ const styles = theme => ({
   },
 });
 
+const statusIndecator = status => {
+  switch (status) {
+    case 'success':
+      return <SuccessIcon />;
+    case 'error':
+      return <ErrorIcon />;
+    case 'pending':
+      return <PendingIcon />;
+    default:
+      return null;
+  }
+};
 function Message(props) {
   const { data, classes, firstOfType, lastOfType, editEvent } = props;
   moment.updateLocale('en', momentLocales);
@@ -314,23 +330,26 @@ function Message(props) {
         placement={isIncoming ? 'right' : 'left'}
         enterDelay={1000}
       >
-        <div className={classNames(classes.body, 'msg-body')}>
-          <MessageBody
-            classes={classes}
-            adminsContext={adminsContext}
-            data={data}
-          />
-          {data.type === 'event' && (
-            <IconButton
-              className={classes.editButton}
-              onClick={() => {
-                editEvent(data);
-              }}
-            >
-              <EditIcon />
-            </IconButton>
-          )}
-        </div>
+        <Grid>
+          <div className={classNames(classes.body, 'msg-body')}>
+            <MessageBody
+              classes={classes}
+              adminsContext={adminsContext}
+              data={data}
+            />
+            {data.type === 'event' && (
+              <IconButton
+                className={classes.editButton}
+                onClick={() => {
+                  editEvent(data);
+                }}
+              >
+                <EditIcon />
+              </IconButton>
+            )}
+          </div>
+          {statusIndecator(data.status)}
+        </Grid>
       </Tooltip>
       {!isIncoming &&
         lastOfType &&

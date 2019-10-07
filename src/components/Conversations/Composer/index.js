@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useMemo, useEffect, useContext } from 'react';
 
 import withStyles from '@material-ui/core/styles/withStyles';
 import Grid from '@material-ui/core/Grid';
@@ -11,6 +11,7 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import Avatar from '@material-ui/core/Avatar';
 
 import ReactQuill from 'react-quill';
+import * as escaperegex from 'escape-string-regexp';
 import 'react-quill/dist/quill.bubble.css';
 
 import classNames from 'classnames';
@@ -23,7 +24,11 @@ import { removeHtmlTags, globalReplace } from '../../../utilities';
 import { sendEmail } from '../../../utilities/email/gmail';
 import { sendLinkedinMessage } from '../../../utilities/linkedin';
 import { markAsRead, addNote } from '../../../utilities/conversations';
-import { CLOUD_FUNCTIONS, callable } from '../../../firebase/functions';
+import {
+  CLOUD_FUNCTIONS,
+  callable,
+  callCallable,
+} from '../../../firebase/functions';
 
 const styles = theme => ({
   root: {
@@ -119,14 +124,20 @@ function Composer(props) {
   const { classes, conversation, channels } = props;
 
   const adminsContext = useContext(AdminsContext);
+  const lastMessageType = conversation.lastMessage.type;
+  // console.log(conversation, lastMessageType);
 
   const [composerType, setComposerType] = useState(
-    channels.email ? 'email' : 'linkedin'
+    lastMessageType ? lastMessageType : 'email'
   );
   useEffect(
     () => {
-      if (channels.email) setComposerType('email');
-      else if (channels.linkedin) setComposerType('linkedin');
+      if (lastMessageType === 'email' || lastMessageType === 'linkedin')
+        setComposerType(lastMessageType);
+      else {
+        if (channels.email) setComposerType('email');
+        else if (channels.linkedin) setComposerType('linkedin');
+      }
     },
     [channels]
   );
@@ -157,6 +168,7 @@ function Composer(props) {
   const [messageText, setMessageText] = useState('');
   const [messageHtml, setMessageHtml] = useState('');
   const [attachments, setAttachments] = useState([]);
+  const [signature, setSignature] = useState('');
   const [cc, setCc] = useState('');
   const [hasTemplate, setHasTemplate] = useState(false);
   const [notifyList, setNotifyList] = useState([]);
@@ -205,6 +217,8 @@ function Composer(props) {
           value: `${currentUser.givenName} ${currentUser.familyName}`,
         },
         { tag: '{{senderTitle}}', value: currentUser.title },
+        { tag: '{{senderFirstName}}', value: currentUser.givenName },
+        { tag: '{{senderLastName}}', value: currentUser.familyName },
       ];
 
       let html = data.html;
@@ -213,6 +227,36 @@ function Composer(props) {
         html = globalReplace(html, x.tag, x.value);
         subject = globalReplace(subject, x.tag, x.value);
       });
+
+      // added route logic here
+      if (conversation.UID) {
+        const matchOperatorsRegex = /[|\\{}()[\]^$+*?.-]/g;
+        const routePattern = /{{<route>.*?<route>}}/gm;
+        const matches = html.match(routePattern) || [];
+        const UID = conversation.UID;
+
+        matches
+          .reduce(async (acc, match) => {
+            const text = await acc;
+            const route = match
+              .replace(matchOperatorsRegex, '\\$&')
+              .replace('{{', '')
+              .replace('}}', '')
+              .replace(/<route>/g, '')
+              .replace(/\%3F/g, '?');
+            const { key, secret } = await callCallable(CLOUD_FUNCTIONS.auth, {
+              UID,
+              route,
+              data: {},
+            });
+
+            return text.replace(match, `${key}&slSecret=${secret}`);
+          }, Promise.resolve(html))
+          .then(result => {
+            html = result;
+          });
+      }
+      // end
 
       setMessageHtml(html);
       setMessageText(' ');
@@ -225,7 +269,7 @@ function Composer(props) {
   const handleSendEmail = () => {
     const email = {
       subject: emailSubject,
-      body: messageHtml,
+      body: messageHtml + signature,
     };
     const recipient = {
       email: conversation.channels.email,
@@ -359,7 +403,11 @@ function Composer(props) {
               </Grid>
             </Grid>
             <Grid item className={classes.templateDropdownWrapper}>
-              <TemplateDropdown classes={classes} setTemplate={setTemplate} />
+              <TemplateDropdown
+                classes={classes}
+                setTemplate={setTemplate}
+                UID={conversation.UID}
+              />
             </Grid>
           </>
         )}
@@ -403,7 +451,7 @@ function Composer(props) {
       ) : (
         <InputBase
           autoFocus
-          disabled={composerType === 'linkedin'}
+          //disabled={composerType === 'linkedin'}
           value={messageText}
           onChange={e => {
             setMessageText(e.target.value);
@@ -419,26 +467,29 @@ function Composer(props) {
           // } here…`}
           placeholder={
             composerType === 'linkedin'
-              ? 'This service is currently under reconstruction due to internet reliablity issues, please use the linkedin icon above to be direct to the clients linkedin message thread. We are working hard on bring back this service, sorry for the inconvience, and thank you for your understanding.'
+              ? // ? 'This service is currently under reconstruction due to internet reliablity issues, please use the linkedin icon above to be direct to the clients linkedin message thread. We are working hard on bring back this service, sorry for the inconvience, and thank you for your understanding.'
+                'type your message here'
               : 'Type your note here'
           }
         />
       )}
 
       <div className={classes.chipWrapper}>
-        {attachments.map((x, i) => (
-          <Chip
-            key={x.id}
-            label={x.name}
-            icon={<img src={x.iconUrl} alt={x.mimeType} />}
-            onDelete={() => {
-              const newAttachments = attachments;
-              newAttachments.splice(i, 1);
-              setAttachments(newAttachments);
-            }}
-            classes={{ icon: classes.chipIcon }}
-          />
-        ))}
+        {Array.isArray(attachments) &&
+          attachments.length > 0 &&
+          attachments.map((x, i) => (
+            <Chip
+              key={x.id}
+              label={x.name}
+              icon={<img src={x.iconUrl} alt={x.mimeType} />}
+              onDelete={() => {
+                const newAttachments = attachments;
+                newAttachments.splice(i, 1);
+                setAttachments(newAttachments);
+              }}
+              classes={{ icon: classes.chipIcon }}
+            />
+          ))}
       </div>
 
       {composerType === 'note' && (
@@ -470,6 +521,7 @@ function Composer(props) {
           addText,
           at: handleAt,
           file: handleFile,
+          signature: setSignature,
         }}
         composerType={composerType}
         conversation={conversation}

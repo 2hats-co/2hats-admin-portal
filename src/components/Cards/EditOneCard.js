@@ -1,30 +1,34 @@
 import React, { useState } from 'react';
-
 import withStyles from '@material-ui/core/styles/withStyles';
 import { withRouter } from 'react-router-dom';
 
+import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 
-import CopyIcon from '@material-ui/icons/FileCopyOutlined';
 import ApplicantsIcon from '@material-ui/icons/AssignmentIndOutlined';
 import EditIcon from '@material-ui/icons/EditOutlined';
-// import DeleteIcon from '@material-ui/icons/DeleteOutlined';
 import PublishedIcon from '@material-ui/icons/VisibilityOutlined';
-import UnpublishedIcon from '@material-ui/icons/VisibilityOffOutlined';
+import UnpublishedIcon from '@material-ui/icons/VisibilityOff';
+import CriteriaIcon from '@material-ui/icons/AssignmentOutlined';
+import PreviewIcon from '@material-ui/icons/PageviewOutlined';
 
 import Form from '../Form';
+import Friction from '../Friction';
+import CriteriaDialog from './CriteriaDialog';
+import DebugButton from '../DebugButton';
 
-import { updateDoc } from '../../utilities/firestore';
-import { copyToClipboard } from '../../utilities';
-import { assessment } from '../../constants/oneCardMappings';
+import { updateDoc, deleteDoc } from '../../utilities/firestore';
 
 const styles = theme => ({
-  root: { marginTop: theme.spacing.unit },
+  root: {
+    marginTop: theme.spacing.unit,
+    width: 'auto',
+  },
 
   buttonBar: {
     marginBottom: -theme.spacing.unit,
-    textAlign: 'right',
+    // textAlign: 'right',
   },
 });
 
@@ -32,12 +36,40 @@ const EditOneCard = props => {
   const { classes, children, data, fields, collection, history } = props;
 
   const [showForm, setShowForm] = useState(false);
+  const [showCriteriaDialog, setShowCriteriaDialog] = useState(false);
+
+  let url = 'https://students.2hats.com/';
+  switch (collection) {
+    case 'courses':
+      url += 'courses';
+      break;
+
+    case 'assessments':
+    case 'jobs':
+      url += `${collection.slice(0, -1)}?id=${data.id}`;
+      break;
+
+    default:
+      break;
+  }
 
   return (
-    <div className={classes.root}>
-      <div className={classes.buttonBar}>
+    <Grid container direction="column" className={classes.root}>
+      <Grid item className={classes.buttonBar}>
+        {collection === 'assessments' && (
+          <Tooltip title="Edit criteria">
+            <IconButton
+              onClick={() => {
+                setShowCriteriaDialog(true);
+              }}
+            >
+              <CriteriaIcon />
+            </IconButton>
+          </Tooltip>
+        )}
+
         {(collection === 'jobs' || collection === 'assessments') && (
-          <Tooltip title="applicants">
+          <Tooltip title={collection === 'jobs' ? 'Applicants' : 'Submissions'}>
             <IconButton
               onClick={() => {
                 history.push(
@@ -51,15 +83,22 @@ const EditOneCard = props => {
             </IconButton>
           </Tooltip>
         )}
-        <Tooltip title="Copy ID">
-          <IconButton
-            onClick={() => {
-              copyToClipboard(data.id);
-            }}
-          >
-            <CopyIcon />
-          </IconButton>
-        </Tooltip>
+
+        <DebugButton toCopy={data.id} title="Copy ID" />
+
+        {url && (
+          <Tooltip title="View on Student Portal">
+            <IconButton
+              component="a"
+              href={url}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <PreviewIcon />
+            </IconButton>
+          </Tooltip>
+        )}
+
         <Tooltip title="Edit">
           <IconButton
             onClick={() => {
@@ -70,32 +109,47 @@ const EditOneCard = props => {
           </IconButton>
         </Tooltip>
         <Tooltip title={data.published ? 'Unpublish' : 'Publish'}>
-          <IconButton
-            onClick={() => {
-              updateDoc(collection, data.id, { published: !data.published });
+          <Friction
+            message={{
+              title: data.published
+                ? 'Are you sure you want to unpublish this?'
+                : `Are you sure you want to publish this?`,
+              body: data.published
+                ? `It'll be hidden on the student portal`
+                : `It'll be seen on the student portal`,
             }}
           >
-            {data.published ? <PublishedIcon /> : <UnpublishedIcon />}
-          </IconButton>
+            <IconButton
+              onClick={() => {
+                updateDoc(collection, data.id, { published: !data.published });
+              }}
+              color={data.published ? 'default' : 'primary'}
+            >
+              {data.published ? <PublishedIcon /> : <UnpublishedIcon />}
+            </IconButton>
+          </Friction>
         </Tooltip>
-        {/* <Tooltip title="Delete">
-          <IconButton
-            onClick={() => {
-              deleteDoc(collection, data.id);
-            }}
-          >
-            <DeleteIcon />
-          </IconButton>
-        </Tooltip> */}
-      </div>
+      </Grid>
 
-      {children}
+      <Grid item xs>
+        {children({
+          onClick: () => {
+            setShowForm(true);
+          },
+          published: data.published,
+          fullHeight: true,
+        })}
+      </Grid>
 
       {showForm && (
         <Form
+          handleDelete={() => {
+            deleteDoc(collection, data.id);
+          }}
           action="edit"
           actions={{
             edit: d => {
+              console.log(d);
               updateDoc(collection, data.id, d);
               setShowForm(false);
             },
@@ -108,7 +162,15 @@ const EditOneCard = props => {
           formTitle={data.title}
         />
       )}
-    </div>
+
+      {collection === 'assessments' && showCriteriaDialog && (
+        <CriteriaDialog
+          showDialog={showCriteriaDialog}
+          setShowDialog={setShowCriteriaDialog}
+          data={data}
+        />
+      )}
+    </Grid>
   );
 };
 

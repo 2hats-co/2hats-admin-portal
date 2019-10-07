@@ -38,7 +38,7 @@ const Text = props => {
           }
           onChange={handleChange}
           variant="filled"
-          margin="dense"
+          margin="none"
           InputProps={{ disableUnderline: true }}
           fullWidth
           value={values[name]}

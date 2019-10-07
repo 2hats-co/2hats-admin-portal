@@ -13,7 +13,7 @@ function ScrollyRolly(props) {
     classes,
     theme,
     dataState,
-    dataDispatch,
+    loadMore,
     disablePadding,
     reverse,
     sort,
@@ -23,14 +23,6 @@ function ScrollyRolly(props) {
 
   const [hasMore, setHasMore] = useState(true);
   const [loading, setLoading] = useState(false);
-
-  const loadMore = num => {
-    if (hasMore) {
-      setHasMore(false);
-      setLoading(true);
-      dataDispatch({ type: 'more' });
-    }
-  };
 
   useEffect(
     () => {
@@ -63,9 +55,7 @@ function ScrollyRolly(props) {
       <InfiniteScroll
         initialLoad={false}
         pageStart={0}
-        loadMore={() => {
-          loadMore();
-        }}
+        loadMore={loadMore}
         hasMore={hasMore}
         useWindow={false}
         threshold={100}

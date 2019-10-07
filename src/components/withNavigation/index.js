@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { withRouter } from 'react-router-dom';
 
 import withStyles from '@material-ui/core/styles/withStyles';
@@ -30,11 +30,12 @@ import Search from '../Search';
 import Notifications from '../Notifications';
 import UserDialog from '../UserDialog';
 import SuperAvatar from '../SuperAvatar';
-
+import Fired from './Fired';
 import metadata from '../../metadata.json';
 import useAuthedUser from '../../hooks/useAuthedUser';
 import DebugContext from '../../contexts/DebugContext';
 import { AdminsProvider } from '../../contexts/AdminsContext';
+import CurrentUserContext from '../../contexts/CurrentUserContext';
 
 import withAuthentication from '../withAuthentication';
 const styles = theme => ({
@@ -103,17 +104,21 @@ const navigationRoutes = [
     route: ROUTES.conversations,
   },
   {
-    label: 'Subjects',
+    label: 'Candidates',
     icon: <SupervisorAccountIcon />,
-    route: ROUTES.clients,
-    subRoutes: [ROUTES.clients, ROUTES.candidates, ROUTES.subjects],
-    incomplete: true,
+    route: ROUTES.candidates,
+    subRoutes: [ROUTES.clients, ROUTES.candidates],
+    //incomplete: true,
   },
   {
     label: 'Marketing',
     icon: <MarketingIcon />,
     route: ROUTES.marketingLeadGeneration,
-    subRoutes: [ROUTES.marketingLeadGeneration, ROUTES.marketingEmailBlast],
+    subRoutes: [
+      ROUTES.marketingLeadGeneration,
+      ROUTES.marketingEmailBlast,
+      ROUTES.marketingReferrals,
+    ],
   },
   {
     label: 'Email Templates',
@@ -146,7 +151,7 @@ export default function withNavigation(WrappedComponent) {
 
     const [showSearch, setShowSearch] = useState(false);
     const [showUserDialog, setShowUserDialog] = useState(false);
-    const currentUser = useAuthedUser();
+    const currentUser = useContext(CurrentUserContext);
 
     const goTo = route => {
       history.push(route);
@@ -166,7 +171,10 @@ export default function withNavigation(WrappedComponent) {
         }
       }
     }
-
+    // console.log(currentUser);
+    if (currentUser && currentUser.fired) {
+      return <Fired user={currentUser} />;
+    }
     if (currentUser && uid)
       return (
         <AdminsProvider>
@@ -214,7 +222,6 @@ export default function withNavigation(WrappedComponent) {
                       </Grid>
                       <Grid item>
                         <NavigationItems
-                          goTo={goTo}
                           currentLocation={path}
                           selectedIndex={index}
                           navigationRoutes={navigationRoutes}

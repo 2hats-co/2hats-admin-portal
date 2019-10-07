@@ -72,7 +72,7 @@ var QUILL = (exports.QUILL = function QUILL(theme) {
     },
 
     // buttons stroke/fill colour matching
-    '& .ql-snow.ql-toolbar button': {
+    '& .ql-snow.ql-toolbar button, & .ql-snow .ql-picker-label': {
       borderRadius: theme.shape.borderRadius / 2,
       transition: theme.transitions.create('background-color', {
         duration: theme.transitions.duration.shortest,
@@ -109,9 +109,17 @@ var QUILL = (exports.QUILL = function QUILL(theme) {
         fill: theme.palette.primary.main + ' !important',
       },
     },
+
+    // dropdown styling
+    '& .ql-snow.ql-toolbar button:hover, & .ql-snow .ql-toolbar button:hover, & .ql-snow.ql-toolbar button:focus, & .ql-snow .ql-toolbar button:focus, & .ql-snow.ql-toolbar button.ql-active, & .ql-snow .ql-toolbar button.ql-active, & .ql-snow.ql-toolbar .ql-picker-label:hover, & .ql-snow .ql-toolbar .ql-picker-label:hover, & .ql-snow.ql-toolbar .ql-picker-label.ql-active, & .ql-snow .ql-toolbar .ql-picker-label.ql-active, & .ql-snow.ql-toolbar .ql-picker-item:hover, & .ql-snow .ql-toolbar .ql-picker-item:hover, & .ql-snow.ql-toolbar .ql-picker-item.ql-selected, & .ql-snow .ql-toolbar .ql-picker-item.ql-selected': {
+      color: theme.palette.primary.main,
+
+      '& polygon': { stroke: theme.palette.primary.main + ' !important' },
+    },
   };
 });
 
+var DROPZONE_HEIGHT = (exports.DROPZONE_HEIGHT = 196);
 var DROPZONE = (exports.DROPZONE = function DROPZONE(theme) {
   return {
     dropzone: {
@@ -119,10 +127,14 @@ var DROPZONE = (exports.DROPZONE = function DROPZONE(theme) {
       borderColor: theme.palette.divider,
       borderStyle: 'dashed',
       borderWidth: theme.spacing.unit / 2,
+
       padding: theme.spacing.unit * 2,
       paddingBottom: theme.spacing.unit * 3,
+
+      height: DROPZONE_HEIGHT,
+      boxSizing: 'border-box',
+
       textAlign: 'center',
-      minHeight: theme.spacing.unit * 12,
       cursor: 'pointer',
       userSelect: 'none',
       outline: 'none',
@@ -158,6 +170,33 @@ var DROPZONE = (exports.DROPZONE = function DROPZONE(theme) {
       marginTop: theme.spacing.unit,
     },
     fileIcon: { transform: 'rotate(-45deg)' },
+
+    previewWrapper: {
+      height: DROPZONE_HEIGHT,
+      textAlign: 'center',
+    },
+    previewImg: { height: DROPZONE_HEIGHT - 32 - theme.spacing.unit / 2 },
+    changeButton: {
+      margin: '0 auto',
+      marginTop: theme.spacing.unit / 2,
+      display: 'flex',
+    },
+    editButtonsWrapper: {
+      display: 'flex',
+      justifyContent: 'center',
+      '& > button': {
+        margin: theme.spacing.unit / 2,
+      },
+    },
+
+    loadingWrapper: {
+      height: DROPZONE_HEIGHT,
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+
+      '& > *': { width: '100%' },
+    },
   };
 });
 
@@ -203,6 +242,54 @@ var generateOlStyles = function generateOlStyles() {
 
   return output;
 };
+var generateUlStyles = function generateUlStyles() {
+  var output = {};
+
+  for (var i = 0; i < 10; i++) {
+    var marginTop = 0;
+    if (i === 0) marginTop = 8;
+    if (i === 1) marginTop = 4;
+
+    output[i === 0 ? '& ul li' : '& ul li.ql-indent-' + i] = {
+      listStyleType: 'none',
+      paddingLeft: 1.5 + 2 * i + 'em',
+
+      '&::before': {
+        content: '"\u2022"',
+        marginLeft: '-1.5em',
+        marginRight: '0.75em',
+
+        textAlign: 'right',
+        display: 'inline-block',
+        whiteSpace: 'nowrap',
+        width: '0.5em',
+      },
+
+      marginTop: marginTop,
+    };
+  }
+
+  return output;
+};
+var generatePreStyles = function generatePreStyles(theme) {
+  return {
+    '& pre': {
+      backgroundColor: '#222',
+      color: '#fff',
+
+      fontFamily:
+        'SFMono-Regular,Consolas,Liberation Mono,Menlo,Courier,monospace',
+      fontSize: '.875rem',
+
+      overflow: 'visible',
+      whiteSpace: 'pre-wrap',
+
+      margin: theme.spacing.unit / 2 + 'px 0',
+      padding: theme.spacing.unit * 1.5 + 'px ' + theme.spacing.unit * 2 + 'px',
+      borderRadius: theme.shape.borderRadius / 2,
+    },
+  };
+};
 
 var RENDERED_HTML = (exports.RENDERED_HTML = function RENDERED_HTML(theme) {
   return {
@@ -210,12 +297,20 @@ var RENDERED_HTML = (exports.RENDERED_HTML = function RENDERED_HTML(theme) {
       {},
       theme.typography.body1,
       {
-        '& p': { margin: 0 },
+        '& p, & h1, & h2, & h3, & h4, & h5, & h6, & blockquote': {
+          margin: 0,
+          padding: 0,
+        },
         '& a': { color: theme.palette.primary.main + ' !important' },
 
         '& ol, & ul': { padding: 0, margin: 0 },
+
+        '& img': { maxWidth: '100%' },
+        '& iframe': { width: 480, height: 270 },
       },
-      generateOlStyles()
+      generateOlStyles(),
+      generateUlStyles(),
+      generatePreStyles(theme)
     ),
     renderedHtmlOriginal: _extends({}, theme.typography.body2, {
       '& p': { margin: 0 },
@@ -284,6 +379,53 @@ var DETAIL_VIEW = (exports.DETAIL_VIEW = function DETAIL_VIEW(theme) {
     },
     RENDERED_HTML(theme)
   );
+});
+
+var NAKED_EXPANSION_PANEL = (exports.NAKED_EXPANSION_PANEL = function NAKED_EXPANSION_PANEL(
+  theme
+) {
+  return {
+    expansionPanel: {
+      boxShadow: 'none',
+      backgroundColor: 'transparent',
+      '&::before': { display: 'none' },
+    },
+    expansionPanelExpanded: { margin: 0 },
+
+    expansionPanelSummary: {
+      padding: 0,
+      '&$expansionPanelSummaryExpanded': { minHeight: 48 },
+    },
+    expansionPanelSummaryExpanded: {},
+    expansionPanelSummaryExpandIcon: { right: -theme.spacing.unit * 1.5 },
+    expansionPanelSummaryContent: {
+      '&$expansionPanelSummaryExpanded': {
+        margin: '12px 0',
+      },
+    },
+    expansionPanelDetails: {
+      flexDirection: 'column',
+      padding: 0,
+      paddingBottom: theme.spacing.unit * 2,
+    },
+
+    /* CLASSES PROPS
+      ExpansionPanel:
+      {
+        root: classes.expansionPanel,
+        expanded: classes.expansionPanelExpanded,
+      }
+       ExpansionPanelSummary:
+      {
+        root: classes.expansionPanelSummary,
+        content: classes.expansionPanelSummaryContent,
+        expanded: classes.expansionPanelSummaryExpanded,
+        expandIcon: classes.expansionPanelSummaryExpandIcon,
+      }
+       ExpansionPanelDetails:
+      { root: classes.expansionPanelDetails }
+    */
+  };
 });
 
 //# sourceMappingURL=commonStyles.js.map

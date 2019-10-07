@@ -31,6 +31,10 @@ import { COLLECTIONS } from '@bit/sidney2hats.2hats.global.common-constants';
 import { ROUTES } from '../constants/routes';
 import { markAllAsRead, markAsRead, archive } from '../utilities/notifications';
 
+import AppBar from '@material-ui/core/AppBar';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
+
 import moment from 'moment';
 import { momentLocales } from '../constants/momentLocales';
 
@@ -54,6 +58,7 @@ const styles = theme => ({
     left: theme.spacing.unit * 9,
     overflowY: 'auto',
   },
+  tabs: { boxShadow: `0 -1px 0 ${theme.palette.divider} inset` },
   listItemRoot: { paddingRight: theme.spacing.unit * 7 },
   listItemTextRoot: { paddingRight: 0 },
   timestamp: {
@@ -68,6 +73,10 @@ const styles = theme => ({
   unread: {
     color: theme.palette.common.white,
     backgroundColor: theme.palette.primary.main,
+  },
+  scrollyRollyWrapper: {
+    maxHeight: `calc(100vh - ${theme.spacing.unit * 3}px - 56px)`,
+    overflowY: 'auto',
   },
 });
 
@@ -85,6 +94,16 @@ const getIcon = type => {
   }
 };
 
+const dropDuplicates = notifications => {
+  if (!notifications) return [];
+  /* eslint-disable array-callback-return */
+  const uniqueNotifications = notifications.map((notification, index) => {
+    if (index === 0 || notification.title !== notifications[index - 1].title) {
+      return notification;
+    }
+  });
+  return uniqueNotifications.filter(n => n);
+};
 function Notifications(props) {
   const { classes, className, history, uid } = props;
 
@@ -104,13 +123,18 @@ function Notifications(props) {
     ? unreadNotificationsState.documents.length
     : 0;
 
-  const [notificationsState, notificationsDispatch] = useCollection({
+  const [notificationsState, notificationsDispatch, loadMore] = useCollection({
     path: `${COLLECTIONS.admins}/${uid}/${COLLECTIONS.notifications}`,
     sort: { field: 'createdAt', direction: 'desc' },
     filters: [{ field: 'archived', operator: '==', value: false }],
   });
   const notifications = notificationsState.documents;
-
+  const uniqueNotifications = dropDuplicates(notifications);
+  const uniqueNotificationsState = {
+    ...notificationsState,
+    documents: uniqueNotifications,
+  };
+  // console.log(uniqueNotifications);
   const handleClose = () => {
     setSlideIn(false);
     setTimeout(() => {
@@ -135,10 +159,18 @@ function Notifications(props) {
       handleClose();
     }
   };
-
+  const [tab, setTab] = useState('message');
+  const handleTab = (_, v) => {
+    setTab(v);
+    notificationsDispatch({
+      filters: [
+        { field: 'archived', operator: '==', value: false },
+        { field: 'data.type', operator: '==', value: v },
+      ],
+    });
+  };
   if (notificationsState.loading)
     return <CircularProgress className={classes.loader} size={24} />;
-
   return (
     <>
       <Fade in>
@@ -165,58 +197,74 @@ function Notifications(props) {
         <Modal open={showDialog} onClose={handleClose} disableAutoFocus>
           <Slide in={slideIn} direction="up">
             <Paper elevation={24} classes={{ root: classes.paperRoot }}>
-              <ScrollyRolly
-                dataState={notificationsState}
-                dataDispatch={notificationsDispatch}
+              <Tabs
+                value={tab}
+                onChange={handleTab}
+                indicatorColor="primary"
+                textColor="primary"
+                variant="fullWidth"
+                className={classes.tabs}
               >
-                {x => (
-                  <ListItem
-                    key={x.id}
-                    button
-                    onClick={() => {
-                      handleClick(x);
-                    }}
-                    classes={{ root: classes.listItemRoot }}
-                  >
-                    <ListItemAvatar>
-                      <Avatar className={x.unread ? classes.unread : ''}>
-                        {getIcon(x.data.type)}
-                      </Avatar>
-                    </ListItemAvatar>
-                    <ListItemText
-                      primary={
-                        <Grid
-                          container
-                          justify="space-between"
-                          alignItems="center"
-                        >
-                          <Typography variant="subtitle1">{x.title}</Typography>
-                          <Typography
-                            variant="body2"
-                            className={classes.timestamp}
-                          >
-                            {moment.unix(x.createdAt.seconds).fromNow()}
-                          </Typography>
-                        </Grid>
-                      }
-                      secondary={x.body}
-                      classes={{
-                        root: classes.listItemTextRoot,
-                        secondary: classes.listItemSecondary,
+                <Tab label="Reminders" value="reminder" />
+                <Tab label="Messages" value="message" />
+                <Tab label="Notes" value="note" />
+              </Tabs>
+              <div className={classes.scrollyRollyWrapper}>
+                <ScrollyRolly
+                  dataState={uniqueNotificationsState}
+                  loadMore={loadMore}
+                >
+                  {x => (
+                    <ListItem
+                      key={x.id}
+                      button
+                      onClick={() => {
+                        handleClick(x);
                       }}
-                    />
-                    <ListItemSecondaryAction>
-                      <IconButton
-                        onClick={() => {
-                          archive(uid, x);
+                      classes={{ root: classes.listItemRoot }}
+                    >
+                      <ListItemAvatar>
+                        <Avatar className={x.unread ? classes.unread : ''}>
+                          {getIcon(x.data.type)}
+                        </Avatar>
+                      </ListItemAvatar>
+                      <ListItemText
+                        primary={
+                          <Grid
+                            container
+                            justify="space-between"
+                            alignItems="center"
+                          >
+                            <Typography variant="subtitle1">
+                              {x.title}
+                            </Typography>
+                            <Typography
+                              variant="body2"
+                              className={classes.timestamp}
+                            >
+                              {moment.unix(x.createdAt.seconds).fromNow()}
+                            </Typography>
+                          </Grid>
+                        }
+                        secondary={x.body}
+                        classes={{
+                          root: classes.listItemTextRoot,
+                          secondary: classes.listItemSecondary,
                         }}
-                      >
-                        <ArchiveIcon />
-                      </IconButton>
-                    </ListItemSecondaryAction>
-                  </ListItem>
-                )}
-              </ScrollyRolly>
+                      />
+                      <ListItemSecondaryAction>
+                        <IconButton
+                          onClick={() => {
+                            archive(uid, x);
+                          }}
+                        >
+                          <ArchiveIcon />
+                        </IconButton>
+                      </ListItemSecondaryAction>
+                    </ListItem>
+                  )}
+                </ScrollyRolly>
+              </div>
             </Paper>
           </Slide>
         </Modal>

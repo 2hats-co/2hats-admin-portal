@@ -1,24 +1,34 @@
 import React, { useState, useEffect } from 'react';
 import withNavigation from '../components/withNavigation';
 import { ROUTES } from '../constants/routes';
+import Fab from '@material-ui/core/Fab';
+
+import AddIcon from '@material-ui/icons/Add';
 
 import withStyles from '@material-ui/core/styles/withStyles';
 import Grid from '@material-ui/core/Grid';
 import Snackbar from '@material-ui/core/Snackbar';
-import Tooltip from '@material-ui/core/Tooltip';
-import IconButton from '@material-ui/core/IconButton';
-import FilterIcon from '@material-ui/icons/FilterList';
+// import Tooltip from '@material-ui/core/Tooltip';
+// import IconButton from '@material-ui/core/IconButton';
+// import FilterIcon from '@material-ui/icons/FilterList';
 import Typography from '@material-ui/core/Typography';
+import Drawer from '@material-ui/core/Drawer';
 
 import LocationIndicator from '../components/LocationIndicator';
-import AdminSelector from '../components/AdminSelector';
-import Filter from '../components/Subjects/Filter';
+// import AdminSelector from '../components/AdminSelector';
+// import Filter from '../components/Subjects/Filter';
+import ClientItem from '../components/Subjects/ClientItem';
 import SubjectItem from '../components/Subjects/SubjectItem';
 import useCollection from '../hooks/useCollection';
 import LoadingHat from '../components/LoadingHat';
+import { createDoc, updateDoc } from '../utilities/firestore';
 
 import ScrollyRolly from '../components/ScrollyRolly';
 import { COLLECTIONS } from '../constants/firestore';
+import Form from '../components/Form';
+import clientFields from '../constants/forms/clients';
+import ClientDrawer from '../components/Subjects/ClientDrawer';
+import CandidateDrawer from '../components/Subjects/CandidateDrawer';
 
 const styles = theme => ({
   root: {
@@ -56,132 +66,71 @@ const styles = theme => ({
     overflowY: 'auto',
     borderTop: `1px solid ${theme.palette.divider}`,
   },
+  fab: {
+    position: 'fixed',
+    bottom: theme.spacing.unit * 2,
+    right: theme.spacing.unit * 2,
+  },
 });
 
-// const FAKE_DATA = [
+// const CANIDIDATE_FILTERS = [];
+
+// const CLIENT_FILTERS = [
 //   {
-//     name: 'Prosafia Caming',
-//     email: 'prosafia@caming.xxx',
-//     phone: '000',
-//     industry: 'Baby Showers',
-//     tags: [
-//       { type: 'leads', label: 'opportunity' },
-//       { type: 'stage', label: 'cv' },
-//     ],
-//     note: 'x',
+//     title: 'Assignee',
+//     type: 'admin',
 //   },
+
 //   {
-//     name: 'Prosafia Caming',
-//     email: 'prosafia@caming.xxx',
-//     phone: '000',
-//     industry: 'Baby Showers',
-//     tags: [
-//       { type: 'leads', label: 'opportunity' },
-//       { type: 'stage', label: 'cv' },
-//     ],
-//     note: '',
-//   },
-//   {
-//     name: 'Prosafia Caming',
-//     email: 'prosafia@caming.xxx',
-//     phone: '000',
-//     industry: 'Bone app the teeth',
-//     tags: [
-//       { type: 'leads', label: 'opportunity' },
-//       { type: 'stage', label: 'cv' },
-//     ],
-//     note: 'x',
-//   },
-//   {
-//     name: 'Prosafia Caming',
-//     email: 'prosafia@caming.xxx',
-//     phone: '000',
-//     industry: 'Baby Showers',
-//     tags: [
-//       { type: 'leads', label: 'opportunity' },
-//       { type: 'stage', label: 'cv' },
-//     ],
+//     title: 'Industry',
+//     type: 'search',
+//     values: ['IT', 'HEALTH', 'MARKETING', 'CONSTRUCTION', 'ACCOUNTING'],
 //   },
 // ];
 
-const CANIDIDATE_FILTERS = [
-  {
-    title: 'Submission Status',
-    values: ['Pending', 'Scheduled', 'Placed', 'Cancelled'],
-  },
-  {
-    title: 'Submission Status II',
-    type: 'date',
-    values: ['Pending', 'Scheduled', 'Placed', 'Cancelled'],
-  },
-  {
-    title: 'Company',
-    type: 'search',
-    values: [
-      'Apple',
-      'BP',
-      'Chevron',
-      'Deloitte',
-      'Energizer',
-      'Foursquare',
-      'Google',
-      'Hyundai',
-      'Iglu',
-      'Wumbo',
-    ],
-  },
-];
-
-const CLIENT_FILTERS = [
-  {
-    title: 'Assignee',
-    type: 'admin',
-  },
-  {
-    title: 'Submission Status II',
-    type: 'date',
-    values: ['Pending', 'Scheduled', 'Placed', 'Cancelled'],
-  },
-  {
-    title: 'Company',
-    type: 'search',
-    values: [
-      'Apple',
-      'BP',
-      'Chevron',
-      'Deloitte',
-      'Energizer',
-      'Foursquare',
-      'Google',
-      'Hyundai',
-      'Iglu',
-      'Wumbo',
-    ],
-  },
-];
-
-const assigneeFilter = (currentFilters, uid) => {
-  let filters = currentFilters.filter(x => x.field !== 'assignee');
-  filters.push({
-    field: 'assignee',
-    operator: '==',
-    value: uid,
-  });
-  return filters;
-};
+// const assigneeFilter = (currentFilters, uid) => {
+//   let filters = currentFilters.filter(x => x.field !== 'assignee');
+//   filters.push({
+//     field: 'assignee',
+//     operator: '==',
+//     value: uid,
+//   });
+//   return filters;
+// };
 
 function SubjectsContainer(props) {
   const { classes, theme, route } = props;
 
   let collection = COLLECTIONS.candidates;
-  let filters = CANIDIDATE_FILTERS;
+  // let filters = CANIDIDATE_FILTERS;
+  let fields;
+  let formTitle;
   if (route === ROUTES.clients) {
-    filters = CLIENT_FILTERS;
+    // filters = CLIENT_FILTERS;
+    fields = clientFields;
+    formTitle = 'Client Account';
     collection = COLLECTIONS.clients;
   }
 
-  const [queryFilters, setQueryFilters] = useState([]);
-  const [subjectsState, subjectsDispatch] = useCollection({
+  const [clientDrawer, setClientDrawer] = useState(null);
+  const [candidateDrawer, setCandidateDrawer] = useState(null);
+  const [showDrawer, setShowDrawer] = useState(false);
+
+  useEffect(
+    () => {
+      if (!!clientDrawer || !!candidateDrawer) setShowDrawer(true);
+      else setShowDrawer(false);
+    },
+    [clientDrawer, candidateDrawer]
+  );
+
+  const [clientForm, setClientForm] = useState(null);
+
+  const [
+    queryFilters,
+    // setQueryFilters
+  ] = useState([]);
+  const [subjectsState, subjectsDispatch, loadMore] = useCollection({
     path: collection,
     sort: { field: 'createdAt', direction: 'desc' },
     filters: queryFilters,
@@ -194,8 +143,6 @@ function SubjectsContainer(props) {
     },
     [queryFilters]
   );
-  console.log(subjectsState);
-
   const [snackbarContent, setSnackbarContent] = useState('');
   return subjectsState.loading ? (
     <LoadingHat
@@ -220,7 +167,7 @@ function SubjectsContainer(props) {
           </Typography>
         </Grid>
 
-        <Grid item className={classes.filterContainer}>
+        {/* <Grid item className={classes.filterContainer}>
           <Grid container alignItems="center">
             <Tooltip title="Clear all filters">
               <IconButton
@@ -263,19 +210,28 @@ function SubjectsContainer(props) {
               }
             })}
           </Grid>
-        </Grid>
+        </Grid> */}
 
         <Grid item xs className={classes.subjectListContainer}>
           <ScrollyRolly
             dataState={subjectsState}
             dataDispatch={subjectsDispatch}
+            loadMore={loadMore}
             disablePadding
           >
             {(x, i) => {
-              return (
+              return route === ROUTES.clients ? (
+                <ClientItem
+                  key={x.id}
+                  data={x}
+                  setClientDrawer={setClientDrawer}
+                  setSnackbarContent={setSnackbarContent}
+                />
+              ) : (
                 <SubjectItem
                   key={x.id}
                   data={x}
+                  setCandidateDrawer={setCandidateDrawer}
                   setSnackbarContent={setSnackbarContent}
                 />
               );
@@ -294,6 +250,70 @@ function SubjectsContainer(props) {
           <span id="message-id">Copied to clipboard: {snackbarContent}</span>
         }
       />
+      {/* {console.log('clientForm', clientForm)} */}
+      {clientForm !== null && (
+        <Form
+          action={clientForm === undefined ? 'create' : 'edit'}
+          actions={{
+            create: data => {
+              createDoc(collection, data);
+              setClientForm(null);
+            },
+            edit: data => {
+              console.log('clientForm', clientForm);
+              updateDoc(COLLECTIONS.clients, clientForm.id, data);
+              setClientForm(null);
+            },
+
+            close: () => {
+              setClientForm(null);
+            },
+          }}
+          open={clientForm !== null}
+          data={fields(clientForm)}
+          formTitle={formTitle}
+        />
+      )}
+      {route === ROUTES.clients && (
+        <Fab
+          className={classes.fab}
+          color="primary"
+          onClick={() => {
+            setClientForm(undefined);
+          }}
+        >
+          <AddIcon />
+        </Fab>
+      )}
+
+      {route === ROUTES.clients && (
+        <Fab
+          className={classes.fab}
+          color="primary"
+          onClick={() => {
+            setClientForm(undefined);
+          }}
+        >
+          <AddIcon />
+        </Fab>
+      )}
+
+      <Drawer
+        anchor="right"
+        open={showDrawer}
+        onClose={() => {
+          setShowDrawer(false);
+          setTimeout(() => {
+            setClientDrawer(null);
+            setCandidateDrawer(null);
+          }, 333);
+        }}
+      >
+        {clientDrawer && (
+          <ClientDrawer data={clientDrawer} setClientForm={setClientForm} />
+        )}
+        {candidateDrawer && <CandidateDrawer data={candidateDrawer} />}
+      </Drawer>
     </>
   );
 }

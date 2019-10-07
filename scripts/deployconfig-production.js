@@ -5,7 +5,7 @@ console.log('Running production deploy config script...');
 fs.writeFile(
   './.env',
   `REACT_APP_ALGOLIA_APP_ID='755HO7BO2Y'
-REACT_APP_ALGOLIA_API_KEY='0051c34046557fa048fd1f89ccee8ae8'
+REACT_APP_ALGOLIA_API_KEY='200b3bba092526edc282159569dd9d07'
 REACT_APP_ENV='PRODUCTION'
 SKIP_PREFLIGHT_CHECK=true
 `,
@@ -45,7 +45,13 @@ fs.writeFile(
       {
         "target": "admin",
         "public": "build",
-        "ignore": ["firebase.json", "**/.*", "**/node_modules/**"]
+        "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+        "rewrites": [
+          {
+            "source": "**",
+            "destination": "/index.html"
+          }
+        ]
       }
     ]
   }

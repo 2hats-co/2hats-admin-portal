@@ -19,19 +19,20 @@ export const sendLinkedinMessage = async (
     isIncoming: false,
     sentAt: new Date(),
     type: 'linkedin',
+    status: 'pending',
   };
   firestore
     .collection(COLLECTIONS.conversations)
     .doc(conversationId)
     .update({ lastMessage: conversationsMessageDoc });
-  firestore
+  const messageRef = await firestore
     .collection(COLLECTIONS.conversations)
     .doc(conversationId)
     .collection(COLLECTIONS.messages)
     .add(conversationsMessageDoc);
 
   const linkedinMessagesQueueDoc = {
-    conversationId,
+    messageRef,
     hasSent: false,
     body,
     ...linkedin,

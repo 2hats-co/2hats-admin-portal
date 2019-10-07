@@ -14,7 +14,9 @@ import AddSubscriberIcon from '@material-ui/icons/GroupAddOutlined';
 import BackIcon from '@material-ui/icons/ArrowBackOutlined';
 // import StarOutlineIcon from '@material-ui/icons/StarBorder';
 import EmailIcon from '@material-ui/icons/MarkunreadOutlined';
-import AddIcon from '@material-ui/icons/AddOutlined';
+import EditIcon from '@material-ui/icons/EditOutlined';
+
+import { updateDoc } from '../../../utilities/firestore';
 import LinkedInIcon from '../../../assets/icons/LinkedIn';
 import SpamIcon from '@material-ui/icons/ReportOutlined';
 
@@ -29,8 +31,8 @@ import {
   updateCategory,
 } from '../../../utilities/conversations';
 import conversationCategories from '../../../constants/conversationCategories';
-import EmailDialog from './EmailDialog';
-
+import Form from '../../Form';
+import conversationFields from '../../../constants/forms/converstions';
 const styles = theme => ({
   root: {
     padding: `${theme.spacing.unit}px ${theme.spacing.unit * 1.5}px ${
@@ -126,7 +128,9 @@ function ConversationHeader(props) {
   const { classes, conversation, closeConversation } = props;
 
   const [showSubscriberDialog, setShowSubscriberDialog] = useState(false);
-  const [showEmailDialog, setShowEmailDialog] = useState(false);
+  const [showContactDetailsDialog, setShowContactDetailsDialog] = useState(
+    false
+  );
   const [category, setCategory] = useState('');
 
   useEffect(
@@ -140,7 +144,16 @@ function ConversationHeader(props) {
     setCategory(e.target.value);
     if (e.target.value) updateCategory(conversation, e.target.value);
   };
-
+  const handleUpdateContactDetails = data => {
+    setShowContactDetailsDialog(false);
+    const channels = { ...conversation.channels, email: data.email };
+    const updates = {
+      firstName: data.firstName,
+      lastName: data.lastName,
+      channels: channels,
+    };
+    updateDoc('conversations', conversation.id, updates);
+  };
   return (
     <>
       <Grid item className={classes.root}>
@@ -193,36 +206,33 @@ function ConversationHeader(props) {
           </Grid>
 
           <Grid item className={classes.rightButtons}>
-            {conversation.channels.email ? (
-              <Tooltip
-                onClick={() => {
-                  copyToClipboard(conversation.channels.email);
-                }}
-                title={
-                  <>
-                    <b>{conversation.channels.email}</b>
-                    <br />
-                    (Click to copy)
-                  </>
-                }
-              >
-                <IconButton className={classes.iconButton}>
-                  <EmailIcon />
-                </IconButton>
-              </Tooltip>
-            ) : (
-              <Tooltip
-                onClick={() => {
-                  setShowEmailDialog(true);
-                }}
-                title="Set email"
-              >
-                <IconButton className={classes.iconButton}>
-                  <EmailIcon />
-                  <AddIcon className={classes.emailAdd} />
-                </IconButton>
-              </Tooltip>
-            )}
+            <Tooltip
+              onClick={() => {
+                copyToClipboard(conversation.channels.email);
+              }}
+              title={
+                <>
+                  <b>{conversation.channels.email}</b>
+                  <br />
+                  (Click to copy)
+                </>
+              }
+            >
+              <IconButton className={classes.iconButton}>
+                <EmailIcon />
+              </IconButton>
+            </Tooltip>
+
+            <Tooltip
+              onClick={() => {
+                setShowContactDetailsDialog(true);
+              }}
+              title="Set email"
+            >
+              <IconButton className={classes.iconButton}>
+                <EditIcon />
+              </IconButton>
+            </Tooltip>
             {conversation.channels.linkedin && (
               <Tooltip title="Open LinkedIn thread (as Gloria)">
                 <IconButton
@@ -282,10 +292,23 @@ function ConversationHeader(props) {
           </Grid>
         </Grid>
       </Grid>
-      <EmailDialog
-        conversation={conversation}
-        showDialog={showEmailDialog}
-        setShowDialog={setShowEmailDialog}
+      <Form
+        action="update"
+        actions={{
+          update: handleUpdateContactDetails,
+
+          close: () => {
+            //  setTemplate(null);
+            // setCampaign(null);
+            setShowContactDetailsDialog(false);
+          },
+        }}
+        open={showContactDetailsDialog}
+        data={conversationFields({
+          ...conversation,
+          email: conversation.channels.email,
+        })}
+        formTitle={`Contact Detail`}
       />
       <ManageSubscribersDialog
         conversation={conversation}

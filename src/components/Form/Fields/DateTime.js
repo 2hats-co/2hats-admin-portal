@@ -16,28 +16,26 @@ const styles = theme => ({
 const DateTime = props => {
   const { label, name, formikProps, classes, validator, type, width } = props;
   const { setValues, values, errors, touched } = formikProps;
+
   return (
     <Grid item xs={width || 12}>
       <MuiPickersUtilsProvider utils={MomentUtils}>
         {type === FIELDS.dateTime ? (
           <DateTimePicker
             label={label}
-            value={
-              values[name]
-                ? moment(values[name], MOMENT_FORMATS.dateTime)
-                : null
-            }
+            value={values[name] ? moment(values[name]) : null}
             onChange={dt => {
+              const asDate = dt.toDate();
               setValues({
                 ...values,
-                [name]: dt.format(MOMENT_FORMATS.dateTime),
+                [name]: asDate,
               });
             }}
             format={MOMENT_FORMATS.dateTime}
             showTodayButton
             className={classes.dateTimePicker}
             variant="filled"
-            margin="dense"
+            margin="none"
             fullWidth
             InputProps={{ disableUnderline: true }}
             error={!!(errors[name] && touched[name])}
@@ -45,20 +43,19 @@ const DateTime = props => {
         ) : (
           <DatePicker
             label={label}
-            value={
-              values[name] ? moment(values[name], MOMENT_FORMATS.date) : null
-            }
+            value={values[name] ? moment(values[name]) : null}
             onChange={dt => {
+              const asDate = dt.toDate();
               setValues({
                 ...values,
-                [name]: dt.format(MOMENT_FORMATS.date),
+                [name]: asDate,
               });
             }}
             format={MOMENT_FORMATS.date}
             showTodayButton
             className={classes.dateTimePicker}
             variant="filled"
-            margin="dense"
+            margin="none"
             fullWidth
             InputProps={{ disableUnderline: true }}
             error={!!(errors[name] && touched[name])}

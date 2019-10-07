@@ -52,7 +52,7 @@ function Messages(props) {
   const { classes, conversation } = props;
   const messagesRef = useRef(null);
   const messagesEnd = useRef(null);
-  const [messagesState, messagesDispatch] = useCollection({
+  const [messagesState, messagesDispatch, loadMore] = useCollection({
     path: `conversations/${conversation.id}/messages`,
     sort: { field: 'sentAt', direction: 'desc' },
     limit: 10,
@@ -119,7 +119,7 @@ function Messages(props) {
     <div className={classes.root} ref={messagesRef}>
       <ScrollyRolly
         dataState={messagesState}
-        dataDispatch={messagesDispatch}
+        loadMore={loadMore}
         sort={data => sortBySentAt(data)}
         disablePadding
         reverse

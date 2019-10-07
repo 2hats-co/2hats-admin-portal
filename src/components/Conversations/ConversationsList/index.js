@@ -86,7 +86,10 @@ const notSpamFilter = {
   operator: '<',
   value: 'spam',
 };
-const orderbyLastMessage = { field: 'lastMessage.sentAt', direction: 'desc' };
+const orderbyLastMessage = {
+  field: 'lastMessage.createdAt',
+  direction: 'desc',
+};
 const orderByType = { field: 'type', direction: 'asc' };
 const categoryFilter = category => ({
   field: 'category',
@@ -96,7 +99,7 @@ const categoryFilter = category => ({
 
 function ConversationsList(props) {
   const { classes, setSelectedConversation, selectedConversation, uid } = props;
-  const [conversationsState, conversationsDispatch] = useCollection({
+  const [conversationsState, conversationsDispatch, loadMore] = useCollection({
     path: `conversations`,
     sort: [orderByType, orderbyLastMessage],
     filters: [],
@@ -104,7 +107,8 @@ function ConversationsList(props) {
   const conversations = conversationsState.documents;
 
   const [filter, setFilter] = useState('all');
-  const [filters, setFilters] = useState([subscriberFilter(uid)]);
+  const [filters, setFilters] = useState([]);
+  const [assignee, setAssignee] = useState('');
   const [sorts, setSorts] = useState([orderByType, orderbyLastMessage]);
   const [category, setCategory] = useState('');
 
@@ -122,7 +126,7 @@ function ConversationsList(props) {
           break;
         case 'client':
           setSorts([orderbyLastMessage]);
-          setFilters([subscriberFilter(uid), clientFilter]);
+          setFilters([clientFilter]);
           break;
         case 'spam':
           setSorts([orderbyLastMessage]);
@@ -130,7 +134,7 @@ function ConversationsList(props) {
           break;
         case 'all':
           setSorts([orderByType, orderbyLastMessage]);
-          setFilters([subscriberFilter(uid), notSpamFilter]);
+          setFilters([notSpamFilter]);
           break;
         default:
           break;
@@ -141,9 +145,11 @@ function ConversationsList(props) {
 
   useEffect(
     () => {
-      conversationsDispatch({ filters: filters, sort: sorts });
+      const filtersToDispatch = [...filters];
+      if (assignee) filtersToDispatch.push(assigneeFilter(assignee));
+      conversationsDispatch({ filters: filtersToDispatch, sort: sorts });
     },
-    [filters]
+    [filters, assignee]
   );
 
   if (conversationsState.loading)
@@ -173,7 +179,7 @@ function ConversationsList(props) {
         />
         <AdminSelector
           onSelect={uid => {
-            setFilters([assigneeFilter(uid)]);
+            setAssignee(uid);
           }}
           tooltip="Filter by assignee"
           noneText="Unassigned"
@@ -259,7 +265,7 @@ function ConversationsList(props) {
           <ScrollyRolly
             classes={{ listLoader: classes.listLoader }}
             dataState={conversationsState}
-            dataDispatch={conversationsDispatch}
+            loadMore={loadMore}
             disablePadding
           >
             {data => (

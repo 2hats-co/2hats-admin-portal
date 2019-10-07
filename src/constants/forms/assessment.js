@@ -36,32 +36,21 @@ const assessmentFields = initialData => {
     },
     {
       type: FIELDS.richText,
-      name: 'companyDescription',
-      label: 'Company information',
-      value: initialData['companyDescription'],
-      validation: yup.string().required('Required'),
-    },
-    {
-      type: FIELDS.richText,
-      name: 'jobDescription',
-      label: 'Your job',
-      value: initialData['jobDescription'],
+      name: 'briefing',
+      label: 'Briefing (BEFORE user clicks Get started)',
+      value:
+        initialData['briefing'] ||
+        initialData['companyDescription'] + initialData['jobDescription'],
       validation: yup.string().required('Required'),
     },
     {
       type: FIELDS.richText,
       name: 'taskInstructions',
-      label: 'Task instructions',
-      placeholder: 'Copy-paste main instructions here',
+      label: 'Task instructions (AFTER user clicks Get started)',
+      placeholder:
+        'Copy-paste main instructions here. You can also put related material here',
       value: initialData['taskInstructions'],
       validation: yup.string().required('Required'),
-    },
-    {
-      type: FIELDS.richText,
-      name: 'relatedMaterial',
-      label: 'Related material',
-      value: initialData['relatedMaterial'],
-      validation: yup.string(),
     },
     {
       type: FIELDS.autocomplete,
@@ -81,6 +70,7 @@ const assessmentFields = initialData => {
       validation: yup.string(),
       placeholder:
         'Make sure it is a valid JSON!\n\nBest to use JSON.stringify() in your browser’s console\n\nYou can set the html, css, js, htmlMode, cssMode, jsMode properties',
+      displayCondition: values => values.submissionType.value === 'ideo',
     },
     {
       type: FIELDS.richTextMulti,
@@ -88,6 +78,17 @@ const assessmentFields = initialData => {
       label: 'Questions (optional)',
       value: initialData['questions'] || [],
       validation: yup.array(yup.string()),
+      displayCondition: values =>
+        values.submissionType.value !== 'mailchimp' &&
+        values.submissionType.value !== 'ideo',
+    },
+    {
+      type: FIELDS.checkbox,
+      name: 'randomiseQuestionOrder',
+      label: 'Randomise question order',
+      value: initialData['randomiseQuestionOrder'],
+      displayCondition: values =>
+        values.questions.length > 0 || values.randomiseQuestionOrder,
     },
     {
       type: FIELDS.slider,
@@ -95,23 +96,22 @@ const assessmentFields = initialData => {
       label: 'Questions displayed',
       value: initialData['questionsDisplayed'],
       units: 'questions',
-      min: 0,
+      min: 1,
       max: 20,
       step: 1,
-      validation: yup.number().when('questions', (questions, schema) => {
-        if (questions.length === 0)
-          return schema
-            .min(0, 'Must be 0 since there are no questions')
-            .max(0, 'Must be 0 since there are no questions');
-        return schema
-          .min(1, 'Must show at least 1 question')
-          .max(
-            questions.length,
-            `Cannot show more than the total number of questions (${
-              questions.length
-            })`
-          );
-      }),
+      validation: yup
+        .number()
+        .when('questions', (questions, schema) =>
+          schema
+            .min(1, 'Must show at least 1 question')
+            .max(
+              questions.length > 0 ? questions.length : 1,
+              `Cannot show more than the total number of questions (${
+                questions.length
+              })`
+            )
+        ),
+      displayCondition: values => values.randomiseQuestionOrder,
     },
     {
       type: FIELDS.dropzone,

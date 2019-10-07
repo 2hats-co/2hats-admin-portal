@@ -45,9 +45,9 @@ const styles = theme => ({
 function BlastList(props) {
   const { classes, setSelectedBlast, selectedBlast } = props;
 
-  const [blastsState, blastsDispatch] = useCollection({
+  const [blastsState, blastsDispatch, loadMore] = useCollection({
     path: COLLECTIONS.emailBlasts,
-    sort: [{ field: 'createdAt', direction: 'desc' }],
+    sort: [{ field: 'blastsAt', direction: 'desc' }],
     filters: [],
   });
   const blasts = blastsState.documents;
@@ -80,11 +80,12 @@ function BlastList(props) {
           </Grid>
         </Grid>
       ) : (
-        <div style={{ overflowY: 'scroll' }}>
+        <div style={{ overflowY: 'scroll', height: '100%' }}>
           <ScrollyRolly
             classes={{ listLoader: classes.listLoader }}
             dataState={blastsState}
             dataDispatch={blastsDispatch}
+            loadMore={loadMore}
             disablePadding
           >
             {data => (
