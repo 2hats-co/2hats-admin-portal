@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import queryString from 'query-string';
 
 import withStyles from '@material-ui/core/styles/withStyles';
-// import Typography from '@material-ui/core/Typography';
 import Fade from '@material-ui/core/Fade';
 import Fab from '@material-ui/core/Fab';
 
@@ -48,8 +47,8 @@ const styles = theme => ({
   },
   fab: {
     position: 'fixed',
-    bottom: theme.spacing.unit * 2,
-    right: theme.spacing.unit * 2,
+    bottom: theme.spacing(2),
+    right: theme.spacing(2),
   },
 });
 

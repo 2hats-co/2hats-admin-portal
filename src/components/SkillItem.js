@@ -20,12 +20,12 @@ const styles = theme => ({
     position: 'relative',
 
     borderRadius: theme.shape.borderRadius / 2,
-    padding: `${theme.spacing.unit / 2}px 0`,
-    paddingLeft: theme.spacing.unit,
-    paddingRight: theme.spacing.unit * 1.5,
+    padding: `${theme.spacing(0.5)}px 0`,
+    paddingLeft: theme.spacing(1),
+    paddingRight: theme.spacing(1.5),
     backgroundColor: theme.palette.divider,
 
-    margin: theme.spacing.unit / 2,
+    margin: theme.spacing(0.5),
   },
   buttonBase: {
     position: 'absolute',
@@ -36,7 +36,7 @@ const styles = theme => ({
     width: '100%',
     borderRadius: theme.shape.borderRadius / 2,
   },
-  dense: { margin: theme.spacing.unit / 4 },
+  dense: { margin: theme.spacing(0.25) },
   achieved: {
     backgroundColor: green[100],
     color: green[800],
@@ -44,7 +44,7 @@ const styles = theme => ({
 
   skillIcon: {
     position: 'relative',
-    marginRight: theme.spacing.unit * 0.75,
+    marginRight: theme.spacing(0.75),
     height: 24,
   },
 

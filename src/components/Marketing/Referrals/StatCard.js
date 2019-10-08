@@ -12,11 +12,11 @@ import Tooltip from '@material-ui/core/Tooltip';
 
 const styles = theme => ({
   root: {
-    margin: theme.spacing.unit,
+    margin: theme.spacing(1),
   },
 
   fullHeight: {
-    height: `calc(100% - ${theme.spacing.unit * 2}px)`,
+    height: `calc(100% - ${theme.spacing(2)}px)`,
     display: 'flex',
     flexDirection: 'column',
 
@@ -24,18 +24,18 @@ const styles = theme => ({
   },
 
   content: {
-    padding: `${theme.spacing.unit}px ${theme.spacing.unit * 1.5}px 0`,
+    padding: `${theme.spacing(1)}px ${theme.spacing(1.5)}px 0`,
   },
 
   cardHeader: {
-    marginBottom: theme.spacing.unit,
+    marginBottom: theme.spacing(1),
   },
 
   actions: {
     justifyContent: 'flex-end',
   },
   actionButton: {
-    marginRight: theme.spacing.unit * -0.5,
+    marginRight: theme.spacing(1) * -0.5,
   },
 });
 

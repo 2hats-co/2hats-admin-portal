@@ -10,14 +10,14 @@ import Button from '@material-ui/core/Button';
 
 const styles = theme => ({
   block: {
-    '& + &': { marginTop: theme.spacing.unit * 4 },
+    '& + &': { marginTop: theme.spacing(4) },
   },
   key: {
     backgroundColor: theme.palette.text.primary,
     color: theme.palette.background.paper,
-    padding: `${theme.spacing.unit / 4}px ${theme.spacing.unit}px`,
+    padding: `${theme.spacing(0.25)}px ${theme.spacing(1)}px`,
     borderRadius: theme.shape.borderRadius,
-    marginTop: theme.spacing.unit / 2,
+    marginTop: theme.spacing(0.5),
     display: 'inline-block',
   },
 });

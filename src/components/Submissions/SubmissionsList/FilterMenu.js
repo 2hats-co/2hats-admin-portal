@@ -10,14 +10,14 @@ import MenuItem from '@material-ui/core/MenuItem';
 import DropdownIcon from '@material-ui/icons/KeyboardArrowDown';
 
 const styles = theme => ({
-  root: { marginLeft: theme.spacing.unit * 0.75 },
+  root: { marginLeft: theme.spacing(0.75) },
   selected: {
     '& svg': { color: theme.palette.primary.main },
   },
 
   button: {
-    minWidth: theme.spacing.unit * 6,
-    padding: `${theme.spacing.unit / 2}px ${theme.spacing.unit * 0.75}px`,
+    minWidth: theme.spacing(6),
+    padding: `${theme.spacing(0.5)}px ${theme.spacing(0.75)}px`,
     '$selected &': { backgroundColor: theme.palette.primary.light },
   },
   icon: {
@@ -25,7 +25,7 @@ const styles = theme => ({
   },
   dropdownIcon: {
     opacity: 0.67,
-    'svg&': { marginRight: -theme.spacing.unit / 2 },
+    'svg&': { marginRight: -theme.spacing(1) / 2 },
   },
 });
 

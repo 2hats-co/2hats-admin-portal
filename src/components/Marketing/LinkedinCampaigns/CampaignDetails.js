@@ -20,25 +20,25 @@ const styles = theme => ({
     backgroundColor: theme.palette.text.primary,
     color: theme.palette.background.paper,
     fontSize: '.7em',
-    marginLeft: theme.spacing.unit,
+    marginLeft: theme.spacing(1),
     padding: '2px 7px 2px 8px',
     textTransform: 'uppercase',
     letterSpacing: '.1em',
   },
   closeButton: {
     position: 'absolute',
-    top: theme.spacing.unit * 2,
-    right: theme.spacing.unit * 2,
+    top: theme.spacing(2),
+    right: theme.spacing(2),
   },
   dialogContent: {
     paddingBottom: 0,
   },
   dialogSection: {
-    '&:first-of-type': { marginBottom: theme.spacing.unit * 4 },
+    '&:first-of-type': { marginBottom: theme.spacing(4) },
   },
   sectionTitle: {
-    marginBottom: theme.spacing.unit,
-    paddingBottom: theme.spacing.unit,
+    marginBottom: theme.spacing(1),
+    paddingBottom: theme.spacing(1),
     borderBottom: `1px solid ${theme.palette.divider}`,
   },
   listRoot: {
@@ -48,12 +48,12 @@ const styles = theme => ({
     overflowY: 'auto',
     minHeight: 200,
     height: 'calc(100vh - 480px)',
-    marginTop: -theme.spacing.unit,
-    marginLeft: -theme.spacing.unit * 3,
-    marginRight: -theme.spacing.unit * 3,
+    marginTop: -theme.spacing(1),
+    marginLeft: -theme.spacing(1) * 3,
+    marginRight: -theme.spacing(1) * 3,
   },
   listLoader: {
-    marginTop: theme.spacing.unit * 2,
+    marginTop: theme.spacing(2),
   },
   fake: {
     opacity: 0.54,
@@ -90,7 +90,7 @@ function CampaignDetailsDialog(props) {
           <Typography variant="subtitle1" className={classes.sectionTitle}>
             Stats
           </Typography>
-          <Grid container spacing={24}>
+          <Grid container spacing={3}>
             <Grid item xs={3}>
               <Typography variant="h6">
                 {parseInt(data.startPage, 10) * 10}

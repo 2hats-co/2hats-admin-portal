@@ -33,17 +33,17 @@ import { ROUTES } from '../../../constants/routes';
 
 const styles = theme => ({
   root: {
-    padding: theme.spacing.unit * 3,
+    padding: theme.spacing(3),
     background: theme.palette.background.paper,
   },
 
   divider: {
-    margin: `${theme.spacing.unit * 3}px 0`,
+    margin: `${theme.spacing(3)}px 0`,
   },
 
   statusIcon: {
-    marginLeft: -theme.spacing.unit / 2,
-    marginRight: theme.spacing.unit / 2,
+    marginLeft: -theme.spacing(1) / 2,
+    marginRight: theme.spacing(0.5),
     verticalAlign: 'sub',
 
     position: 'relative',
@@ -53,8 +53,8 @@ const styles = theme => ({
   sectionButtons: {
     textAlign: 'right',
     '& button': {
-      marginLeft: theme.spacing.unit,
-      marginBottom: theme.spacing.unit,
+      marginLeft: theme.spacing(1),
+      marginBottom: theme.spacing(1),
     },
   },
 });
@@ -97,7 +97,7 @@ const BlastDetails = props => {
 
   return (
     <div className={classes.root}>
-      <Grid container spacing={16}>
+      <Grid container spacing={2}>
         <Grid item>
           <Typography variant="body2">Search query</Typography>
           <Typography variant="h5" gutterBottom>
@@ -136,7 +136,7 @@ const BlastDetails = props => {
         </Grid>
       </Grid>
 
-      <Grid container spacing={40}>
+      <Grid container spacing={5}>
         <Grid item>
           <Typography variant="body2">Scheduled for</Typography>
           <Typography variant="subtitle1">
@@ -180,7 +180,7 @@ const BlastDetails = props => {
         Will duplicate and create a new template.
       </Typography>
 
-      <Grid container spacing={40}>
+      <Grid container spacing={5}>
         <Grid item>
           <Typography variant="h5">{`${(data && data.attempted) ||
             0}`}</Typography>

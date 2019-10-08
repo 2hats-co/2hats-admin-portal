@@ -16,13 +16,13 @@ import { trackers, trackersList } from '../../../constants/statsTrackers';
 const styles = theme => ({
   root: {},
   deleteButton: {
-    marginLeft: -theme.spacing.unit * 1.75,
+    marginLeft: -theme.spacing(1) * 1.75,
   },
   formControl: {
     minWidth: 80,
   },
   swatchWrapper: {
-    marginLeft: -theme.spacing.unit * 1.5,
+    marginLeft: -theme.spacing(1) * 1.5,
   },
   swatch: {
     background: '#fff',

@@ -21,7 +21,7 @@ function TrackerDonutChart(props) {
       option={{
         title: {
           text: title,
-          top: theme.spacing.unit * 2,
+          top: theme.spacing(2),
           left: 'center',
 
           textStyle: {
@@ -31,9 +31,9 @@ function TrackerDonutChart(props) {
           },
         },
         grid: {
-          left: theme.spacing.unit * 2,
-          right: theme.spacing.unit * 2,
-          bottom: theme.spacing.unit * 8,
+          left: theme.spacing(2),
+          right: theme.spacing(2),
+          bottom: theme.spacing(8),
           containLabel: true,
         },
         tooltip: {
@@ -43,7 +43,7 @@ function TrackerDonutChart(props) {
         legend: {
           show: true,
           left: 'center',
-          bottom: theme.spacing.unit * 2,
+          bottom: theme.spacing(2),
           textStyle: { color: theme.palette.text.primary },
         },
         color: trackers.map(x => x.colour),

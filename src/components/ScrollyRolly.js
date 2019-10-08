@@ -78,7 +78,7 @@ function ScrollyRolly(props) {
                 textAlign: 'center',
                 cursor: 'default',
                 userSelect: 'none',
-                paddingTop: theme.spacing.unit * 4,
+                paddingTop: theme.spacing(4),
               }}
             >
               <Grid item>
@@ -105,4 +105,4 @@ function ScrollyRolly(props) {
   );
 }
 
-export default withTheme()(ScrollyRolly);
+export default withTheme(ScrollyRolly);

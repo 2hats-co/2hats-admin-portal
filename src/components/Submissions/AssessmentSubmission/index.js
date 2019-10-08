@@ -29,34 +29,34 @@ const styles = theme => ({
 
   debugButtonsWrapper: {
     position: 'absolute',
-    top: theme.spacing.unit,
-    right: theme.spacing.unit,
+    top: theme.spacing(1),
+    right: theme.spacing(1),
   },
 
   meta: {
-    marginTop: theme.spacing.unit * 1.5,
-    marginBottom: theme.spacing.unit * 3,
+    marginTop: theme.spacing(1.5),
+    marginBottom: theme.spacing(3),
   },
-  metaElement: { marginBottom: theme.spacing.unit / 2 },
+  metaElement: { marginBottom: theme.spacing(0.5) },
   icon: {
-    marginRight: theme.spacing.unit,
+    marginRight: theme.spacing(1),
     opacity: 0.67,
     color: theme.palette.text.primary,
   },
 
   expansionPanel: { boxShadow: 'none' },
   expansionPanelSummary: { padding: 0 },
-  expansionPanelSummaryExpandIcon: { right: -theme.spacing.unit * 1.5 },
+  expansionPanelSummaryExpandIcon: { right: -theme.spacing(1) * 1.5 },
   expansionPanelDetails: {
     flexDirection: 'column',
     padding: 0,
-    paddingBottom: theme.spacing.unit * 2,
+    paddingBottom: theme.spacing(2),
   },
 
   superAvatar: {
-    width: theme.spacing.unit * 8,
-    height: theme.spacing.unit * 8,
-    marginRight: theme.spacing.unit * 2,
+    width: theme.spacing(8),
+    height: theme.spacing(8),
+    marginRight: theme.spacing(2),
   },
 });
 

@@ -45,7 +45,7 @@ const styles = theme => ({
   smallIcon: {
     fontSize: 16,
     color: theme.palette.text.secondary,
-    marginRight: theme.spacing.unit * 0.75,
+    marginRight: theme.spacing(0.75),
     verticalAlign: 'text-bottom',
   },
   chip: {
@@ -85,7 +85,7 @@ function SubjectItem(props) {
 
   const highlighted = flattenSearchHighlight(_snippetResult).map(x => {
     return (
-      <Grid container alignItems="baseline" spacing={8}>
+      <Grid container alignItems="baseline" spacing={1}>
         <Grid item>
           <Typography variant="caption" color="textSecondary">
             {x[0].split('.')[0]}
@@ -115,7 +115,7 @@ function SubjectItem(props) {
         container
         className={classes.gridRoot}
         alignItems="center"
-        spacing={8}
+        spacing={1}
       >
         <Grid item>
           <Checkbox

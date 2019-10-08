@@ -22,12 +22,12 @@ import { updateDoc, deleteDoc } from '../../utilities/firestore';
 
 const styles = theme => ({
   root: {
-    marginTop: theme.spacing.unit,
+    marginTop: theme.spacing(1),
     width: 'auto',
   },
 
   buttonBar: {
-    marginBottom: -theme.spacing.unit,
+    marginBottom: -theme.spacing(1),
     // textAlign: 'right',
   },
 });

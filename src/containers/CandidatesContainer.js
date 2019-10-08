@@ -39,13 +39,13 @@ const styles = theme => ({
 
   searchBox: {
     position: 'absolute',
-    top: theme.spacing.unit * 1.5,
-    right: theme.spacing.unit * 2,
+    top: theme.spacing(1.5),
+    right: theme.spacing(2),
     zIndex: 50,
   },
 
   filterContainer: {
-    padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit * 3}px`,
+    padding: `${theme.spacing(2)}px ${theme.spacing(3)}px`,
     boxShadow:
       theme.palette.type !== 'dark'
         ? theme.shadows[1]
@@ -54,7 +54,7 @@ const styles = theme => ({
   },
   clearFilterButton: {
     padding: 0,
-    marginRight: theme.spacing.unit,
+    marginRight: theme.spacing(1),
     width: 36,
     height: 36,
   },
@@ -65,8 +65,8 @@ const styles = theme => ({
   },
   fab: {
     position: 'fixed',
-    bottom: theme.spacing.unit * 2,
-    right: theme.spacing.unit * 2,
+    bottom: theme.spacing(2),
+    right: theme.spacing(2),
   },
 });
 

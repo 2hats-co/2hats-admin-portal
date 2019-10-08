@@ -25,15 +25,15 @@ import { updateDoc } from '../../../utilities/firestore';
 const styles = theme => ({
   root: {
     boxShadow: 'none',
-    marginTop: theme.spacing.unit * 3,
+    marginTop: theme.spacing(3),
     borderRadius: 0,
     '& + &': {
       borderTop: `1px solid ${theme.palette.divider}`,
-      paddingTop: theme.spacing.unit * 3,
+      paddingTop: theme.spacing(3),
     },
   },
 
-  answerInputWrapper: { marginTop: theme.spacing.unit },
+  answerInputWrapper: { marginTop: theme.spacing(1) },
 
   ...STYLES.RENDERED_HTML(theme),
 
@@ -46,8 +46,8 @@ const styles = theme => ({
 
   goIcon: {
     'svg&': {
-      marginLeft: theme.spacing.unit / 2,
-      marginRight: -theme.spacing.unit / 2,
+      marginLeft: theme.spacing(0.5),
+      marginRight: -theme.spacing(1) / 2,
     },
   },
 });

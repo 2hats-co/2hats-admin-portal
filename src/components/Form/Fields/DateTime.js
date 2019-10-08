@@ -10,7 +10,7 @@ import FIELDS from '../../../constants/forms/fields';
 
 const styles = theme => ({
   dateTimePicker: {
-    marginRight: theme.spacing.unit,
+    marginRight: theme.spacing(1),
   },
 });
 const DateTime = props => {

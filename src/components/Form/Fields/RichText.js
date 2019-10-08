@@ -11,7 +11,7 @@ import Typography from '@material-ui/core/Typography';
 import { asyncUploader } from '../../../utilities/firebaseStorage';
 const styles = theme => ({
   root: {
-    margin: `${theme.spacing.unit}px 0`,
+    margin: `${theme.spacing(1)}px 0`,
 
     '&:focus-within $sectionTitle': {
       color:
@@ -22,7 +22,7 @@ const styles = theme => ({
   },
 
   sectionTitle: {
-    marginLeft: theme.spacing.unit * 1.5,
+    marginLeft: theme.spacing(1.5),
 
     transition: theme.transitions.create('color', {
       duration: theme.transitions.duration.shortest,

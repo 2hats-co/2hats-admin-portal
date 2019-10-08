@@ -39,7 +39,7 @@ const styles = theme => ({
     marginLeft: 20,
   },
   datePicker: {
-    '& + &': { marginLeft: theme.spacing.unit },
+    '& + &': { marginLeft: theme.spacing(1) },
   },
   toggleButtonLabel: {
     textTransform: 'capitalize',

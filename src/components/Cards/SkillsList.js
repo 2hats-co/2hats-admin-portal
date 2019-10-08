@@ -7,20 +7,20 @@ import SkillItem from '../SkillItem';
 
 const styles = theme => ({
   skillsRequiredLabel: {
-    marginLeft: theme.spacing.unit / 4,
-    marginTop: theme.spacing.unit * 1.5,
+    marginLeft: theme.spacing(0.25),
+    marginTop: theme.spacing(1.5),
   },
-  skillsWrapper: { marginLeft: -theme.spacing.unit / 4 },
+  skillsWrapper: { marginLeft: -theme.spacing(1) / 4 },
 
   extraSkills: {
     display: 'inline-block',
     verticalAlign: 'bottom',
-    margin: theme.spacing.unit / 4,
+    margin: theme.spacing(0.25),
     fontWeight: 500,
     opacity: 0.5,
 
     borderRadius: theme.shape.borderRadius / 2,
-    padding: `${theme.spacing.unit / 2}px ${theme.spacing.unit * 1.5}px`,
+    padding: `${theme.spacing(0.5)}px ${theme.spacing(1.5)}px`,
     backgroundColor: theme.palette.divider,
   },
 });

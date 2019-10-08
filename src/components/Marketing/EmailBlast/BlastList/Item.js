@@ -15,8 +15,8 @@ import { AdminsContext } from '../../../../contexts/AdminsContext';
 
 const styles = theme => ({
   root: {
-    paddingLeft: theme.spacing.unit * 2,
-    paddingRight: theme.spacing.unit * 2,
+    paddingLeft: theme.spacing(2),
+    paddingRight: theme.spacing(2),
   },
   selectedItem: {
     backgroundColor: `${theme.palette.primary.light} !important`,
@@ -25,14 +25,14 @@ const styles = theme => ({
 
   statusIcon: {
     fontSize: 20,
-    marginRight: theme.spacing.unit,
+    marginRight: theme.spacing(1),
   },
 
   listItemTextRoot: {
     paddingRight: 0,
   },
   primaryText: {
-    marginBottom: theme.spacing.unit / 2,
+    marginBottom: theme.spacing(0.5),
     '& *': { lineHeight: '1.25 !important' },
   },
   timestamp: {
@@ -48,7 +48,7 @@ const styles = theme => ({
     overflow: 'hidden',
   },
 
-  secondaryText: { marginLeft: theme.spacing.unit * 3.5 },
+  secondaryText: { marginLeft: theme.spacing(3.5) },
 });
 
 function Item(props) {

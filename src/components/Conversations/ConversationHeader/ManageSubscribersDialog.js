@@ -32,7 +32,7 @@ const styles = theme => ({
     minWidth: 480,
   },
   iconButton: {
-    padding: theme.spacing.unit * 1.5,
+    padding: theme.spacing(1.5),
     borderRadius: '50%',
     minWidth: 'auto',
     marginRight: -10,

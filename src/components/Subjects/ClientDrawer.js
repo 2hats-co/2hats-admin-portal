@@ -32,11 +32,11 @@ const styles = theme => ({
   },
 
   section: {
-    padding: theme.spacing.unit * 2,
+    padding: theme.spacing(2),
   },
 
   icon: {
-    marginRight: theme.spacing.unit,
+    marginRight: theme.spacing(1),
     color: theme.palette.text.secondary,
   },
   iconAligned: {
@@ -44,7 +44,7 @@ const styles = theme => ({
     top: 4,
   },
 
-  title: { marginBottom: theme.spacing.unit / 2 },
+  title: { marginBottom: theme.spacing(0.5) },
 });
 
 const callableCallback = o => {

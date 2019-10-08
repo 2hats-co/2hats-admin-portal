@@ -16,8 +16,8 @@ import conversationCategories from '../../../constants/conversationCategories';
 
 const styles = theme => ({
   button: {
-    padding: theme.spacing.unit,
-    marginRight: theme.spacing.unit,
+    padding: theme.spacing(1),
+    marginRight: theme.spacing(1),
   },
   selectedButton: {
     color: '#fff',

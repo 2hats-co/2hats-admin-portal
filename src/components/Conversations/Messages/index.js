@@ -17,7 +17,7 @@ import prop from 'ramda/es/prop';
 
 const styles = theme => ({
   root: {
-    padding: theme.spacing.unit * 2,
+    padding: theme.spacing(2),
     boxSizing: 'border-box',
     overflow: 'auto',
     height: '100%',

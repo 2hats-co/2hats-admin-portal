@@ -29,10 +29,10 @@ import IntegrationReactSelect from '../IntegrationReactSelect';
 const styles = theme => ({
   root: { width: 320 },
 
-  section: { padding: theme.spacing.unit * 2 },
+  section: { padding: theme.spacing(2) },
 
   icon: {
-    marginRight: theme.spacing.unit,
+    marginRight: theme.spacing(1),
     color: theme.palette.text.secondary,
   },
   iconAligned: {
@@ -40,11 +40,11 @@ const styles = theme => ({
     top: 4,
   },
 
-  avatar: { marginRight: theme.spacing.unit * 2 },
-  name: { marginTop: theme.spacing.unit * 0.75 },
+  avatar: { marginRight: theme.spacing(2) },
+  name: { marginTop: theme.spacing(0.75) },
 
   count: {
-    marginRight: -theme.spacing.unit * 0.75 + 1,
+    marginRight: -theme.spacing(1) * 0.75 + 1,
     color: theme.palette.text.secondary,
   },
 });

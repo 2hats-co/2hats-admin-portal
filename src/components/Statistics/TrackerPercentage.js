@@ -25,7 +25,7 @@ const styles = theme => ({
     left: 0,
     color: 'inherit',
 
-    padding: theme.spacing.unit * 2,
+    padding: theme.spacing(2),
     boxSizing: 'border-box',
   },
   circularProgressSvg: {
@@ -154,9 +154,7 @@ function TrackerPercentage(props) {
         alignItems="center"
         className={classes.textContainer}
         style={
-          layout.w > 1 && layout.h > 1
-            ? { padding: theme.spacing.unit * 4 }
-            : {}
+          layout.w > 1 && layout.h > 1 ? { padding: theme.spacing(4) } : {}
         }
       >
         <Tooltip

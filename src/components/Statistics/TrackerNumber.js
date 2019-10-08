@@ -9,8 +9,8 @@ import withAnalytics from './withAnalytics';
 const styles = theme => ({
   root: {
     height: '100%',
-    padding: theme.spacing.unit * 2,
-    paddingTop: theme.spacing.unit * 1.5,
+    padding: theme.spacing(2),
+    paddingTop: theme.spacing(1.5),
     textAlign: 'center',
 
     '& *': {

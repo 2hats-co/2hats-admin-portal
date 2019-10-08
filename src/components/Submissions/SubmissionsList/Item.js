@@ -12,8 +12,8 @@ import SubmissionTypeIcon from '../SubmissionTypeIcon';
 
 const styles = theme => ({
   root: {
-    paddingLeft: theme.spacing.unit * 2,
-    paddingRight: theme.spacing.unit * 2,
+    paddingLeft: theme.spacing(2),
+    paddingRight: theme.spacing(2),
   },
   selectedItem: {
     backgroundColor: `${theme.palette.primary.light} !important`,
@@ -23,8 +23,8 @@ const styles = theme => ({
   typeIcon: {
     fontSize: 18,
     verticalAlign: 'text-bottom',
-    marginRight: theme.spacing.unit * 1.25,
-    marginLeft: -theme.spacing.unit * 0.25,
+    marginRight: theme.spacing(1.25),
+    marginLeft: -theme.spacing(1) * 0.25,
     opacity: 0.67,
   },
   unread: {
@@ -40,15 +40,15 @@ const styles = theme => ({
     position: 'absolute',
     color: theme.palette.text.disabled,
     fontSize: 18,
-    top: theme.spacing.unit * 4.5,
-    left: theme.spacing.unit * 1.75,
+    top: theme.spacing(4.5),
+    left: theme.spacing(1.75),
   },
 
   listItemTextRoot: {
     paddingRight: 0,
   },
   primaryText: {
-    marginBottom: theme.spacing.unit / 2,
+    marginBottom: theme.spacing(0.5),
     '& *': { lineHeight: '1.25 !important' },
   },
   timestamp: {
@@ -63,7 +63,7 @@ const styles = theme => ({
     boxOrient: 'vertical',
     overflow: 'hidden',
 
-    marginLeft: theme.spacing.unit * 3.25,
+    marginLeft: theme.spacing(3.25),
   },
 });
 

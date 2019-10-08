@@ -22,17 +22,17 @@ const styles = theme => ({
   root: {
     '&+&': {
       borderTop: `1px solid ${theme.palette.divider}`,
-      paddingTop: theme.spacing.unit / 2,
+      paddingTop: theme.spacing(0.5),
     },
   },
 
-  actionButtons: { marginRight: -theme.spacing.unit * 1.5 },
+  actionButtons: { marginRight: -theme.spacing(1) * 1.5 },
 
   title: { lineHeight: 1.25 },
 
   ...STYLES.RENDERED_HTML(theme),
   message: {
-    marginBottom: theme.spacing.unit * 2,
+    marginBottom: theme.spacing(2),
     whiteSpace: 'pre-line',
   },
   messageText: {
@@ -41,11 +41,11 @@ const styles = theme => ({
   },
 
   passIcon: {
-    marginRight: theme.spacing.unit,
+    marginRight: theme.spacing(1),
     color: green[500],
   },
   failIcon: {
-    marginRight: theme.spacing.unit,
+    marginRight: theme.spacing(1),
     color: red[500],
   },
 });

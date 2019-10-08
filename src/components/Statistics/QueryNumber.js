@@ -10,7 +10,7 @@ import { CLOUD_FUNCTIONS, callable } from '../../firebase/functions';
 const styles = theme => ({
   root: {
     height: '100%',
-    padding: theme.spacing.unit * 2,
+    padding: theme.spacing(2),
     textAlign: 'center',
 
     '& *': { color: 'inherit' },
@@ -18,7 +18,7 @@ const styles = theme => ({
     '& .query-number-updated': {
       opacity: 0,
       transition: 'opacity .2s',
-      marginBottom: -theme.spacing.unit,
+      marginBottom: -theme.spacing(1),
     },
     '&:hover .query-number-updated': { opacity: 0.53 },
   },

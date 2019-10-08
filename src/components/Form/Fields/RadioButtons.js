@@ -10,18 +10,18 @@ import FormControl from '@material-ui/core/FormControl';
 
 const styles = theme => ({
   root: {
-    marginTop: theme.spacing.unit / 2,
-    marginBottom: -theme.spacing.unit,
+    marginTop: theme.spacing(0.5),
+    marginBottom: -theme.spacing(1),
   },
 
   sectionTitle: {
-    marginLeft: theme.spacing.unit * 1.5,
-    marginBottom: -theme.spacing.unit,
+    marginLeft: theme.spacing(1.5),
+    marginBottom: -theme.spacing(1),
   },
 
-  group: { marginLeft: theme.spacing.unit * 1.25 },
+  group: { marginLeft: theme.spacing(1.25) },
 
-  radioItem: { marginRight: theme.spacing.unit * 4 },
+  radioItem: { marginRight: theme.spacing(4) },
   radio: { marginRight: -2 },
 });
 

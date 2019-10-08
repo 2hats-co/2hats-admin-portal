@@ -17,9 +17,9 @@ const styles = theme => ({
     position: 'relative',
   },
   icon: {
-    marginLeft: -theme.spacing.unit * 0.375,
-    marginRight: theme.spacing.unit,
-    marginTop: theme.spacing.unit * 0.25,
+    marginLeft: -theme.spacing(1) * 0.375,
+    marginRight: theme.spacing(1),
+    marginTop: theme.spacing(0.25),
     color:
       theme.palette.type === 'dark'
         ? theme.palette.primary.darkText
@@ -27,7 +27,7 @@ const styles = theme => ({
   },
   timestamp: {
     position: 'absolute',
-    top: theme.spacing.unit * 0.5,
+    top: theme.spacing(0.5),
     right: 0,
     opacity: 0.54,
   },

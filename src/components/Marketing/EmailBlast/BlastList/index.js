@@ -15,10 +15,10 @@ const styles = theme => ({
   root: { height: 'calc(100vh - 64px)' },
 
   adminSelectorWrapper: {
-    marginTop: -theme.spacing.unit * 7,
-    marginBottom: theme.spacing.unit,
+    marginTop: -theme.spacing(1) * 7,
+    marginBottom: theme.spacing(1),
     textAlign: 'right',
-    paddingRight: theme.spacing.unit,
+    paddingRight: theme.spacing(1),
     width: '100%',
   },
   tabsWrapper: { width: '100%' },
@@ -26,8 +26,8 @@ const styles = theme => ({
     boxShadow: `0 -1px 0 ${theme.palette.divider} inset`,
   },
   tabLabelContainer: {
-    paddingLeft: theme.spacing.unit * 2,
-    paddingRight: theme.spacing.unit * 2,
+    paddingLeft: theme.spacing(2),
+    paddingRight: theme.spacing(2),
   },
   noConvs: {
     height: '100%',

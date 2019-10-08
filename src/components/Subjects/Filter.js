@@ -10,7 +10,7 @@ import TextField from '@material-ui/core/TextField';
 const styles = theme => ({
   root: {
     margin: 0,
-    marginLeft: theme.spacing.unit,
+    marginLeft: theme.spacing(1),
     minWidth: 200,
   },
   customFieldWrapper: {
@@ -25,7 +25,7 @@ const styles = theme => ({
   datePicker: {
     outline: 'none',
     width: 140,
-    '&:not(:last-of-type)': { marginRight: theme.spacing.unit },
+    '&:not(:last-of-type)': { marginRight: theme.spacing(1) },
     '& input': { fontSize: '.875rem' },
   },
 });

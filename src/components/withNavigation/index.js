@@ -6,7 +6,6 @@ import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import Slide from '@material-ui/core/Slide';
 import Fade from '@material-ui/core/Fade';
 
 import SearchIcon from '@material-ui/icons/Search';
@@ -83,7 +82,7 @@ const styles = theme => ({
     fontWeight: 500,
   },
   avatarSpinner: {
-    margin: theme.spacing.unit * 1.5,
+    margin: theme.spacing(1.5),
   },
 });
 
@@ -182,79 +181,73 @@ export default function withNavigation(WrappedComponent) {
             value={{ enabled: debug, setEnabled: setDebug }}
           >
             <Grid container wrap="nowrap" className={classes.root}>
-              <Slide in direction="right">
-                <>
-                  <Grid item className={classes.leftNav}>
-                    <Grid
-                      container
-                      style={{ height: '100vh' }}
-                      justify="center"
-                      alignContent="space-between"
+              <Grid item className={classes.leftNav}>
+                <Grid
+                  container
+                  style={{ height: '100vh' }}
+                  justify="center"
+                  alignContent="space-between"
+                >
+                  <Grid item>
+                    <Tooltip
+                      title={
+                        <>
+                          <b>Build {metadata.hash}</b>
+                          <div>{new Date(metadata.date).toLocaleString()}</div>
+                        </>
+                      }
+                      placement="right"
                     >
-                      <Grid item>
-                        <Tooltip
-                          title={
-                            <>
-                              <b>Build {metadata.hash}</b>
-                              <div>
-                                {new Date(metadata.date).toLocaleString()}
-                              </div>
-                            </>
-                          }
-                          placement="right"
-                        >
-                          <img
-                            alt="2hats logo"
-                            src={logo}
-                            className={classes.logo}
-                          />
-                        </Tooltip>
-                        <Tooltip title="Search users" placement="right">
-                          <IconButton
-                            className={classes.searchButton}
-                            onClick={() => {
-                              setShowSearch(true);
-                            }}
-                          >
-                            <SearchIcon />
-                          </IconButton>
-                        </Tooltip>
-                      </Grid>
-                      <Grid item>
-                        <NavigationItems
-                          currentLocation={path}
-                          selectedIndex={index}
-                          navigationRoutes={navigationRoutes}
-                        />
-                      </Grid>
-                      <Grid item style={{ textAlign: 'center' }}>
-                        <Notifications
-                          uid={uid}
-                          className={classes.notificationButton}
-                        />
-                        {currentUser && displayName && uid ? (
-                          <IconButton
-                            onClick={() => {
-                              setShowUserDialog(true);
-                            }}
-                          >
-                            <SuperAvatar
-                              data={currentUser}
-                              className={classes.avatar}
-                              noInitialsIcon={<WarningIcon />}
-                            />
-                          </IconButton>
-                        ) : (
-                          <CircularProgress
-                            color="inherit"
-                            className={classes.avatarSpinner}
-                          />
-                        )}
-                      </Grid>
-                    </Grid>
+                      <img
+                        alt="2hats logo"
+                        src={logo}
+                        className={classes.logo}
+                      />
+                    </Tooltip>
+                    <Tooltip title="Search users" placement="right">
+                      <IconButton
+                        className={classes.searchButton}
+                        onClick={() => {
+                          setShowSearch(true);
+                        }}
+                      >
+                        <SearchIcon />
+                      </IconButton>
+                    </Tooltip>
                   </Grid>
-                </>
-              </Slide>
+                  <Grid item>
+                    <NavigationItems
+                      currentLocation={path}
+                      selectedIndex={index}
+                      navigationRoutes={navigationRoutes}
+                    />
+                  </Grid>
+                  <Grid item style={{ textAlign: 'center' }}>
+                    <Notifications
+                      uid={uid}
+                      className={classes.notificationButton}
+                    />
+                    {currentUser && displayName && uid ? (
+                      <IconButton
+                        onClick={() => {
+                          setShowUserDialog(true);
+                        }}
+                      >
+                        <SuperAvatar
+                          data={currentUser}
+                          className={classes.avatar}
+                          noInitialsIcon={<WarningIcon />}
+                        />
+                      </IconButton>
+                    ) : (
+                      <CircularProgress
+                        color="inherit"
+                        className={classes.avatarSpinner}
+                      />
+                    )}
+                  </Grid>
+                </Grid>
+              </Grid>
               <Fade in timeout={400}>
                 <Grid
                   item

@@ -58,7 +58,6 @@ function generateTheme(theme, themeColor) {
       },
     },
     typography: {
-      useNextVariants: true,
       fontFamily: FONT_STACK,
       h3: { fontWeight: 500 },
       h4: { fontWeight: 500 },

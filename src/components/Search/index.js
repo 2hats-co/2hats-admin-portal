@@ -42,8 +42,8 @@ const styles = theme => ({
     display: 'none',
     userSelect: 'none',
     position: 'absolute',
-    top: theme.spacing.unit * 6,
-    left: theme.spacing.unit * 8 + 1,
+    top: theme.spacing(6),
+    left: theme.spacing(8) + 1,
     fontSize: 12,
     fontStyle: 'italic',
     color: theme.palette.text.secondary,
@@ -52,7 +52,7 @@ const styles = theme => ({
       width: 14,
       height: 14,
       borderRadius: '50%',
-      marginLeft: theme.spacing.unit / 2,
+      marginLeft: theme.spacing(0.5),
       verticalAlign: 'bottom',
     },
   },
@@ -66,16 +66,16 @@ const styles = theme => ({
   },
   enterPrompt: {
     position: 'absolute',
-    right: theme.spacing.unit * 2,
-    top: theme.spacing.unit * 2.5,
+    right: theme.spacing(2),
+    top: theme.spacing(2.5),
     backgroundColor: theme.palette.getContrastText(
       theme.palette.background.paper
     ),
     color: theme.palette.background.paper,
-    boxShadow: `0 0 ${theme.spacing.unit * 2}px ${theme.spacing.unit * 2}px ${
+    boxShadow: `0 0 ${theme.spacing(2)}px ${theme.spacing(2)}px ${
       theme.palette.background.paper
-    }, ${theme.spacing.unit * 3}px 0 0 0 ${theme.palette.background.paper}`,
-    padding: `${theme.spacing.unit / 2}px ${theme.spacing.unit}px`,
+    }, ${theme.spacing(3)}px 0 0 0 ${theme.palette.background.paper}`,
+    padding: `${theme.spacing(0.5)}px ${theme.spacing(1)}px`,
     borderRadius: theme.shape.borderRadius,
   },
   searchIcon: {
@@ -111,7 +111,7 @@ const styles = theme => ({
     opacity: 0.67,
   },
   listLoader: {
-    margin: `0 auto ${theme.spacing.unit * 2}px`,
+    margin: `0 auto ${theme.spacing(2)}px`,
     width: 620,
   },
 });

@@ -21,18 +21,18 @@ import paymentRecordFields from '../../../constants/forms/paymentRecord';
 import { addPaymentRecord } from '../../../utilities/referralPrograms';
 
 const styles = theme => ({
-  section: { marginBottom: theme.spacing.unit * 8 },
-  header: { marginBottom: theme.spacing.unit * 2 },
+  section: { marginBottom: theme.spacing(8) },
+  header: { marginBottom: theme.spacing(2) },
 
   graphicWrapper: {
     textAlign: 'center',
-    marginBottom: theme.spacing.unit * 6,
+    marginBottom: theme.spacing(6),
   },
   graphic: {
     userSelect: 'none',
     userDrag: 'none',
     width: 120,
-    marginBottom: theme.spacing.unit * 1,
+    marginBottom: theme.spacing(1),
   },
   message: {
     maxWidth: 480,

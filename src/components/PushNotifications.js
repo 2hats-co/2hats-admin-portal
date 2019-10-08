@@ -12,8 +12,8 @@ import { messaging } from '../store';
 
 const styles = theme => ({
   avatar: {
-    marginRight: theme.spacing.unit * 1.5,
-    marginLeft: -theme.spacing.unit * 0.75,
+    marginRight: theme.spacing(1.5),
+    marginLeft: -theme.spacing(1) * 0.75,
 
     color:
       theme.palette.type === 'dark'

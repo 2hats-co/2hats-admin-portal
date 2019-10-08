@@ -5,14 +5,14 @@ import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TablePagination from '@material-ui/core/TablePagination';
 import Paper from '@material-ui/core/Paper';
-import TableHeader from './Header'
-import TableRow from './Row'
+import TableHeader from './Header';
+import TableRow from './Row';
 
 const styles = theme => ({
   root: {
     width: '100%',
-    marginTop: theme.spacing.unit * 3,
-    marginLeft: theme.spacing.unit * 1,
+    marginTop: theme.spacing(3),
+    marginLeft: theme.spacing(1),
   },
   table: {
     minWidth: 1020,
@@ -22,18 +22,17 @@ const styles = theme => ({
   },
 });
 class EnhancedTable extends React.Component {
-  state = {
-  };
+  state = {};
   handleChangePage = (event, page) => {
-    this.props.changeHandler('currentPage',page)
+    this.props.changeHandler('currentPage', page);
   };
 
   handleChangeRowsPerPage = event => {
-    this.props.changeHandler('hitsPerPage',event.target.value)
+    this.props.changeHandler('hitsPerPage', event.target.value);
   };
   render() {
-    const { classes,changeHandler, catFilters } = this.props;
-    const {currentPage,hitsPerPage,nHits} = this.props.resultData
+    const { classes, changeHandler, catFilters } = this.props;
+    const { currentPage, hitsPerPage, nHits } = this.props.resultData;
     return (
       <Paper className={classes.root}>
         <div className={classes.tableWrapper}>
@@ -46,12 +45,15 @@ class EnhancedTable extends React.Component {
               addFilterHandler={this.props.addFilterHandler}
             />
             <TableBody>
-              {this.props.candidateData
-                .map(x => {
-                  return (
-                    <TableRow key={x.objectID} candidateData={x} changeHandler={changeHandler} />
-                  )
-                })}
+              {this.props.candidateData.map(x => {
+                return (
+                  <TableRow
+                    key={x.objectID}
+                    candidateData={x}
+                    changeHandler={changeHandler}
+                  />
+                );
+              })}
             </TableBody>
           </Table>
         </div>

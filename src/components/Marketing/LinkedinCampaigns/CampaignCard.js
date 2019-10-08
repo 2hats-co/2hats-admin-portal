@@ -20,20 +20,20 @@ import CampaignDetails from './CampaignDetails';
 
 const styles = theme => ({
   root: {
-    margin: theme.spacing.unit * 2,
-    padding: `${theme.spacing.unit * 2.5}px ${theme.spacing.unit * 3}px`,
+    margin: theme.spacing(2),
+    padding: `${theme.spacing(2.5)}px ${theme.spacing(3)}px`,
     boxShadow: `0 0 0 1px ${theme.palette.divider}`,
   },
   runButton: {
-    marginRight: theme.spacing.unit,
-    marginLeft: -theme.spacing.unit,
+    marginRight: theme.spacing(1),
+    marginLeft: -theme.spacing(1),
   },
   live: {
     borderRadius: theme.shape.borderRadius,
     backgroundColor: theme.palette.text.primary,
     color: theme.palette.background.paper,
     fontSize: '.7em',
-    marginLeft: theme.spacing.unit,
+    marginLeft: theme.spacing(1),
     padding: '2px 7px 2px 8px',
     textTransform: 'uppercase',
     letterSpacing: '.1em',
@@ -43,7 +43,7 @@ const styles = theme => ({
   },
   errorIcon: {
     verticalAlign: 'text-bottom',
-    marginRight: theme.spacing.unit / 2,
+    marginRight: theme.spacing(0.5),
   },
 });
 function CampaignCard(props) {

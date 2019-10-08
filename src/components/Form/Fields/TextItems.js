@@ -8,16 +8,16 @@ import Chip from '@material-ui/core/Chip';
 import AddIcon from '@material-ui/icons/Add';
 
 const styles = theme => ({
-  sliderSectionWrapper: { margin: `${theme.spacing.unit}px 0` },
+  sliderSectionWrapper: { margin: `${theme.spacing(1)}px 0` },
   sliderWrapper: {
-    marginRight: theme.spacing.unit * 3,
+    marginRight: theme.spacing(3),
   },
   textFieldWithAdornment: {
     paddingRight: 0,
   },
-  chipsWrapper: { marginTop: -theme.spacing.unit / 2 },
+  chipsWrapper: { marginTop: -theme.spacing(1) / 2 },
   chip: {
-    marginTop: theme.spacing.unit / 2,
+    marginTop: theme.spacing(0.5),
   },
 });
 const TextItems = props => {

@@ -21,8 +21,8 @@ import { passFailStyles } from './index';
 const styles = theme => ({
   root: {
     borderTop: `1px solid ${theme.palette.divider}`,
-    marginTop: theme.spacing.unit * 2,
-    paddingTop: theme.spacing.unit * 2,
+    marginTop: theme.spacing(2),
+    paddingTop: theme.spacing(2),
   },
 
   title: { lineHeight: 1.5 },
@@ -33,7 +33,7 @@ const styles = theme => ({
     ...STYLES.RENDERED_HTML(theme).renderedHtml,
     ...theme.typography.body2,
 
-    marginTop: theme.spacing.unit,
+    marginTop: theme.spacing(1),
   },
 });
 

@@ -32,12 +32,12 @@ const styles = theme => ({
   paperRoot: {
     borderRadius: theme.shape.roundBorderRadius,
     width: 360,
-    padding: theme.spacing.unit * 4,
+    padding: theme.spacing(4),
     outline: 'none',
     maxHeight: 'calc(100vh - 88px)',
     position: 'absolute',
-    bottom: theme.spacing.unit * 1.5,
-    left: theme.spacing.unit * 9,
+    bottom: theme.spacing(1.5),
+    left: theme.spacing(9),
     overflowY: 'auto',
   },
 
@@ -45,11 +45,11 @@ const styles = theme => ({
     textAlign: 'center',
   },
   avatar: {
-    width: theme.spacing.unit * 24,
-    height: theme.spacing.unit * 24,
-    margin: `0 auto ${theme.spacing.unit * 2}px`,
+    width: theme.spacing(24),
+    height: theme.spacing(24),
+    margin: `0 auto ${theme.spacing(2)}px`,
     backgroundColor: theme.palette.primary.light,
-    fontSize: theme.spacing.unit * 12,
+    fontSize: theme.spacing(12),
     cursor: 'none',
 
     animation: 'spin-me 2s linear infinite',
@@ -61,27 +61,27 @@ const styles = theme => ({
     to: { transform: 'rotate(360deg)' },
   },
   greeting: {
-    marginBottom: theme.spacing.unit * 1.5,
+    marginBottom: theme.spacing(1.5),
     color: theme.palette.text.primary,
   },
   UID: {
     opacity: 0.67,
   },
-  logOutButton: { marginTop: theme.spacing.unit * 1.5 },
+  logOutButton: { marginTop: theme.spacing(1.5) },
 
   borderedSection: {
-    marginTop: theme.spacing.unit * 3,
-    paddingTop: theme.spacing.unit * 2,
+    marginTop: theme.spacing(3),
+    paddingTop: theme.spacing(2),
     borderTop: `1px solid ${theme.palette.divider}`,
   },
   debugSection: {
     textAlign: 'center',
-    marginBottom: -theme.spacing.unit,
+    marginBottom: -theme.spacing(1),
   },
 
   routeDropdown: {
-    marginTop: theme.spacing.unit,
-    marginLeft: theme.spacing.unit,
+    marginTop: theme.spacing(1),
+    marginLeft: theme.spacing(1),
     minWidth: 140,
   },
 
@@ -106,7 +106,7 @@ const styles = theme => ({
   },
 
   snackbar: {
-    marginLeft: theme.spacing.unit * 11.5,
+    marginLeft: theme.spacing(11.5),
     '& > div': { justifyContent: 'center' },
   },
 });
@@ -194,7 +194,7 @@ function UserDialog(props) {
                   container
                   justify="center"
                   alignItems="baseline"
-                  spacing={8}
+                  spacing={1}
                 >
                   <Typography variant="subtitle1">Default route: </Typography>
                   <Select

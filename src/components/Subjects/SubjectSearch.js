@@ -18,13 +18,13 @@ const styles = theme => ({
   },
 
   count: {
-    marginRight: theme.spacing.unit * 3,
+    marginRight: theme.spacing(3),
     cursor: 'default',
   },
 
   input: {
-    paddingTop: theme.spacing.unit * 1.25,
-    paddingBottom: theme.spacing.unit * 1.25,
+    paddingTop: theme.spacing(1.25),
+    paddingBottom: theme.spacing(1.25),
     height: 20,
   },
   inputRoot: {
@@ -35,7 +35,7 @@ const styles = theme => ({
   searchButton: {
     minWidth: 0,
     height: SEARCH_HEIGHT,
-    padding: `0 ${theme.spacing.unit}px`,
+    padding: `0 ${theme.spacing(1)}px`,
 
     borderTopLeftRadius: 0,
     borderBottomLeftRadius: 0,

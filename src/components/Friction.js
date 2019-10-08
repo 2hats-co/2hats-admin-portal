@@ -12,10 +12,10 @@ import withStyles from '@material-ui/core/styles/withStyles';
 
 const styles = theme => ({
   dryWrapper: {
-    marginTop: theme.spacing.unit * 2,
+    marginTop: theme.spacing(2),
     userSelect: 'none',
   },
-  dryField: { marginTop: theme.spacing.unit },
+  dryField: { marginTop: theme.spacing(1) },
 });
 
 const Friction = ({ classes, children, message, dryCommand }) => {

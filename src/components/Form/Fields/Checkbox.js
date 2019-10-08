@@ -7,11 +7,11 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import MuiCheckbox from '@material-ui/core/Checkbox';
 
 const styles = theme => ({
-  root: { paddingLeft: theme.spacing.unit },
+  root: { paddingLeft: theme.spacing(1) },
   validatorWrapper: {
-    marginTop: -theme.spacing.unit * 2,
-    marginBottom: theme.spacing.unit * 1.5,
-    marginLeft: theme.spacing.unit * 2.75,
+    marginTop: -theme.spacing(1) * 2,
+    marginBottom: theme.spacing(1.5),
+    marginLeft: theme.spacing(2.75),
   },
 });
 

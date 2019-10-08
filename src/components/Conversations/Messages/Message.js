@@ -45,10 +45,10 @@ const styles = theme => ({
       backgroundColor: theme.palette.primary.light,
       borderTopLeftRadius: theme.shape.roundBorderRadius,
       borderBottomLeftRadius: theme.shape.roundBorderRadius,
-      marginRight: theme.spacing.unit * 6,
+      marginRight: theme.spacing(6),
     },
     '& p, & h6': { color: theme.palette.primary.darkText },
-    '& .msg-caption': { marginRight: theme.spacing.unit * 8 },
+    '& .msg-caption': { marginRight: theme.spacing(8) },
   },
   emojiMessage: {
     '& .msg-body': {
@@ -56,8 +56,8 @@ const styles = theme => ({
       boxShadow: 'none !important',
       borderRadius: 0,
       padding: 0,
-      paddingLeft: theme.spacing.unit,
-      paddingRight: theme.spacing.unit,
+      paddingLeft: theme.spacing(1),
+      paddingRight: theme.spacing(1),
     },
     '& p': {
       fontSize: 48,
@@ -83,7 +83,7 @@ const styles = theme => ({
   lastOfYour: {
     '& .msg-body': {
       borderBottomRightRadius: theme.shape.roundBorderRadius,
-      marginRight: theme.spacing.unit,
+      marginRight: theme.spacing(1),
     },
     '& .msg-caption': { display: 'block' },
   },
@@ -93,10 +93,10 @@ const styles = theme => ({
     maxWidth: 500,
     borderRadius: theme.shape.smallBorderRadius,
     padding: '10px 16px',
-    margin: `${theme.spacing.unit / 2}px 0 0`,
+    margin: `${theme.spacing(0.5)}px 0 0`,
   },
   caption: {
-    margin: `${theme.spacing.unit / 2}px ${theme.spacing.unit * 2}px 0`,
+    margin: `${theme.spacing(0.5)}px ${theme.spacing(2)}px 0`,
   },
   typeLabel: {
     textTransform: 'capitalize',
@@ -131,7 +131,7 @@ const styles = theme => ({
   noSubject: { opacity: 0.54 },
   expansionAdornmentIcon: {
     verticalAlign: 'top',
-    marginRight: theme.spacing.unit,
+    marginRight: theme.spacing(1),
     opacity: 0.87,
   },
   expansionRoot: {
@@ -139,12 +139,12 @@ const styles = theme => ({
     backgroundColor: 'transparent',
   },
   expansionSummaryRoot: {
-    minHeight: `${theme.spacing.unit * 5}px !important`,
-    padding: `0 ${theme.spacing.unit * 2}px`,
+    minHeight: `${theme.spacing(5)}px !important`,
+    padding: `0 ${theme.spacing(2)}px`,
   },
   expansionTitle: {
     fontWeight: 500,
-    paddingRight: `${theme.spacing.unit * 3}px !important`,
+    paddingRight: `${theme.spacing(3)}px !important`,
   },
   expandIcon: {
     right: 0,
@@ -152,33 +152,34 @@ const styles = theme => ({
   },
   editButton: {
     position: 'absolute',
-    top: -theme.spacing.unit / 2,
-    right: theme.spacing.unit * 4,
-    paddingRight: `${theme.spacing.unit * 1.5}px !important`,
+    top: -theme.spacing(1) / 2,
+    right: theme.spacing(4),
+    paddingRight: `${theme.spacing(1.5)}px !important`,
     '$yourMessage &': { color: theme.palette.primary.darkText },
   },
   emailExpansionDetails: {
-    padding: `0 ${theme.spacing.unit}px ${theme.spacing.unit}px`,
+    padding: `0 ${theme.spacing(1)}px ${theme.spacing(1)}px`,
     flexDirection: 'column',
   },
   expansionExpanded: { marginBottom: 0 },
   expansionSummaryExpanded: {},
   expansionSummaryContent: {
-    margin: `${theme.spacing.unit}px 0`,
+    margin: `${theme.spacing(1)}px 0`,
     '&$expansionSummaryExpanded': {
-      margin: `${theme.spacing.unit * 1.5}px 0 !important`,
+      margin: `${theme.spacing(1.5)}px 0 !important`,
     },
   },
   expansionDetails: {
-    padding: `${theme.spacing.unit / 2}px ${theme.spacing.unit * 2}px ${theme
-      .spacing.unit * 2}px`,
+    padding: `${theme.spacing(0.5)}px ${theme.spacing(2)}px ${theme.spacing(
+      2
+    )}px`,
     flexDirection: 'column',
   },
   renderedHTML: {
     backgroundColor: '#fff',
     width: '100%',
     textAlign: 'left',
-    padding: `0 ${theme.spacing.unit * 2}px`,
+    padding: `0 ${theme.spacing(2)}px`,
     borderRadius: theme.shape.roundBorderRadius * 0.8,
     overflowWrap: 'break-word',
     boxSizing: 'border-box',
@@ -187,10 +188,10 @@ const styles = theme => ({
     '& img': { maxWidth: '100%' },
   },
   emailAttachments: {
-    '& > *': { marginTop: theme.spacing.unit },
+    '& > *': { marginTop: theme.spacing(1) },
   },
   attachmentIcon: {
-    marginLeft: theme.spacing.unit,
+    marginLeft: theme.spacing(1),
   },
 
   activity: {
@@ -199,7 +200,7 @@ const styles = theme => ({
       boxShadow: `0 0 0 1px ${theme.palette.divider} inset`,
       borderRadius: `${theme.shape.roundBorderRadius}px !important`,
       backgroundColor: theme.palette.background.paper,
-      padding: theme.spacing.unit * 2,
+      padding: theme.spacing(2),
       maxWidth: 800,
     },
   },
@@ -229,13 +230,13 @@ const styles = theme => ({
     },
   },
   eventDetailsBlock: {
-    marginTop: theme.spacing.unit / 2,
-    '& + &': { marginTop: theme.spacing.unit * 2 },
+    marginTop: theme.spacing(0.5),
+    '& + &': { marginTop: theme.spacing(2) },
   },
   eventDetailCaption: {
     color: theme.palette.text.secondary,
-    width: theme.spacing.unit * 4,
-    marginRight: theme.spacing.unit * 0.75,
+    width: theme.spacing(4),
+    marginRight: theme.spacing(0.75),
     display: 'inline-block',
     textAlign: 'right',
   },
@@ -253,21 +254,21 @@ const styles = theme => ({
     },
   },
   reminderIcon: {
-    marginRight: theme.spacing.unit,
-    marginTop: theme.spacing.unit / 4,
-    marginLeft: -theme.spacing.unit / 2,
+    marginRight: theme.spacing(1),
+    marginTop: theme.spacing(0.25),
+    marginLeft: -theme.spacing(1) / 2,
     color: theme.palette.primary.darkText,
   },
   reminderAttendeesIcon: {
-    marginRight: theme.spacing.unit,
-    marginTop: -theme.spacing.unit / 4,
-    marginLeft: -theme.spacing.unit / 2,
+    marginRight: theme.spacing(1),
+    marginTop: -theme.spacing(1) / 4,
+    marginLeft: -theme.spacing(1) / 2,
     opacity: 0.87,
     color: theme.palette.text.primary,
   },
   reminderSubscribers: {
     '& p': { color: theme.palette.text.primary },
-    marginTop: theme.spacing.unit,
+    marginTop: theme.spacing(1),
   },
 });
 

@@ -35,7 +35,7 @@ const styles = theme => ({
     opacity: 0.75,
     animation: 'done-text-animation 1.5s infinite',
 
-    '&:first-of-type': { marginTop: theme.spacing.unit * 2 },
+    '&:first-of-type': { marginTop: theme.spacing(2) },
   },
   '@keyframes done-text-animation': {
     '0%': { color: '#000' },

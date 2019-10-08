@@ -18,7 +18,7 @@ import { compareByGivenName } from '../utilities';
 
 const styles = theme => ({
   buttonRoot: {
-    padding: theme.spacing.unit / 2,
+    padding: theme.spacing(0.5),
     paddingRight: 0,
     '& svg': { marginRight: 0 },
   },
@@ -29,11 +29,11 @@ const styles = theme => ({
     display: 'none',
   },
   avatar: {
-    marginRight: theme.spacing.unit * 1.5,
+    marginRight: theme.spacing(1.5),
   },
   name: {
-    marginLeft: theme.spacing.unit,
-    marginRight: theme.spacing.unit / 2,
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(0.5),
   },
 });
 

@@ -32,18 +32,18 @@ const styles = theme => ({
   },
   listIcon: {
     margin: 0,
-    marginTop: theme.spacing.unit / 4,
+    marginTop: theme.spacing(0.25),
     // color: theme.palette.primary.main,
   },
   secondaryAction: {
-    right: theme.spacing.unit,
+    right: theme.spacing(1),
     top: 0,
     transform: 'none',
   },
 
   highlightType: {
     textTransform: 'lowercase',
-    marginRight: theme.spacing.unit,
+    marginRight: theme.spacing(1),
     color: theme.palette.text.secondary,
   },
 });

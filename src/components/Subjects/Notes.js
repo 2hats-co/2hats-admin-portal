@@ -27,10 +27,10 @@ const styles = theme => ({
   root: {},
 
   input: {
-    paddingTop: theme.spacing.unit * 1.75,
-    paddingBottom: theme.spacing.unit * 1.75,
+    paddingTop: theme.spacing(1.75),
+    paddingBottom: theme.spacing(1.75),
   },
-  addButton: { marginRight: -theme.spacing.unit },
+  addButton: { marginRight: -theme.spacing(1) },
 
   listItemSecondaryAction: { right: -8 },
 });

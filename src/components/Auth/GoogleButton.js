@@ -29,7 +29,7 @@ const styles = theme => ({
     marginTop: -4,
   },
   snackbar: {
-    bottom: theme.spacing.unit,
+    bottom: theme.spacing(1),
   },
 });
 function GoogleButton(props) {

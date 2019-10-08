@@ -14,18 +14,18 @@ const styles = theme => ({
 
     userSelect: 'none',
 
-    padding: theme.spacing.unit * 2,
+    padding: theme.spacing(2),
     textAlign: 'center',
   },
 
   title: {
-    marginBottom: theme.spacing.unit,
+    marginBottom: theme.spacing(1),
     fontWeight: 400,
   },
   subtitle: { fontWeight: 400 },
 
-  buttonWrapper: { marginTop: theme.spacing.unit * 2 },
-  button: { margin: theme.spacing.unit },
+  buttonWrapper: { marginTop: theme.spacing(2) },
+  button: { margin: theme.spacing(1) },
 });
 
 class ErrorBoundary extends Component {

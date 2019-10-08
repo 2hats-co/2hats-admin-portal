@@ -26,17 +26,17 @@ const styles = theme => ({
   },
   input: {
     display: 'flex',
-    paddingLeft: theme.spacing.unit * 1.5,
-    paddingRight: theme.spacing.unit * 0.75,
+    paddingLeft: theme.spacing(1.5),
+    paddingRight: theme.spacing(0.75),
     alignItems: 'center',
   },
   collapseInput: {
-    paddingTop: theme.spacing.unit * 1.25,
+    paddingTop: theme.spacing(1.25),
   },
   chip: {
-    margin: `${theme.spacing.unit / 4}px !important`,
-    height: theme.spacing.unit * 3.5,
-    '& svg': { marginRight: theme.spacing.unit / 4 },
+    margin: `${theme.spacing(0.25)}px !important`,
+    height: theme.spacing(3.5),
+    '& svg': { marginRight: theme.spacing(0.25) },
   },
   chipFocused: {
     backgroundColor: emphasize(
@@ -57,7 +57,7 @@ const styles = theme => ({
   },
 
   indicatorButton: {
-    marginLeft: theme.spacing.unit / 2,
+    marginLeft: theme.spacing(0.5),
     padding: 0,
   },
 });
@@ -230,7 +230,7 @@ function IntegrationReactSelect(props) {
     noOptionsMessage: base => ({
       ...base,
       color: theme.palette.text.secondary,
-      padding: `${theme.spacing.unit}px ${theme.spacing.unit * 2}px`,
+      padding: `${theme.spacing(1)}px ${theme.spacing(2)}px`,
       textAlign: 'left',
       userSelect: 'none',
     }),

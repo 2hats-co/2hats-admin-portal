@@ -15,7 +15,7 @@ import { STYLES } from '@bit/sidney2hats.2hats.global.common-constants';
 
 const styles = theme => ({
   sectionTitle: {
-    marginLeft: theme.spacing.unit * 1.5,
+    marginLeft: theme.spacing(1.5),
   },
   ...STYLES.DROPZONE(theme),
 });

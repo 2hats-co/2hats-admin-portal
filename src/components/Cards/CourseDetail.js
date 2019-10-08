@@ -16,12 +16,12 @@ const styles = theme => ({
 
   description: {
     whiteSpace: 'pre-wrap',
-    marginTop: theme.spacing.unit * 1.5,
+    marginTop: theme.spacing(1.5),
   },
 
-  timeWrapper: { marginTop: -theme.spacing.unit },
+  timeWrapper: { marginTop: -theme.spacing(1) },
   timeIcon: {
-    marginRight: theme.spacing.unit / 2,
+    marginRight: theme.spacing(0.5),
     color: theme.palette.text.secondary,
   },
 });

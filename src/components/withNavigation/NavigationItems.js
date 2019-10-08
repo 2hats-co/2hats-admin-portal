@@ -12,8 +12,8 @@ const styles = theme => ({
   root: {
     width: 64,
     padding: 0,
-    marginTop: theme.spacing.unit * 2,
-    marginBottom: theme.spacing.unit * 2,
+    marginTop: theme.spacing(2),
+    marginBottom: theme.spacing(2),
   },
   item: {
     flexDirection: 'column',

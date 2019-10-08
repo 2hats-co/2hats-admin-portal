@@ -28,8 +28,8 @@ import useDocument from '../../hooks/useDocument';
 const styles = theme => ({
   debugButtons: {
     position: 'absolute',
-    top: theme.spacing.unit,
-    right: theme.spacing.unit,
+    top: theme.spacing(1),
+    right: theme.spacing(1),
   },
 
   avatar: {
@@ -43,7 +43,7 @@ const styles = theme => ({
   outcome: {
     textTransform: 'capitalize',
     textAlign: 'right',
-    marginRight: theme.spacing.unit,
+    marginRight: theme.spacing(1),
     fontWeight: 500,
   },
   outcomeIcon: {
@@ -53,24 +53,24 @@ const styles = theme => ({
     fontSize: 20,
     padding: 2,
     verticalAlign: 'bottom',
-    marginLeft: theme.spacing.unit,
+    marginLeft: theme.spacing(1),
     width: 20,
     height: 20,
     display: 'inline-block',
   },
   bio: {
     maxWidth: 720,
-    marginTop: theme.spacing.unit,
+    marginTop: theme.spacing(1),
   },
   block: {
-    marginTop: theme.spacing.unit * 3,
+    marginTop: theme.spacing(3),
   },
   skillsHeading: {
     width: 56,
-    marginRight: theme.spacing.unit / 2,
+    marginRight: theme.spacing(0.5),
   },
   chip: {
-    marginBottom: theme.spacing.unit,
+    marginBottom: theme.spacing(1),
   },
   iframe: {
     width: '100%',
@@ -173,7 +173,7 @@ function ResumeSubmission(props) {
         </Grid>
 
         <Grid item xs>
-          <Grid container alignItems="baseline" spacing={16}>
+          <Grid container alignItems="baseline" spacing={2}>
             <Grid item xs>
               <Typography variant="h5">{submission.displayName}</Typography>
             </Grid>
@@ -216,7 +216,7 @@ function ResumeSubmission(props) {
         container
         alignItems="baseline"
         className={classes.block}
-        spacing={8}
+        spacing={1}
       >
         <Grid item>
           <Typography variant="subtitle1">Available:</Typography>

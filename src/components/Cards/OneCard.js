@@ -65,12 +65,12 @@ const styles = theme => ({
     transition: theme.transitions.create('opacity'),
 
     textAlign: 'left',
-    padding: `${theme.spacing.unit}px ${theme.spacing.unit * 2}px`,
-    margin: `0 ${-theme.spacing.unit * 2}px ${theme.spacing.unit}px`,
+    padding: `${theme.spacing(1)}px ${theme.spacing(2)}px`,
+    margin: `0 ${-theme.spacing(1) * 2}px ${theme.spacing(1)}px`,
 
     '& svg': {
       verticalAlign: 'bottom',
-      marginRight: theme.spacing.unit,
+      marginRight: theme.spacing(1),
     },
   },
   bannerText: {
@@ -79,7 +79,7 @@ const styles = theme => ({
     top: 1,
 
     '& small': {
-      marginLeft: theme.spacing.unit,
+      marginLeft: theme.spacing(1),
       opacity: 0.67,
     },
   },
@@ -104,8 +104,8 @@ const styles = theme => ({
     borderRadius: theme.shape.borderRadius * 0.75,
     transition: theme.transitions.create('opacity'),
 
-    marginLeft: theme.spacing.unit,
-    marginBottom: theme.spacing.unit,
+    marginLeft: theme.spacing(1),
+    marginBottom: theme.spacing(1),
   },
   gradient: {
     backgroundImage: `linear-gradient(-15deg, #fa0, ${
@@ -136,8 +136,8 @@ const styles = theme => ({
   },
   cardContent: {
     textAlign: 'left',
-    paddingBottom: theme.spacing.unit,
-    '&:last-child': { paddingBottom: theme.spacing.unit },
+    paddingBottom: theme.spacing(1),
+    '&:last-child': { paddingBottom: theme.spacing(1) },
   },
   cardContentHeaderWithImg: { minHeight: 125 },
 
@@ -151,7 +151,7 @@ const styles = theme => ({
   arrowForwardIcon: {
     'svg&': {
       marginRight: 0,
-      marginLeft: theme.spacing.unit / 2,
+      marginLeft: theme.spacing(0.5),
     },
   },
   primaryButton: {

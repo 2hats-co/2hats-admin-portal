@@ -31,32 +31,32 @@ const styles = theme => ({
     minWidth: 480,
   },
   block: {
-    marginTop: theme.spacing.unit * 2,
-    '&:first-of-type': { marginTop: theme.spacing.unit / 2 },
+    marginTop: theme.spacing(2),
+    '&:first-of-type': { marginTop: theme.spacing(0.5) },
   },
   suggestedLabel: {
-    marginLeft: theme.spacing.unit * 1.75,
-    marginRight: theme.spacing.unit,
-    marginTop: theme.spacing.unit,
-    lineHeight: `${theme.spacing.unit * 4}px`,
+    marginLeft: theme.spacing(1.75),
+    marginRight: theme.spacing(1),
+    marginTop: theme.spacing(1),
+    lineHeight: `${theme.spacing(4)}px`,
   },
   suggestionChip: {
-    marginTop: theme.spacing.unit,
+    marginTop: theme.spacing(1),
   },
   inLabel: {
-    marginLeft: theme.spacing.unit * 1.75,
-    marginRight: theme.spacing.unit,
+    marginLeft: theme.spacing(1.75),
+    marginRight: theme.spacing(1),
   },
   toggleButtons: {
     width: '100%',
-    marginLeft: theme.spacing.unit,
+    marginLeft: theme.spacing(1),
     display: 'flex',
   },
   customButton: {
     flex: 1.75,
-    marginLeft: theme.spacing.unit * 2,
+    marginLeft: theme.spacing(2),
 
-    '& svg': { marginRight: theme.spacing.unit * 0.75 },
+    '& svg': { marginRight: theme.spacing(0.75) },
 
     '&::before': {
       content: '""',
@@ -65,14 +65,14 @@ const styles = theme => ({
       height: '100%',
       backgroundColor: theme.palette.divider,
       position: 'absolute',
-      left: -theme.spacing.unit,
+      left: -theme.spacing(1),
     },
   },
   borderedBlock: {
-    paddingLeft: theme.spacing.unit * 1.75,
-    paddingRight: theme.spacing.unit * 1.75,
-    marginTop: theme.spacing.unit * 3,
-    paddingTop: theme.spacing.unit * 3,
+    paddingLeft: theme.spacing(1.75),
+    paddingRight: theme.spacing(1.75),
+    marginTop: theme.spacing(3),
+    paddingTop: theme.spacing(3),
     position: 'relative',
 
     '&::before': {
@@ -82,14 +82,14 @@ const styles = theme => ({
       height: 1,
       backgroundColor: theme.palette.divider,
       position: 'relative',
-      top: -theme.spacing.unit * 3,
+      top: -theme.spacing(1) * 3,
     },
   },
   subscriberPicker: {
-    marginLeft: -theme.spacing.unit,
+    marginLeft: -theme.spacing(1),
   },
   subscriberChip: {
-    marginTop: theme.spacing.unit,
+    marginTop: theme.spacing(1),
   },
   avatar: {
     color: theme.palette.primary.main,
@@ -294,7 +294,7 @@ function ReminderDialog(props) {
 
         <div className={classes.borderedBlock}>
           <Typography variant="caption">Subscribers</Typography>
-          <Grid container spacing={8}>
+          <Grid container spacing={1}>
             <Grid item>
               <AdminSelector
                 onSelect={handleAddSubscriber}

@@ -14,12 +14,12 @@ const styles = theme => ({
   ...STYLES.RENDERED_HTML(theme),
 
   timeWrapper: {
-    marginTop: -theme.spacing.unit,
-    marginBottom: theme.spacing.unit * 1.5,
+    marginTop: -theme.spacing(1),
+    marginBottom: theme.spacing(1.5),
     width: 'auto',
   },
   timeIcon: {
-    marginRight: theme.spacing.unit / 2,
+    marginRight: theme.spacing(0.5),
     color: theme.palette.text.secondary,
   },
 

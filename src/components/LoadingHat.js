@@ -50,9 +50,9 @@ const styles = theme => ({
     zIndex: -1,
   },
   message: {
-    marginBottom: -theme.spacing.unit * 6,
-    marginTop: theme.spacing.unit * 3,
-    marginLeft: -theme.spacing.unit,
+    marginBottom: -theme.spacing(1) * 6,
+    marginTop: theme.spacing(3),
+    marginLeft: -theme.spacing(1),
     maxWidth: 600,
     textAlign: 'center',
   },

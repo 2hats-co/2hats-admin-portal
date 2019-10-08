@@ -16,7 +16,7 @@ import BlastPreview from './BlastPreview';
 
 import useAuthedUser from '../../../hooks/useAuthedUser';
 import useDocument from '../../../hooks/useDocument';
-import { unstable_useMediaQuery as useMediaQuery } from '@material-ui/core/useMediaQuery';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 import {
   cloudFunction,
   CLOUD_FUNCTIONS,
@@ -38,8 +38,8 @@ const styles = theme => ({
   },
   addButton: {
     position: 'absolute',
-    bottom: theme.spacing.unit * 2,
-    right: theme.spacing.unit * 2,
+    bottom: theme.spacing(2),
+    right: theme.spacing(2),
   },
 
   detailsWrapper: {

@@ -41,7 +41,7 @@ import useCollection from '../../../hooks/useCollection';
 const styles = theme => ({
   icon: {
     verticalAlign: 'text-bottom',
-    marginRight: theme.spacing.unit,
+    marginRight: theme.spacing(1),
     color: theme.palette.text.secondary,
     fontSize: 18,
   },
@@ -50,7 +50,7 @@ const styles = theme => ({
   },
 
   divider: {
-    margin: `${theme.spacing.unit * 2}px 0`,
+    margin: `${theme.spacing(2)}px 0`,
   },
 });
 
@@ -100,7 +100,7 @@ const Society = props => {
           aria-controls="panel1a-content"
           id="panel1a-header"
         >
-          <Grid container alignItems="center" spacing={8}>
+          <Grid container alignItems="center" spacing={1}>
             <Grid item>
               <SocietyIcon />
             </Grid>
@@ -124,7 +124,7 @@ const Society = props => {
           </Grid>
         </ExpansionPanelSummary>
         <ExpansionPanelDetails className={classes.details}>
-          <Grid container spacing={8} component="section">
+          <Grid container spacing={1} component="section">
             <Grid item xs={6}>
               <Typography variant="subtitle1" gutterBottom>
                 Contact Information

@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 
 import withStyles from '@material-ui/core/styles/withStyles';
 
-import { unstable_useMediaQuery as useMediaQuery } from '@material-ui/core/useMediaQuery';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 import Slide from '@material-ui/core/Slide';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
@@ -36,14 +36,14 @@ import DocumentSelect from './Fields/DocumentSelect';
 export const styles = theme => ({
   mobile: {},
   paperRoot: {
-    width: `calc(100% - ${theme.spacing.unit * 4}px)`,
+    width: `calc(100% - ${theme.spacing(4)}px)`,
     maxWidth: 600,
-    margin: theme.spacing.unit * 2,
-    maxHeight: `calc(100% - ${theme.spacing.unit * 4}px)`,
+    margin: theme.spacing(2),
+    maxHeight: `calc(100% - ${theme.spacing(4)}px)`,
   },
 
   dialogTitle: {
-    paddingTop: theme.spacing.unit * 2.5,
+    paddingTop: theme.spacing(2.5),
 
     '& > *': {
       overflow: 'hidden',
@@ -52,15 +52,15 @@ export const styles = theme => ({
     },
 
     '$mobile &': {
-      padding: `${theme.spacing.unit * 2}px ${theme.spacing.unit * 2.5}px`,
+      padding: `${theme.spacing(2)}px ${theme.spacing(2.5)}px`,
     },
   },
 
-  deleteButton: { marginRight: theme.spacing.unit },
+  deleteButton: { marginRight: theme.spacing(1) },
 
   wrapperGrid: {
     overflowX: 'hidden',
-    paddingBottom: theme.spacing.unit,
+    paddingBottom: theme.spacing(1),
   },
 
   dialogContent: {
@@ -73,25 +73,23 @@ export const styles = theme => ({
       theme.palette.type === 'dark'
         ? 'linear-gradient(to bottom, rgba(0,0,0,.5), rgba(0,0,0,0)), linear-gradient(to top, rgba(0,0,0,.5), rgba(0,0,0,0))'
         : 'linear-gradient(to bottom, rgba(0,0,0,.1), rgba(0,0,0,0)), linear-gradient(to top, rgba(0,0,0,.1), rgba(0,0,0,0))',
-    backgroundPosition: `-${theme.spacing.unit * 3}px 0, -${theme.spacing.unit *
-      3}px 100%`,
-    backgroundSize: `calc(100% + ${theme.spacing.unit * 3}px) ${theme.spacing
-      .unit * 2}px`,
+    backgroundPosition: `-${theme.spacing(3)}px 0, -${theme.spacing(3)}px 100%`,
+    backgroundSize: `calc(100% + ${theme.spacing(3)}px) ${theme.spacing(2)}px`,
 
     '&::before, &::after': {
       content: '""',
       position: 'relative',
       zIndex: -1,
       display: 'block',
-      height: theme.spacing.unit * 4,
-      margin: `0 -${theme.spacing.unit * 3}px -${theme.spacing.unit * 4}px`,
+      height: theme.spacing(4),
+      margin: `0 -${theme.spacing(3)}px -${theme.spacing(4)}px`,
       background: `linear-gradient(to bottom, ${
         theme.palette.background.paper
       }, ${theme.palette.background.paper} 30%, rgba(255, 255, 255, 0))`,
     },
 
     '&::after': {
-      marginTop: -theme.spacing.unit * 4,
+      marginTop: -theme.spacing(1) * 4,
       marginBottom: 0,
       background: `linear-gradient(to bottom, rgba(255, 255, 255, 0), ${
         theme.palette.background.paper
@@ -99,11 +97,11 @@ export const styles = theme => ({
     },
 
     '$mobile &': {
-      padding: `0 ${theme.spacing.unit * 2}px`,
+      padding: `0 ${theme.spacing(2)}px`,
 
       '&::before, &::after': {
-        marginLeft: -theme.spacing.unit * 2,
-        marginRight: -theme.spacing.unit * 2,
+        marginLeft: -theme.spacing(1) * 2,
+        marginRight: -theme.spacing(1) * 2,
       },
     },
   },
@@ -113,7 +111,7 @@ export const styles = theme => ({
   },
 
   sectionTitle: {
-    marginLeft: theme.spacing.unit * 1.5,
+    marginLeft: theme.spacing(1.5),
   },
 });
 
@@ -247,7 +245,7 @@ function Form(props) {
           <Grid
             container
             direction="row"
-            spacing={16}
+            spacing={2}
             className={classes.wrapperGrid}
             alignContent="flex-start"
           >

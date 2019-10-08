@@ -82,7 +82,7 @@ function OrderedTemplateList(props) {
     <>
       <Grid
         container
-        spacing={16}
+        spacing={2}
         direction="row"
         wrap="nowrap"
         style={{ padding: 16 }}

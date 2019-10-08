@@ -11,11 +11,11 @@ import { getAssessmentCategoryLabel } from '@bit/sidney2hats.2hats.global.common
 const styles = theme => ({
   industryWrapper: {
     width: 'auto',
-    marginTop: -theme.spacing.unit / 4,
-    marginBottom: theme.spacing.unit,
+    marginTop: -theme.spacing(1) / 4,
+    marginBottom: theme.spacing(1),
   },
   industryIcon: {
-    marginRight: theme.spacing.unit / 2,
+    marginRight: theme.spacing(0.5),
     color: theme.palette.text.secondary,
   },
   industryText: {

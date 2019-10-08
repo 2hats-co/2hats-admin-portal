@@ -5,14 +5,13 @@ import classNames from 'classnames';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-// import Button from '@material-ui/core/Button';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 
 const styles = theme => ({
   root: {
     backgroundColor: theme.palette.background.paper,
-    paddingLeft: theme.spacing.unit * 3,
+    paddingLeft: theme.spacing(3),
     height: 64,
   },
   showShadow: {
@@ -26,7 +25,7 @@ const styles = theme => ({
   title: {
     lineHeight: '64px',
     fontWeight: 600,
-    marginRight: theme.spacing.unit * 2,
+    marginRight: theme.spacing(2),
     userSelect: 'none',
   },
   routeButton: {

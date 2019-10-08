@@ -6,7 +6,6 @@ import useCollection from '../hooks/useCollection';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Grid from '@material-ui/core/Grid';
 import Fab from '@material-ui/core/Fab';
-import Slide from '@material-ui/core/Slide';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Snackbar from '@material-ui/core/Snackbar';
 import EditIcon from '@material-ui/icons/EditOutlined';
@@ -89,12 +88,12 @@ const styles = theme => ({
   },
   addButton: {
     position: 'absolute',
-    bottom: theme.spacing.unit * 2,
-    right: theme.spacing.unit * 2,
+    bottom: theme.spacing(2),
+    right: theme.spacing(2),
     zIndex: 99,
   },
   snackbar: {
-    marginBottom: theme.spacing.unit,
+    marginBottom: theme.spacing(1),
   },
 });
 
@@ -187,17 +186,15 @@ function StatisticsContainer(props) {
           </Fab>
         )}
 
-        <Slide in direction="down">
-          <>
-            <LocationIndicator title="Statistics" showShadow />
-            <TimeBar
-              format={format}
-              range={range}
-              setFormat={setFormat}
-              setRange={setRange}
-            />
-          </>
-        </Slide>
+        <>
+          <LocationIndicator title="Statistics" showShadow />
+          <TimeBar
+            format={format}
+            range={range}
+            setFormat={setFormat}
+            setRange={setRange}
+          />
+        </>
 
         <Grid container className={classes.grid}>
           <ResponsiveGridLayout

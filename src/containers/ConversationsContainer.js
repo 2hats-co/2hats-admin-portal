@@ -13,7 +13,7 @@ import ConversationHeader from '../components/Conversations/ConversationHeader';
 import Messages from '../components/Conversations/Messages';
 import LoadingHat from '../components/LoadingHat';
 
-import { unstable_useMediaQuery as useMediaQuery } from '@material-ui/core/useMediaQuery';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 import useDocument from '../hooks/useDocument';
 import { ROUTES } from '../constants/routes';
 import { getfirstIdOfQuery } from '../utilities/firestore';

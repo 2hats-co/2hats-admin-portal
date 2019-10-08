@@ -26,11 +26,11 @@ const styles = theme => ({
   ...STYLES.DETAIL_VIEW(theme),
 
   skillsWrapper: {
-    marginTop: theme.spacing.unit / 2,
+    marginTop: theme.spacing(0.5),
   },
   skillWrapper: {
-    paddingRight: theme.spacing.unit * 2,
-    paddingBottom: theme.spacing.unit * 2,
+    paddingRight: theme.spacing(2),
+    paddingBottom: theme.spacing(2),
   },
 
   subtitle: {
@@ -38,8 +38,8 @@ const styles = theme => ({
     textTransform: 'capitalize',
     color: theme.palette.text.primary,
 
-    marginTop: theme.spacing.unit,
-    marginBottom: `${theme.spacing.unit * 3}px !important`,
+    marginTop: theme.spacing(1),
+    marginBottom: `${theme.spacing(3)}px !important`,
     display: 'block',
 
     '& $adornmentIcon': {
@@ -51,7 +51,7 @@ const styles = theme => ({
 
   grid: {
     textAlign: 'center',
-    marginTop: theme.spacing.unit,
+    marginTop: theme.spacing(1),
   },
   gridItem: {
     paddingTop: '0 !important',
@@ -69,23 +69,23 @@ const styles = theme => ({
   },
   adornmentIcon: {
     verticalAlign: 'bottom',
-    marginRight: theme.spacing.unit,
+    marginRight: theme.spacing(1),
     color: theme.palette.text.secondary,
   },
 
   expansionPanel: { boxShadow: 'none' },
   expansionPanelSummary: { padding: 0 },
-  expansionPanelSummaryExpandIcon: { right: -theme.spacing.unit * 1.5 },
+  expansionPanelSummaryExpandIcon: { right: -theme.spacing(1) * 1.5 },
   expansionPanelDetails: {
     flexDirection: 'column',
     padding: 0,
-    paddingBottom: theme.spacing.unit * 2,
+    paddingBottom: theme.spacing(2),
   },
 
   superAvatar: {
-    width: theme.spacing.unit * 8,
-    height: theme.spacing.unit * 8,
-    marginRight: theme.spacing.unit * 2,
+    width: theme.spacing(8),
+    height: theme.spacing(8),
+    marginRight: theme.spacing(2),
   },
 
   capitalize: { textTransform: 'capitalize' },
@@ -128,7 +128,7 @@ const JobSubmission = props => {
           {data.industry}
         </Typography>
 
-        <Grid container className={classes.grid} spacing={16} justify="center">
+        <Grid container className={classes.grid} spacing={2} justify="center">
           <Grid item xs={4} className={classes.gridItem}>
             <Typography variant="h5" className={classes.meta}>
               {data.commitment}

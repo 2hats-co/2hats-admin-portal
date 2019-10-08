@@ -34,21 +34,21 @@ const styles = theme => ({
     position: 'relative',
   },
   dialogTitle: {
-    paddingRight: theme.spacing.unit * 8,
+    paddingRight: theme.spacing(8),
   },
   deleteButton: {
     position: 'absolute',
-    top: theme.spacing.unit * 1.25,
-    right: theme.spacing.unit * 1.25,
+    top: theme.spacing(1.25),
+    right: theme.spacing(1.25),
   },
   chartTypeButtons: {
     display: 'flex',
   },
   titleField: {
-    marginBottom: theme.spacing.unit * 2,
+    marginBottom: theme.spacing(2),
   },
   addItemButton: {
-    marginLeft: -theme.spacing.unit * 2.25,
+    marginLeft: -theme.spacing(1) * 2.25,
   },
 });
 

@@ -19,14 +19,14 @@ import CurrentUserContext from '../../../contexts/CurrentUserContext';
 const styles = theme => ({
   root: {
     maxWidth: 960,
-    padding: theme.spacing.unit,
+    padding: theme.spacing(1),
     margin: '0 auto',
   },
 
   addButton: {
     position: 'fixed',
-    bottom: theme.spacing.unit * 2,
-    right: theme.spacing.unit * 2,
+    bottom: theme.spacing(2),
+    right: theme.spacing(2),
   },
 });
 

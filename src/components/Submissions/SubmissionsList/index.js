@@ -34,21 +34,21 @@ import { ROUTES } from '../../../constants/routes';
 
 const styles = theme => ({
   topFilterWrapper: {
-    marginTop: -theme.spacing.unit * 6,
-    marginBottom: theme.spacing.unit,
+    marginTop: -theme.spacing(1) * 6,
+    marginBottom: theme.spacing(1),
     textAlign: 'right',
-    paddingRight: theme.spacing.unit,
+    paddingRight: theme.spacing(1),
   },
   topFilterToggleButtons: { display: 'inline-block' },
 
   filterBar: {
-    padding: theme.spacing.unit,
+    padding: theme.spacing(1),
     paddingTop: 0,
-    paddingLeft: theme.spacing.unit * 2,
+    paddingLeft: theme.spacing(2),
     boxShadow: `0 -1px 0 ${theme.palette.divider} inset`,
   },
   timeSortButton: {
-    marginLeft: -theme.spacing.unit * 0.75,
+    marginLeft: -theme.spacing(1) * 0.75,
     '&::after': {
       content: '""',
       display: 'block',
@@ -56,7 +56,7 @@ const styles = theme => ({
       height: 24,
       background: theme.palette.divider,
       position: 'relative',
-      right: -theme.spacing.unit,
+      right: -theme.spacing(1),
     },
   },
   timeDirectionIcon: {
@@ -67,10 +67,10 @@ const styles = theme => ({
 
     fontSize: 18,
     marginRight: '0 !important',
-    marginLeft: -theme.spacing.unit * 0.75,
+    marginLeft: -theme.spacing(1) * 0.75,
   },
   resetFiltersButton: {
-    marginLeft: theme.spacing.unit * 0.75,
+    marginLeft: theme.spacing(0.75),
   },
 
   noConvs: {

@@ -82,7 +82,7 @@ function ClientItem(props) {
         container
         className={classes.gridRoot}
         alignItems="center"
-        spacing={16}
+        spacing={2}
       >
         <Grid item>
           <Grid container direction="column" justify="space-evenly">

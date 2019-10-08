@@ -16,8 +16,8 @@ const styles = theme => ({
   root: { minWidth: 240 },
   closeButton: {
     position: 'absolute',
-    top: theme.spacing.unit * 2,
-    right: theme.spacing.unit * 2,
+    top: theme.spacing(2),
+    right: theme.spacing(2),
   },
   dialogContent: {
     paddingBottom: 0,
@@ -29,14 +29,14 @@ const styles = theme => ({
   },
   infiniteScrollWrapper: {
     overflowY: 'auto',
-    marginLeft: -theme.spacing.unit,
-    marginRight: -theme.spacing.unit,
+    marginLeft: -theme.spacing(1),
+    marginRight: -theme.spacing(1),
 
     minHeight: 200,
     height: 'calc(100vh - 173px)',
   },
   listLoader: {
-    marginTop: theme.spacing.unit * 2,
+    marginTop: theme.spacing(2),
   },
 });
 

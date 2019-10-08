@@ -80,7 +80,7 @@ const atButton = handleSelect => (
 );
 const styles = theme => ({
   actionsWrapper: {
-    marginLeft: -theme.spacing.unit * 1.5,
+    marginLeft: -theme.spacing(1) * 1.5,
     '& > *': { display: 'inline-block' },
   },
 });

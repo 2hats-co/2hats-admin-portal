@@ -10,14 +10,14 @@ import DebugButton from '../DebugButton';
 
 const styles = theme => ({
   root: {
-    padding: `${theme.spacing.unit}px ${theme.spacing.unit * 1.5}px ${
-      theme.spacing.unit
-    }px ${theme.spacing.unit * 2.25}px`,
+    padding: `${theme.spacing(1)}px ${theme.spacing(1.5)}px ${theme.spacing(
+      1
+    )}px ${theme.spacing(2.25)}px`,
     borderBottom: `1px solid ${theme.palette.divider}`,
     cursor: 'default',
   },
   typeIcon: {
-    marginRight: theme.spacing.unit * 2,
+    marginRight: theme.spacing(2),
     opacity: 0.87,
     color: theme.palette.text.primary,
   },

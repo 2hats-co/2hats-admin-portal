@@ -25,7 +25,7 @@ function EmailAnalytics(props) {
   );
 
   return (
-    <Grid container spacing={40}>
+    <Grid container spacing={5}>
       <Grid item>
         <Typography variant="h5">{deliveries}</Typography>
         <Typography variant="body2">Deliveries</Typography>

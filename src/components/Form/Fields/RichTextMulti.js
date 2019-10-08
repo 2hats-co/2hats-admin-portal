@@ -15,7 +15,7 @@ import RemoveIcon from '@material-ui/icons/RemoveCircleOutline';
 
 const styles = theme => ({
   root: {
-    margin: `${theme.spacing.unit}px 0`,
+    margin: `${theme.spacing(1)}px 0`,
 
     '&:focus-within $sectionTitle': {
       color:
@@ -26,7 +26,7 @@ const styles = theme => ({
   },
 
   sectionTitle: {
-    marginLeft: theme.spacing.unit * 1.5,
+    marginLeft: theme.spacing(1.5),
 
     transition: theme.transitions.create('color', {
       duration: theme.transitions.duration.shortest,
@@ -37,15 +37,15 @@ const styles = theme => ({
   },
 
   item: {
-    paddingLeft: theme.spacing.unit * 1.5,
-    paddingBottom: theme.spacing.unit * 1.5,
+    paddingLeft: theme.spacing(1.5),
+    paddingBottom: theme.spacing(1.5),
     border: `1px solid ${theme.palette.divider}`,
     borderRadius: theme.shape.borderRadius,
-    margin: theme.spacing.unit,
-    width: `calc(100% - ${theme.spacing.unit * 2}px)`,
+    margin: theme.spacing(1),
+    width: `calc(100% - ${theme.spacing(2)}px)`,
   },
   number: {
-    marginRight: theme.spacing.unit,
+    marginRight: theme.spacing(1),
     fontWeight: 'bold',
   },
   renderedHtml: {

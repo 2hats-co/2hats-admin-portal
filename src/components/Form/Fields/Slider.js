@@ -2,18 +2,18 @@ import React from 'react';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import MUISlider from '@material-ui/lab/Slider';
+import MUISlider from '@material-ui/core/Slider';
 
 const styles = theme => ({
-  sliderSectionWrapper: { margin: `${theme.spacing.unit}px 0` },
-  sliderGrid: { paddingRight: theme.spacing.unit },
-  sliderWrapper: { marginRight: theme.spacing.unit * 2 },
-  slider: { marginLeft: theme.spacing.unit },
-  sectionTitle: { marginLeft: theme.spacing.unit * 1.5 },
+  sliderSectionWrapper: { margin: `${theme.spacing(1)}px 0` },
+  sliderGrid: { paddingRight: theme.spacing(1) },
+  sliderWrapper: { marginRight: theme.spacing(2) },
+  slider: { marginLeft: theme.spacing(1) },
+  sectionTitle: { marginLeft: theme.spacing(1.5) },
 
   thumb: {
-    width: theme.spacing.unit * 1.5,
-    height: theme.spacing.unit * 1.5,
+    width: theme.spacing(1.5),
+    height: theme.spacing(1.5),
     borderRadius: '50%',
     backgroundColor: theme.palette.primary.main,
   },
@@ -25,13 +25,13 @@ const styles = theme => ({
     transformOrigin: '0 100%',
 
     position: 'absolute',
-    top: -theme.spacing.unit * 5,
-    left: theme.spacing.unit * 0.75,
-    padding: `${theme.spacing.unit / 2}px ${theme.spacing.unit}px`,
+    top: -theme.spacing(1) * 5,
+    left: theme.spacing(0.75),
+    padding: `${theme.spacing(0.5)}px ${theme.spacing(1)}px`,
 
     backgroundColor: theme.palette.primary.main,
     color: theme.palette.primary.contrastText,
-    borderRadius: theme.spacing.unit * 1.5,
+    borderRadius: theme.spacing(1.5),
     borderBottomLeftRadius: 2,
 
     fontWeight: 500,

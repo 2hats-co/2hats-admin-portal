@@ -41,7 +41,7 @@ import { momentLocales } from '../constants/momentLocales';
 const styles = theme => ({
   loader: {
     color: 'rgba(255,255,255,.87)',
-    padding: theme.spacing.unit * 1.5,
+    padding: theme.spacing(1.5),
   },
   badge: {
     backgroundColor: '#fff',
@@ -52,14 +52,14 @@ const styles = theme => ({
     borderRadius: theme.shape.roundBorderRadius,
     width: 360,
     outline: 'none',
-    maxHeight: `calc(100vh - ${theme.spacing.unit * 3}px)`,
+    maxHeight: `calc(100vh - ${theme.spacing(3)}px)`,
     position: 'absolute',
-    bottom: theme.spacing.unit * 1.5,
-    left: theme.spacing.unit * 9,
+    bottom: theme.spacing(1.5),
+    left: theme.spacing(9),
     overflowY: 'auto',
   },
   tabs: { boxShadow: `0 -1px 0 ${theme.palette.divider} inset` },
-  listItemRoot: { paddingRight: theme.spacing.unit * 7 },
+  listItemRoot: { paddingRight: theme.spacing(7) },
   listItemTextRoot: { paddingRight: 0 },
   timestamp: {
     color: theme.palette.text.secondary,
@@ -75,7 +75,7 @@ const styles = theme => ({
     backgroundColor: theme.palette.primary.main,
   },
   scrollyRollyWrapper: {
-    maxHeight: `calc(100vh - ${theme.spacing.unit * 3}px - 56px)`,
+    maxHeight: `calc(100vh - ${theme.spacing(3)}px - 56px)`,
     overflowY: 'auto',
   },
 });

@@ -9,7 +9,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import Slider from '@material-ui/lab/Slider';
+import Slider from '@material-ui/core/Slider';
 import Tooltip from '@material-ui/core/Tooltip';
 import IconButton from '@material-ui/core/IconButton';
 import Chip from '@material-ui/core/Chip';
@@ -32,37 +32,37 @@ const styles = theme => ({
     minWidth: 480,
   },
   block: {
-    marginTop: theme.spacing.unit * 3,
-    '&:first-of-type': { marginTop: theme.spacing.unit / 2 },
+    marginTop: theme.spacing(3),
+    '&:first-of-type': { marginTop: theme.spacing(0.5) },
   },
   suggestedLabel: {
-    marginLeft: theme.spacing.unit * 1.75,
-    marginRight: theme.spacing.unit,
-    marginTop: theme.spacing.unit,
-    lineHeight: `${theme.spacing.unit * 4}px`,
+    marginLeft: theme.spacing(1.75),
+    marginRight: theme.spacing(1),
+    marginTop: theme.spacing(1),
+    lineHeight: `${theme.spacing(4)}px`,
   },
   suggestionChip: {
-    marginTop: theme.spacing.unit,
+    marginTop: theme.spacing(1),
   },
   attendeeField: {
-    marginRight: theme.spacing.unit,
+    marginRight: theme.spacing(1),
   },
   addAttendeeButton: {
-    height: theme.spacing.unit * 6,
-    marginTop: theme.spacing.unit,
+    height: theme.spacing(6),
+    marginTop: theme.spacing(1),
     boxShadow: '0 0 0 1px rgba(0, 0, 0, 0.23) inset',
   },
   durationLabel: {
-    marginLeft: theme.spacing.unit * 1.75,
+    marginLeft: theme.spacing(1.75),
   },
   dateTimePicker: {
-    marginRight: theme.spacing.unit,
+    marginRight: theme.spacing(1),
   },
   durationWrapper: {
     minHeight: 44,
   },
   sliderWrapper: {
-    marginRight: theme.spacing.unit * 3,
+    marginRight: theme.spacing(3),
   },
 });
 

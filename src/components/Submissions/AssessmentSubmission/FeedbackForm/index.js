@@ -40,7 +40,7 @@ import { submitFeedback } from '../../../../utilities/submissions';
 import useCollection from '../../../../hooks/useCollection';
 
 export const passFailStyles = theme => ({
-  toggleButtons: { marginLeft: -theme.spacing.unit * 1.5 },
+  toggleButtons: { marginLeft: -theme.spacing(1) * 1.5 },
 
   passButton: {
     height: 36,
@@ -64,20 +64,20 @@ export const passFailStyles = theme => ({
   toggleButtonLabel: {
     color: 'inherit',
     '& svg': {
-      marginRight: theme.spacing.unit / 2,
-      marginLeft: -theme.spacing.unit / 4,
+      marginRight: theme.spacing(0.5),
+      marginLeft: -theme.spacing(1) / 4,
     },
   },
   disableSubmissionsCheckbox: {
-    marginTop: theme.spacing.unit * 2,
-    marginBottom: theme.spacing.unit * 2,
+    marginTop: theme.spacing(2),
+    marginBottom: theme.spacing(2),
   },
 
   renderedHtml: {
     ...STYLES.RENDERED_HTML(theme).renderedHtml,
     ...theme.typography.body2,
 
-    margin: `${theme.spacing.unit}px 0`,
+    margin: `${theme.spacing(1)}px 0`,
   },
 });
 
@@ -90,8 +90,8 @@ const styles = theme => ({
     width: 320,
     position: 'relative',
 
-    padding: `${theme.spacing.unit * 3.5}px ${theme.spacing.unit * 2.5}px`,
-    paddingBottom: theme.spacing.unit * 10,
+    padding: `${theme.spacing(3.5)}px ${theme.spacing(2.5)}px`,
+    paddingBottom: theme.spacing(10),
   },
 
   ...passFailStyles(theme),
@@ -104,16 +104,16 @@ const styles = theme => ({
     bottom: 0,
   },
 
-  generalCommentsHeader: { marginTop: theme.spacing.unit },
+  generalCommentsHeader: { marginTop: theme.spacing(1) },
   generalComments: { margin: 0 },
-  perCriteriaHeader: { marginTop: theme.spacing.unit * 3 },
+  perCriteriaHeader: { marginTop: theme.spacing(3) },
 
   submitButton: {
     position: 'fixed',
-    bottom: theme.spacing.unit * 2,
-    right: theme.spacing.unit * 2,
+    bottom: theme.spacing(2),
+    right: theme.spacing(2),
 
-    width: 320 - theme.spacing.unit * 4,
+    width: 320 - theme.spacing(4),
   },
 });
 

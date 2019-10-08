@@ -16,8 +16,8 @@ const styles = theme => ({
   },
 
   statusIcon: {
-    marginLeft: -theme.spacing.unit * 1.5,
-    marginRight: theme.spacing.unit,
+    marginLeft: -theme.spacing(1) * 1.5,
+    marginRight: theme.spacing(1),
   },
 
   tooltip: {
@@ -25,7 +25,7 @@ const styles = theme => ({
   },
 
   analytic: {
-    marginLeft: theme.spacing.unit * 4,
+    marginLeft: theme.spacing(4),
   },
 });
 

@@ -20,7 +20,7 @@ import { updateDoc } from '../../../utilities/firestore';
 import LinkedInIcon from '../../../assets/icons/LinkedIn';
 import SpamIcon from '@material-ui/icons/ReportOutlined';
 
-import { unstable_useMediaQuery as useMediaQuery } from '@material-ui/core/useMediaQuery';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 import ConversationTypeIcon from '../ConversationTypeIcon';
 import ManageSubscribersDialog from './ManageSubscribersDialog';
 import DebugButton from '../../DebugButton';
@@ -35,18 +35,18 @@ import Form from '../../Form';
 import conversationFields from '../../../constants/forms/converstions';
 const styles = theme => ({
   root: {
-    padding: `${theme.spacing.unit}px ${theme.spacing.unit * 1.5}px ${
-      theme.spacing.unit
-    }px ${theme.spacing.unit * 2.25}px`,
+    padding: `${theme.spacing(1)}px ${theme.spacing(1.5)}px ${theme.spacing(
+      1
+    )}px ${theme.spacing(2.25)}px`,
     borderBottom: `1px solid ${theme.palette.divider}`,
     [theme.breakpoints.down('sm')]: {
-      paddingLeft: theme.spacing.unit * 1.5,
-      paddingRight: theme.spacing.unit,
+      paddingLeft: theme.spacing(1.5),
+      paddingRight: theme.spacing(1),
     },
   },
   typeIcon: {
-    marginTop: theme.spacing.unit / 2,
-    marginRight: theme.spacing.unit,
+    marginTop: theme.spacing(0.5),
+    marginRight: theme.spacing(1),
     opacity: 0.87,
     color: theme.palette.text.primary,
 
@@ -55,13 +55,13 @@ const styles = theme => ({
 
   categoryDropdownWrapper: {
     margin: 0,
-    marginLeft: theme.spacing.unit * 2,
+    marginLeft: theme.spacing(2),
     // [theme.breakpoints.down('md')]: { marginLeft: theme.spacing.unit },
   },
   categoryDropdown: {
-    paddingTop: theme.spacing.unit,
-    paddingBottom: theme.spacing.unit - 1,
-    paddingRight: theme.spacing.unit * 3,
+    paddingTop: theme.spacing(1),
+    paddingBottom: theme.spacing(1) - 1,
+    paddingRight: theme.spacing(3),
     fontSize: '.875rem',
     minWidth: 100,
 
@@ -74,8 +74,8 @@ const styles = theme => ({
 
   emailAdd: {
     position: 'absolute',
-    bottom: theme.spacing.unit * 0.75,
-    right: theme.spacing.unit * 0.75,
+    bottom: theme.spacing(0.75),
+    right: theme.spacing(0.75),
 
     backgroundColor:
       theme.palette.type === 'dark'
@@ -86,7 +86,7 @@ const styles = theme => ({
   },
 
   iconButton: {
-    [theme.breakpoints.down('sm')]: { padding: theme.spacing.unit },
+    [theme.breakpoints.down('sm')]: { padding: theme.spacing(1) },
   },
   linkedInButton: {
     color: `${theme.palette.text.secondary} !important`,
@@ -95,31 +95,31 @@ const styles = theme => ({
   actionButtons: {
     position: 'relative',
     display: 'inline-block',
-    paddingLeft: theme.spacing.unit * 2,
-    marginLeft: theme.spacing.unit * 2,
+    paddingLeft: theme.spacing(2),
+    marginLeft: theme.spacing(2),
 
     '&::before': {
       content: '""',
       display: 'block',
       backgroundColor: theme.palette.divider,
-      height: theme.spacing.unit * 4,
+      height: theme.spacing(4),
       width: 1,
 
       position: 'absolute',
       left: 0,
-      top: theme.spacing.unit,
+      top: theme.spacing(1),
     },
 
     [theme.breakpoints.down('sm')]: {
-      marginLeft: theme.spacing.unit,
-      paddingLeft: theme.spacing.unit,
+      marginLeft: theme.spacing(1),
+      paddingLeft: theme.spacing(1),
       '&::before': {
-        height: theme.spacing.unit * 3,
+        height: theme.spacing(3),
       },
     },
   },
 
-  backButton: { marginLeft: -theme.spacing.unit },
+  backButton: { marginLeft: -theme.spacing(1) },
 });
 
 function ConversationHeader(props) {

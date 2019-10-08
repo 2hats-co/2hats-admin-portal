@@ -36,7 +36,7 @@ const styles = theme => ({
     boxSizing: 'border-box',
     marginLeft: 'auto',
     marginRight: 'auto',
-    marginBottom: theme.spacing.unit * 5,
+    marginBottom: theme.spacing(5),
     maxWidth: '100vw',
     userSelect: 'none',
   },
@@ -46,43 +46,43 @@ const styles = theme => ({
   },
 
   paddedIcon: {
-    marginRight: theme.spacing.unit * 1.5,
+    marginRight: theme.spacing(1.5),
     verticalAlign: 'bottom',
   },
   title: {
     cursor: 'default',
-    padding: theme.spacing.unit,
+    padding: theme.spacing(1),
     fontWeight: 500,
 
-    [theme.breakpoints.down('xs')]: { marginLeft: theme.spacing.unit * 2 },
+    [theme.breakpoints.down('xs')]: { marginLeft: theme.spacing(2) },
   },
   titleWithIcon: {
     lineHeight: '48px',
     marginLeft: '0 !important',
   },
   goButton: {
-    marginLeft: -theme.spacing.unit / 2,
+    marginLeft: -theme.spacing(1) / 2,
     verticalAlign: 'sub',
   },
 
   moreButton: {
-    margin: theme.spacing.unit,
+    margin: theme.spacing(1),
     '& svg': {
-      marginLeft: theme.spacing.unit / 4,
+      marginLeft: theme.spacing(0.25),
     },
   },
 
   noneLeftWrapper: {
-    marginBottom: theme.spacing.unit * 2,
+    marginBottom: theme.spacing(2),
   },
   noneLeftIcon: {
     fontSize: 35,
     color: theme.palette.text.disabled,
-    marginLeft: theme.spacing.unit,
+    marginLeft: theme.spacing(1),
   },
   noneLeftMsg: {
     color: theme.palette.text.disabled,
-    marginLeft: theme.spacing.unit * 2,
+    marginLeft: theme.spacing(2),
     fontWeight: 700,
     lineHeight: 1.4,
     maxWidth: 260,

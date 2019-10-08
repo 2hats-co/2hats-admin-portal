@@ -36,7 +36,7 @@ const styles = theme => ({
       theme.palette.type === 'dark'
         ? theme.palette.background.default
         : theme.palette.background.paper,
-    padding: theme.spacing.unit * 2,
+    padding: theme.spacing(2),
     paddingTop: 0,
     position: 'relative',
   },
@@ -48,36 +48,36 @@ const styles = theme => ({
   },
 
   topBar: {
-    marginLeft: -theme.spacing.unit * 2,
-    marginBottom: theme.spacing.unit * 2,
-    width: `calc(100% + ${theme.spacing.unit * 3}px)`,
+    marginLeft: -theme.spacing(1) * 2,
+    marginBottom: theme.spacing(2),
+    width: `calc(100% + ${theme.spacing(3)}px)`,
     // height: theme.spacing.unit * 4.5,
   },
   tabsScroller: { width: 'auto' },
   tabsFlexContainer: { display: 'inline-flex' },
-  tabRoot: { minHeight: theme.spacing.unit * 4.5 },
+  tabRoot: { minHeight: theme.spacing(4.5) },
   tabLabelContainer: { padding: '6px 16px' },
   emailFields: {
-    marginLeft: theme.spacing.unit * 2,
-    marginRight: theme.spacing.unit * 2,
+    marginLeft: theme.spacing(2),
+    marginRight: theme.spacing(2),
     marginTop: -5,
     marginBottom: -7,
   },
 
   templateDropdownWrapper: {
     position: 'relative',
-    top: theme.spacing.unit / 2,
+    top: theme.spacing(0.5),
     textAlign: 'right',
 
     [theme.breakpoints.down('sm')]: {
-      top: theme.spacing.unit,
-      left: theme.spacing.unit,
+      top: theme.spacing(1),
+      left: theme.spacing(1),
     },
   },
   templateDropdown: {
-    paddingTop: theme.spacing.unit,
-    paddingBottom: theme.spacing.unit - 1,
-    paddingRight: theme.spacing.unit * 3,
+    paddingTop: theme.spacing(1),
+    paddingBottom: theme.spacing(1) - 1,
+    paddingRight: theme.spacing(3),
     fontSize: '.875rem',
     minWidth: 100,
   },
@@ -111,12 +111,12 @@ const styles = theme => ({
     },
   },
   chipWrapper: {
-    marginLeft: -theme.spacing.unit,
-    marginTop: theme.spacing.unit,
+    marginLeft: -theme.spacing(1),
+    marginTop: theme.spacing(1),
   },
   chipIcon: {
-    marginLeft: theme.spacing.unit * 1.5,
-    marginRight: -theme.spacing.unit / 2,
+    marginLeft: theme.spacing(1.5),
+    marginRight: -theme.spacing(1) / 2,
   },
 });
 
@@ -366,7 +366,7 @@ function Composer(props) {
         {composerType === 'email' && (
           <>
             <Grid item xs={12} sm className={classes.emailFields}>
-              <Grid container spacing={8}>
+              <Grid container spacing={1}>
                 <Grid item xs={6}>
                   <TextField
                     autoFocus

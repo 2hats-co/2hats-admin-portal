@@ -48,7 +48,7 @@ const styles = theme => ({
   },
   resumeSubmission: {
     maxWidth: 720,
-    margin: `${theme.spacing.unit * 5}px auto`,
+    margin: `${theme.spacing(5)}px auto`,
   },
 });
 

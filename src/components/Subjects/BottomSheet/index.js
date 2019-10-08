@@ -55,8 +55,8 @@ const styles = theme => ({
       theme.shape.borderRadius
     }px 0 0`,
 
-    paddingLeft: theme.spacing.unit * 3,
-    paddingRight: theme.spacing.unit,
+    paddingLeft: theme.spacing(3),
+    paddingRight: theme.spacing(1),
 
     cursor: 'pointer',
   },
@@ -70,8 +70,8 @@ const styles = theme => ({
     overflowY: 'auto',
   },
 
-  chipWrapper: { padding: theme.spacing.unit * 2 },
-  chip: { margin: theme.spacing.unit / 2 },
+  chipWrapper: { padding: theme.spacing(2) },
+  chip: { margin: theme.spacing(0.5) },
   chipAvatar: {
     backgroundColor: theme.palette.divider,
     color: theme.palette.text.primary,

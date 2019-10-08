@@ -52,7 +52,7 @@ function TrackerLineChart(props) {
       style={{
         backgroundColor: x.colour,
         color: theme.palette.getContrastText(x.colour),
-        marginBottom: theme.spacing.unit,
+        marginBottom: theme.spacing(1),
       }}
     />
   ));
@@ -73,7 +73,7 @@ function TrackerLineChart(props) {
           option={{
             title: {
               text: title,
-              top: theme.spacing.unit * 2,
+              top: theme.spacing(2),
               left: 'center',
               textStyle: {
                 color: theme.palette.text.primary,
@@ -83,9 +83,9 @@ function TrackerLineChart(props) {
             },
             color: trackers.map(x => x.colour),
             grid: {
-              left: theme.spacing.unit * 3,
-              right: theme.spacing.unit * 3,
-              bottom: theme.spacing.unit * 3,
+              left: theme.spacing(3),
+              right: theme.spacing(3),
+              bottom: theme.spacing(3),
               containLabel: true,
             },
 
@@ -129,9 +129,9 @@ function TrackerLineChart(props) {
       <Grid
         item
         style={{
-          padding: theme.spacing.unit * 2,
+          padding: theme.spacing(2),
           paddingTop: 0,
-          paddingBottom: theme.spacing.unit,
+          paddingBottom: theme.spacing(1),
           textAlign: 'center',
         }}
       >

@@ -16,7 +16,7 @@ import AddIcon from '@material-ui/icons/AddOutlined';
 import Form from '../../Form';
 import Criterion from './Criterion';
 
-import { unstable_useMediaQuery as useMediaQuery } from '@material-ui/core/useMediaQuery';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 import useCollection from '../../../hooks/useCollection';
 import { createDoc, updateDoc, deleteDoc } from '../../../utilities/firestore';
 
@@ -29,8 +29,8 @@ const styles = theme => ({
 
   addButton: {
     position: 'absolute',
-    top: theme.spacing.unit * 1.5 + 1,
-    right: theme.spacing.unit * 1.5 + 1,
+    top: theme.spacing(1.5) + 1,
+    right: theme.spacing(1.5) + 1,
   },
 });
 
