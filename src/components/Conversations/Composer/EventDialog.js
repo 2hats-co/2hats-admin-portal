@@ -115,7 +115,7 @@ function EventDialog(props) {
   const [data, setData] = useState(initialData);
   const [attendeeField, setAttendeeField] = useState('');
   const currentUser = useContext(CurrentUserContext);
-  if (!currentUser) return <div />;
+
   const updateData = (field, value) => {
     setData({ ...data, [field]: value });
   };
@@ -160,6 +160,9 @@ function EventDialog(props) {
     },
     [data.start.dateTime]
   );
+
+  if (!currentUser) return <div />;
+
   const titleSuggestions =
     conversation.type === 'client'
       ? [
