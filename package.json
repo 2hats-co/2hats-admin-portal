@@ -5,6 +5,7 @@
   "dependencies": {
     "@babel/core": "^7.4.3",
     "@bit/sidney2hats.2hats.global.common-constants": "file:./bit/global/common-constants",
+    "@bit/twohats.common.constants": "^1.0.28",
     "@date-io/moment": "^1.0.1",
     "@material-ui/core": "^3.6.2",
     "@material-ui/icons": "^3.0.1",

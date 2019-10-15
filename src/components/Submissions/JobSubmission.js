@@ -18,9 +18,20 @@ import SkillItem from '../SkillItem';
 import SuperAvatar from '../SuperAvatar';
 
 import {
+  WORK_CULTURE_SLIDER_LABELS,
+  WORK_CULTURE_SLIDER_MIN,
+  WORK_CULTURE_SLIDER_MAX,
+} from '@bit/twohats.common.constants';
+import Slider from '@material-ui/lab/Slider';
+
+import {
   STYLES,
   MOMENT_FORMATS,
 } from '@bit/sidney2hats.2hats.global.common-constants';
+
+export const MIN_VALUE = WORK_CULTURE_SLIDER_MIN;
+export const MAX_VALUE = WORK_CULTURE_SLIDER_MAX;
+export const STEP = (MAX_VALUE - MIN_VALUE) / 3;
 
 const styles = theme => ({
   ...STYLES.DETAIL_VIEW(theme),
@@ -106,6 +117,10 @@ const JobSubmission = props => {
   const [showPDF, setShowPDF] = useState(false);
 
   console.log('job data', data);
+
+  const matchedNumber = data.payRate.match(/\d+/);
+  const minPayRate = Number(matchedNumber ? matchedNumber[0] : 0);
+  console.log(data.payRate, matchedNumber, minPayRate);
 
   return (
     <div className={classes.root}>
@@ -216,7 +231,7 @@ const JobSubmission = props => {
                 {data.user.firstName} {data.user.lastName}
               </Typography>
               <Typography variant="body2">
-                Submitted {moment.unix(data.createdAt.seconds).fromNow()}
+                Submitted {moment(data.createdAt.toDate()).fromNow()}
               </Typography>
             </Grid>
           </Grid>
@@ -225,20 +240,22 @@ const JobSubmission = props => {
         <div className={classes.section}>
           <Grid container>
             <Grid item xs={4}>
-              <Typography variant="body2">Can start in</Typography>
+              <Typography variant="body2">Available to start</Typography>
               <Typography variant="h6">
-                {data.submissionContent.startWeek.label ||
-                  data.submissionContent.startWeek + ' week(s)'}
+                {moment(
+                  data.submissionContent.jobAvailabilityStartDate.toDate()
+                )
+                  .startOf('month')
+                  .format('MMMM YYYY')}
               </Typography>
             </Grid>
 
             <Grid item xs={4}>
               <Typography variant="body2">Preferred pay</Typography>
               <Typography variant="h6">
-                $
-                {((data.submissionContent.pay / 100) * data.payRate).toFixed(2)}
+                ${(minPayRate * (data.submissionContent.pay / 100)).toFixed(2)}{' '}
                 <small>
-                  /{data.payUnits} ({data.submissionContent.pay}%)
+                  {data.payUnits} ({data.submissionContent.pay}%)
                 </small>
               </Typography>
             </Grid>
@@ -260,6 +277,28 @@ const JobSubmission = props => {
         </div>
 
         <div className={classes.section}>
+          <Typography variant="h6">Work culture</Typography>
+          {Object.keys(WORK_CULTURE_SLIDER_LABELS).map((label, i) => (
+            <div>
+              <Grid container justify="space-between">
+                {WORK_CULTURE_SLIDER_LABELS[label].map(x => (
+                  <Typography key={x} variant="overline">
+                    {x}
+                  </Typography>
+                ))}
+              </Grid>
+              <Slider
+                key={label}
+                value={data.submissionContent.workCultureSliders[label]}
+                min={MIN_VALUE}
+                max={MAX_VALUE}
+                step={STEP}
+              />
+            </div>
+          ))}
+        </div>
+
+        <div className={classes.section}>
           <Typography variant="h6">Resume</Typography>
           <iframe
             title="Submission Resume"
@@ -271,6 +310,32 @@ const JobSubmission = props => {
             style={{ display: showPDF ? 'block' : 'none' }}
           />
           {!showPDF && <LinearProgress />}
+        </div>
+
+        <div className={classes.section}>
+          <Typography variant="h6">Portfolio</Typography>
+          {data.submissionContent.portfolioFile && (
+            <iframe
+              title="Portfolio PDF"
+              src={data.submissionContent.portfolioFile.url}
+              className={classes.iframe}
+              onLoad={() => {
+                setShowPDF(true);
+              }}
+              style={{ display: showPDF ? 'block' : 'none' }}
+            />
+          )}
+          {!showPDF && <LinearProgress />}
+
+          <Typography paragraph>
+            <a
+              href={data.submissionContent.portfolioExternal}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {data.submissionContent.portfolioExternal}
+            </a>
+          </Typography>
         </div>
       </main>
     </div>
