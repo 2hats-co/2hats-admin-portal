@@ -29,13 +29,20 @@ pipelines:
             - globalnode
             - localnode
           script: # Modify the commands below to build your repository.
+            # Run script to write config files
             - node scripts/deployconfig-production
+            # Add bit repo authentication
+            - echo "//node.bit.dev/:_authToken = $BIT_NODE_TOKEN_INFO2HATS" >> .npmrc
+            # Verify files are correct
             - cat .env
             - cat .firebaserc
             - cat firebase.json
+            # Install dependencies
             - yarn global add firebase-tools
             - yarn install
+            # Build
             - CI=false yarn build
+            # Deploy to hosting
             - firebase deploy --token "$FIREBASE_TOKEN" --only hosting
 definitions:
   caches:
