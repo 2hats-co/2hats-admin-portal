@@ -15,7 +15,7 @@ function TemplateList(props) {
     path: COLLECTIONS.emailTemplates,
     filters,
     // i can't figure out why this isn't sorting properly  — Sidney
-    sort: { field: 'updatedAt', order: 'desc' },
+    sort: { field: 'updatedAt', direction: 'desc' },
   });
   let templates = templatesState.documents;
   useEffect(
