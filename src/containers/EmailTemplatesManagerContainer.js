@@ -272,7 +272,7 @@ function EmailTemplatesManagerContainer(props) {
         with the same start trigger (it will just ignore it)`}
         {/* End */}
 
-        {template && !showForm ? (
+        {template && template.design && !showForm ? (
           <TemplateEditor template={template} setTemplate={setTemplate} />
         ) : (
           renderList(path)

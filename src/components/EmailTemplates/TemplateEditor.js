@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 
 import EmailEditor from 'react-email-editor';
 import Button from '@material-ui/core/Button';
@@ -39,6 +39,14 @@ function TemplateEditor(props) {
     if (editor.current && template.design)
       editor.current.loadDesign(JSON.parse(template.design));
   };
+
+  useEffect(
+    () => {
+      if (editor.current && template.design)
+        editor.current.loadDesign(JSON.parse(template.design));
+    },
+    [editor.current]
+  );
 
   if (!currentUser) return <p>loadin</p>;
   // const replaceables = [
