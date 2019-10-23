@@ -32,6 +32,17 @@ const linkedinCampaignFields = initialData => {
       validation: yup.string().required('Query is required'),
     },
     {
+      type: FIELDS.autocomplete,
+      name: 'location',
+      label: 'Location',
+      value: initialData['location'] || '["au:4910"]',
+      suggestions: [
+        { value: '["au:4910"]', label: 'Sydney' },
+        { value: '["au:4900"]', label: 'Melbourne' },
+      ],
+      validation: yup.string().required('Location are required'),
+    },
+    {
       type: FIELDS.chipFreeText,
       name: 'ignoreList',
       label: 'Ignore term',
