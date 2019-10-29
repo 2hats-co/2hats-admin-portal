@@ -53,6 +53,13 @@ const linkedinCampaignFields = initialData => {
       validation: yup.string().required('Message is required'),
     },
     {
+      type: FIELDS.checkbox,
+      name: 'daily',
+      label: 'Trigger daily',
+      value: !!initialData['daily'],
+      validation: yup.boolean(),
+    },
+    {
       type: FIELDS.slider,
       name: 'connectionsPerSession',
       label: 'Connections per session',
