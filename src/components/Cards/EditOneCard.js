@@ -46,7 +46,7 @@ const EditOneCard = props => {
 
     case 'assessments':
     case 'jobs':
-      url += `${collection.slice(0, -1)}?id=${data.id}`;
+      url += `${collection.slice(0, -1)}/${data.id}`;
       break;
 
     default:
