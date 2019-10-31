@@ -31,7 +31,6 @@ export const ROUTES = {
   assessmentsManager: '/contentManager/assessments',
   coursesManager: '/contentManager/courses',
   eventsManager: '/contentManager/events',
-  announcementsManager: '/contentManager/announcements',
 };
 
 export default ROUTES;

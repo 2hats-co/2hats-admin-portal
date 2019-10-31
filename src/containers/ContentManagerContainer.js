@@ -27,8 +27,6 @@ import Form from '../components/Form';
 import courseFields from '../constants/forms/course';
 import assessmentFields from '../constants/forms/assessment';
 import jobFields from '../constants/forms/job';
-// import eventFields from '../constants/forms/event';
-import announcementFields from '../constants/forms/announcement';
 import useClient from '../hooks/useClient';
 const styles = theme => ({
   root: {
@@ -79,13 +77,6 @@ function ContentManagerContainer(props) {
       mapping = oneCardMappings.assessment;
       break;
 
-    case ROUTES.announcementsManager:
-      fields = announcementFields;
-      formTitle = 'Announcements';
-      collection = COLLECTIONS.announcements;
-      mapping = oneCardMappings.announcement;
-      break;
-
     default:
       break;
   }
@@ -126,7 +117,6 @@ function ContentManagerContainer(props) {
             { label: 'Jobs', value: ROUTES.jobsManager },
             { label: 'Courses', value: ROUTES.coursesManager },
             { label: 'Assessments', value: ROUTES.assessmentsManager },
-            { label: 'Announcements', value: ROUTES.announcementsManager },
           ]}
         />
         {client && (
