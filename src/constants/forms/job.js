@@ -85,7 +85,8 @@ const jobFields = initialData => {
     {
       type: FIELDS.textField,
       name: 'payRate',
-      label: 'Pay rate',
+      label: 'Pay rate (write 50,000 not 50k)',
+      placeholder: '20 or 20-25 or 50,000 or 50,000-55,000',
       value: initialData['payRate'],
       validation: yup.string().required('Pay rate is required'),
       width: 6,
@@ -98,7 +99,7 @@ const jobFields = initialData => {
         value: initialData['payUnits'],
         label: initialData['payUnits'],
       },
-      suggestions: ['per hour', 'per day', 'per week'].map(x => ({
+      suggestions: ['per hour', 'per day', 'per week', 'per year'].map(x => ({
         value: x,
         label: x,
       })),
