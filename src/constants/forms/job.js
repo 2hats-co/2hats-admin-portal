@@ -13,7 +13,7 @@ const jobFields = initialData => {
       label: 'Job title',
       value: initialData['title'],
       validation: yup.string().required('Required'),
-      width: 6,
+      width: 12,
     },
     {
       type: FIELDS.textField,
@@ -21,6 +21,20 @@ const jobFields = initialData => {
       label: 'Company name',
       value: initialData['companyName'],
       validation: yup.string().required('Required'),
+      width: 6,
+    },
+    {
+      type: FIELDS.autocomplete,
+      name: 'location',
+      label: 'Location',
+      value: initialData['location']
+        ? { label: initialData.location.city, value: initialData.location }
+        : '',
+      suggestions: [
+        { label: 'Sydney', value: { city: 'Sydney', country: 'AU' } },
+        { label: 'Melbourne', value: { city: 'Melbourne', country: 'AU' } },
+      ],
+      //validation: yup.string().required('Required'),
       width: 6,
     },
     {
