@@ -34,7 +34,10 @@ const jobFields = initialData => {
         { label: 'Sydney', value: { city: 'Sydney', country: 'AU' } },
         { label: 'Melbourne', value: { city: 'Melbourne', country: 'AU' } },
       ],
-      //validation: yup.string().required('Required'),
+      validation: yup
+        .object()
+        .shape({ city: yup.string.required(), country: yup.string.required() })
+        .required('Required'),
       width: 6,
     },
     {
