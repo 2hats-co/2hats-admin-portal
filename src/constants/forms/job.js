@@ -36,7 +36,10 @@ const jobFields = initialData => {
       ],
       validation: yup
         .object()
-        .shape({ city: yup.string.required(), country: yup.string.required() })
+        .shape({
+          city: yup.string().required(),
+          country: yup.string().required(),
+        })
         .required('Required'),
       width: 6,
     },
