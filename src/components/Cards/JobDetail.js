@@ -21,7 +21,14 @@ const styles = theme => ({
   },
 });
 
-export const JobMeta = ({ data }) => <IndustryLabel value={data.industry} />;
+export const JobMeta = ({ data }) => (
+  <>
+    <IndustryLabel value={data.industry} />
+    <Typography variant="subtitle2">
+      {data.location && data.location.city}
+    </Typography>
+  </>
+);
 
 const JobDetail = ({ classes, data }) => (
   <>
