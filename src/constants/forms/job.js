@@ -21,7 +21,7 @@ const jobFields = initialData => {
       label: 'Company name',
       value: initialData['companyName'],
       validation: yup.string().required('Required'),
-      width: 6,
+      width: 8,
     },
     {
       type: FIELDS.autocomplete,
@@ -44,7 +44,7 @@ const jobFields = initialData => {
           label: yup.string().required(),
         })
         .required('Required'),
-      width: 6,
+      width: 4,
     },
     {
       type: FIELDS.richText,
